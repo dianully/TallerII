@@ -60,6 +60,12 @@
     <Compile Include="Vendedor.Designer.cs">
       <DependentUpon>Vendedor.cs</DependentUpon>
     </Compile>
+    <Compile Include="VistaAdministrador.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistaAdministrador.Designer.cs">
+      <DependentUpon>VistaAdministrador.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
@@ -74,6 +80,9 @@
     </Compile>
     <EmbeddedResource Include="Vendedor.resx">
       <DependentUpon>Vendedor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistaAdministrador.resx">
+      <DependentUpon>VistaAdministrador.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

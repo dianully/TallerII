@@ -31,7 +31,6 @@
             this.LProducto = new System.Windows.Forms.Label();
             this.LCantidad = new System.Windows.Forms.Label();
             this.LCliente = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.Total = new System.Windows.Forms.Label();
             this.gbCliente = new System.Windows.Forms.GroupBox();
             this.BCobrar = new System.Windows.Forms.Button();
@@ -64,17 +63,10 @@
             this.LCliente.TabIndex = 2;
             this.LCliente.Text = "Cliente:";
             // 
-            // panel1
-            // 
-            this.panel1.Location = new System.Drawing.Point(215, 191);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(249, 66);
-            this.panel1.TabIndex = 3;
-            // 
             // Total
             // 
             this.Total.AutoSize = true;
-            this.Total.Location = new System.Drawing.Point(212, 515);
+            this.Total.Location = new System.Drawing.Point(212, 549);
             this.Total.Name = "Total";
             this.Total.Size = new System.Drawing.Size(41, 16);
             this.Total.TabIndex = 5;
@@ -82,7 +74,7 @@
             // 
             // gbCliente
             // 
-            this.gbCliente.Location = new System.Drawing.Point(215, 301);
+            this.gbCliente.Location = new System.Drawing.Point(215, 207);
             this.gbCliente.Name = "gbCliente";
             this.gbCliente.Size = new System.Drawing.Size(378, 136);
             this.gbCliente.TabIndex = 6;
@@ -91,7 +83,7 @@
             // 
             // BCobrar
             // 
-            this.BCobrar.Location = new System.Drawing.Point(215, 552);
+            this.BCobrar.Location = new System.Drawing.Point(215, 586);
             this.BCobrar.Name = "BCobrar";
             this.BCobrar.Size = new System.Drawing.Size(75, 23);
             this.BCobrar.TabIndex = 7;
@@ -106,7 +98,6 @@
             this.Controls.Add(this.BCobrar);
             this.Controls.Add(this.gbCliente);
             this.Controls.Add(this.Total);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.LCliente);
             this.Controls.Add(this.LCantidad);
             this.Controls.Add(this.LProducto);
@@ -122,7 +113,6 @@
         private System.Windows.Forms.Label LProducto;
         private System.Windows.Forms.Label LCantidad;
         private System.Windows.Forms.Label LCliente;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label Total;
         private System.Windows.Forms.GroupBox gbCliente;
         private System.Windows.Forms.Button BCobrar;
