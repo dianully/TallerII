@@ -37,6 +37,7 @@
             this.ClientSize = new System.Drawing.Size(1345, 630);
             this.Name = "VistaAdministrador";
             this.Text = "Administrador";
+            this.Load += new System.EventHandler(this.VistaAdministrador_Load);
             this.ResumeLayout(false);
 
         }

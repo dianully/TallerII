@@ -16,5 +16,14 @@ namespace PuntoDeVentaGameBox
         {
             InitializeComponent();
         }
+
+        private void VistaAdministrador_Load(object sender, EventArgs e)
+        {
+
+
+
+
+
+        }
     }
 }
