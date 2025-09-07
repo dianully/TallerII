@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Messaging" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,6 +55,18 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="subMenuCopiaDeSeguridad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="subMenuCopiaDeSeguridad.Designer.cs">
+      <DependentUpon>subMenuCopiaDeSeguridad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="subMenuUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="subMenuUsuario.Designer.cs">
+      <DependentUpon>subMenuUsuario.cs</DependentUpon>
+    </Compile>
     <Compile Include="Vendedor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +91,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="subMenuCopiaDeSeguridad.resx">
+      <DependentUpon>subMenuCopiaDeSeguridad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="subMenuUsuario.resx">
+      <DependentUpon>subMenuUsuario.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Vendedor.resx">
       <DependentUpon>Vendedor.cs</DependentUpon>
     </EmbeddedResource>

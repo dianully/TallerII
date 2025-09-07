@@ -33,6 +33,8 @@
             this.LContraseña = new System.Windows.Forms.Label();
             this.TxUsuario = new System.Windows.Forms.TextBox();
             this.TxContraseña = new System.Windows.Forms.TextBox();
+            this.BIngresar = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -77,17 +79,39 @@
             this.TxContraseña.Size = new System.Drawing.Size(100, 22);
             this.TxContraseña.TabIndex = 4;
             // 
+            // BIngresar
+            // 
+            this.BIngresar.Location = new System.Drawing.Point(309, 343);
+            this.BIngresar.Name = "BIngresar";
+            this.BIngresar.Size = new System.Drawing.Size(75, 23);
+            this.BIngresar.TabIndex = 5;
+            this.BIngresar.Text = "Ingresar";
+            this.BIngresar.UseVisualStyleBackColor = true;
+            this.BIngresar.Click += new System.EventHandler(this.BIngresar_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(418, 343);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Salir";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.BIngresar);
             this.Controls.Add(this.TxContraseña);
             this.Controls.Add(this.TxUsuario);
             this.Controls.Add(this.LContraseña);
             this.Controls.Add(this.LUsuario);
             this.Controls.Add(this.pictureBox1);
             this.Name = "Login";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Inicio de Sesion";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
@@ -102,6 +126,8 @@
         private System.Windows.Forms.Label LContraseña;
         private System.Windows.Forms.TextBox TxUsuario;
         private System.Windows.Forms.TextBox TxContraseña;
+        private System.Windows.Forms.Button BIngresar;
+        private System.Windows.Forms.Button button1;
     }
 }
 

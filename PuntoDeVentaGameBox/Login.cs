@@ -16,5 +16,15 @@ namespace PuntoDeVentaGameBox
         {
             InitializeComponent();
         }
+
+        private void BIngresar_Click(object sender, EventArgs e)
+        {
+            //Vendedor siguientePagina = new Vendedor();
+            VistaAdministrador siguientePagina = new VistaAdministrador();
+            
+            siguientePagina.Show();
+
+            this.Hide();
+        }
     }
 }

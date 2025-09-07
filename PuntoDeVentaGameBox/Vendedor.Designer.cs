@@ -33,16 +33,16 @@
             this.LCliente = new System.Windows.Forms.Label();
             this.Total = new System.Windows.Forms.Label();
             this.gbCliente = new System.Windows.Forms.GroupBox();
+            this.TBClienteGmail = new System.Windows.Forms.TextBox();
+            this.TBDniCliente = new System.Windows.Forms.TextBox();
+            this.TBApellidoCliente = new System.Windows.Forms.TextBox();
+            this.LClienteGmail = new System.Windows.Forms.Label();
+            this.LClienteDNI = new System.Windows.Forms.Label();
+            this.LApellidoCliente = new System.Windows.Forms.Label();
+            this.LNombreCliente = new System.Windows.Forms.Label();
+            this.TBNombreCliente = new System.Windows.Forms.TextBox();
             this.BCobrar = new System.Windows.Forms.Button();
             this.BSalir = new System.Windows.Forms.Button();
-            this.TBNombreCliente = new System.Windows.Forms.TextBox();
-            this.LNombreCliente = new System.Windows.Forms.Label();
-            this.LApellidoCliente = new System.Windows.Forms.Label();
-            this.LClienteDNI = new System.Windows.Forms.Label();
-            this.LClienteGmail = new System.Windows.Forms.Label();
-            this.TBApellidoCliente = new System.Windows.Forms.TextBox();
-            this.TBDniCliente = new System.Windows.Forms.TextBox();
-            this.TBClienteGmail = new System.Windows.Forms.TextBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
@@ -96,12 +96,76 @@
             this.gbCliente.Controls.Add(this.LApellidoCliente);
             this.gbCliente.Controls.Add(this.LNombreCliente);
             this.gbCliente.Controls.Add(this.TBNombreCliente);
-            this.gbCliente.Location = new System.Drawing.Point(570, 100);
+            this.gbCliente.Location = new System.Drawing.Point(570, 97);
             this.gbCliente.Name = "gbCliente";
             this.gbCliente.Size = new System.Drawing.Size(378, 136);
             this.gbCliente.TabIndex = 6;
             this.gbCliente.TabStop = false;
             this.gbCliente.Text = "Datos del Cliente";
+            // 
+            // TBClienteGmail
+            // 
+            this.TBClienteGmail.Location = new System.Drawing.Point(79, 108);
+            this.TBClienteGmail.Name = "TBClienteGmail";
+            this.TBClienteGmail.Size = new System.Drawing.Size(100, 22);
+            this.TBClienteGmail.TabIndex = 15;
+            // 
+            // TBDniCliente
+            // 
+            this.TBDniCliente.Location = new System.Drawing.Point(79, 78);
+            this.TBDniCliente.Name = "TBDniCliente";
+            this.TBDniCliente.Size = new System.Drawing.Size(100, 22);
+            this.TBDniCliente.TabIndex = 14;
+            // 
+            // TBApellidoCliente
+            // 
+            this.TBApellidoCliente.Location = new System.Drawing.Point(79, 50);
+            this.TBApellidoCliente.Name = "TBApellidoCliente";
+            this.TBApellidoCliente.Size = new System.Drawing.Size(100, 22);
+            this.TBApellidoCliente.TabIndex = 13;
+            // 
+            // LClienteGmail
+            // 
+            this.LClienteGmail.AutoSize = true;
+            this.LClienteGmail.Location = new System.Drawing.Point(7, 103);
+            this.LClienteGmail.Name = "LClienteGmail";
+            this.LClienteGmail.Size = new System.Drawing.Size(45, 16);
+            this.LClienteGmail.TabIndex = 12;
+            this.LClienteGmail.Text = "Gmail:";
+            // 
+            // LClienteDNI
+            // 
+            this.LClienteDNI.AutoSize = true;
+            this.LClienteDNI.Location = new System.Drawing.Point(7, 77);
+            this.LClienteDNI.Name = "LClienteDNI";
+            this.LClienteDNI.Size = new System.Drawing.Size(33, 16);
+            this.LClienteDNI.TabIndex = 11;
+            this.LClienteDNI.Text = "DNI:";
+            // 
+            // LApellidoCliente
+            // 
+            this.LApellidoCliente.AutoSize = true;
+            this.LApellidoCliente.Location = new System.Drawing.Point(7, 50);
+            this.LApellidoCliente.Name = "LApellidoCliente";
+            this.LApellidoCliente.Size = new System.Drawing.Size(60, 16);
+            this.LApellidoCliente.TabIndex = 10;
+            this.LApellidoCliente.Text = "Apellido:";
+            // 
+            // LNombreCliente
+            // 
+            this.LNombreCliente.AutoSize = true;
+            this.LNombreCliente.Location = new System.Drawing.Point(7, 24);
+            this.LNombreCliente.Name = "LNombreCliente";
+            this.LNombreCliente.Size = new System.Drawing.Size(59, 16);
+            this.LNombreCliente.TabIndex = 9;
+            this.LNombreCliente.Text = "Nombre:";
+            // 
+            // TBNombreCliente
+            // 
+            this.TBNombreCliente.Location = new System.Drawing.Point(79, 21);
+            this.TBNombreCliente.Name = "TBNombreCliente";
+            this.TBNombreCliente.Size = new System.Drawing.Size(100, 22);
+            this.TBNombreCliente.TabIndex = 0;
             // 
             // BCobrar
             // 
@@ -120,70 +184,6 @@
             this.BSalir.TabIndex = 8;
             this.BSalir.Text = "Salir";
             this.BSalir.UseVisualStyleBackColor = true;
-            // 
-            // TBNombreCliente
-            // 
-            this.TBNombreCliente.Location = new System.Drawing.Point(79, 21);
-            this.TBNombreCliente.Name = "TBNombreCliente";
-            this.TBNombreCliente.Size = new System.Drawing.Size(100, 22);
-            this.TBNombreCliente.TabIndex = 0;
-            // 
-            // LNombreCliente
-            // 
-            this.LNombreCliente.AutoSize = true;
-            this.LNombreCliente.Location = new System.Drawing.Point(7, 24);
-            this.LNombreCliente.Name = "LNombreCliente";
-            this.LNombreCliente.Size = new System.Drawing.Size(59, 16);
-            this.LNombreCliente.TabIndex = 9;
-            this.LNombreCliente.Text = "Nombre:";
-            // 
-            // LApellidoCliente
-            // 
-            this.LApellidoCliente.AutoSize = true;
-            this.LApellidoCliente.Location = new System.Drawing.Point(7, 50);
-            this.LApellidoCliente.Name = "LApellidoCliente";
-            this.LApellidoCliente.Size = new System.Drawing.Size(60, 16);
-            this.LApellidoCliente.TabIndex = 10;
-            this.LApellidoCliente.Text = "Apellido:";
-            // 
-            // LClienteDNI
-            // 
-            this.LClienteDNI.AutoSize = true;
-            this.LClienteDNI.Location = new System.Drawing.Point(7, 77);
-            this.LClienteDNI.Name = "LClienteDNI";
-            this.LClienteDNI.Size = new System.Drawing.Size(33, 16);
-            this.LClienteDNI.TabIndex = 11;
-            this.LClienteDNI.Text = "DNI:";
-            // 
-            // LClienteGmail
-            // 
-            this.LClienteGmail.AutoSize = true;
-            this.LClienteGmail.Location = new System.Drawing.Point(7, 103);
-            this.LClienteGmail.Name = "LClienteGmail";
-            this.LClienteGmail.Size = new System.Drawing.Size(45, 16);
-            this.LClienteGmail.TabIndex = 12;
-            this.LClienteGmail.Text = "Gmail:";
-            // 
-            // TBApellidoCliente
-            // 
-            this.TBApellidoCliente.Location = new System.Drawing.Point(79, 50);
-            this.TBApellidoCliente.Name = "TBApellidoCliente";
-            this.TBApellidoCliente.Size = new System.Drawing.Size(100, 22);
-            this.TBApellidoCliente.TabIndex = 13;
-            // 
-            // TBDniCliente
-            // 
-            this.TBDniCliente.Location = new System.Drawing.Point(79, 78);
-            this.TBDniCliente.Name = "TBDniCliente";
-            this.TBDniCliente.Size = new System.Drawing.Size(100, 22);
-            this.TBDniCliente.TabIndex = 14;
-            // 
-            // TBClienteGmail
-            // 
-            this.TBClienteGmail.Location = new System.Drawing.Point(79, 108);
-            this.TBClienteGmail.Name = "TBClienteGmail";
-            this.TBClienteGmail.Size = new System.Drawing.Size(100, 22);
-            this.TBClienteGmail.TabIndex = 15;
             // 
             // comboBox1
             // 
@@ -237,6 +237,7 @@
             this.Controls.Add(this.LCantidad);
             this.Controls.Add(this.LProducto);
             this.Name = "Vendedor";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Vendedor";
             this.gbCliente.ResumeLayout(false);
             this.gbCliente.PerformLayout();
