@@ -106,6 +106,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Reportes.resx">
+      <DependentUpon>Reportes.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="subMenuCopiaDeSeguridad.resx">
       <DependentUpon>subMenuCopiaDeSeguridad.cs</DependentUpon>
     </EmbeddedResource>
