@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace PuntoDeVentaGameBox
 {
-    public partial class FormReportes : Form
+    public partial class Reportes : Form
     {
-        public FormReportes()
+        public Reportes()
         {
             InitializeComponent();
         }

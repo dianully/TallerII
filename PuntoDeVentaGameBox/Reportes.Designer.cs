@@ -1,6 +1,6 @@
 ﻿namespace PuntoDeVentaGameBox
 {
-    partial class FormReportes
+    partial class Reportes
     {
         /// <summary>
         /// Required designer variable.
