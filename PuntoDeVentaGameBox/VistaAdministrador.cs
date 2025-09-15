@@ -65,5 +65,10 @@ namespace PuntoDeVentaGameBox
             copiaSeguridadForm.Dock = DockStyle.Fill;
             copiaSeguridadForm.Show();
         }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
     }
 }
