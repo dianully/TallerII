@@ -31,65 +31,65 @@
             this.TPLRoot = new System.Windows.Forms.TableLayoutPanel();
             this.PNLScroll = new System.Windows.Forms.Panel();
             this.TLPContent = new System.Windows.Forms.TableLayoutPanel();
+            this.GBPeriodo = new System.Windows.Forms.GroupBox();
+            this.TLPPeriodo = new System.Windows.Forms.TableLayoutPanel();
+            this.LTipoPeriodo = new System.Windows.Forms.Label();
+            this.CBTipoPeriodo = new System.Windows.Forms.ComboBox();
+            this.LDesde = new System.Windows.Forms.Label();
+            this.LHasta = new System.Windows.Forms.Label();
+            this.DTPDesde = new System.Windows.Forms.DateTimePicker();
+            this.DTPHasta = new System.Windows.Forms.DateTimePicker();
+            this.PVentas = new System.Windows.Forms.Panel();
+            this.LResumenTitulo = new System.Windows.Forms.Label();
+            this.TPLVentas = new System.Windows.Forms.TableLayoutPanel();
+            this.PCardTotal = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.PCardVentas = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.PCardTicket = new System.Windows.Forms.Panel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.PCardProductos = new System.Windows.Forms.Panel();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.GVTopProductos = new System.Windows.Forms.GroupBox();
+            this.DGVTopProductos = new System.Windows.Forms.DataGridView();
+            this.DGVProductoCVideojuego = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DGVProductoCUnidadesVendidas = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DGVProductoCIngresos = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GVVendedores = new System.Windows.Forms.GroupBox();
+            this.DGVVendedores = new System.Windows.Forms.DataGridView();
+            this.DGVVendedoresCVendedor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DGVProductoCTotalDineroenVentas = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DGVProductoCVentas = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DGVProductoCTicketPromedio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PHeader = new System.Windows.Forms.Panel();
             this.LRol = new System.Windows.Forms.Label();
             this.LGeneraciondereportesdeventas = new System.Windows.Forms.Label();
             this.LReportes = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.GBPeriodo = new System.Windows.Forms.GroupBox();
-            this.TLPPeriodo = new System.Windows.Forms.TableLayoutPanel();
-            this.LTipoPeriodo = new System.Windows.Forms.Label();
-            this.CBTipoPeriodo = new System.Windows.Forms.ComboBox();
-            this.LHasta = new System.Windows.Forms.Label();
-            this.LDesde = new System.Windows.Forms.Label();
-            this.DTPDesde = new System.Windows.Forms.DateTimePicker();
-            this.DTPHasta = new System.Windows.Forms.DateTimePicker();
-            this.LResumenTitulo = new System.Windows.Forms.Label();
-            this.TPLVentas = new System.Windows.Forms.TableLayoutPanel();
-            this.PVentas = new System.Windows.Forms.Panel();
-            this.PCardTotal = new System.Windows.Forms.Panel();
-            this.PCardVentas = new System.Windows.Forms.Panel();
-            this.PCardTicket = new System.Windows.Forms.Panel();
-            this.PCardProductos = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.GVTopProductos = new System.Windows.Forms.GroupBox();
-            this.GVVendedores = new System.Windows.Forms.GroupBox();
-            this.DGVTopProductos = new System.Windows.Forms.DataGridView();
-            this.DGVVendedores = new System.Windows.Forms.DataGridView();
-            this.DGVProductoCVideojuego = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DGVProductoCUnidadesVendidas = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DGVProductoCIngresos = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DGVVendedoresCVendedor = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DGVProductoCTotalDineroenVentas = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DGVProductoCVentas = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DGVProductoCTicketPromedio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TPLRoot.SuspendLayout();
             this.PNLScroll.SuspendLayout();
             this.TLPContent.SuspendLayout();
-            this.PHeader.SuspendLayout();
             this.GBPeriodo.SuspendLayout();
             this.TLPPeriodo.SuspendLayout();
-            this.TPLVentas.SuspendLayout();
             this.PVentas.SuspendLayout();
+            this.TPLVentas.SuspendLayout();
             this.PCardTotal.SuspendLayout();
             this.PCardVentas.SuspendLayout();
             this.PCardTicket.SuspendLayout();
             this.PCardProductos.SuspendLayout();
             this.GVTopProductos.SuspendLayout();
-            this.GVVendedores.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVTopProductos)).BeginInit();
+            this.GVVendedores.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVVendedores)).BeginInit();
+            this.PHeader.SuspendLayout();
             this.SuspendLayout();
             // 
             // TPLRoot
@@ -138,47 +138,6 @@
             this.TLPContent.TabIndex = 0;
             this.TLPContent.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
             // 
-            // PHeader
-            // 
-            this.PHeader.Controls.Add(this.LRol);
-            this.PHeader.Controls.Add(this.LGeneraciondereportesdeventas);
-            this.PHeader.Controls.Add(this.LReportes);
-            this.PHeader.Location = new System.Drawing.Point(3, 3);
-            this.PHeader.Name = "PHeader";
-            this.PHeader.Size = new System.Drawing.Size(891, 66);
-            this.PHeader.TabIndex = 0;
-            // 
-            // LRol
-            // 
-            this.LRol.AutoSize = true;
-            this.LRol.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(242)))), ((int)(((byte)(255)))));
-            this.LRol.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
-            this.LRol.Location = new System.Drawing.Point(706, 11);
-            this.LRol.Name = "LRol";
-            this.LRol.Padding = new System.Windows.Forms.Padding(12, 6, 12, 6);
-            this.LRol.Size = new System.Drawing.Size(95, 35);
-            this.LRol.TabIndex = 2;
-            this.LRol.Text = "Gerente";
-            // 
-            // LGeneraciondereportesdeventas
-            // 
-            this.LGeneraciondereportesdeventas.AutoSize = true;
-            this.LGeneraciondereportesdeventas.Location = new System.Drawing.Point(153, 20);
-            this.LGeneraciondereportesdeventas.Name = "LGeneraciondereportesdeventas";
-            this.LGeneraciondereportesdeventas.Size = new System.Drawing.Size(276, 23);
-            this.LGeneraciondereportesdeventas.TabIndex = 1;
-            this.LGeneraciondereportesdeventas.Text = ": Generación de reportes de ventas";
-            // 
-            // LReportes
-            // 
-            this.LReportes.AutoSize = true;
-            this.LReportes.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LReportes.Location = new System.Drawing.Point(3, 5);
-            this.LReportes.Name = "LReportes";
-            this.LReportes.Size = new System.Drawing.Size(144, 41);
-            this.LReportes.TabIndex = 0;
-            this.LReportes.Text = "Reportes";
-            // 
             // GBPeriodo
             // 
             this.GBPeriodo.Controls.Add(this.TLPPeriodo);
@@ -219,7 +178,7 @@
             this.LTipoPeriodo.AutoSize = true;
             this.LTipoPeriodo.Location = new System.Drawing.Point(3, 0);
             this.LTipoPeriodo.Name = "LTipoPeriodo";
-            this.LTipoPeriodo.Size = new System.Drawing.Size(130, 23);
+            this.LTipoPeriodo.Size = new System.Drawing.Size(104, 19);
             this.LTipoPeriodo.TabIndex = 0;
             this.LTipoPeriodo.Text = "Tipo de Periodo";
             // 
@@ -233,18 +192,8 @@
             "Anual"});
             this.CBTipoPeriodo.Location = new System.Drawing.Point(3, 32);
             this.CBTipoPeriodo.Name = "CBTipoPeriodo";
-            this.CBTipoPeriodo.Size = new System.Drawing.Size(143, 31);
+            this.CBTipoPeriodo.Size = new System.Drawing.Size(143, 27);
             this.CBTipoPeriodo.TabIndex = 1;
-            // 
-            // LHasta
-            // 
-            this.LHasta.AutoSize = true;
-            this.LHasta.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LHasta.Location = new System.Drawing.Point(397, 62);
-            this.LHasta.Name = "LHasta";
-            this.LHasta.Size = new System.Drawing.Size(413, 23);
-            this.LHasta.TabIndex = 2;
-            this.LHasta.Text = "Fecha Fin";
             // 
             // LDesde
             // 
@@ -252,23 +201,42 @@
             this.LDesde.Dock = System.Windows.Forms.DockStyle.Top;
             this.LDesde.Location = new System.Drawing.Point(3, 62);
             this.LDesde.Name = "LDesde";
-            this.LDesde.Size = new System.Drawing.Size(388, 23);
+            this.LDesde.Size = new System.Drawing.Size(388, 19);
             this.LDesde.TabIndex = 1;
             this.LDesde.Text = "Fecha Incio";
+            // 
+            // LHasta
+            // 
+            this.LHasta.AutoSize = true;
+            this.LHasta.Dock = System.Windows.Forms.DockStyle.Top;
+            this.LHasta.Location = new System.Drawing.Point(397, 62);
+            this.LHasta.Name = "LHasta";
+            this.LHasta.Size = new System.Drawing.Size(413, 19);
+            this.LHasta.TabIndex = 2;
+            this.LHasta.Text = "Fecha Fin";
             // 
             // DTPDesde
             // 
             this.DTPDesde.Location = new System.Drawing.Point(3, 96);
             this.DTPDesde.Name = "DTPDesde";
-            this.DTPDesde.Size = new System.Drawing.Size(200, 30);
+            this.DTPDesde.Size = new System.Drawing.Size(200, 26);
             this.DTPDesde.TabIndex = 3;
             // 
             // DTPHasta
             // 
             this.DTPHasta.Location = new System.Drawing.Point(397, 96);
             this.DTPHasta.Name = "DTPHasta";
-            this.DTPHasta.Size = new System.Drawing.Size(200, 30);
+            this.DTPHasta.Size = new System.Drawing.Size(200, 26);
             this.DTPHasta.TabIndex = 4;
+            // 
+            // PVentas
+            // 
+            this.PVentas.Controls.Add(this.LResumenTitulo);
+            this.PVentas.Controls.Add(this.TPLVentas);
+            this.PVentas.Location = new System.Drawing.Point(3, 189);
+            this.PVentas.Name = "PVentas";
+            this.PVentas.Size = new System.Drawing.Size(848, 130);
+            this.PVentas.TabIndex = 3;
             // 
             // LResumenTitulo
             // 
@@ -277,7 +245,7 @@
             this.LResumenTitulo.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LResumenTitulo.Location = new System.Drawing.Point(0, 0);
             this.LResumenTitulo.Name = "LResumenTitulo";
-            this.LResumenTitulo.Size = new System.Drawing.Size(220, 31);
+            this.LResumenTitulo.Size = new System.Drawing.Size(184, 25);
             this.LResumenTitulo.TabIndex = 1;
             this.LResumenTitulo.Text = "Resumen de Ventas";
             this.LResumenTitulo.Click += new System.EventHandler(this.LResumenTitulo_Click);
@@ -302,15 +270,6 @@
             this.TPLVentas.Size = new System.Drawing.Size(836, 99);
             this.TPLVentas.TabIndex = 2;
             // 
-            // PVentas
-            // 
-            this.PVentas.Controls.Add(this.LResumenTitulo);
-            this.PVentas.Controls.Add(this.TPLVentas);
-            this.PVentas.Location = new System.Drawing.Point(3, 189);
-            this.PVentas.Name = "PVentas";
-            this.PVentas.Size = new System.Drawing.Size(848, 130);
-            this.PVentas.TabIndex = 3;
-            // 
             // PCardTotal
             // 
             this.PCardTotal.Controls.Add(this.label3);
@@ -320,6 +279,33 @@
             this.PCardTotal.Name = "PCardTotal";
             this.PCardTotal.Size = new System.Drawing.Size(200, 93);
             this.PCardTotal.TabIndex = 0;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(45, 58);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(45, 19);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "label3";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(45, 31);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(45, 19);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "label2";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(41, 4);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(45, 19);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "label1";
             // 
             // PCardVentas
             // 
@@ -331,6 +317,33 @@
             this.PCardVentas.Size = new System.Drawing.Size(200, 93);
             this.PCardVentas.TabIndex = 1;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(61, 58);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(45, 19);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "label6";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(61, 31);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(45, 19);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "label5";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(57, 10);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(45, 19);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "label4";
+            // 
             // PCardTicket
             // 
             this.PCardTicket.Controls.Add(this.label9);
@@ -340,6 +353,33 @@
             this.PCardTicket.Name = "PCardTicket";
             this.PCardTicket.Size = new System.Drawing.Size(200, 93);
             this.PCardTicket.TabIndex = 2;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(58, 58);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(45, 19);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "label9";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(58, 37);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(45, 19);
+            this.label8.TabIndex = 1;
+            this.label8.Text = "label8";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(54, 10);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(45, 19);
+            this.label7.TabIndex = 0;
+            this.label7.Text = "label7";
             // 
             // PCardProductos
             // 
@@ -351,113 +391,32 @@
             this.PCardProductos.Size = new System.Drawing.Size(199, 90);
             this.PCardProductos.TabIndex = 3;
             // 
-            // label1
+            // label12
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(41, 4);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 23);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "label1";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(45, 31);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(55, 23);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "label2";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(45, 58);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(55, 23);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "label3";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(57, 10);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(55, 23);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "label4";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(61, 31);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(55, 23);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "label5";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(61, 58);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(55, 23);
-            this.label6.TabIndex = 2;
-            this.label6.Text = "label6";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(54, 10);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(55, 23);
-            this.label7.TabIndex = 0;
-            this.label7.Text = "label7";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(58, 37);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(55, 23);
-            this.label8.TabIndex = 1;
-            this.label8.Text = "label8";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(58, 58);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(55, 23);
-            this.label9.TabIndex = 2;
-            this.label9.Text = "label9";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(64, 10);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(64, 23);
-            this.label10.TabIndex = 0;
-            this.label10.Text = "label10";
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(64, 64);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(53, 19);
+            this.label12.TabIndex = 2;
+            this.label12.Text = "label12";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(68, 37);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(64, 23);
+            this.label11.Size = new System.Drawing.Size(53, 19);
             this.label11.TabIndex = 1;
             this.label11.Text = "label11";
             // 
-            // label12
+            // label10
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(64, 64);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(64, 23);
-            this.label12.TabIndex = 2;
-            this.label12.Text = "label12";
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(64, 10);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(53, 19);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "label10";
             // 
             // GVTopProductos
             // 
@@ -469,16 +428,6 @@
             this.GVTopProductos.TabStop = false;
             this.GVTopProductos.Text = "Productos Mas Vendidos";
             // 
-            // GVVendedores
-            // 
-            this.GVVendedores.Controls.Add(this.DGVVendedores);
-            this.GVVendedores.Location = new System.Drawing.Point(3, 429);
-            this.GVVendedores.Name = "GVVendedores";
-            this.GVVendedores.Size = new System.Drawing.Size(853, 100);
-            this.GVVendedores.TabIndex = 5;
-            this.GVVendedores.TabStop = false;
-            this.GVVendedores.Text = "Rendimientos por Vendedor";
-            // 
             // DGVTopProductos
             // 
             this.DGVTopProductos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -488,35 +437,15 @@
             this.DGVProductoCUnidadesVendidas,
             this.DGVProductoCIngresos});
             this.DGVTopProductos.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DGVTopProductos.Location = new System.Drawing.Point(3, 26);
+            this.DGVTopProductos.Location = new System.Drawing.Point(3, 22);
             this.DGVTopProductos.Name = "DGVTopProductos";
             this.DGVTopProductos.ReadOnly = true;
             this.DGVTopProductos.RowHeadersVisible = false;
             this.DGVTopProductos.RowHeadersWidth = 51;
             this.DGVTopProductos.RowTemplate.Height = 24;
             this.DGVTopProductos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DGVTopProductos.Size = new System.Drawing.Size(842, 69);
+            this.DGVTopProductos.Size = new System.Drawing.Size(842, 73);
             this.DGVTopProductos.TabIndex = 0;
-            // 
-            // DGVVendedores
-            // 
-            this.DGVVendedores.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.DGVVendedores.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGVVendedores.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.DGVVendedoresCVendedor,
-            this.DGVProductoCTotalDineroenVentas,
-            this.DGVProductoCVentas,
-            this.DGVProductoCTicketPromedio});
-            this.DGVVendedores.Dock = System.Windows.Forms.DockStyle.Top;
-            this.DGVVendedores.Location = new System.Drawing.Point(3, 26);
-            this.DGVVendedores.Name = "DGVVendedores";
-            this.DGVVendedores.ReadOnly = true;
-            this.DGVVendedores.RowHeadersVisible = false;
-            this.DGVVendedores.RowHeadersWidth = 51;
-            this.DGVVendedores.RowTemplate.Height = 24;
-            this.DGVVendedores.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DGVVendedores.Size = new System.Drawing.Size(847, 80);
-            this.DGVVendedores.TabIndex = 0;
             // 
             // DGVProductoCVideojuego
             // 
@@ -538,6 +467,36 @@
             this.DGVProductoCIngresos.MinimumWidth = 6;
             this.DGVProductoCIngresos.Name = "DGVProductoCIngresos";
             this.DGVProductoCIngresos.ReadOnly = true;
+            // 
+            // GVVendedores
+            // 
+            this.GVVendedores.Controls.Add(this.DGVVendedores);
+            this.GVVendedores.Location = new System.Drawing.Point(3, 429);
+            this.GVVendedores.Name = "GVVendedores";
+            this.GVVendedores.Size = new System.Drawing.Size(853, 100);
+            this.GVVendedores.TabIndex = 5;
+            this.GVVendedores.TabStop = false;
+            this.GVVendedores.Text = "Rendimientos por Vendedor";
+            // 
+            // DGVVendedores
+            // 
+            this.DGVVendedores.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.DGVVendedores.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVVendedores.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.DGVVendedoresCVendedor,
+            this.DGVProductoCTotalDineroenVentas,
+            this.DGVProductoCVentas,
+            this.DGVProductoCTicketPromedio});
+            this.DGVVendedores.Dock = System.Windows.Forms.DockStyle.Top;
+            this.DGVVendedores.Location = new System.Drawing.Point(3, 22);
+            this.DGVVendedores.Name = "DGVVendedores";
+            this.DGVVendedores.ReadOnly = true;
+            this.DGVVendedores.RowHeadersVisible = false;
+            this.DGVVendedores.RowHeadersWidth = 51;
+            this.DGVVendedores.RowTemplate.Height = 24;
+            this.DGVVendedores.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.DGVVendedores.Size = new System.Drawing.Size(847, 80);
+            this.DGVVendedores.TabIndex = 0;
             // 
             // DGVVendedoresCVendedor
             // 
@@ -567,9 +526,50 @@
             this.DGVProductoCTicketPromedio.Name = "DGVProductoCTicketPromedio";
             this.DGVProductoCTicketPromedio.ReadOnly = true;
             // 
+            // PHeader
+            // 
+            this.PHeader.Controls.Add(this.LRol);
+            this.PHeader.Controls.Add(this.LGeneraciondereportesdeventas);
+            this.PHeader.Controls.Add(this.LReportes);
+            this.PHeader.Location = new System.Drawing.Point(3, 3);
+            this.PHeader.Name = "PHeader";
+            this.PHeader.Size = new System.Drawing.Size(891, 66);
+            this.PHeader.TabIndex = 0;
+            // 
+            // LRol
+            // 
+            this.LRol.AutoSize = true;
+            this.LRol.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(242)))), ((int)(((byte)(255)))));
+            this.LRol.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
+            this.LRol.Location = new System.Drawing.Point(706, 11);
+            this.LRol.Name = "LRol";
+            this.LRol.Padding = new System.Windows.Forms.Padding(12, 6, 12, 6);
+            this.LRol.Size = new System.Drawing.Size(82, 31);
+            this.LRol.TabIndex = 2;
+            this.LRol.Text = "Gerente";
+            // 
+            // LGeneraciondereportesdeventas
+            // 
+            this.LGeneraciondereportesdeventas.AutoSize = true;
+            this.LGeneraciondereportesdeventas.Location = new System.Drawing.Point(153, 20);
+            this.LGeneraciondereportesdeventas.Name = "LGeneraciondereportesdeventas";
+            this.LGeneraciondereportesdeventas.Size = new System.Drawing.Size(222, 19);
+            this.LGeneraciondereportesdeventas.TabIndex = 1;
+            this.LGeneraciondereportesdeventas.Text = ": Generación de reportes de ventas";
+            // 
+            // LReportes
+            // 
+            this.LReportes.AutoSize = true;
+            this.LReportes.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LReportes.Location = new System.Drawing.Point(3, 5);
+            this.LReportes.Name = "LReportes";
+            this.LReportes.Size = new System.Drawing.Size(116, 32);
+            this.LReportes.TabIndex = 0;
+            this.LReportes.Text = "Reportes";
+            // 
             // Reportes
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(939, 767);
             this.Controls.Add(this.TPLRoot);
@@ -581,14 +581,12 @@
             this.PNLScroll.ResumeLayout(false);
             this.PNLScroll.PerformLayout();
             this.TLPContent.ResumeLayout(false);
-            this.PHeader.ResumeLayout(false);
-            this.PHeader.PerformLayout();
             this.GBPeriodo.ResumeLayout(false);
             this.TLPPeriodo.ResumeLayout(false);
             this.TLPPeriodo.PerformLayout();
-            this.TPLVentas.ResumeLayout(false);
             this.PVentas.ResumeLayout(false);
             this.PVentas.PerformLayout();
+            this.TPLVentas.ResumeLayout(false);
             this.PCardTotal.ResumeLayout(false);
             this.PCardTotal.PerformLayout();
             this.PCardVentas.ResumeLayout(false);
@@ -598,9 +596,11 @@
             this.PCardProductos.ResumeLayout(false);
             this.PCardProductos.PerformLayout();
             this.GVTopProductos.ResumeLayout(false);
-            this.GVVendedores.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVTopProductos)).EndInit();
+            this.GVVendedores.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVVendedores)).EndInit();
+            this.PHeader.ResumeLayout(false);
+            this.PHeader.PerformLayout();
             this.ResumeLayout(false);
 
         }

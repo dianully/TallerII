@@ -20,7 +20,7 @@ namespace PuntoDeVentaGameBox
         private void BIngresar_Click(object sender, EventArgs e)
         {
             //Vendedor siguientePagina = new Vendedor();
-            Administrador siguientePagina = new Administrador();
+            subMenuUsuario siguientePagina = new subMenuUsuario();
             
             siguientePagina.Show();
 
