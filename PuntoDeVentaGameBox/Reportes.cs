@@ -16,5 +16,20 @@ namespace PuntoDeVentaGameBox
         {
             InitializeComponent();
         }
+
+        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel3_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void LResumenTitulo_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
