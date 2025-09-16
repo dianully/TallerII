@@ -22,27 +22,50 @@ namespace PuntoDeVentaGameBox
             
         }
 
-        private void BUsuarios_Click(object sender, EventArgs e)
+        private void AbrirFormInPanel(object Formhijo)
         {
-            foreach (Form formularioAbierto in this.MdiChildren)
+            // Verifica si el panel ya tiene un formulario y lo cierra
+            if (this.panel3.Controls.Count > 0)
             {
-                // 2. Verifica si el formulario ya es del tipo subMenuUsuario
-                if (formularioAbierto is subMenuUsuario)
-                {
-                    // 3. Si lo encuentra, lo trae al frente y termina el proceso
-                    formularioAbierto.BringToFront();
-                    return;
-                }
+                // Remueve el formulario anterior
+                this.panel3.Controls.RemoveAt(0);
             }
 
-            // 4. Si el formulario no está abierto, crea una nueva instancia
-            subMenuUsuario usuariosForm = new subMenuUsuario();
-            usuariosForm.MdiParent = this; // Le dice al nuevo formulario quién es su padre
-            usuariosForm.Dock = DockStyle.Fill;
-            usuariosForm.Show();
+            // Convierte el objeto a un formulario para poder usar sus propiedades
+            Form fh = Formhijo as Form;
+
+            // Le dice al formulario que no es una ventana independiente
+            fh.TopLevel = false;
+
+            // Lo hace invisible para el usuario antes de agregarlo
+            fh.FormBorderStyle = FormBorderStyle.None;
+
+            // Ancla el formulario para que llene todo el panel
+            fh.Dock = DockStyle.Fill;
+
+            // Agrega el formulario al panel
+            this.panel3.Controls.Add(fh);
+
+            // Muestra el formulario
+            fh.Show();
+        }
+
+        private void BUsuarios_Click(object sender, EventArgs e)
+        {
+            AbrirFormInPanel(new subMenuUsuario());
         }
 
         private void BCopiaDeSeguridad_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void LTitle_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Administrador_Load(object sender, EventArgs e)
         {
 
         }

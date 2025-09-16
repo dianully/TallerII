@@ -71,7 +71,7 @@
             this.label2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.label2.Location = new System.Drawing.Point(1059, 27);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(98, 33);
+            this.label2.Size = new System.Drawing.Size(82, 27);
             this.label2.TabIndex = 1;
             this.label2.Text = "Gerente";
             // 
@@ -82,7 +82,7 @@
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.label1.Location = new System.Drawing.Point(13, 19);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(350, 41);
+            this.label1.Size = new System.Drawing.Size(286, 32);
             this.label1.TabIndex = 0;
             this.label1.Text = "Gestión de Proveedores";
             this.label1.Click += new System.EventHandler(this.label1_Click);
@@ -202,10 +202,10 @@
             this.CBFiltroProveedores.Items.AddRange(new object[] {
             "Todos",
             "Recientes"});
-            this.CBFiltroProveedores.Location = new System.Drawing.Point(726, 39);
+            this.CBFiltroProveedores.Location = new System.Drawing.Point(726, 40);
             this.CBFiltroProveedores.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.CBFiltroProveedores.Name = "CBFiltroProveedores";
-            this.CBFiltroProveedores.Size = new System.Drawing.Size(208, 25);
+            this.CBFiltroProveedores.Size = new System.Drawing.Size(208, 22);
             this.CBFiltroProveedores.TabIndex = 3;
             // 
             // LCantProveedores
@@ -213,9 +213,9 @@
             this.LCantProveedores.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.LCantProveedores.AutoSize = true;
             this.LCantProveedores.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LCantProveedores.Location = new System.Drawing.Point(940, 39);
+            this.LCantProveedores.Location = new System.Drawing.Point(940, 41);
             this.LCantProveedores.Name = "LCantProveedores";
-            this.LCantProveedores.Size = new System.Drawing.Size(224, 23);
+            this.LCantProveedores.Size = new System.Drawing.Size(224, 19);
             this.LCantProveedores.TabIndex = 4;
             this.LCantProveedores.Text = "0 Proveedores";
             // 
@@ -238,16 +238,16 @@
             // 
             this.TBBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.TBBuscar.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TBBuscar.Location = new System.Drawing.Point(236, 36);
+            this.TBBuscar.Location = new System.Drawing.Point(236, 38);
             this.TBBuscar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.TBBuscar.Name = "TBBuscar";
-            this.TBBuscar.Size = new System.Drawing.Size(301, 30);
+            this.TBBuscar.Size = new System.Drawing.Size(301, 26);
             this.TBBuscar.TabIndex = 2;
             this.TBBuscar.Text = "Buscar por Nombre o Correo";
             // 
             // Proveedores
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1181, 703);
             this.Controls.Add(this.panel2);
