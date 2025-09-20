@@ -269,6 +269,7 @@
             // 
             // PHeader
             // 
+            this.PHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.PHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PHeader.Controls.Add(this.LRol);
             this.PHeader.Controls.Add(this.LSub);
@@ -285,6 +286,7 @@
             this.LRol.AutoSize = true;
             this.LRol.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.LRol.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LRol.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.LRol.Location = new System.Drawing.Point(984, 14);
             this.LRol.Name = "LRol";
             this.LRol.Size = new System.Drawing.Size(110, 35);
@@ -295,7 +297,7 @@
             // 
             this.LSub.AutoSize = true;
             this.LSub.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LSub.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.LSub.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.LSub.Location = new System.Drawing.Point(184, 23);
             this.LSub.Name = "LSub";
             this.LSub.Size = new System.Drawing.Size(384, 23);
@@ -307,6 +309,7 @@
             // 
             this.LTitle.AutoSize = true;
             this.LTitle.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LTitle.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.LTitle.Location = new System.Drawing.Point(9, 5);
             this.LTitle.Name = "LTitle";
             this.LTitle.Size = new System.Drawing.Size(179, 45);

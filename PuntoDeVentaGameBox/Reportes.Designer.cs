@@ -103,7 +103,7 @@
             this.TPLRoot.RowCount = 2;
             this.TPLRoot.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 72F));
             this.TPLRoot.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.TPLRoot.Size = new System.Drawing.Size(897, 754);
+            this.TPLRoot.Size = new System.Drawing.Size(1167, 754);
             this.TPLRoot.TabIndex = 0;
             // 
             // PNLScroll
@@ -113,7 +113,7 @@
             this.PNLScroll.Location = new System.Drawing.Point(3, 75);
             this.PNLScroll.Name = "PNLScroll";
             this.PNLScroll.Padding = new System.Windows.Forms.Padding(16);
-            this.PNLScroll.Size = new System.Drawing.Size(891, 563);
+            this.PNLScroll.Size = new System.Drawing.Size(1161, 632);
             this.PNLScroll.TabIndex = 3;
             // 
             // TLPContent
@@ -134,7 +134,7 @@
             this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 136F));
             this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 104F));
             this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 174F));
-            this.TLPContent.Size = new System.Drawing.Size(859, 531);
+            this.TLPContent.Size = new System.Drawing.Size(1129, 600);
             this.TLPContent.TabIndex = 0;
             this.TLPContent.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
             // 
@@ -146,7 +146,7 @@
             this.GBPeriodo.Margin = new System.Windows.Forms.Padding(8);
             this.GBPeriodo.Name = "GBPeriodo";
             this.GBPeriodo.Padding = new System.Windows.Forms.Padding(16);
-            this.GBPeriodo.Size = new System.Drawing.Size(843, 164);
+            this.GBPeriodo.Size = new System.Drawing.Size(1113, 164);
             this.GBPeriodo.TabIndex = 0;
             this.GBPeriodo.TabStop = false;
             this.GBPeriodo.Text = "Periodo del Reporte";
@@ -235,7 +235,7 @@
             this.PVentas.Controls.Add(this.TPLVentas);
             this.PVentas.Location = new System.Drawing.Point(3, 189);
             this.PVentas.Name = "PVentas";
-            this.PVentas.Size = new System.Drawing.Size(848, 130);
+            this.PVentas.Size = new System.Drawing.Size(1118, 130);
             this.PVentas.TabIndex = 3;
             // 
             // LResumenTitulo
@@ -267,7 +267,7 @@
             this.TPLVentas.Name = "TPLVentas";
             this.TPLVentas.RowCount = 1;
             this.TPLVentas.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 48F));
-            this.TPLVentas.Size = new System.Drawing.Size(836, 99);
+            this.TPLVentas.Size = new System.Drawing.Size(1112, 99);
             this.TPLVentas.TabIndex = 2;
             // 
             // PCardTotal
@@ -301,18 +301,18 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(41, 4);
+            this.label1.Location = new System.Drawing.Point(6, 8);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 23);
+            this.label1.Size = new System.Drawing.Size(182, 23);
             this.label1.TabIndex = 0;
-            this.label1.Text = "label1";
+            this.label1.Text = "Total Dinero en Ventas";
             // 
             // PCardVentas
             // 
             this.PCardVentas.Controls.Add(this.label6);
             this.PCardVentas.Controls.Add(this.label5);
             this.PCardVentas.Controls.Add(this.label4);
-            this.PCardVentas.Location = new System.Drawing.Point(212, 3);
+            this.PCardVentas.Location = new System.Drawing.Point(281, 3);
             this.PCardVentas.Name = "PCardVentas";
             this.PCardVentas.Size = new System.Drawing.Size(200, 93);
             this.PCardVentas.TabIndex = 1;
@@ -338,18 +338,19 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(57, 10);
+            this.label4.Location = new System.Drawing.Point(17, 10);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(55, 23);
+            this.label4.Size = new System.Drawing.Size(153, 23);
             this.label4.TabIndex = 0;
-            this.label4.Text = "label4";
+            this.label4.Text = "Numero de Ventas";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // PCardTicket
             // 
             this.PCardTicket.Controls.Add(this.label9);
             this.PCardTicket.Controls.Add(this.label8);
             this.PCardTicket.Controls.Add(this.label7);
-            this.PCardTicket.Location = new System.Drawing.Point(421, 3);
+            this.PCardTicket.Location = new System.Drawing.Point(559, 3);
             this.PCardTicket.Name = "PCardTicket";
             this.PCardTicket.Size = new System.Drawing.Size(200, 93);
             this.PCardTicket.TabIndex = 2;
@@ -375,18 +376,18 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(54, 10);
+            this.label7.Location = new System.Drawing.Point(25, 10);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(55, 23);
+            this.label7.Size = new System.Drawing.Size(133, 23);
             this.label7.TabIndex = 0;
-            this.label7.Text = "label7";
+            this.label7.Text = "Ticket Promedio";
             // 
             // PCardProductos
             // 
             this.PCardProductos.Controls.Add(this.label12);
             this.PCardProductos.Controls.Add(this.label11);
             this.PCardProductos.Controls.Add(this.label10);
-            this.PCardProductos.Location = new System.Drawing.Point(630, 3);
+            this.PCardProductos.Location = new System.Drawing.Point(837, 3);
             this.PCardProductos.Name = "PCardProductos";
             this.PCardProductos.Size = new System.Drawing.Size(199, 90);
             this.PCardProductos.TabIndex = 3;
@@ -412,18 +413,20 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(64, 10);
+            this.label10.Location = new System.Drawing.Point(52, 14);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(64, 23);
+            this.label10.Size = new System.Drawing.Size(92, 23);
             this.label10.TabIndex = 0;
-            this.label10.Text = "label10";
+            this.label10.Text = "Productos ";
+            this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
             // GVTopProductos
             // 
+            this.GVTopProductos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.GVTopProductos.Controls.Add(this.DGVTopProductos);
             this.GVTopProductos.Location = new System.Drawing.Point(3, 325);
             this.GVTopProductos.Name = "GVTopProductos";
-            this.GVTopProductos.Size = new System.Drawing.Size(848, 98);
+            this.GVTopProductos.Size = new System.Drawing.Size(1123, 98);
             this.GVTopProductos.TabIndex = 4;
             this.GVTopProductos.TabStop = false;
             this.GVTopProductos.Text = "Productos Mas Vendidos";
@@ -444,7 +447,7 @@
             this.DGVTopProductos.RowHeadersWidth = 51;
             this.DGVTopProductos.RowTemplate.Height = 24;
             this.DGVTopProductos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DGVTopProductos.Size = new System.Drawing.Size(842, 69);
+            this.DGVTopProductos.Size = new System.Drawing.Size(1117, 69);
             this.DGVTopProductos.TabIndex = 0;
             // 
             // DGVProductoCVideojuego
@@ -470,10 +473,11 @@
             // 
             // GVVendedores
             // 
+            this.GVVendedores.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.GVVendedores.Controls.Add(this.DGVVendedores);
-            this.GVVendedores.Location = new System.Drawing.Point(3, 429);
+            this.GVVendedores.Location = new System.Drawing.Point(3, 463);
             this.GVVendedores.Name = "GVVendedores";
-            this.GVVendedores.Size = new System.Drawing.Size(853, 100);
+            this.GVVendedores.Size = new System.Drawing.Size(1123, 100);
             this.GVVendedores.TabIndex = 5;
             this.GVVendedores.TabStop = false;
             this.GVVendedores.Text = "Rendimientos por Vendedor";
@@ -495,7 +499,7 @@
             this.DGVVendedores.RowHeadersWidth = 51;
             this.DGVVendedores.RowTemplate.Height = 24;
             this.DGVVendedores.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DGVVendedores.Size = new System.Drawing.Size(847, 80);
+            this.DGVVendedores.Size = new System.Drawing.Size(1117, 80);
             this.DGVVendedores.TabIndex = 0;
             // 
             // DGVVendedoresCVendedor
@@ -528,29 +532,33 @@
             // 
             // PHeader
             // 
+            this.PHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.PHeader.Controls.Add(this.LRol);
             this.PHeader.Controls.Add(this.LGeneraciondereportesdeventas);
             this.PHeader.Controls.Add(this.LReportes);
             this.PHeader.Location = new System.Drawing.Point(3, 3);
             this.PHeader.Name = "PHeader";
-            this.PHeader.Size = new System.Drawing.Size(891, 66);
+            this.PHeader.Size = new System.Drawing.Size(1161, 66);
             this.PHeader.TabIndex = 0;
+            this.PHeader.Paint += new System.Windows.Forms.PaintEventHandler(this.PHeader_Paint);
             // 
             // LRol
             // 
             this.LRol.AutoSize = true;
-            this.LRol.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(242)))), ((int)(((byte)(255)))));
-            this.LRol.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
-            this.LRol.Location = new System.Drawing.Point(706, 11);
+            this.LRol.BackColor = System.Drawing.Color.Transparent;
+            this.LRol.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LRol.ForeColor = System.Drawing.Color.White;
+            this.LRol.Location = new System.Drawing.Point(1028, 15);
             this.LRol.Name = "LRol";
             this.LRol.Padding = new System.Windows.Forms.Padding(12, 6, 12, 6);
-            this.LRol.Size = new System.Drawing.Size(95, 35);
+            this.LRol.Size = new System.Drawing.Size(109, 40);
             this.LRol.TabIndex = 2;
             this.LRol.Text = "Gerente";
             // 
             // LGeneraciondereportesdeventas
             // 
             this.LGeneraciondereportesdeventas.AutoSize = true;
+            this.LGeneraciondereportesdeventas.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.LGeneraciondereportesdeventas.Location = new System.Drawing.Point(153, 20);
             this.LGeneraciondereportesdeventas.Name = "LGeneraciondereportesdeventas";
             this.LGeneraciondereportesdeventas.Size = new System.Drawing.Size(276, 23);
@@ -561,6 +569,7 @@
             // 
             this.LReportes.AutoSize = true;
             this.LReportes.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LReportes.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.LReportes.Location = new System.Drawing.Point(3, 5);
             this.LReportes.Name = "LReportes";
             this.LReportes.Size = new System.Drawing.Size(144, 41);
@@ -571,7 +580,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(939, 767);
+            this.ClientSize = new System.Drawing.Size(1181, 703);
             this.Controls.Add(this.TPLRoot);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
