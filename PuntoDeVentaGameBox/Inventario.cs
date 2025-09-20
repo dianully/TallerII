@@ -71,5 +71,10 @@ namespace PuntoDeVentaGameBox
         {
 
         }
+
+        private void LTitle_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -134,5 +134,15 @@ namespace PuntoDeVentaGameBox
                 MessageBox.Show("Error al buscar datos: " + ex.Message, "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void LSub_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

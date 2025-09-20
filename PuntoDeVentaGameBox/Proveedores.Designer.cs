@@ -186,14 +186,16 @@
             // BBuscar
             // 
             this.BBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.BBuscar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.BBuscar.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BBuscar.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.BBuscar.Location = new System.Drawing.Point(543, 35);
             this.BBuscar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.BBuscar.Name = "BBuscar";
             this.BBuscar.Size = new System.Drawing.Size(177, 31);
             this.BBuscar.TabIndex = 1;
             this.BBuscar.Text = "Buscar";
-            this.BBuscar.UseVisualStyleBackColor = true;
+            this.BBuscar.UseVisualStyleBackColor = false;
             // 
             // CBFiltroProveedores
             // 
@@ -202,7 +204,7 @@
             this.CBFiltroProveedores.Items.AddRange(new object[] {
             "Todos",
             "Recientes"});
-            this.CBFiltroProveedores.Location = new System.Drawing.Point(726, 39);
+            this.CBFiltroProveedores.Location = new System.Drawing.Point(726, 38);
             this.CBFiltroProveedores.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.CBFiltroProveedores.Name = "CBFiltroProveedores";
             this.CBFiltroProveedores.Size = new System.Drawing.Size(208, 25);
@@ -210,12 +212,14 @@
             // 
             // LCantProveedores
             // 
-            this.LCantProveedores.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.LCantProveedores.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.LCantProveedores.AutoSize = true;
+            this.LCantProveedores.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.LCantProveedores.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LCantProveedores.Location = new System.Drawing.Point(940, 39);
+            this.LCantProveedores.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.LCantProveedores.Location = new System.Drawing.Point(992, 39);
             this.LCantProveedores.Name = "LCantProveedores";
-            this.LCantProveedores.Size = new System.Drawing.Size(224, 23);
+            this.LCantProveedores.Size = new System.Drawing.Size(119, 23);
             this.LCantProveedores.TabIndex = 4;
             this.LCantProveedores.Text = "0 Proveedores";
             // 
@@ -223,7 +227,7 @@
             // 
             this.BNuevoProveedor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.BNuevoProveedor.AutoSize = true;
-            this.BNuevoProveedor.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.BNuevoProveedor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.BNuevoProveedor.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BNuevoProveedor.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.BNuevoProveedor.Location = new System.Drawing.Point(3, 27);
@@ -257,7 +261,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Proveedores";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "FormProveedores";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);

@@ -34,15 +34,18 @@
             this.BAplicar = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.LListTitle = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.LListTitle = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(312, 28);
+            this.pictureBox1.Location = new System.Drawing.Point(41, 124);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(157, 148);
             this.pictureBox1.TabIndex = 0;
@@ -50,26 +53,27 @@
             // 
             // TxUsuario
             // 
-            this.TxUsuario.Location = new System.Drawing.Point(159, 38);
+            this.TxUsuario.Location = new System.Drawing.Point(247, 64);
             this.TxUsuario.Name = "TxUsuario";
             this.TxUsuario.Size = new System.Drawing.Size(124, 22);
             this.TxUsuario.TabIndex = 3;
             // 
             // TxContraseña
             // 
-            this.TxContraseña.Location = new System.Drawing.Point(159, 93);
+            this.TxContraseña.Location = new System.Drawing.Point(247, 133);
             this.TxContraseña.Name = "TxContraseña";
             this.TxContraseña.Size = new System.Drawing.Size(124, 22);
             this.TxContraseña.TabIndex = 4;
+            this.TxContraseña.TextChanged += new System.EventHandler(this.TxContraseña_TextChanged);
             // 
             // BAplicar
             // 
-            this.BAplicar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.BAplicar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.BAplicar.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.BAplicar.FlatAppearance.BorderSize = 0;
-            this.BAplicar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BAplicar.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BAplicar.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.BAplicar.Location = new System.Drawing.Point(238, 363);
+            this.BAplicar.Location = new System.Drawing.Point(117, 329);
             this.BAplicar.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.BAplicar.Name = "BAplicar";
             this.BAplicar.Size = new System.Drawing.Size(141, 39);
@@ -80,12 +84,12 @@
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button1.Location = new System.Drawing.Point(397, 363);
+            this.button1.Location = new System.Drawing.Point(348, 329);
             this.button1.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(141, 39);
@@ -99,42 +103,70 @@
             this.panel1.Controls.Add(this.LListTitle);
             this.panel1.Controls.Add(this.TxUsuario);
             this.panel1.Controls.Add(this.TxContraseña);
-            this.panel1.Location = new System.Drawing.Point(238, 192);
+            this.panel1.Location = new System.Drawing.Point(92, 94);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(300, 143);
+            this.panel1.Size = new System.Drawing.Size(436, 220);
             this.panel1.TabIndex = 24;
-            // 
-            // LListTitle
-            // 
-            this.LListTitle.AutoSize = true;
-            this.LListTitle.Font = new System.Drawing.Font("Segoe UI", 12.2F, System.Drawing.FontStyle.Bold);
-            this.LListTitle.Location = new System.Drawing.Point(18, 30);
-            this.LListTitle.Margin = new System.Windows.Forms.Padding(0);
-            this.LListTitle.Name = "LListTitle";
-            this.LListTitle.Size = new System.Drawing.Size(88, 30);
-            this.LListTitle.TabIndex = 25;
-            this.LListTitle.Text = "Usuario";
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 12.2F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(18, 86);
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label1.Location = new System.Drawing.Point(30, 125);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(123, 30);
             this.label1.TabIndex = 26;
             this.label1.Text = "Contraseña";
             // 
+            // LListTitle
+            // 
+            this.LListTitle.AutoSize = true;
+            this.LListTitle.Font = new System.Drawing.Font("Segoe UI", 12.2F, System.Drawing.FontStyle.Bold);
+            this.LListTitle.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.LListTitle.Location = new System.Drawing.Point(40, 56);
+            this.LListTitle.Margin = new System.Windows.Forms.Padding(0);
+            this.LListTitle.Name = "LListTitle";
+            this.LListTitle.Size = new System.Drawing.Size(88, 30);
+            this.LListTitle.TabIndex = 25;
+            this.LListTitle.Text = "Usuario";
+            // 
+            // panel2
+            // 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.label2);
+            this.panel2.Controls.Add(this.panel1);
+            this.panel2.Controls.Add(this.button1);
+            this.panel2.Controls.Add(this.BAplicar);
+            this.panel2.Location = new System.Drawing.Point(274, 124);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(625, 411);
+            this.panel2.TabIndex = 25;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label2.Location = new System.Drawing.Point(119, 30);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(389, 41);
+            this.label2.TabIndex = 27;
+            this.label2.Text = "Punto de Venta GAMEBOX";
+            // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.BAplicar);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.ClientSize = new System.Drawing.Size(1181, 703);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.pictureBox1);
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "Login";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Inicio de Sesion";
@@ -142,6 +174,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -156,6 +190,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label LListTitle;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label2;
     }
 }
 

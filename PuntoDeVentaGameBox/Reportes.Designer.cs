@@ -546,12 +546,13 @@
             // 
             this.LRol.AutoSize = true;
             this.LRol.BackColor = System.Drawing.Color.Transparent;
+            this.LRol.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.LRol.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LRol.ForeColor = System.Drawing.Color.White;
-            this.LRol.Location = new System.Drawing.Point(1028, 15);
+            this.LRol.Location = new System.Drawing.Point(1016, 5);
             this.LRol.Name = "LRol";
             this.LRol.Padding = new System.Windows.Forms.Padding(12, 6, 12, 6);
-            this.LRol.Size = new System.Drawing.Size(109, 40);
+            this.LRol.Size = new System.Drawing.Size(111, 42);
             this.LRol.TabIndex = 2;
             this.LRol.Text = "Gerente";
             // 
@@ -585,7 +586,7 @@
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Reportes";
-            this.Text = "Form1";
+            this.Text = "FormReportes";
             this.TPLRoot.ResumeLayout(false);
             this.PNLScroll.ResumeLayout(false);
             this.PNLScroll.PerformLayout();
