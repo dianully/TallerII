@@ -34,15 +34,15 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tbBusquedaDNI = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.tbCorreo = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.tbTelefono = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
@@ -93,7 +93,7 @@
             this.panel1.Controls.Add(this.comboBox1);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Location = new System.Drawing.Point(8, 23);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(221, 86);
             this.panel1.TabIndex = 34;
@@ -102,7 +102,7 @@
             // 
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(19, 41);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(185, 24);
             this.comboBox1.TabIndex = 36;
@@ -118,14 +118,14 @@
             this.label2.TabIndex = 35;
             this.label2.Text = "Buscar En Base al Rol:";
             // 
-            // textBox1
+            // tbBusquedaDNI
             // 
-            this.textBox1.Location = new System.Drawing.Point(16, 42);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(181, 22);
-            this.textBox1.TabIndex = 35;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.tbBusquedaDNI.Location = new System.Drawing.Point(16, 42);
+            this.tbBusquedaDNI.Margin = new System.Windows.Forms.Padding(4);
+            this.tbBusquedaDNI.Name = "tbBusquedaDNI";
+            this.tbBusquedaDNI.Size = new System.Drawing.Size(181, 22);
+            this.tbBusquedaDNI.TabIndex = 35;
+            this.tbBusquedaDNI.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // button2
             // 
@@ -141,7 +141,7 @@
             this.button2.TabIndex = 36;
             this.button2.Text = "Buscar";
             this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.BBuscar_Click);
             // 
             // button3
             // 
@@ -165,9 +165,9 @@
             this.groupBox1.Controls.Add(this.panel2);
             this.groupBox1.Controls.Add(this.panel1);
             this.groupBox1.Location = new System.Drawing.Point(85, 13);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(927, 138);
             this.groupBox1.TabIndex = 38;
             this.groupBox1.TabStop = false;
@@ -175,21 +175,21 @@
             // 
             // panel4
             // 
-            this.panel4.Controls.Add(this.textBox3);
+            this.panel4.Controls.Add(this.tbCorreo);
             this.panel4.Controls.Add(this.label4);
             this.panel4.Location = new System.Drawing.Point(696, 23);
-            this.panel4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel4.Margin = new System.Windows.Forms.Padding(4);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(221, 86);
             this.panel4.TabIndex = 39;
             // 
-            // textBox3
+            // tbCorreo
             // 
-            this.textBox3.Location = new System.Drawing.Point(16, 42);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(181, 22);
-            this.textBox3.TabIndex = 35;
+            this.tbCorreo.Location = new System.Drawing.Point(16, 42);
+            this.tbCorreo.Margin = new System.Windows.Forms.Padding(4);
+            this.tbCorreo.Name = "tbCorreo";
+            this.tbCorreo.Size = new System.Drawing.Size(181, 22);
+            this.tbCorreo.TabIndex = 35;
             // 
             // label4
             // 
@@ -204,21 +204,21 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.textBox2);
+            this.panel3.Controls.Add(this.tbTelefono);
             this.panel3.Controls.Add(this.label3);
             this.panel3.Location = new System.Drawing.Point(467, 23);
-            this.panel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel3.Margin = new System.Windows.Forms.Padding(4);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(221, 86);
             this.panel3.TabIndex = 38;
             // 
-            // textBox2
+            // tbTelefono
             // 
-            this.textBox2.Location = new System.Drawing.Point(16, 42);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(181, 22);
-            this.textBox2.TabIndex = 35;
+            this.tbTelefono.Location = new System.Drawing.Point(16, 42);
+            this.tbTelefono.Margin = new System.Windows.Forms.Padding(4);
+            this.tbTelefono.Name = "tbTelefono";
+            this.tbTelefono.Size = new System.Drawing.Size(181, 22);
+            this.tbTelefono.TabIndex = 35;
             // 
             // label3
             // 
@@ -233,10 +233,10 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.textBox1);
+            this.panel2.Controls.Add(this.tbBusquedaDNI);
             this.panel2.Controls.Add(this.LSub);
             this.panel2.Location = new System.Drawing.Point(237, 23);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(221, 86);
             this.panel2.TabIndex = 37;
@@ -258,12 +258,14 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(69, 216);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.Size = new System.Drawing.Size(988, 249);
+            this.dataGridView1.Size = new System.Drawing.Size(964, 249);
             this.dataGridView1.TabIndex = 39;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
@@ -307,17 +309,17 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tbBusquedaDNI;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox tbTelefono;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox tbCorreo;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DataGridView dataGridView1;
     }

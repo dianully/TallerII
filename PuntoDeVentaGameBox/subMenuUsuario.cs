@@ -29,6 +29,7 @@ namespace PuntoDeVentaGameBox
         private void subMenuUsuario_Load(object sender, EventArgs e)
         {
             CargarDatos();
+            dataGridView1.ClearSelection();
         }
 
         private void CargarDatos()
@@ -39,7 +40,6 @@ namespace PuntoDeVentaGameBox
             SELECT
                
                 u.nombre AS 'Nombre',
-                u.apellido AS 'Apellido',
                 u.apellido AS 'Apellido',
                 u.dni AS 'DNI',
                 u.email AS 'Correo',
@@ -61,9 +61,78 @@ namespace PuntoDeVentaGameBox
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void BBuscar_Click(object sender, EventArgs e)
         {
+            // Usa la variable de conexión declarada fuera del método
 
+            string query = @"
+        SELECT
+        
+            u.nombre,
+            u.apellido,
+            u.dni,
+            u.email,
+            u.telefono,
+            r.nombre AS nombre_rol
+        FROM
+            usuario AS u
+        INNER JOIN
+            rol AS r ON u.id_rol = r.id_rol";
+
+            List<string> conditions = new List<string>();
+
+            if (!string.IsNullOrEmpty(tbBusquedaDNI.Text))
+            {
+                conditions.Add("u.dni = @dni");
+            }
+
+            if (!string.IsNullOrEmpty(tbCorreo.Text))
+            {
+                conditions.Add("u.email = @email");
+            }
+
+            if (!string.IsNullOrEmpty(tbTelefono.Text))
+            {
+                conditions.Add("u.telefono = @telefono");
+            }
+
+            if (conditions.Count > 0)
+            {
+                query += " WHERE " + string.Join(" OR ", conditions);
+            }
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conecctionString))
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        if (!string.IsNullOrEmpty(tbBusquedaDNI.Text))
+                        {
+                            command.Parameters.AddWithValue("@dni", tbBusquedaDNI.Text);
+                        }
+
+                        if (!string.IsNullOrEmpty(tbCorreo.Text))
+                        {
+                            command.Parameters.AddWithValue("@email", tbCorreo.Text);
+                        }
+
+                        if (!string.IsNullOrEmpty(tbTelefono.Text))
+                        {
+                            command.Parameters.AddWithValue("@telefono", tbTelefono.Text);
+                        }
+
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        DataTable table = new DataTable();
+                        adapter.Fill(table);
+                        dataGridView1.DataSource = table;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al buscar datos: " + ex.Message, "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

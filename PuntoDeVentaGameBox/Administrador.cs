@@ -57,7 +57,7 @@ namespace PuntoDeVentaGameBox
 
         private void BCopiaDeSeguridad_Click(object sender, EventArgs e)
         {
-
+            AbrirFormInPanel(new subMenuCopiaDeSeguridad());
         }
 
         private void LTitle_Click(object sender, EventArgs e)
