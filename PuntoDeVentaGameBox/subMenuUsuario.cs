@@ -24,7 +24,7 @@ namespace PuntoDeVentaGameBox
 
         }
 
-        string conecctionString = "server=localhost;Database=gamebox;Trusted_Connection=True";
+        string conecctionString = "server=localhost;Database=game_box;Trusted_Connection=True";
 
         private void subMenuUsuario_Load(object sender, EventArgs e)
         {
