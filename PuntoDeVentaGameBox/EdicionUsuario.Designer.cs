@@ -35,10 +35,10 @@
             this.tEditarDni = new System.Windows.Forms.TextBox();
             this.tEditarApellido = new System.Windows.Forms.TextBox();
             this.tEditarNombre = new System.Windows.Forms.TextBox();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.pLimpiarParametros = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.bSalir = new System.Windows.Forms.Button();
-            this.bBuscar = new System.Windows.Forms.Button();
+            this.bGuardarCambios = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -47,9 +47,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbRol = new System.Windows.Forms.ComboBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
-            this.panel3.SuspendLayout();
+            this.pLimpiarParametros.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
@@ -57,7 +58,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.panel1.Controls.Add(this.panel3);
+            this.panel1.Controls.Add(this.pLimpiarParametros);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
@@ -106,21 +107,22 @@
             this.tEditarNombre.Size = new System.Drawing.Size(100, 22);
             this.tEditarNombre.TabIndex = 0;
             // 
-            // panel3
+            // pLimpiarParametros
             // 
-            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.panel3.Controls.Add(this.panel5);
-            this.panel3.Controls.Add(this.panel4);
-            this.panel3.Location = new System.Drawing.Point(59, 48);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(683, 354);
-            this.panel3.TabIndex = 6;
+            this.pLimpiarParametros.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.pLimpiarParametros.Controls.Add(this.panel5);
+            this.pLimpiarParametros.Controls.Add(this.panel4);
+            this.pLimpiarParametros.Location = new System.Drawing.Point(59, 48);
+            this.pLimpiarParametros.Name = "pLimpiarParametros";
+            this.pLimpiarParametros.Size = new System.Drawing.Size(683, 354);
+            this.pLimpiarParametros.TabIndex = 6;
             // 
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.SystemColors.Control;
+            this.panel5.Controls.Add(this.button1);
             this.panel5.Controls.Add(this.bSalir);
-            this.panel5.Controls.Add(this.bBuscar);
+            this.panel5.Controls.Add(this.bGuardarCambios);
             this.panel5.Location = new System.Drawing.Point(375, 41);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(240, 272);
@@ -133,35 +135,35 @@
             this.bSalir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bSalir.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bSalir.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.bSalir.Location = new System.Drawing.Point(49, 150);
+            this.bSalir.Location = new System.Drawing.Point(39, 164);
             this.bSalir.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.bSalir.Name = "bSalir";
-            this.bSalir.Size = new System.Drawing.Size(157, 39);
+            this.bSalir.Size = new System.Drawing.Size(165, 39);
             this.bSalir.TabIndex = 44;
             this.bSalir.Text = "Salir";
             this.bSalir.UseVisualStyleBackColor = false;
             this.bSalir.Click += new System.EventHandler(this.bSalir_Click);
             // 
-            // bBuscar
+            // bGuardarCambios
             // 
-            this.bBuscar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.bBuscar.FlatAppearance.BorderSize = 0;
-            this.bBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bBuscar.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bBuscar.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.bBuscar.Location = new System.Drawing.Point(49, 76);
-            this.bBuscar.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
-            this.bBuscar.Name = "bBuscar";
-            this.bBuscar.Size = new System.Drawing.Size(157, 39);
-            this.bBuscar.TabIndex = 43;
-            this.bBuscar.Text = "Registrar Usuario";
-            this.bBuscar.UseVisualStyleBackColor = false;
-            this.bBuscar.Click += new System.EventHandler(this.bEditarUsuario_Click);
+            this.bGuardarCambios.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bGuardarCambios.FlatAppearance.BorderSize = 0;
+            this.bGuardarCambios.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bGuardarCambios.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bGuardarCambios.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.bGuardarCambios.Location = new System.Drawing.Point(39, 78);
+            this.bGuardarCambios.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.bGuardarCambios.Name = "bGuardarCambios";
+            this.bGuardarCambios.Size = new System.Drawing.Size(165, 39);
+            this.bGuardarCambios.TabIndex = 43;
+            this.bGuardarCambios.Text = "Guardar Cambios";
+            this.bGuardarCambios.UseVisualStyleBackColor = false;
+            this.bGuardarCambios.Click += new System.EventHandler(this.bEditarUsuario_Click);
             // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.SystemColors.Control;
-            this.panel4.Controls.Add(this.comboBox1);
+            this.panel4.Controls.Add(this.cbRol);
             this.panel4.Controls.Add(this.label7);
             this.panel4.Controls.Add(this.label6);
             this.panel4.Controls.Add(this.tEditarNombre);
@@ -257,16 +259,32 @@
             this.label7.TabIndex = 42;
             this.label7.Text = "Rol:";
             // 
-            // comboBox1
+            // cbRol
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.cbRol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbRol.FormattingEnabled = true;
+            this.cbRol.Items.AddRange(new object[] {
             "Administrador",
             "Vendedor"});
-            this.comboBox1.Location = new System.Drawing.Point(116, 219);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 24);
-            this.comboBox1.TabIndex = 43;
+            this.cbRol.Location = new System.Drawing.Point(116, 219);
+            this.cbRol.Name = "cbRol";
+            this.cbRol.Size = new System.Drawing.Size(121, 24);
+            this.cbRol.TabIndex = 43;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.button1.Location = new System.Drawing.Point(39, 121);
+            this.button1.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(165, 39);
+            this.button1.TabIndex = 45;
+            this.button1.Text = "Limpiar Parametros";
+            this.button1.UseVisualStyleBackColor = false;
             // 
             // EdicionUsuario
             // 
@@ -277,7 +295,7 @@
             this.Name = "EdicionUsuario";
             this.Text = "EdicionUsuario";
             this.panel1.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
+            this.pLimpiarParametros.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
@@ -294,10 +312,10 @@
         private System.Windows.Forms.TextBox tEditarDni;
         private System.Windows.Forms.TextBox tEditarApellido;
         private System.Windows.Forms.TextBox tEditarNombre;
-        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel pLimpiarParametros;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Button bSalir;
-        private System.Windows.Forms.Button bBuscar;
+        private System.Windows.Forms.Button bGuardarCambios;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
@@ -306,6 +324,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbRol;
+        private System.Windows.Forms.Button button1;
     }
 }
