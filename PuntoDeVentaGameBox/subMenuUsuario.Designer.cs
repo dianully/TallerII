@@ -32,7 +32,7 @@
             this.LFiltroNombre = new System.Windows.Forms.Label();
             this.LSub = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbRol = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tbBusquedaDNI = new System.Windows.Forms.TextBox();
             this.bBuscar = new System.Windows.Forms.Button();
@@ -95,7 +95,7 @@
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.comboBox1);
+            this.panel1.Controls.Add(this.cbRol);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Location = new System.Drawing.Point(4, 7);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
@@ -103,14 +103,19 @@
             this.panel1.Size = new System.Drawing.Size(276, 86);
             this.panel1.TabIndex = 34;
             // 
-            // comboBox1
+            // cbRol
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(47, 41);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(185, 24);
-            this.comboBox1.TabIndex = 36;
+            this.cbRol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbRol.FormattingEnabled = true;
+            this.cbRol.Items.AddRange(new object[] {
+            "Gerente",
+            "Administrador",
+            "Vendedor"});
+            this.cbRol.Location = new System.Drawing.Point(47, 41);
+            this.cbRol.Margin = new System.Windows.Forms.Padding(4);
+            this.cbRol.Name = "cbRol";
+            this.cbRol.Size = new System.Drawing.Size(185, 24);
+            this.cbRol.TabIndex = 36;
             // 
             // label2
             // 
@@ -155,13 +160,14 @@
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button3.Location = new System.Drawing.Point(321, 155);
+            this.button3.Location = new System.Drawing.Point(331, 155);
             this.button3.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(141, 39);
             this.button3.TabIndex = 37;
             this.button3.Text = "Limpiar Filtros";
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.LimpiarFiltros_Click);
             // 
             // groupBox1
             // 
@@ -287,12 +293,12 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(85, 219);
+            this.dataGridView1.Location = new System.Drawing.Point(28, 219);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.Size = new System.Drawing.Size(964, 312);
+            this.dataGridView1.Size = new System.Drawing.Size(1133, 312);
             this.dataGridView1.TabIndex = 39;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
@@ -310,6 +316,7 @@
             this.button1.TabIndex = 41;
             this.button1.Text = "Mostrar Todos Los Usuarios";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.MostrarTodo_Click);
             // 
             // subMenuUsuario
             // 
@@ -352,7 +359,7 @@
         private System.Windows.Forms.Label LSub;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbRol;
         private System.Windows.Forms.TextBox tbBusquedaDNI;
         private System.Windows.Forms.Button bBuscar;
         private System.Windows.Forms.Button button3;

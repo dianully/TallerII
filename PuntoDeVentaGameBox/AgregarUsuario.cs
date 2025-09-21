@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -20,6 +21,22 @@ namespace PuntoDeVentaGameBox
 
         string conecctionString = "server=localhost;Database=game_box;Trusted_Connection=True";
 
+        // Método para validar si un DNI ya existe en la base de datos
+        private bool DniYaExiste(string dni)
+        {
+            string query = "SELECT COUNT(*) FROM usuario WHERE dni = @dni";
+            using (SqlConnection connection = new SqlConnection(conecctionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@dni", dni);
+                    connection.Open();
+                    int count = (int)command.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
+
         private void tTelefono_TextChanged(object sender, EventArgs e)
         {
 
@@ -32,11 +49,48 @@ namespace PuntoDeVentaGameBox
 
         private void bAgregarUsuario_Click(object sender, EventArgs e)
         {
-            // La cadena de conexión, que debería estar declarada a nivel de clase
-            // string connectionString = "Data Source=FRANCIS\\fran9;Initial Catalog=DBGAME_BOX;Integrated Security=True;";
+            // Validaciones
+            // 1. Verificar si algún campo está vacío
+            if (string.IsNullOrWhiteSpace(tNombre.Text) ||
+                string.IsNullOrWhiteSpace(tApellido.Text) ||
+                string.IsNullOrWhiteSpace(tDni.Text) ||
+                string.IsNullOrWhiteSpace(tEmail.Text) ||
+                string.IsNullOrWhiteSpace(tTelefono.Text) ||
+                string.IsNullOrWhiteSpace(tContraseña.Text))
+            {
+                MessageBox.Show("Por favor, complete todos los campos.", "Campos Vacíos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 2. Validar que el DNI no exista en la base de datos
+            if (DniYaExiste(tDni.Text))
+            {
+                MessageBox.Show("El DNI ingresado ya existe en la base de datos.", "DNI Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 3. Validar la longitud del DNI
+            if (tDni.Text.Length != 8)
+            {
+                MessageBox.Show("El DNI debe tener exactamente 8 caracteres.", "DNI Inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 4. Validar la longitud del teléfono
+            if (tTelefono.Text.Length != 10)
+            {
+                MessageBox.Show("Ingrese un numero de teléfono válido", "Teléfono Inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 5. Validar la nomenclatura del correo electrónico
+            if (!tEmail.Text.Contains("@") || !tEmail.Text.EndsWith(".com"))
+            {
+                MessageBox.Show("El correo electrónico debe tener el formato 'nombre@dominio.com'.", "Correo Inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             // Consulta SQL para insertar un nuevo usuario
-            // Las columnas id_usuario, activo e id_rol se manejan de forma automática
             string query = @"
         INSERT INTO usuario (
             nombre, 
@@ -55,8 +109,8 @@ namespace PuntoDeVentaGameBox
             @email, 
             @telefono, 
             @contraseña, 
-            1,    -- Valor fijo de 1 para la columna 'activo'
-            3     -- Valor fijo de 3 para la columna 'id_rol' (Vendedor)
+            1,    
+            3     
         )";
 
             try

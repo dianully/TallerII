@@ -13,6 +13,7 @@ namespace PuntoDeVentaGameBox
 {
     public partial class subMenuUsuario : Form
     {
+
         public subMenuUsuario()
         {
             InitializeComponent();
@@ -27,54 +28,61 @@ namespace PuntoDeVentaGameBox
 
         private void subMenuUsuario_Load(object sender, EventArgs e)
         {
+            CargarRoles();
             CargarDatos();
             dataGridView1.ClearSelection();
         }
 
-        // Método para inicializar y configurar el DataGridView
-        private void InicializarDataGridView()
+        // Método para cargar los roles en el ComboBox
+        private void CargarRoles()
+        {
+            string query = "SELECT id_rol, nombre FROM rol ORDER BY id_rol;";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conecctionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable rolesTable = new DataTable();
+                    adapter.Fill(rolesTable);
+
+                    cbRol.DataSource = rolesTable;
+                    cbRol.DisplayMember = "nombre";
+                    cbRol.ValueMember = "id_rol";
+
+                    // Agrega la opción "Todos" al inicio
+                    DataRow newRow = rolesTable.NewRow();
+                    newRow["id_rol"] = -1; // Un valor que no exista en la base de datos
+                    newRow["nombre"] = "Todos";
+                    rolesTable.Rows.InsertAt(newRow, 0);
+
+                    cbRol.SelectedIndex = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar los roles: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Método unificado para refrescar la tabla
+        private void RefrescarTabla(SqlDataAdapter adapter)
         {
             // Limpia las columnas existentes para evitar duplicados al recargar la tabla
             dataGridView1.Columns.Clear();
-            dataGridView1.AutoGenerateColumns = true;
-        }
 
-        // Carga todos los datos y configura el DataGridView
-        private void CargarDatos()
-        {
-            InicializarDataGridView();
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+            dataGridView1.DataSource = table;
 
-            using (SqlConnection connection = new SqlConnection(conecctionString))
-            {
-                string query = @"
-                    SELECT
-                        u.id_usuario,
-                        u.nombre AS 'Nombre',
-                        u.apellido AS 'Apellido',
-                        u.dni AS 'DNI',
-                        u.email AS 'Correo',
-                        u.telefono AS 'Telefono',
-                        r.nombre AS 'Rol'
-                    FROM
-                        usuario AS u
-                    INNER JOIN
-                        rol AS r ON u.id_rol = r.id_rol;";
-                SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
-                DataTable table = new DataTable();
-                adapter.Fill(table);
-                dataGridView1.DataSource = table;
-            }
-
-            // Agrega las columnas de los botones después de que se han cargado los datos
-            // Esto asegura que estén al final
             if (dataGridView1.Columns.Contains("id_usuario"))
             {
                 dataGridView1.Columns["id_usuario"].Visible = false;
             }
 
+            // Agrega las columnas de los botones solo después de que se ha cargado la tabla
             DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
             btnEliminar.Name = "Eliminar";
-            btnEliminar.HeaderText = "Eliminar";
+            btnEliminar.HeaderText = ""; // Sin encabezado
             btnEliminar.Text = "Eliminar";
             btnEliminar.UseColumnTextForButtonValue = true;
             btnEliminar.FlatStyle = FlatStyle.Popup;
@@ -82,45 +90,76 @@ namespace PuntoDeVentaGameBox
 
             DataGridViewButtonColumn btnEditar = new DataGridViewButtonColumn();
             btnEditar.Name = "Editar";
-            btnEditar.HeaderText = "Editar";
+            btnEditar.HeaderText = "";
             btnEditar.Text = "Editar";
             btnEditar.UseColumnTextForButtonValue = true;
             btnEditar.FlatStyle = FlatStyle.Popup;
             dataGridView1.Columns.Add(btnEditar);
+
+            // Ancho equitativo de columnas
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
+
+        private void CargarDatos()
+        {
+            using (SqlConnection connection = new SqlConnection(conecctionString))
+            {
+                string query = @"
+            SELECT
+               u.id_usuario,
+                u.nombre AS 'Nombre',
+                u.apellido AS 'Apellido',
+                u.dni AS 'DNI',
+                u.email AS 'Correo',
+                u.telefono AS 'Telefono',
+                r.nombre AS 'Rol'
+            FROM
+                usuario AS u
+            INNER JOIN
+                rol AS r ON u.id_rol = r.id_rol
+            WHERE u.activo = 1;";
+                SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                RefrescarTabla(adapter);
+            }
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                // Maneja el clic en la columna de 'Eliminar'
-                if (dataGridView1.Columns[e.ColumnIndex].Name == "Eliminar")
+                string rolUsuario = dataGridView1.Rows[e.RowIndex].Cells["Rol"].Value.ToString();
+
+                if (rolUsuario == "Gerente")
+                {
+                    MessageBox.Show("No se puede editar o eliminar a un usuario con el rol de Gerente.", "Permiso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (e.ColumnIndex == dataGridView1.Columns["Eliminar"].Index && e.RowIndex >= 0)
                 {
                     string dniUsuario = dataGridView1.Rows[e.RowIndex].Cells["DNI"].Value.ToString();
                     DialogResult confirmacion = MessageBox.Show(
-                        "¿Está seguro de que desea eliminar a este usuario?",
-                        "Confirmar Eliminación",
+                        "¿Está seguro de que desea desactivar a este usuario?",
+                        "Confirmar Desactivación",
                         MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Warning);
-
+                        MessageBoxIcon.Warning
+                    );
                     if (confirmacion == DialogResult.Yes)
                     {
                         EliminarUsuario(dniUsuario);
                     }
                 }
 
-                // Maneja el clic en la columna de 'Editar'
-                else if (dataGridView1.Columns[e.ColumnIndex].Name == "Editar")
+                if (e.ColumnIndex == dataGridView1.Columns["Editar"].Index && e.RowIndex >= 0)
                 {
                     DataGridViewRow fila = dataGridView1.Rows[e.RowIndex];
-                    // Asegúrate de que los nombres de las celdas coincidan con los nombres de las columnas en tu tabla
-                    // Ahora se utiliza el id_usuario que está oculto
                     int idUsuario = Convert.ToInt32(fila.Cells["id_usuario"].Value);
                     string nombre = fila.Cells["Nombre"].Value.ToString();
                     string apellido = fila.Cells["Apellido"].Value.ToString();
                     string dni = fila.Cells["DNI"].Value.ToString();
                     string email = fila.Cells["Correo"].Value.ToString();
                     string telefono = fila.Cells["Telefono"].Value.ToString();
+                    string rol = fila.Cells["Rol"].Value.ToString();
 
                     EdicionUsuario formEditar = new EdicionUsuario(idUsuario, nombre, apellido, dni, email, telefono);
                     formEditar.ShowDialog();
@@ -131,7 +170,7 @@ namespace PuntoDeVentaGameBox
 
         private void EliminarUsuario(string dniUsuario)
         {
-            string query = "DELETE FROM usuario WHERE dni = @dniUsuario";
+            string query = "UPDATE usuario SET activo = 0 WHERE dni = @dniUsuario";
 
             try
             {
@@ -143,22 +182,19 @@ namespace PuntoDeVentaGameBox
                         connection.Open();
                         command.ExecuteNonQuery();
 
-                        MessageBox.Show("Usuario eliminado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Usuario desactivado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         CargarDatos();
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al eliminar el usuario: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al desactivar el usuario: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void BBuscar_Click(object sender, EventArgs e)
         {
-            // Inicializa la tabla y las columnas de botones antes de la búsqueda
-            InicializarDataGridView();
-
             string query = @"
                 SELECT
                     u.id_usuario,
@@ -175,22 +211,32 @@ namespace PuntoDeVentaGameBox
 
             List<string> conditions = new List<string>();
 
+            conditions.Add("u.activo = 1");
+
             if (!string.IsNullOrEmpty(tbBusquedaDNI.Text))
             {
                 conditions.Add("u.dni = @dni");
             }
+
             if (!string.IsNullOrEmpty(tbCorreo.Text))
             {
                 conditions.Add("u.email = @email");
             }
+
             if (!string.IsNullOrEmpty(tbTelefono.Text))
             {
                 conditions.Add("u.telefono = @telefono");
             }
 
+            if (cbRol.SelectedItem != null && cbRol.Text != "Todos")
+            {
+                conditions.Add("r.nombre = @rol");
+            }
+
             if (conditions.Count > 0)
             {
-                query += " WHERE " + string.Join(" OR ", conditions);
+                // Unimos las condiciones con AND para que la búsqueda sea precisa
+                query += " WHERE " + string.Join(" AND ", conditions);
             }
 
             try
@@ -203,41 +249,24 @@ namespace PuntoDeVentaGameBox
                         {
                             command.Parameters.AddWithValue("@dni", tbBusquedaDNI.Text);
                         }
+
                         if (!string.IsNullOrEmpty(tbCorreo.Text))
                         {
                             command.Parameters.AddWithValue("@email", tbCorreo.Text);
                         }
+
                         if (!string.IsNullOrEmpty(tbTelefono.Text))
                         {
                             command.Parameters.AddWithValue("@telefono", tbTelefono.Text);
                         }
 
-                        SqlDataAdapter adapter = new SqlDataAdapter(command);
-                        DataTable table = new DataTable();
-                        adapter.Fill(table);
-                        dataGridView1.DataSource = table;
-
-                        if (dataGridView1.Columns.Contains("id_usuario"))
+                        if (cbRol.SelectedItem != null && cbRol.Text != "Todos")
                         {
-                            dataGridView1.Columns["id_usuario"].Visible = false;
+                            command.Parameters.AddWithValue("@rol", cbRol.Text);
                         }
 
-                        // Agrega las columnas de los botones después de la búsqueda
-                        DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
-                        btnEliminar.Name = "Eliminar";
-                        btnEliminar.HeaderText = "Eliminar";
-                        btnEliminar.Text = "Eliminar";
-                        btnEliminar.UseColumnTextForButtonValue = true;
-                        btnEliminar.FlatStyle = FlatStyle.Popup;
-                        dataGridView1.Columns.Add(btnEliminar);
-
-                        DataGridViewButtonColumn btnEditar = new DataGridViewButtonColumn();
-                        btnEditar.Name = "Editar";
-                        btnEditar.HeaderText = "Editar";
-                        btnEditar.Text = "Editar";
-                        btnEditar.UseColumnTextForButtonValue = true;
-                        btnEditar.FlatStyle = FlatStyle.Popup;
-                        dataGridView1.Columns.Add(btnEditar);
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        RefrescarTabla(adapter);
                     }
                 }
             }
@@ -245,6 +274,20 @@ namespace PuntoDeVentaGameBox
             {
                 MessageBox.Show("Error al buscar datos: " + ex.Message, "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void MostrarTodo_Click(object sender, EventArgs e)
+        {
+            CargarDatos();
+        }
+
+        private void LimpiarFiltros_Click(object sender, EventArgs e)
+        {
+            tbBusquedaDNI.Clear();
+            tbCorreo.Clear();
+            tbTelefono.Clear();
+            cbRol.SelectedIndex = 0; // Vuelve a seleccionar "Todos"
+            CargarDatos();
         }
 
         private void bAgregarUsuario_Click(object sender, EventArgs e)
@@ -264,5 +307,3 @@ namespace PuntoDeVentaGameBox
         }
     }
 }
-
-
