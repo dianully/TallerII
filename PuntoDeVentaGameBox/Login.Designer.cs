@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.TxUsuario = new System.Windows.Forms.TextBox();
             this.TxContraseña = new System.Windows.Forms.TextBox();
             this.BAplicar = new System.Windows.Forms.Button();
@@ -38,18 +37,11 @@
             this.LListTitle = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(41, 124);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(157, 148);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
             // 
             // TxUsuario
             // 
@@ -103,7 +95,7 @@
             this.panel1.Controls.Add(this.LListTitle);
             this.panel1.Controls.Add(this.TxUsuario);
             this.panel1.Controls.Add(this.TxContraseña);
-            this.panel1.Location = new System.Drawing.Point(92, 94);
+            this.panel1.Location = new System.Drawing.Point(91, 104);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(436, 220);
             this.panel1.TabIndex = 24;
@@ -152,11 +144,19 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label2.Location = new System.Drawing.Point(119, 30);
+            this.label2.Location = new System.Drawing.Point(119, 19);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(389, 41);
             this.label2.TabIndex = 27;
             this.label2.Text = "Punto de Venta GAMEBOX";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(41, 124);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(157, 148);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // Login
             // 
@@ -171,18 +171,16 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Inicio de Sesion";
             this.Load += new System.EventHandler(this.Login_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TextBox TxUsuario;
         private System.Windows.Forms.TextBox TxContraseña;
         private System.Windows.Forms.Button BAplicar;
@@ -192,6 +190,7 @@
         private System.Windows.Forms.Label LListTitle;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

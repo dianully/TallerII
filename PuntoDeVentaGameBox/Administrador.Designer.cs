@@ -33,10 +33,10 @@
             this.BCopiaDeSeguridad = new System.Windows.Forms.Button();
             this.BUsuarios = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -111,6 +111,18 @@
             this.panel3.Size = new System.Drawing.Size(1181, 522);
             this.panel3.TabIndex = 30;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label3.Location = new System.Drawing.Point(324, 201);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(473, 123);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Por favor seleccione alguna de \r\nlas opciones de la barra superior\r\npara realizar" +
+    " alguna operación";
+            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
@@ -123,17 +135,6 @@
             this.panel1.Size = new System.Drawing.Size(1181, 82);
             this.panel1.TabIndex = 32;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label1.Location = new System.Drawing.Point(13, 19);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(389, 41);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Bienvenido Administrador";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -145,17 +146,16 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "(administrador)";
             // 
-            // label3
+            // label1
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label3.Location = new System.Drawing.Point(324, 201);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(473, 123);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Por favor seleccione alguna de \r\nlas opciones de la barra superior\r\npara realizar" +
-    " alguna operación";
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label1.Location = new System.Drawing.Point(13, 19);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(389, 41);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Bienvenido Administrador";
             // 
             // Administrador
             // 

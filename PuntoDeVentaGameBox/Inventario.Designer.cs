@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.TLRoot = new System.Windows.Forms.TableLayoutPanel();
             this.TLKPI = new System.Windows.Forms.TableLayoutPanel();
             this.CardKpi1 = new System.Windows.Forms.Panel();
@@ -68,6 +68,8 @@
             this.LListTitle = new System.Windows.Forms.Label();
             this.PGrid = new System.Windows.Forms.Panel();
             this.DGV = new System.Windows.Forms.DataGridView();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.ColId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColImagen = new System.Windows.Forms.DataGridViewImageColumn();
             this.ColNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -77,8 +79,6 @@
             this.ColVer = new System.Windows.Forms.DataGridViewImageColumn();
             this.ColEditar = new System.Windows.Forms.DataGridViewImageColumn();
             this.ColEliminar = new System.Windows.Forms.DataGridViewImageColumn();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.TLRoot.SuspendLayout();
             this.TLKPI.SuspendLayout();
             this.CardKpi1.SuspendLayout();
@@ -126,6 +126,7 @@
             this.TLKPI.Controls.Add(this.CardKpi1, 0, 0);
             this.TLKPI.Controls.Add(this.CardKpi3, 2, 0);
             this.TLKPI.Controls.Add(this.CardKpi2, 1, 0);
+            this.TLKPI.ForeColor = System.Drawing.SystemColors.Control;
             this.TLKPI.Location = new System.Drawing.Point(3, 82);
             this.TLKPI.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TLKPI.Name = "TLKPI";
@@ -371,13 +372,14 @@
             this.TLFlters.Controls.Add(this.CBOrden, 3, 1);
             this.TLFlters.Controls.Add(this.LFiltroGenero, 2, 0);
             this.TLFlters.Controls.Add(this.LFiltroOrden, 3, 0);
-            this.TLFlters.Controls.Add(this.LFiltroNombre, 0, 0);
             this.TLFlters.Controls.Add(this.LFiltroID, 1, 0);
             this.TLFlters.Controls.Add(this.CBGenero, 2, 1);
             this.TLFlters.Controls.Add(this.BLimpiar, 1, 2);
             this.TLFlters.Controls.Add(this.BAplicar, 0, 2);
             this.TLFlters.Controls.Add(this.TBID, 1, 1);
             this.TLFlters.Controls.Add(this.TBNombre, 0, 1);
+            this.TLFlters.Controls.Add(this.LFiltroNombre, 0, 0);
+            this.TLFlters.ForeColor = System.Drawing.SystemColors.Control;
             this.TLFlters.Location = new System.Drawing.Point(-1, -1);
             this.TLFlters.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TLFlters.Name = "TLFlters";
@@ -435,7 +437,7 @@
             // 
             this.LFiltroNombre.AutoSize = true;
             this.LFiltroNombre.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LFiltroNombre.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.LFiltroNombre.ForeColor = System.Drawing.SystemColors.Control;
             this.LFiltroNombre.Location = new System.Drawing.Point(16, 1);
             this.LFiltroNombre.Margin = new System.Windows.Forms.Padding(15, 0, 0, 2);
             this.LFiltroNombre.Name = "LFiltroNombre";
@@ -479,23 +481,22 @@
             // 
             // BLimpiar
             // 
+            this.BLimpiar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.BLimpiar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.BLimpiar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BLimpiar.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BLimpiar.ForeColor = System.Drawing.Color.DimGray;
+            this.BLimpiar.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.BLimpiar.Location = new System.Drawing.Point(302, 95);
             this.BLimpiar.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.BLimpiar.Name = "BLimpiar";
             this.BLimpiar.Size = new System.Drawing.Size(91, 39);
             this.BLimpiar.TabIndex = 7;
             this.BLimpiar.Text = "Limpiar";
-            this.BLimpiar.UseVisualStyleBackColor = true;
+            this.BLimpiar.UseVisualStyleBackColor = false;
             // 
             // BAplicar
             // 
-            this.BAplicar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.BAplicar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.BAplicar.FlatAppearance.BorderSize = 0;
-            this.BAplicar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BAplicar.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BAplicar.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.BAplicar.Location = new System.Drawing.Point(16, 95);
@@ -546,17 +547,16 @@
             // 
             this.BNuevoproducto.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BNuevoproducto.AutoSize = true;
-            this.BNuevoproducto.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.BNuevoproducto.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.BNuevoproducto.Cursor = System.Windows.Forms.Cursors.Hand;
             this.BNuevoproducto.FlatAppearance.BorderSize = 0;
-            this.BNuevoproducto.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BNuevoproducto.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BNuevoproducto.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.BNuevoproducto.Location = new System.Drawing.Point(907, 2);
+            this.BNuevoproducto.Location = new System.Drawing.Point(927, 2);
             this.BNuevoproducto.Margin = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.BNuevoproducto.Name = "BNuevoproducto";
             this.BNuevoproducto.Padding = new System.Windows.Forms.Padding(11, 6, 11, 6);
-            this.BNuevoproducto.Size = new System.Drawing.Size(237, 53);
+            this.BNuevoproducto.Size = new System.Drawing.Size(217, 48);
             this.BNuevoproducto.TabIndex = 1;
             this.BNuevoproducto.Text = "+ Nuevo producto";
             this.BNuevoproducto.UseVisualStyleBackColor = false;
@@ -565,6 +565,7 @@
             // 
             this.LListTitle.AutoSize = true;
             this.LListTitle.Font = new System.Drawing.Font("Segoe UI", 12.2F, System.Drawing.FontStyle.Bold);
+            this.LListTitle.ForeColor = System.Drawing.SystemColors.Control;
             this.LListTitle.Location = new System.Drawing.Point(13, 7);
             this.LListTitle.Margin = new System.Windows.Forms.Padding(0);
             this.LListTitle.Name = "LListTitle";
@@ -588,8 +589,8 @@
             // 
             this.DGV.AllowUserToAddRows = false;
             this.DGV.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.DGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.DGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.DGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -618,8 +619,8 @@
             // ColId
             // 
             this.ColId.DataPropertyName = "Id";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.ColId.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.ColId.DefaultCellStyle = dataGridViewCellStyle2;
             this.ColId.FillWeight = 3.788457F;
             this.ColId.HeaderText = "ID";
             this.ColId.MinimumWidth = 6;
@@ -656,9 +657,9 @@
             // ColPrecio
             // 
             this.ColPrecio.DataPropertyName = "Precio";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle9.Format = "C2";
-            this.ColPrecio.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle3.Format = "C2";
+            this.ColPrecio.DefaultCellStyle = dataGridViewCellStyle3;
             this.ColPrecio.FillWeight = 19.25784F;
             this.ColPrecio.HeaderText = "Precio";
             this.ColPrecio.MinimumWidth = 6;
@@ -677,7 +678,7 @@
             // ColVer
             // 
             this.ColVer.FillWeight = 6.417569F;
-            this.ColVer.HeaderText = "👁️";
+            this.ColVer.HeaderText = "Ver";
             this.ColVer.MinimumWidth = 6;
             this.ColVer.Name = "ColVer";
             this.ColVer.ReadOnly = true;
@@ -687,7 +688,7 @@
             // ColEditar
             // 
             this.ColEditar.FillWeight = 5.513864F;
-            this.ColEditar.HeaderText = "";
+            this.ColEditar.HeaderText = "Editar";
             this.ColEditar.MinimumWidth = 6;
             this.ColEditar.Name = "ColEditar";
             this.ColEditar.ReadOnly = true;
@@ -696,7 +697,7 @@
             // ColEliminar
             // 
             this.ColEliminar.FillWeight = 4.374791F;
-            this.ColEliminar.HeaderText = "";
+            this.ColEliminar.HeaderText = "Eliminar";
             this.ColEliminar.MinimumWidth = 6;
             this.ColEliminar.Name = "ColEliminar";
             this.ColEliminar.ReadOnly = true;
@@ -706,7 +707,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(246)))), ((int)(((byte)(248)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.ClientSize = new System.Drawing.Size(1181, 703);
             this.Controls.Add(this.TLRoot);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);

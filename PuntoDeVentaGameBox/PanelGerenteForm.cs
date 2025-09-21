@@ -10,19 +10,14 @@ using System.Windows.Forms;
 
 namespace PuntoDeVentaGameBox
 {
-    public partial class Vendedor : Form
+    public partial class PanelGerente : Form
     {
-        public Vendedor()
+        public PanelGerente()
         {
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void LRol_Click(object sender, EventArgs e)
+        private void PVistaGerente_Paint(object sender, PaintEventArgs e)
         {
 
         }

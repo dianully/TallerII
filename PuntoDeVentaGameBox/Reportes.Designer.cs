@@ -142,11 +142,12 @@
             // 
             this.GBPeriodo.Controls.Add(this.TLPPeriodo);
             this.GBPeriodo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.GBPeriodo.ForeColor = System.Drawing.SystemColors.Control;
             this.GBPeriodo.Location = new System.Drawing.Point(8, 8);
             this.GBPeriodo.Margin = new System.Windows.Forms.Padding(8);
             this.GBPeriodo.Name = "GBPeriodo";
             this.GBPeriodo.Padding = new System.Windows.Forms.Padding(16);
-            this.GBPeriodo.Size = new System.Drawing.Size(1113, 164);
+            this.GBPeriodo.Size = new System.Drawing.Size(1113, 170);
             this.GBPeriodo.TabIndex = 0;
             this.GBPeriodo.TabStop = false;
             this.GBPeriodo.Text = "Periodo del Reporte";
@@ -162,7 +163,7 @@
             this.TLPPeriodo.Controls.Add(this.LHasta, 1, 2);
             this.TLPPeriodo.Controls.Add(this.DTPDesde, 0, 3);
             this.TLPPeriodo.Controls.Add(this.DTPHasta, 1, 3);
-            this.TLPPeriodo.Location = new System.Drawing.Point(11, 29);
+            this.TLPPeriodo.Location = new System.Drawing.Point(59, 26);
             this.TLPPeriodo.Name = "TLPPeriodo";
             this.TLPPeriodo.RowCount = 4;
             this.TLPPeriodo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 46.26866F));
@@ -176,6 +177,7 @@
             // LTipoPeriodo
             // 
             this.LTipoPeriodo.AutoSize = true;
+            this.LTipoPeriodo.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LTipoPeriodo.Location = new System.Drawing.Point(3, 0);
             this.LTipoPeriodo.Name = "LTipoPeriodo";
             this.LTipoPeriodo.Size = new System.Drawing.Size(130, 23);
@@ -199,6 +201,7 @@
             // 
             this.LDesde.AutoSize = true;
             this.LDesde.Dock = System.Windows.Forms.DockStyle.Top;
+            this.LDesde.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LDesde.Location = new System.Drawing.Point(3, 62);
             this.LDesde.Name = "LDesde";
             this.LDesde.Size = new System.Drawing.Size(388, 23);
@@ -209,6 +212,7 @@
             // 
             this.LHasta.AutoSize = true;
             this.LHasta.Dock = System.Windows.Forms.DockStyle.Top;
+            this.LHasta.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LHasta.Location = new System.Drawing.Point(397, 62);
             this.LHasta.Name = "LHasta";
             this.LHasta.Size = new System.Drawing.Size(413, 23);
@@ -243,6 +247,7 @@
             this.LResumenTitulo.AutoSize = true;
             this.LResumenTitulo.Dock = System.Windows.Forms.DockStyle.Top;
             this.LResumenTitulo.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LResumenTitulo.ForeColor = System.Drawing.SystemColors.Control;
             this.LResumenTitulo.Location = new System.Drawing.Point(0, 0);
             this.LResumenTitulo.Name = "LResumenTitulo";
             this.LResumenTitulo.Size = new System.Drawing.Size(220, 31);
@@ -272,10 +277,14 @@
             // 
             // PCardTotal
             // 
+            this.PCardTotal.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.PCardTotal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))));
+            this.PCardTotal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PCardTotal.Controls.Add(this.label3);
             this.PCardTotal.Controls.Add(this.label2);
             this.PCardTotal.Controls.Add(this.label1);
-            this.PCardTotal.Location = new System.Drawing.Point(3, 3);
+            this.PCardTotal.ForeColor = System.Drawing.SystemColors.Control;
+            this.PCardTotal.Location = new System.Drawing.Point(39, 3);
             this.PCardTotal.Name = "PCardTotal";
             this.PCardTotal.Size = new System.Drawing.Size(200, 93);
             this.PCardTotal.TabIndex = 0;
@@ -283,7 +292,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(45, 58);
+            this.label3.Location = new System.Drawing.Point(63, 64);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(55, 23);
             this.label3.TabIndex = 2;
@@ -292,16 +301,18 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(45, 31);
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(53, 30);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(55, 23);
+            this.label2.Size = new System.Drawing.Size(86, 35);
             this.label2.TabIndex = 1;
             this.label2.Text = "label2";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 8);
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(5, 7);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(182, 23);
             this.label1.TabIndex = 0;
@@ -309,10 +320,14 @@
             // 
             // PCardVentas
             // 
+            this.PCardVentas.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.PCardVentas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(82)))), ((int)(((byte)(77)))));
+            this.PCardVentas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PCardVentas.Controls.Add(this.label6);
             this.PCardVentas.Controls.Add(this.label5);
             this.PCardVentas.Controls.Add(this.label4);
-            this.PCardVentas.Location = new System.Drawing.Point(281, 3);
+            this.PCardVentas.ForeColor = System.Drawing.SystemColors.Control;
+            this.PCardVentas.Location = new System.Drawing.Point(317, 3);
             this.PCardVentas.Name = "PCardVentas";
             this.PCardVentas.Size = new System.Drawing.Size(200, 93);
             this.PCardVentas.TabIndex = 1;
@@ -320,7 +335,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(61, 58);
+            this.label6.Location = new System.Drawing.Point(67, 64);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(55, 23);
             this.label6.TabIndex = 2;
@@ -329,16 +344,18 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(61, 31);
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(65, 29);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(55, 23);
+            this.label5.Size = new System.Drawing.Size(79, 31);
             this.label5.TabIndex = 1;
             this.label5.Text = "label5";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(17, 10);
+            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(22, 7);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(153, 23);
             this.label4.TabIndex = 0;
@@ -347,10 +364,14 @@
             // 
             // PCardTicket
             // 
+            this.PCardTicket.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.PCardTicket.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))));
+            this.PCardTicket.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PCardTicket.Controls.Add(this.label9);
             this.PCardTicket.Controls.Add(this.label8);
             this.PCardTicket.Controls.Add(this.label7);
-            this.PCardTicket.Location = new System.Drawing.Point(559, 3);
+            this.PCardTicket.ForeColor = System.Drawing.SystemColors.Control;
+            this.PCardTicket.Location = new System.Drawing.Point(595, 3);
             this.PCardTicket.Name = "PCardTicket";
             this.PCardTicket.Size = new System.Drawing.Size(200, 93);
             this.PCardTicket.TabIndex = 2;
@@ -358,7 +379,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(58, 58);
+            this.label9.Location = new System.Drawing.Point(68, 64);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(55, 23);
             this.label9.TabIndex = 2;
@@ -367,27 +388,33 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(58, 37);
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(66, 30);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(55, 23);
+            this.label8.Size = new System.Drawing.Size(79, 31);
             this.label8.TabIndex = 1;
             this.label8.Text = "label8";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(25, 10);
+            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(36, 7);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(133, 23);
+            this.label7.Size = new System.Drawing.Size(134, 23);
             this.label7.TabIndex = 0;
             this.label7.Text = "Ticket Promedio";
             // 
             // PCardProductos
             // 
+            this.PCardProductos.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.PCardProductos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(82)))), ((int)(((byte)(77)))));
+            this.PCardProductos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PCardProductos.Controls.Add(this.label12);
             this.PCardProductos.Controls.Add(this.label11);
             this.PCardProductos.Controls.Add(this.label10);
-            this.PCardProductos.Location = new System.Drawing.Point(837, 3);
+            this.PCardProductos.ForeColor = System.Drawing.SystemColors.Control;
+            this.PCardProductos.Location = new System.Drawing.Point(873, 4);
             this.PCardProductos.Name = "PCardProductos";
             this.PCardProductos.Size = new System.Drawing.Size(199, 90);
             this.PCardProductos.TabIndex = 3;
@@ -395,7 +422,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(64, 64);
+            this.label12.Location = new System.Drawing.Point(61, 60);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(64, 23);
             this.label12.TabIndex = 2;
@@ -404,16 +431,18 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(68, 37);
+            this.label11.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(49, 29);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(64, 23);
+            this.label11.Size = new System.Drawing.Size(92, 31);
             this.label11.TabIndex = 1;
             this.label11.Text = "label11";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(52, 14);
+            this.label10.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(51, 7);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(92, 23);
             this.label10.TabIndex = 0;
@@ -424,6 +453,7 @@
             // 
             this.GVTopProductos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.GVTopProductos.Controls.Add(this.DGVTopProductos);
+            this.GVTopProductos.ForeColor = System.Drawing.SystemColors.Control;
             this.GVTopProductos.Location = new System.Drawing.Point(3, 325);
             this.GVTopProductos.Name = "GVTopProductos";
             this.GVTopProductos.Size = new System.Drawing.Size(1123, 98);
@@ -475,6 +505,7 @@
             // 
             this.GVVendedores.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.GVVendedores.Controls.Add(this.DGVVendedores);
+            this.GVVendedores.ForeColor = System.Drawing.SystemColors.Control;
             this.GVVendedores.Location = new System.Drawing.Point(3, 463);
             this.GVVendedores.Name = "GVVendedores";
             this.GVVendedores.Size = new System.Drawing.Size(1123, 100);
@@ -581,6 +612,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.ClientSize = new System.Drawing.Size(1181, 703);
             this.Controls.Add(this.TPLRoot);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
