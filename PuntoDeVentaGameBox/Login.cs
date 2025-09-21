@@ -70,7 +70,9 @@ namespace PuntoDeVentaGameBox
                             else
                             {
                                 // Si el rol no es 2 ni 3, muestra un mensaje de acceso denegado
-                                MessageBox.Show("Credenciales correctas, pero no tiene permisos para acceder.", "Acceso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                PanelGerente siguientePagina = new PanelGerente();
+                                siguientePagina.Show();
+                                this.Hide();
                             }
                         }
                         else

@@ -65,11 +65,11 @@
     <Compile Include="EdicionUsuario.Designer.cs">
       <DependentUpon>EdicionUsuario.cs</DependentUpon>
     </Compile>
-    <Compile Include="PanelGerenteForm.cs">
+    <Compile Include="PanelGerente.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PanelGerenteForm.Designer.cs">
-      <DependentUpon>PanelGerenteForm.cs</DependentUpon>
+    <Compile Include="PanelGerente.Designer.cs">
+      <DependentUpon>PanelGerente.cs</DependentUpon>
     </Compile>
     <Compile Include="Proveedores.cs">
       <SubType>Form</SubType>
@@ -127,8 +127,8 @@
     <EmbeddedResource Include="EdicionUsuario.resx">
       <DependentUpon>EdicionUsuario.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PanelGerenteForm.resx">
-      <DependentUpon>PanelGerenteForm.cs</DependentUpon>
+    <EmbeddedResource Include="PanelGerente.resx">
+      <DependentUpon>PanelGerente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Inventario.resx">
       <DependentUpon>Inventario.cs</DependentUpon>
