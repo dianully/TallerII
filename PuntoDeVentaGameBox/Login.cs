@@ -13,7 +13,7 @@ namespace PuntoDeVentaGameBox
 {
     public partial class Login : Form
     {
-        string conecctionString = "server=localhost;Database=gamebox;Trusted_Connection=True";
+        string conecctionString = "server=localhost;Database=game_box;Trusted_Connection=True";
 
         public Login()
         {

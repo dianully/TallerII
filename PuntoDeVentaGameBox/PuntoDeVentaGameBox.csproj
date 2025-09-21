@@ -53,6 +53,18 @@
     <Compile Include="Administrador.Designer.cs">
       <DependentUpon>Administrador.cs</DependentUpon>
     </Compile>
+    <Compile Include="AgregarUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AgregarUsuario.Designer.cs">
+      <DependentUpon>AgregarUsuario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EdicionUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EdicionUsuario.Designer.cs">
+      <DependentUpon>EdicionUsuario.cs</DependentUpon>
+    </Compile>
     <Compile Include="PanelGerenteForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +123,9 @@
     </Compile>
     <EmbeddedResource Include="Administrador.resx">
       <DependentUpon>Administrador.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EdicionUsuario.resx">
+      <DependentUpon>EdicionUsuario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PanelGerenteForm.resx">
       <DependentUpon>PanelGerenteForm.cs</DependentUpon>
