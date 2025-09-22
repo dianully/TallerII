@@ -45,9 +45,10 @@
             this.LRolGerente.AutoSize = true;
             this.LRolGerente.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.LRolGerente.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LRolGerente.Location = new System.Drawing.Point(1047, 9);
+            this.LRolGerente.Location = new System.Drawing.Point(785, 7);
+            this.LRolGerente.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.LRolGerente.Name = "LRolGerente";
-            this.LRolGerente.Size = new System.Drawing.Size(123, 40);
+            this.LRolGerente.Size = new System.Drawing.Size(98, 32);
             this.LRolGerente.TabIndex = 1;
             this.LRolGerente.Text = "Gerente";
             // 
@@ -63,11 +64,12 @@
             this.TLPPanelGerente.Controls.Add(this.BProveedores, 2, 0);
             this.TLPPanelGerente.Controls.Add(this.BSalir, 3, 0);
             this.TLPPanelGerente.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.TLPPanelGerente.Location = new System.Drawing.Point(0, 55);
+            this.TLPPanelGerente.Location = new System.Drawing.Point(0, 45);
+            this.TLPPanelGerente.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.TLPPanelGerente.Name = "TLPPanelGerente";
             this.TLPPanelGerente.RowCount = 1;
             this.TLPPanelGerente.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.TLPPanelGerente.Size = new System.Drawing.Size(1182, 116);
+            this.TLPPanelGerente.Size = new System.Drawing.Size(886, 94);
             this.TLPPanelGerente.TabIndex = 2;
             // 
             // BInventario
@@ -75,55 +77,64 @@
             this.BInventario.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.BInventario.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BInventario.ForeColor = System.Drawing.Color.LightGray;
-            this.BInventario.Location = new System.Drawing.Point(3, 3);
+            this.BInventario.Location = new System.Drawing.Point(2, 2);
+            this.BInventario.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.BInventario.Name = "BInventario";
-            this.BInventario.Size = new System.Drawing.Size(283, 110);
+            this.BInventario.Size = new System.Drawing.Size(212, 89);
             this.BInventario.TabIndex = 0;
             this.BInventario.Text = "Inventario";
             this.BInventario.UseVisualStyleBackColor = false;
+            this.BInventario.Click += new System.EventHandler(this.BInventario_Click);
             // 
             // BReportes
             // 
             this.BReportes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.BReportes.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BReportes.ForeColor = System.Drawing.Color.LightGray;
-            this.BReportes.Location = new System.Drawing.Point(298, 3);
+            this.BReportes.Location = new System.Drawing.Point(223, 2);
+            this.BReportes.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.BReportes.Name = "BReportes";
-            this.BReportes.Size = new System.Drawing.Size(283, 110);
+            this.BReportes.Size = new System.Drawing.Size(212, 89);
             this.BReportes.TabIndex = 1;
             this.BReportes.Text = "Reportes";
             this.BReportes.UseVisualStyleBackColor = false;
+            this.BReportes.Click += new System.EventHandler(this.BReportes_Click);
             // 
             // BProveedores
             // 
             this.BProveedores.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.BProveedores.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BProveedores.ForeColor = System.Drawing.Color.LightGray;
-            this.BProveedores.Location = new System.Drawing.Point(593, 3);
+            this.BProveedores.Location = new System.Drawing.Point(444, 2);
+            this.BProveedores.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.BProveedores.Name = "BProveedores";
-            this.BProveedores.Size = new System.Drawing.Size(283, 110);
+            this.BProveedores.Size = new System.Drawing.Size(212, 89);
             this.BProveedores.TabIndex = 2;
             this.BProveedores.Text = "Proveedores";
             this.BProveedores.UseVisualStyleBackColor = false;
+            this.BProveedores.Click += new System.EventHandler(this.BProveedores_Click);
             // 
             // BSalir
             // 
             this.BSalir.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.BSalir.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BSalir.ForeColor = System.Drawing.Color.LightGray;
-            this.BSalir.Location = new System.Drawing.Point(888, 3);
+            this.BSalir.Location = new System.Drawing.Point(665, 2);
+            this.BSalir.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.BSalir.Name = "BSalir";
-            this.BSalir.Size = new System.Drawing.Size(284, 110);
+            this.BSalir.Size = new System.Drawing.Size(213, 89);
             this.BSalir.TabIndex = 3;
             this.BSalir.Text = "Salir";
             this.BSalir.UseVisualStyleBackColor = false;
+            this.BSalir.Click += new System.EventHandler(this.BSalir_Click);
             // 
             // PVistaGerente
             // 
             this.PVistaGerente.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.PVistaGerente.Location = new System.Drawing.Point(0, 177);
+            this.PVistaGerente.Location = new System.Drawing.Point(0, 140);
+            this.PVistaGerente.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.PVistaGerente.Name = "PVistaGerente";
-            this.PVistaGerente.Size = new System.Drawing.Size(1182, 544);
+            this.PVistaGerente.Size = new System.Drawing.Size(886, 585);
             this.PVistaGerente.TabIndex = 3;
             this.PVistaGerente.Paint += new System.Windows.Forms.PaintEventHandler(this.PVistaGerente_Paint);
             // 
@@ -133,22 +144,25 @@
             this.panel1.Controls.Add(this.TLPPanelGerente);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1182, 171);
+            this.panel1.Size = new System.Drawing.Size(886, 139);
             this.panel1.TabIndex = 4;
             // 
             // PanelGerente
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.ClientSize = new System.Drawing.Size(1182, 721);
+            this.ClientSize = new System.Drawing.Size(886, 725);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.PVistaGerente);
             this.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.IsMdiContainer = true;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "PanelGerente";
             this.Text = "Panel Gerente";
+            this.Load += new System.EventHandler(this.PanelGerente_Load);
             this.TLPPanelGerente.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

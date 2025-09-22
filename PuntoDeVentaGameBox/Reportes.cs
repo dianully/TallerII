@@ -46,5 +46,15 @@ namespace PuntoDeVentaGameBox
         {
 
         }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+        }
+
+        private void TPLRoot_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
