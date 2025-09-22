@@ -78,6 +78,7 @@
             this.tDni.Name = "tDni";
             this.tDni.Size = new System.Drawing.Size(100, 22);
             this.tDni.TabIndex = 2;
+           
             // 
             // tApellido
             // 
@@ -244,6 +245,7 @@
             this.Name = "AgregarUsuario";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AgregarUsuario";
+            this.Load += new System.EventHandler(this.AgregarUsuario_Load);
             this.panel3.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel4.ResumeLayout(false);

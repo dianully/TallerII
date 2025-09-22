@@ -28,10 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle37 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle38 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle39 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.TLRoot = new System.Windows.Forms.TableLayoutPanel();
+            this.PBanner = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.BVerSoloBajo = new System.Windows.Forms.Button();
             this.TLKPI = new System.Windows.Forms.TableLayoutPanel();
             this.CardKpi1 = new System.Windows.Forms.Panel();
             this.LProductostotales = new System.Windows.Forms.Label();
@@ -45,8 +48,6 @@
             this.LStocktotal = new System.Windows.Forms.Label();
             this.LUnidadeseninventario = new System.Windows.Forms.Label();
             this.KpiStock = new System.Windows.Forms.Label();
-            this.PBanner = new System.Windows.Forms.Panel();
-            this.BVerSoloBajo = new System.Windows.Forms.Button();
             this.PFilters = new System.Windows.Forms.Panel();
             this.TLFlters = new System.Windows.Forms.TableLayoutPanel();
             this.CBOrden = new System.Windows.Forms.ComboBox();
@@ -64,24 +65,22 @@
             this.LListTitle = new System.Windows.Forms.Label();
             this.PGrid = new System.Windows.Forms.Panel();
             this.DGV = new System.Windows.Forms.DataGridView();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.ColId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColImagen = new System.Windows.Forms.DataGridViewImageColumn();
+            this.ColImagen = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColGenero = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColPrecio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColStock = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColVer = new System.Windows.Forms.DataGridViewImageColumn();
-            this.ColEditar = new System.Windows.Forms.DataGridViewImageColumn();
-            this.ColEliminar = new System.Windows.Forms.DataGridViewImageColumn();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
-            this.label1 = new System.Windows.Forms.Label();
+            this.ColEditar = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.ColEliminar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.TLRoot.SuspendLayout();
+            this.PBanner.SuspendLayout();
             this.TLKPI.SuspendLayout();
             this.CardKpi1.SuspendLayout();
             this.CardKpi3.SuspendLayout();
             this.CardKpi2.SuspendLayout();
-            this.PBanner.SuspendLayout();
             this.PFilters.SuspendLayout();
             this.TLFlters.SuspendLayout();
             this.PListHeader.SuspendLayout();
@@ -113,13 +112,53 @@
             this.TLRoot.TabIndex = 0;
             this.TLRoot.Paint += new System.Windows.Forms.PaintEventHandler(this.TLRoot_Paint);
             // 
+            // PBanner
+            // 
+            this.PBanner.BackColor = System.Drawing.Color.Transparent;
+            this.PBanner.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PBanner.Controls.Add(this.label1);
+            this.PBanner.Controls.Add(this.BVerSoloBajo);
+            this.PBanner.Location = new System.Drawing.Point(11, 120);
+            this.PBanner.Margin = new System.Windows.Forms.Padding(11, 10, 11, 10);
+            this.PBanner.Name = "PBanner";
+            this.PBanner.Padding = new System.Windows.Forms.Padding(12);
+            this.PBanner.Size = new System.Drawing.Size(1153, 100);
+            this.PBanner.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(57, 37);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(691, 25);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Tienes ... productos con stock bajo. Es recomendable reabastecer estos productos." +
+    "";
+            // 
+            // BVerSoloBajo
+            // 
+            this.BVerSoloBajo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BVerSoloBajo.AutoSize = true;
+            this.BVerSoloBajo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BVerSoloBajo.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(158)))), ((int)(((byte)(11)))));
+            this.BVerSoloBajo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BVerSoloBajo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(158)))), ((int)(((byte)(11)))));
+            this.BVerSoloBajo.Location = new System.Drawing.Point(875, 37);
+            this.BVerSoloBajo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.BVerSoloBajo.Name = "BVerSoloBajo";
+            this.BVerSoloBajo.Size = new System.Drawing.Size(179, 34);
+            this.BVerSoloBajo.TabIndex = 1;
+            this.BVerSoloBajo.Text = "Ver solo stock bajo";
+            this.BVerSoloBajo.UseVisualStyleBackColor = true;
+            // 
             // TLKPI
             // 
             this.TLKPI.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.TLKPI.ColumnCount = 3;
             this.TLKPI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.TLKPI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.TLKPI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 402F));
+            this.TLKPI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 403F));
             this.TLKPI.Controls.Add(this.CardKpi1, 0, 0);
             this.TLKPI.Controls.Add(this.CardKpi3, 2, 0);
             this.TLKPI.Controls.Add(this.CardKpi2, 1, 0);
@@ -263,35 +302,6 @@
             this.KpiStock.TabIndex = 1;
             this.KpiStock.Text = "0";
             this.KpiStock.Click += new System.EventHandler(this.label2_Click);
-            // 
-            // PBanner
-            // 
-            this.PBanner.BackColor = System.Drawing.Color.Transparent;
-            this.PBanner.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.PBanner.Controls.Add(this.label1);
-            this.PBanner.Controls.Add(this.BVerSoloBajo);
-            this.PBanner.Location = new System.Drawing.Point(11, 120);
-            this.PBanner.Margin = new System.Windows.Forms.Padding(11, 10, 11, 10);
-            this.PBanner.Name = "PBanner";
-            this.PBanner.Padding = new System.Windows.Forms.Padding(12);
-            this.PBanner.Size = new System.Drawing.Size(1153, 100);
-            this.PBanner.TabIndex = 2;
-            // 
-            // BVerSoloBajo
-            // 
-            this.BVerSoloBajo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BVerSoloBajo.AutoSize = true;
-            this.BVerSoloBajo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.BVerSoloBajo.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(158)))), ((int)(((byte)(11)))));
-            this.BVerSoloBajo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BVerSoloBajo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(158)))), ((int)(((byte)(11)))));
-            this.BVerSoloBajo.Location = new System.Drawing.Point(875, 37);
-            this.BVerSoloBajo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.BVerSoloBajo.Name = "BVerSoloBajo";
-            this.BVerSoloBajo.Size = new System.Drawing.Size(179, 34);
-            this.BVerSoloBajo.TabIndex = 1;
-            this.BVerSoloBajo.Text = "Ver solo stock bajo";
-            this.BVerSoloBajo.UseVisualStyleBackColor = true;
             // 
             // PFilters
             // 
@@ -506,6 +516,7 @@
             this.BNuevoproducto.TabIndex = 1;
             this.BNuevoproducto.Text = "+ Nuevo producto";
             this.BNuevoproducto.UseVisualStyleBackColor = false;
+            this.BNuevoproducto.Click += new System.EventHandler(this.BNuevoproducto_Click);
             // 
             // LListTitle
             // 
@@ -535,8 +546,8 @@
             // 
             this.DGV.AllowUserToAddRows = false;
             this.DGV.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle37.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.DGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle37;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.DGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.DGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -546,7 +557,6 @@
             this.ColGenero,
             this.ColPrecio,
             this.ColStock,
-            this.ColVer,
             this.ColEditar,
             this.ColEliminar});
             this.DGV.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -561,12 +571,13 @@
             this.DGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.DGV.Size = new System.Drawing.Size(1135, 218);
             this.DGV.TabIndex = 0;
+            this.DGV.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_CellContentClick);
             // 
             // ColId
             // 
             this.ColId.DataPropertyName = "Id";
-            dataGridViewCellStyle38.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.ColId.DefaultCellStyle = dataGridViewCellStyle38;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.ColId.DefaultCellStyle = dataGridViewCellStyle5;
             this.ColId.FillWeight = 3.788457F;
             this.ColId.HeaderText = "ID";
             this.ColId.MinimumWidth = 6;
@@ -577,10 +588,11 @@
             // 
             this.ColImagen.FillWeight = 5.270591F;
             this.ColImagen.HeaderText = "Imagen";
-            this.ColImagen.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
             this.ColImagen.MinimumWidth = 6;
             this.ColImagen.Name = "ColImagen";
             this.ColImagen.ReadOnly = true;
+            this.ColImagen.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ColImagen.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // ColNombre
             // 
@@ -603,9 +615,9 @@
             // ColPrecio
             // 
             this.ColPrecio.DataPropertyName = "Precio";
-            dataGridViewCellStyle39.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle39.Format = "C2";
-            this.ColPrecio.DefaultCellStyle = dataGridViewCellStyle39;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle6.Format = "C2";
+            this.ColPrecio.DefaultCellStyle = dataGridViewCellStyle6;
             this.ColPrecio.FillWeight = 19.25784F;
             this.ColPrecio.HeaderText = "Precio";
             this.ColPrecio.MinimumWidth = 6;
@@ -621,16 +633,6 @@
             this.ColStock.Name = "ColStock";
             this.ColStock.ReadOnly = true;
             // 
-            // ColVer
-            // 
-            this.ColVer.FillWeight = 6.417569F;
-            this.ColVer.HeaderText = "Ver";
-            this.ColVer.MinimumWidth = 6;
-            this.ColVer.Name = "ColVer";
-            this.ColVer.ReadOnly = true;
-            this.ColVer.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ColVer.ToolTipText = "Ver";
-            // 
             // ColEditar
             // 
             this.ColEditar.FillWeight = 5.513864F;
@@ -638,6 +640,7 @@
             this.ColEditar.MinimumWidth = 6;
             this.ColEditar.Name = "ColEditar";
             this.ColEditar.ReadOnly = true;
+            this.ColEditar.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.ColEditar.ToolTipText = "Editar";
             // 
             // ColEliminar
@@ -647,18 +650,8 @@
             this.ColEliminar.MinimumWidth = 6;
             this.ColEliminar.Name = "ColEliminar";
             this.ColEliminar.ReadOnly = true;
+            this.ColEliminar.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.ColEliminar.ToolTipText = "Eliminar";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(57, 37);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(691, 25);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Tienes ... productos con stock bajo. Es recomendable reabastecer estos productos." +
-    "";
             // 
             // InventarioForm
             // 
@@ -674,6 +667,8 @@
             this.Text = "Inventario";
             this.Load += new System.EventHandler(this.InventarioForm_Load);
             this.TLRoot.ResumeLayout(false);
+            this.PBanner.ResumeLayout(false);
+            this.PBanner.PerformLayout();
             this.TLKPI.ResumeLayout(false);
             this.CardKpi1.ResumeLayout(false);
             this.CardKpi1.PerformLayout();
@@ -681,8 +676,6 @@
             this.CardKpi3.PerformLayout();
             this.CardKpi2.ResumeLayout(false);
             this.CardKpi2.PerformLayout();
-            this.PBanner.ResumeLayout(false);
-            this.PBanner.PerformLayout();
             this.PFilters.ResumeLayout(false);
             this.TLFlters.ResumeLayout(false);
             this.TLFlters.PerformLayout();
@@ -731,15 +724,14 @@
         private System.Windows.Forms.Label LListTitle;
         private System.Windows.Forms.Button BNuevoproducto;
         private System.Windows.Forms.DataGridView DGV;
+        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColId;
-        private System.Windows.Forms.DataGridViewImageColumn ColImagen;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColImagen;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColNombre;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColGenero;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColPrecio;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColStock;
-        private System.Windows.Forms.DataGridViewImageColumn ColVer;
-        private System.Windows.Forms.DataGridViewImageColumn ColEditar;
-        private System.Windows.Forms.DataGridViewImageColumn ColEliminar;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridViewButtonColumn ColEditar;
+        private System.Windows.Forms.DataGridViewButtonColumn ColEliminar;
     }
 }

@@ -17,6 +17,10 @@ namespace PuntoDeVentaGameBox
         public AgregarUsuario()
         {
             InitializeComponent();
+
+            // 👉 Aplica "solo números" de forma reutilizable
+            AplicarSoloNumeros(tDni);
+            AplicarSoloNumeros(tTelefono);
         }
 
         string conecctionString = "server=localhost;Database=game_box;Trusted_Connection=True";
@@ -179,6 +183,39 @@ namespace PuntoDeVentaGameBox
                 tApellido.SelectionStart = cursorPosition;
             }
         }
+
+        private void AgregarUsuario_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        // ======== MÉTODO REUTILIZABLE: SOLO NÚMEROS ========
+        /// <summary>
+        /// Hace que el TextBox acepte únicamente dígitos (tecleo y pegado).
+        /// </summary>
+        private void AplicarSoloNumeros(TextBox tb)
+        {
+            // KeyPress: bloquea cualquier char no numérico
+            tb.KeyPress += (s, e) =>
+            {
+                if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+                    e.Handled = true;
+            };
+
+            // TextChanged: limpia si pegaron contenido no numérico
+            tb.TextChanged += (s, e) =>
+            {
+                var t = (TextBox)s;
+                int sel = t.SelectionStart;
+                string solo = new string(t.Text.Where(char.IsDigit).ToArray());
+                if (solo != t.Text)
+                {
+                    t.Text = solo;
+                    t.SelectionStart = Math.Min(sel, t.Text.Length);
+                }
+            };
+        }
     }
- }
+}
+
 

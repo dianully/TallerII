@@ -79,6 +79,7 @@
             this.DGVDatosProveedores.RowTemplate.Height = 24;
             this.DGVDatosProveedores.Size = new System.Drawing.Size(812, 396);
             this.DGVDatosProveedores.TabIndex = 3;
+            this.DGVDatosProveedores.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVDatosProveedores_CellContentClick);
             // 
             // DGVProveedorCNombre
             // 
@@ -165,7 +166,7 @@
             this.CBFiltroProveedores.Items.AddRange(new object[] {
             "Todos",
             "Recientes"});
-            this.CBFiltroProveedores.Location = new System.Drawing.Point(514, 39);
+            this.CBFiltroProveedores.Location = new System.Drawing.Point(514, 38);
             this.CBFiltroProveedores.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.CBFiltroProveedores.Name = "CBFiltroProveedores";
             this.CBFiltroProveedores.Size = new System.Drawing.Size(145, 25);
@@ -198,6 +199,7 @@
             this.BNuevoProveedor.TabIndex = 0;
             this.BNuevoProveedor.Text = "+ Nuevo Proveedor";
             this.BNuevoProveedor.UseVisualStyleBackColor = false;
+            this.BNuevoProveedor.Click += new System.EventHandler(this.BNuevoProveedor_Click);
             // 
             // TBBuscar
             // 
