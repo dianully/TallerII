@@ -19,6 +19,8 @@ namespace PuntoDeVentaGameBox
             lAdministrador.Text = $"{SesionUsuario.Nombre} {SesionUsuario.Apellido}";
         }
 
+        //
+
         private void button2_Click(object sender, EventArgs e)
         {
             
