@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -13,53 +12,58 @@ namespace PuntoDeVentaGameBox
 {
     public partial class Vendedor : Form
     {
-        // Constructor sin parámetros (se mantiene por defecto)
+        // Constructor
         public Vendedor()
         {
             InitializeComponent();
-        }
+            // Asigna el nombre y apellido desde la clase SesionUsuario al label
+            lVendedor.Text = $"{SesionUsuario.Nombre} {SesionUsuario.Apellido}";
 
-        // Nuevo constructor que recibe el nombre y apellido del vendedor
-        public Vendedor(string nombre, string apellido)
-        {
-            InitializeComponent();
-            lVendedor.Text = $"{nombre} {apellido}";
+            // La siguiente línea fue eliminada para evitar que el evento se registre dos veces
+            // this.lVendedor.Click += new System.EventHandler(this.lVendedor_Click_1);
         }
 
         string conecctionString = "server=localhost;Database=game_box;Trusted_Connection=True";
+
         private void button1_Click(object sender, EventArgs e)
         {
-        }
+            SesionUsuario.LimpiarSesion();
 
-        private void LRol_Click(object sender, EventArgs e)
-        {
-        }
+            // Oculta el formulario actual
+            this.Hide();
 
-        private void Vendedor_Load(object sender, EventArgs e)
-        {
-        }
-
-        private void lVendedor_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void lNombre_Click(object sender, EventArgs e)
-        {
+            // Crea una nueva instancia del formulario de Login y la muestra
+            Login loginForm = new Login();
+            loginForm.Show();
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string rolSeleccionado = cbElegirUsuario.SelectedItem.ToString();
+            if (cbElegirUsuario.SelectedItem != null)
+            {
+                string rolSeleccionado = cbElegirUsuario.SelectedItem.ToString();
+                string rolDeseado = "Nuevo Cliente";
 
-            string rolDeseado = "Nuevo Cliente";
-            if (rolSeleccionado == rolDeseado)
-            {
-                gbCliente.Enabled = true;
+                if (rolSeleccionado == rolDeseado)
+                {
+                    gbCliente.Enabled = true;
+                }
+                else
+                {
+                    gbCliente.Enabled = false;
+                }
             }
-            else
-            {
-                gbCliente.Enabled = false;
-            }
+        }
+
+        private void gbCliente_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lVendedor_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }
+

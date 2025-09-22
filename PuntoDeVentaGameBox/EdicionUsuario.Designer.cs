@@ -29,26 +29,26 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.tEditarContraseña = new System.Windows.Forms.TextBox();
-            this.tEditarTelefono = new System.Windows.Forms.TextBox();
-            this.tEditarEmail = new System.Windows.Forms.TextBox();
-            this.tEditarDni = new System.Windows.Forms.TextBox();
-            this.tEditarApellido = new System.Windows.Forms.TextBox();
-            this.tEditarNombre = new System.Windows.Forms.TextBox();
             this.pLimpiarParametros = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.bSalir = new System.Windows.Forms.Button();
             this.bGuardarCambios = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.cbRol = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.tEditarNombre = new System.Windows.Forms.TextBox();
+            this.tEditarApellido = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tEditarDni = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tEditarContraseña = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tEditarEmail = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tEditarTelefono = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.pLimpiarParametros.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -64,48 +64,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(800, 450);
             this.panel1.TabIndex = 1;
-            // 
-            // tEditarContraseña
-            // 
-            this.tEditarContraseña.Location = new System.Drawing.Point(126, 187);
-            this.tEditarContraseña.Name = "tEditarContraseña";
-            this.tEditarContraseña.Size = new System.Drawing.Size(100, 22);
-            this.tEditarContraseña.TabIndex = 5;
-            // 
-            // tEditarTelefono
-            // 
-            this.tEditarTelefono.Location = new System.Drawing.Point(126, 154);
-            this.tEditarTelefono.Name = "tEditarTelefono";
-            this.tEditarTelefono.Size = new System.Drawing.Size(100, 22);
-            this.tEditarTelefono.TabIndex = 4;
-            // 
-            // tEditarEmail
-            // 
-            this.tEditarEmail.Location = new System.Drawing.Point(126, 121);
-            this.tEditarEmail.Name = "tEditarEmail";
-            this.tEditarEmail.Size = new System.Drawing.Size(100, 22);
-            this.tEditarEmail.TabIndex = 3;
-            // 
-            // tEditarDni
-            // 
-            this.tEditarDni.Location = new System.Drawing.Point(126, 88);
-            this.tEditarDni.Name = "tEditarDni";
-            this.tEditarDni.Size = new System.Drawing.Size(100, 22);
-            this.tEditarDni.TabIndex = 2;
-            // 
-            // tEditarApellido
-            // 
-            this.tEditarApellido.Location = new System.Drawing.Point(126, 55);
-            this.tEditarApellido.Name = "tEditarApellido";
-            this.tEditarApellido.Size = new System.Drawing.Size(100, 22);
-            this.tEditarApellido.TabIndex = 1;
-            // 
-            // tEditarNombre
-            // 
-            this.tEditarNombre.Location = new System.Drawing.Point(126, 22);
-            this.tEditarNombre.Name = "tEditarNombre";
-            this.tEditarNombre.Size = new System.Drawing.Size(100, 22);
-            this.tEditarNombre.TabIndex = 0;
             // 
             // pLimpiarParametros
             // 
@@ -123,10 +81,25 @@
             this.panel5.Controls.Add(this.button1);
             this.panel5.Controls.Add(this.bSalir);
             this.panel5.Controls.Add(this.bGuardarCambios);
-            this.panel5.Location = new System.Drawing.Point(375, 41);
+            this.panel5.Location = new System.Drawing.Point(369, 41);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(240, 272);
+            this.panel5.Size = new System.Drawing.Size(246, 272);
             this.panel5.TabIndex = 1;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.button1.Location = new System.Drawing.Point(39, 121);
+            this.button1.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(165, 39);
+            this.button1.TabIndex = 45;
+            this.button1.Text = "Limpiar Parametros";
+            this.button1.UseVisualStyleBackColor = false;
             // 
             // bSalir
             // 
@@ -179,8 +152,33 @@
             this.panel4.Controls.Add(this.label2);
             this.panel4.Location = new System.Drawing.Point(64, 41);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(240, 272);
+            this.panel4.Size = new System.Drawing.Size(244, 272);
             this.panel4.TabIndex = 0;
+            // 
+            // cbRol
+            // 
+            this.cbRol.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.cbRol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbRol.FormattingEnabled = true;
+            this.cbRol.Items.AddRange(new object[] {
+            "Administrador",
+            "Vendedor"});
+            this.cbRol.Location = new System.Drawing.Point(116, 219);
+            this.cbRol.Name = "cbRol";
+            this.cbRol.Size = new System.Drawing.Size(121, 24);
+            this.cbRol.TabIndex = 43;
+            // 
+            // label7
+            // 
+            this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label7.Location = new System.Drawing.Point(36, 217);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(39, 23);
+            this.label7.TabIndex = 42;
+            this.label7.Text = "Rol:";
             // 
             // label6
             // 
@@ -193,6 +191,20 @@
             this.label6.TabIndex = 41;
             this.label6.Text = "Contraseña:";
             // 
+            // tEditarNombre
+            // 
+            this.tEditarNombre.Location = new System.Drawing.Point(126, 22);
+            this.tEditarNombre.Name = "tEditarNombre";
+            this.tEditarNombre.Size = new System.Drawing.Size(100, 22);
+            this.tEditarNombre.TabIndex = 0;
+            // 
+            // tEditarApellido
+            // 
+            this.tEditarApellido.Location = new System.Drawing.Point(126, 55);
+            this.tEditarApellido.Name = "tEditarApellido";
+            this.tEditarApellido.Size = new System.Drawing.Size(100, 22);
+            this.tEditarApellido.TabIndex = 1;
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -203,6 +215,13 @@
             this.label5.Size = new System.Drawing.Size(79, 23);
             this.label5.TabIndex = 40;
             this.label5.Text = "Telefono:";
+            // 
+            // tEditarDni
+            // 
+            this.tEditarDni.Location = new System.Drawing.Point(126, 88);
+            this.tEditarDni.Name = "tEditarDni";
+            this.tEditarDni.Size = new System.Drawing.Size(100, 22);
+            this.tEditarDni.TabIndex = 2;
             // 
             // label4
             // 
@@ -215,6 +234,13 @@
             this.label4.TabIndex = 39;
             this.label4.Text = "Correo:";
             // 
+            // tEditarContraseña
+            // 
+            this.tEditarContraseña.Location = new System.Drawing.Point(126, 187);
+            this.tEditarContraseña.Name = "tEditarContraseña";
+            this.tEditarContraseña.Size = new System.Drawing.Size(100, 22);
+            this.tEditarContraseña.TabIndex = 5;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -225,6 +251,13 @@
             this.label3.Size = new System.Drawing.Size(44, 23);
             this.label3.TabIndex = 38;
             this.label3.Text = "DNI:";
+            // 
+            // tEditarEmail
+            // 
+            this.tEditarEmail.Location = new System.Drawing.Point(126, 121);
+            this.tEditarEmail.Name = "tEditarEmail";
+            this.tEditarEmail.Size = new System.Drawing.Size(100, 22);
+            this.tEditarEmail.TabIndex = 3;
             // 
             // label1
             // 
@@ -237,6 +270,13 @@
             this.label1.TabIndex = 37;
             this.label1.Text = "Apellido:";
             // 
+            // tEditarTelefono
+            // 
+            this.tEditarTelefono.Location = new System.Drawing.Point(126, 154);
+            this.tEditarTelefono.Name = "tEditarTelefono";
+            this.tEditarTelefono.Size = new System.Drawing.Size(100, 22);
+            this.tEditarTelefono.TabIndex = 4;
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -248,51 +288,15 @@
             this.label2.TabIndex = 36;
             this.label2.Text = "Nombre:";
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label7.Location = new System.Drawing.Point(36, 217);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(39, 23);
-            this.label7.TabIndex = 42;
-            this.label7.Text = "Rol:";
-            // 
-            // cbRol
-            // 
-            this.cbRol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbRol.FormattingEnabled = true;
-            this.cbRol.Items.AddRange(new object[] {
-            "Administrador",
-            "Vendedor"});
-            this.cbRol.Location = new System.Drawing.Point(116, 219);
-            this.cbRol.Name = "cbRol";
-            this.cbRol.Size = new System.Drawing.Size(121, 24);
-            this.cbRol.TabIndex = 43;
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button1.Location = new System.Drawing.Point(39, 121);
-            this.button1.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(165, 39);
-            this.button1.TabIndex = 45;
-            this.button1.Text = "Limpiar Parametros";
-            this.button1.UseVisualStyleBackColor = false;
-            // 
             // EdicionUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "EdicionUsuario";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "EdicionUsuario";
             this.panel1.ResumeLayout(false);
             this.pLimpiarParametros.ResumeLayout(false);

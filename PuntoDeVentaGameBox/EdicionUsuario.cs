@@ -13,13 +13,10 @@ namespace PuntoDeVentaGameBox
 {
     public partial class EdicionUsuario : Form
     {
-        // Declara variables a nivel de clase para almacenar la información
         private int idUsuario;
         private string connectionString = "server=localhost;Database=game_box;Trusted_Connection=True";
-        private int rolUsuarioOriginal;
 
-        // Constructor con parámetros que es el que tu otro formulario necesita
-        public EdicionUsuario(int id, string nombre, string apellido, string dni, string email, string telefono,string contraseña, string rol)
+        public EdicionUsuario(int id, string nombre, string apellido, string dni, string email, string telefono, string contraseña, string rol)
         {
             InitializeComponent();
             CargarRoles();
@@ -32,13 +29,17 @@ namespace PuntoDeVentaGameBox
             tEditarTelefono.Text = telefono;
             tEditarContraseña.Text = contraseña;
 
-            // Seleccionar el rol actual del usuario en el ComboBox
-            if (cbRol.Items.Count > 0)
+            if (cbRol.Items.Count > 0 && !string.IsNullOrEmpty(rol))
             {
                 cbRol.SelectedIndex = cbRol.FindStringExact(rol);
             }
+
+            if (SesionUsuario.IdRol != 2)
+            {
+                cbRol.Enabled = false;
+            }
         }
-        // El constructor vacío que Visual Studio crea por defecto, puedes mantenerlo
+
         public EdicionUsuario()
         {
             InitializeComponent();
@@ -66,12 +67,27 @@ namespace PuntoDeVentaGameBox
             }
         }
 
+        private bool DniYaExiste(string dni, int idUsuarioActual)
+        {
+            string query = "SELECT COUNT(*) FROM usuario WHERE dni = @dni AND id_usuario != @idUsuario";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@dni", dni);
+                    command.Parameters.AddWithValue("@idUsuario", idUsuarioActual);
+                    connection.Open();
+                    int count = (int)command.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
+
         private void bEditarUsuario_Click(object sender, EventArgs e)
         {
             ActualizarUsuario();
         }
 
-        // Método para actualizar los datos en la base de datos
         private void ActualizarUsuario()
         {
             // Validaciones
@@ -89,6 +105,12 @@ namespace PuntoDeVentaGameBox
             if (tEditarDni.Text.Length != 8)
             {
                 MessageBox.Show("El DNI debe tener exactamente 8 caracteres.", "DNI Inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (DniYaExiste(tEditarDni.Text, this.idUsuario))
+            {
+                MessageBox.Show("El DNI ingresado ya existe en la base de datos para otro usuario.", "DNI Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -125,6 +147,16 @@ namespace PuntoDeVentaGameBox
                         command.ExecuteNonQuery();
 
                         MessageBox.Show("Usuario actualizado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        if (this.idUsuario == SesionUsuario.IdUsuario)
+                        {
+                            SesionUsuario.Nombre = tEditarNombre.Text;
+                            SesionUsuario.Apellido = tEditarApellido.Text;
+                            SesionUsuario.Dni = tEditarDni.Text;
+                            SesionUsuario.Email = tEditarEmail.Text;
+                            SesionUsuario.Telefono = tEditarTelefono.Text;
+                            SesionUsuario.Contraseña = tEditarContraseña.Text;
+                        }
                     }
                 }
             }
@@ -139,5 +171,4 @@ namespace PuntoDeVentaGameBox
             this.Close();
         }
     }
-}
-
+}   

@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SesionUsuario.cs" />
     <Compile Include="subMenuCopiaDeSeguridad.cs">
       <SubType>Form</SubType>
     </Compile>

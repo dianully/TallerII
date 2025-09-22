@@ -149,5 +149,36 @@ namespace PuntoDeVentaGameBox
                 MessageBox.Show("Error al registrar el usuario: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void tNombre_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(tNombre.Text))
+            {
+                // Guarda la posición del cursor antes de modificar el texto
+                int cursorPosition = tNombre.SelectionStart;
+
+                // Convierte la primera letra a mayúscula
+                tNombre.Text = tNombre.Text.Substring(0, 1).ToUpper() + tNombre.Text.Substring(1);
+
+                // Restablece el cursor a su posición original para una mejor experiencia de usuario
+                tNombre.SelectionStart = cursorPosition;
+            }
+        }
+
+        private void tApellido_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(tApellido.Text))
+            {
+                // Guarda la posición del cursor antes de modificar el texto
+                int cursorPosition = tApellido.SelectionStart;
+
+                // Convierte la primera letra a mayúscula
+                tApellido.Text = tApellido.Text.Substring(0, 1).ToUpper() + tApellido.Text.Substring(1);
+
+                // Restablece el cursor a su posición original para una mejor experiencia de usuario
+                tApellido.SelectionStart = cursorPosition;
+            }
+        }
     }
-}
+ }
+
