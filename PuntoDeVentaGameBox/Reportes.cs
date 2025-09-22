@@ -56,5 +56,15 @@ namespace PuntoDeVentaGameBox
         {
 
         }
+
+        private void PNLScroll_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void Reportes_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

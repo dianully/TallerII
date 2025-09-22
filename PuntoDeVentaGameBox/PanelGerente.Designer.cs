@@ -131,10 +131,10 @@
             // PVistaGerente
             // 
             this.PVistaGerente.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.PVistaGerente.Location = new System.Drawing.Point(0, 172);
+            this.PVistaGerente.Location = new System.Drawing.Point(0, 183);
             this.PVistaGerente.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.PVistaGerente.Name = "PVistaGerente";
-            this.PVistaGerente.Size = new System.Drawing.Size(1181, 720);
+            this.PVistaGerente.Size = new System.Drawing.Size(1181, 803);
             this.PVistaGerente.TabIndex = 3;
             this.PVistaGerente.Paint += new System.Windows.Forms.PaintEventHandler(this.PVistaGerente_Paint);
             // 
@@ -168,12 +168,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.ClientSize = new System.Drawing.Size(1181, 892);
+            this.ClientSize = new System.Drawing.Size(1181, 986);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.PVistaGerente);
             this.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "PanelGerente";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Panel Gerente";
             this.Load += new System.EventHandler(this.PanelGerente_Load);
             this.TLPPanelGerente.ResumeLayout(false);

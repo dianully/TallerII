@@ -97,7 +97,7 @@
             this.TPLRoot.ColumnCount = 1;
             this.TPLRoot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.TPLRoot.Controls.Add(this.PNLScroll, 0, 0);
-            this.TPLRoot.Location = new System.Drawing.Point(2, 1);
+            this.TPLRoot.Location = new System.Drawing.Point(0, 0);
             this.TPLRoot.Name = "TPLRoot";
             this.TPLRoot.RowCount = 1;
             this.TPLRoot.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -109,20 +109,21 @@
             // PNLScroll
             // 
             this.PNLScroll.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.PNLScroll.Controls.Add(this.panel1);
+            this.PNLScroll.AutoScroll = true;
             this.PNLScroll.Controls.Add(this.TLPContent);
             this.PNLScroll.Location = new System.Drawing.Point(7, 6);
             this.PNLScroll.Name = "PNLScroll";
             this.PNLScroll.Padding = new System.Windows.Forms.Padding(16);
             this.PNLScroll.Size = new System.Drawing.Size(877, 653);
             this.PNLScroll.TabIndex = 3;
+            this.PNLScroll.Paint += new System.Windows.Forms.PaintEventHandler(this.PNLScroll_Paint);
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.BExportarCVC);
             this.panel1.Controls.Add(this.BExportarPDF);
             this.panel1.Controls.Add(this.label13);
-            this.panel1.Location = new System.Drawing.Point(16, 567);
+            this.panel1.Location = new System.Drawing.Point(3, 553);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(854, 75);
             this.panel1.TabIndex = 1;
@@ -162,22 +163,25 @@
             // 
             // TLPContent
             // 
+            this.TLPContent.AutoScroll = true;
             this.TLPContent.AutoSize = true;
             this.TLPContent.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.TLPContent.ColumnCount = 1;
             this.TLPContent.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.TLPContent.Controls.Add(this.panel1, 0, 4);
             this.TLPContent.Controls.Add(this.GBPeriodo, 0, 0);
             this.TLPContent.Controls.Add(this.PVentas, 0, 1);
             this.TLPContent.Controls.Add(this.GVTopProductos, 0, 2);
             this.TLPContent.Controls.Add(this.GVVendedores, 0, 3);
-            this.TLPContent.Location = new System.Drawing.Point(16, 16);
+            this.TLPContent.Location = new System.Drawing.Point(3, 5);
             this.TLPContent.Name = "TLPContent";
-            this.TLPContent.RowCount = 4;
+            this.TLPContent.RowCount = 5;
             this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 186F));
             this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 136F));
-            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 104F));
+            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 107F));
             this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.TLPContent.Size = new System.Drawing.Size(854, 547);
+            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 97F));
+            this.TLPContent.Size = new System.Drawing.Size(860, 647);
             this.TLPContent.TabIndex = 0;
             this.TLPContent.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
             // 
@@ -496,7 +500,7 @@
             this.GVTopProductos.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.GVTopProductos.Controls.Add(this.DGVTopProductos);
             this.GVTopProductos.ForeColor = System.Drawing.SystemColors.Control;
-            this.GVTopProductos.Location = new System.Drawing.Point(3, 325);
+            this.GVTopProductos.Location = new System.Drawing.Point(3, 326);
             this.GVTopProductos.Name = "GVTopProductos";
             this.GVTopProductos.Size = new System.Drawing.Size(843, 98);
             this.GVTopProductos.TabIndex = 4;
@@ -546,7 +550,7 @@
             // 
             this.GVVendedores.Controls.Add(this.DGVVendedores);
             this.GVVendedores.ForeColor = System.Drawing.SystemColors.Control;
-            this.GVVendedores.Location = new System.Drawing.Point(3, 429);
+            this.GVVendedores.Location = new System.Drawing.Point(3, 432);
             this.GVVendedores.Name = "GVVendedores";
             this.GVVendedores.Size = new System.Drawing.Size(843, 115);
             this.GVVendedores.TabIndex = 5;
@@ -617,6 +621,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Reportes";
             this.Text = "FormReportes";
+            this.Load += new System.EventHandler(this.Reportes_Load);
             this.TPLRoot.ResumeLayout(false);
             this.PNLScroll.ResumeLayout(false);
             this.PNLScroll.PerformLayout();

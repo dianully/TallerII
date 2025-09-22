@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle37 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle38 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle39 = new System.Windows.Forms.DataGridViewCellStyle();
             this.TLRoot = new System.Windows.Forms.TableLayoutPanel();
             this.TLKPI = new System.Windows.Forms.TableLayoutPanel();
             this.CardKpi1 = new System.Windows.Forms.Panel();
@@ -47,7 +47,6 @@
             this.KpiStock = new System.Windows.Forms.Label();
             this.PBanner = new System.Windows.Forms.Panel();
             this.BVerSoloBajo = new System.Windows.Forms.Button();
-            this.LblBanner = new System.Windows.Forms.Label();
             this.PFilters = new System.Windows.Forms.Panel();
             this.TLFlters = new System.Windows.Forms.TableLayoutPanel();
             this.CBOrden = new System.Windows.Forms.ComboBox();
@@ -76,6 +75,7 @@
             this.ColEliminar = new System.Windows.Forms.DataGridViewImageColumn();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
+            this.label1 = new System.Windows.Forms.Label();
             this.TLRoot.SuspendLayout();
             this.TLKPI.SuspendLayout();
             this.CardKpi1.SuspendLayout();
@@ -94,12 +94,12 @@
             this.TLRoot.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.TLRoot.ColumnCount = 1;
             this.TLRoot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.TLRoot.Controls.Add(this.TLKPI, 0, 0);
             this.TLRoot.Controls.Add(this.PBanner, 0, 1);
+            this.TLRoot.Controls.Add(this.TLKPI, 0, 0);
             this.TLRoot.Controls.Add(this.PFilters, 0, 2);
             this.TLRoot.Controls.Add(this.PListHeader, 0, 3);
             this.TLRoot.Controls.Add(this.PGrid, 0, 4);
-            this.TLRoot.Location = new System.Drawing.Point(17, 32);
+            this.TLRoot.Location = new System.Drawing.Point(26, 32);
             this.TLRoot.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TLRoot.Name = "TLRoot";
             this.TLRoot.RowCount = 5;
@@ -109,12 +109,13 @@
             this.TLRoot.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 71F));
             this.TLRoot.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.TLRoot.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.TLRoot.Size = new System.Drawing.Size(1195, 715);
+            this.TLRoot.Size = new System.Drawing.Size(1175, 715);
             this.TLRoot.TabIndex = 0;
             this.TLRoot.Paint += new System.Windows.Forms.PaintEventHandler(this.TLRoot_Paint);
             // 
             // TLKPI
             // 
+            this.TLKPI.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.TLKPI.ColumnCount = 3;
             this.TLKPI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.TLKPI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -123,12 +124,12 @@
             this.TLKPI.Controls.Add(this.CardKpi3, 2, 0);
             this.TLKPI.Controls.Add(this.CardKpi2, 1, 0);
             this.TLKPI.ForeColor = System.Drawing.SystemColors.Control;
-            this.TLKPI.Location = new System.Drawing.Point(3, 2);
+            this.TLKPI.Location = new System.Drawing.Point(13, 3);
             this.TLKPI.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TLKPI.Name = "TLKPI";
             this.TLKPI.RowCount = 1;
             this.TLKPI.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.TLKPI.Size = new System.Drawing.Size(1180, 103);
+            this.TLKPI.Size = new System.Drawing.Size(1149, 103);
             this.TLKPI.TabIndex = 0;
             // 
             // CardKpi1
@@ -140,7 +141,7 @@
             this.CardKpi1.Location = new System.Drawing.Point(3, 2);
             this.CardKpi1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.CardKpi1.Name = "CardKpi1";
-            this.CardKpi1.Size = new System.Drawing.Size(375, 98);
+            this.CardKpi1.Size = new System.Drawing.Size(367, 98);
             this.CardKpi1.TabIndex = 0;
             // 
             // LProductostotales
@@ -181,7 +182,7 @@
             this.CardKpi3.Controls.Add(this.LConstockbajo);
             this.CardKpi3.Controls.Add(this.LStockmenora);
             this.CardKpi3.Controls.Add(this.KpiBajo);
-            this.CardKpi3.Location = new System.Drawing.Point(781, 2);
+            this.CardKpi3.Location = new System.Drawing.Point(749, 2);
             this.CardKpi3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.CardKpi3.Name = "CardKpi3";
             this.CardKpi3.Size = new System.Drawing.Size(393, 98);
@@ -224,10 +225,10 @@
             this.CardKpi2.Controls.Add(this.LStocktotal);
             this.CardKpi2.Controls.Add(this.LUnidadeseninventario);
             this.CardKpi2.Controls.Add(this.KpiStock);
-            this.CardKpi2.Location = new System.Drawing.Point(392, 2);
+            this.CardKpi2.Location = new System.Drawing.Point(376, 2);
             this.CardKpi2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.CardKpi2.Name = "CardKpi2";
-            this.CardKpi2.Size = new System.Drawing.Size(375, 98);
+            this.CardKpi2.Size = new System.Drawing.Size(367, 98);
             this.CardKpi2.TabIndex = 1;
             // 
             // LStocktotal
@@ -265,16 +266,15 @@
             // 
             // PBanner
             // 
-            this.PBanner.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(247)))), ((int)(((byte)(237)))));
+            this.PBanner.BackColor = System.Drawing.Color.Transparent;
             this.PBanner.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PBanner.Controls.Add(this.label1);
             this.PBanner.Controls.Add(this.BVerSoloBajo);
-            this.PBanner.Controls.Add(this.LblBanner);
-            this.PBanner.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PBanner.Location = new System.Drawing.Point(11, 120);
             this.PBanner.Margin = new System.Windows.Forms.Padding(11, 10, 11, 10);
             this.PBanner.Name = "PBanner";
             this.PBanner.Padding = new System.Windows.Forms.Padding(12);
-            this.PBanner.Size = new System.Drawing.Size(1173, 100);
+            this.PBanner.Size = new System.Drawing.Size(1153, 100);
             this.PBanner.TabIndex = 2;
             // 
             // BVerSoloBajo
@@ -285,25 +285,13 @@
             this.BVerSoloBajo.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(158)))), ((int)(((byte)(11)))));
             this.BVerSoloBajo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BVerSoloBajo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(158)))), ((int)(((byte)(11)))));
-            this.BVerSoloBajo.Location = new System.Drawing.Point(895, 37);
+            this.BVerSoloBajo.Location = new System.Drawing.Point(875, 37);
             this.BVerSoloBajo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BVerSoloBajo.Name = "BVerSoloBajo";
             this.BVerSoloBajo.Size = new System.Drawing.Size(179, 34);
             this.BVerSoloBajo.TabIndex = 1;
             this.BVerSoloBajo.Text = "Ver solo stock bajo";
             this.BVerSoloBajo.UseVisualStyleBackColor = true;
-            // 
-            // LblBanner
-            // 
-            this.LblBanner.AutoSize = true;
-            this.LblBanner.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblBanner.Location = new System.Drawing.Point(28, 38);
-            this.LblBanner.Name = "LblBanner";
-            this.LblBanner.Size = new System.Drawing.Size(672, 23);
-            this.LblBanner.TabIndex = 0;
-            this.LblBanner.Text = "Tienes 0 productos con stock bajo (≤ 5). Es recomendable reabastecer estos produc" +
-    "tos.";
-            this.LblBanner.Click += new System.EventHandler(this.LblBanner_Click);
             // 
             // PFilters
             // 
@@ -315,7 +303,7 @@
             this.PFilters.Margin = new System.Windows.Forms.Padding(11, 10, 11, 10);
             this.PFilters.Name = "PFilters";
             this.PFilters.Padding = new System.Windows.Forms.Padding(16);
-            this.PFilters.Size = new System.Drawing.Size(1173, 140);
+            this.PFilters.Size = new System.Drawing.Size(1153, 140);
             this.PFilters.TabIndex = 3;
             this.PFilters.Paint += new System.Windows.Forms.PaintEventHandler(this.PFilters_Paint);
             // 
@@ -498,7 +486,7 @@
             this.PListHeader.Margin = new System.Windows.Forms.Padding(11, 10, 11, 10);
             this.PListHeader.Name = "PListHeader";
             this.PListHeader.Padding = new System.Windows.Forms.Padding(12);
-            this.PListHeader.Size = new System.Drawing.Size(1173, 51);
+            this.PListHeader.Size = new System.Drawing.Size(1153, 51);
             this.PListHeader.TabIndex = 4;
             // 
             // BNuevoproducto
@@ -510,11 +498,11 @@
             this.BNuevoproducto.FlatAppearance.BorderSize = 0;
             this.BNuevoproducto.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BNuevoproducto.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.BNuevoproducto.Location = new System.Drawing.Point(907, 2);
+            this.BNuevoproducto.Location = new System.Drawing.Point(887, 2);
             this.BNuevoproducto.Margin = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.BNuevoproducto.Name = "BNuevoproducto";
             this.BNuevoproducto.Padding = new System.Windows.Forms.Padding(11, 6, 11, 6);
-            this.BNuevoproducto.Size = new System.Drawing.Size(237, 53);
+            this.BNuevoproducto.Size = new System.Drawing.Size(237, 48);
             this.BNuevoproducto.TabIndex = 1;
             this.BNuevoproducto.Text = "+ Nuevo producto";
             this.BNuevoproducto.UseVisualStyleBackColor = false;
@@ -540,15 +528,15 @@
             this.PGrid.Margin = new System.Windows.Forms.Padding(11, 10, 11, 10);
             this.PGrid.Name = "PGrid";
             this.PGrid.Padding = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.PGrid.Size = new System.Drawing.Size(1173, 234);
+            this.PGrid.Size = new System.Drawing.Size(1153, 234);
             this.PGrid.TabIndex = 5;
             // 
             // DGV
             // 
             this.DGV.AllowUserToAddRows = false;
             this.DGV.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.DGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle37.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.DGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle37;
             this.DGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -571,14 +559,14 @@
             this.DGV.RowHeadersWidth = 51;
             this.DGV.RowTemplate.Height = 56;
             this.DGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DGV.Size = new System.Drawing.Size(1155, 218);
+            this.DGV.Size = new System.Drawing.Size(1135, 218);
             this.DGV.TabIndex = 0;
             // 
             // ColId
             // 
             this.ColId.DataPropertyName = "Id";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.ColId.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle38.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.ColId.DefaultCellStyle = dataGridViewCellStyle38;
             this.ColId.FillWeight = 3.788457F;
             this.ColId.HeaderText = "ID";
             this.ColId.MinimumWidth = 6;
@@ -615,9 +603,9 @@
             // ColPrecio
             // 
             this.ColPrecio.DataPropertyName = "Precio";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle9.Format = "C2";
-            this.ColPrecio.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle39.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle39.Format = "C2";
+            this.ColPrecio.DefaultCellStyle = dataGridViewCellStyle39;
             this.ColPrecio.FillWeight = 19.25784F;
             this.ColPrecio.HeaderText = "Precio";
             this.ColPrecio.MinimumWidth = 6;
@@ -660,6 +648,17 @@
             this.ColEliminar.Name = "ColEliminar";
             this.ColEliminar.ReadOnly = true;
             this.ColEliminar.ToolTipText = "Eliminar";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(57, 37);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(691, 25);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Tienes ... productos con stock bajo. Es recomendable reabastecer estos productos." +
+    "";
             // 
             // InventarioForm
             // 
@@ -718,7 +717,6 @@
         private System.Windows.Forms.Label LStockmenora;
         private System.ComponentModel.BackgroundWorker backgroundWorker2;
         private System.Windows.Forms.Button BVerSoloBajo;
-        private System.Windows.Forms.Label LblBanner;
         private System.Windows.Forms.TableLayoutPanel TLFlters;
         private System.Windows.Forms.Label LFiltroNombre;
         private System.Windows.Forms.Label LFiltroID;
@@ -742,5 +740,6 @@
         private System.Windows.Forms.DataGridViewImageColumn ColVer;
         private System.Windows.Forms.DataGridViewImageColumn ColEditar;
         private System.Windows.Forms.DataGridViewImageColumn ColEliminar;
+        private System.Windows.Forms.Label label1;
     }
 }

@@ -115,7 +115,7 @@ namespace PuntoDeVentaGameBox
 
         private void bSalir_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Application.Exit();
         }
 
         private void LListTitle_Click(object sender, EventArgs e)
