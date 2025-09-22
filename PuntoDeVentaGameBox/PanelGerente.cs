@@ -15,6 +15,13 @@ namespace PuntoDeVentaGameBox
         public PanelGerente()
         {
             InitializeComponent();
+
+
+            // Asigna el nombre y apellido desde la clase SesionUsuario al label
+            LNombreUsuario.Text = $"{SesionUsuario.Nombre} {SesionUsuario.Apellido}";
+
+            // La siguiente línea fue eliminada para evitar que el evento se registre dos veces
+            // this.lVendedor.Click += new System.EventHandler(this.lVendedor_Click_1);
         }
         private void AbrirFormInPanel(object Formhijo)
         {
@@ -44,6 +51,8 @@ namespace PuntoDeVentaGameBox
             fh.Show();
         }
 
+
+
         private void PVistaGerente_Paint(object sender, PaintEventArgs e)
         {
 
@@ -71,8 +80,53 @@ namespace PuntoDeVentaGameBox
 
         private void BSalir_Click(object sender, EventArgs e)
         {
-            this.Close();
+            SesionUsuario.LimpiarSesion();
+
+            // Oculta el formulario actual
+            this.Hide();
+
+            // Crea una nueva instancia del formulario de Login y la muestra
+            Login loginForm = new Login();
+            loginForm.Show();
 
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+            // Determina el nombre del rol basado en el IdRol
+            string nombreRol = "";
+            switch (SesionUsuario.IdRol)
+            {
+                case 2:
+                    nombreRol = "Administrador";
+                    break;
+                case 3:
+                    nombreRol = "Vendedor";
+                    break;
+                default:
+                    nombreRol = "Gerente";
+                    break;
+            }
+
+            // Abre el formulario de edición, pasando los datos del usuario actual desde la sesión
+            EdicionUsuario formEdicion = new EdicionUsuario(
+                SesionUsuario.IdUsuario,
+                SesionUsuario.Nombre,
+                SesionUsuario.Apellido,
+                SesionUsuario.Dni,
+                SesionUsuario.Email,
+                SesionUsuario.Telefono,
+                SesionUsuario.Contraseña,
+                nombreRol,
+                SesionUsuario.IdRol   // 👈 nuevo parámetro
+
+            );
+
+            // Usamos ShowDialog() para que la ventana de edición sea modal.
+            formEdicion.ShowDialog();
+        }
     }
+
 }
+

@@ -25,6 +25,7 @@ namespace PuntoDeVentaGameBox
         }
 
         string conecctionString = "server=localhost;Database=game_box;Trusted_Connection=True";
+        private int idRol;
 
         private void subMenuUsuario_Load(object sender, EventArgs e)
         {
@@ -78,6 +79,10 @@ namespace PuntoDeVentaGameBox
             {
                 dataGridView1.Columns["contraseña"].Visible = false;
             }
+            if (dataGridView1.Columns.Contains("IdRol"))
+            {
+                dataGridView1.Columns["IdRol"].Visible = false;
+            }
 
             DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
             btnEliminar.Name = "Eliminar";
@@ -105,17 +110,18 @@ namespace PuntoDeVentaGameBox
                 string query = @"
             SELECT
                u.id_usuario,
-                u.nombre AS 'Nombre',
-                u.apellido AS 'Apellido',
-                u.dni AS 'DNI',
-                u.email AS 'Correo',
-                u.telefono AS 'Telefono',
-                u.contraseña,
-                r.nombre AS 'Rol'
+               u.nombre AS 'Nombre',
+               u.apellido AS 'Apellido',
+               u.dni AS 'DNI',
+               u.email AS 'Correo',
+               u.telefono AS 'Telefono',
+               u.contraseña,
+               r.nombre AS 'Rol',
+               r.id_rol AS 'IdRol'
             FROM
-                usuario AS u
+               usuario AS u
             INNER JOIN
-                rol AS r ON u.id_rol = r.id_rol
+               rol AS r ON u.id_rol = r.id_rol
             WHERE u.activo = 1;";
                 SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                 RefrescarTabla(adapter);
@@ -158,10 +164,11 @@ namespace PuntoDeVentaGameBox
                     string dni = fila.Cells["DNI"].Value.ToString();
                     string email = fila.Cells["Correo"].Value.ToString();
                     string telefono = fila.Cells["Telefono"].Value.ToString();
-                    string contraseña = fila.Cells["contraseña"].Value.ToString(); // Obtiene el valor de la contraseña
+                    string contraseña = fila.Cells["contraseña"].Value.ToString();
                     string rol = fila.Cells["Rol"].Value.ToString();
+                    int idRolSeleccionado = Convert.ToInt32(fila.Cells["IdRol"].Value);
 
-                    EdicionUsuario formEditar = new EdicionUsuario(idUsuario, nombre, apellido, dni, email, telefono, contraseña, rol);
+                    EdicionUsuario formEditar = new EdicionUsuario(idUsuario, nombre, apellido, dni, email, telefono, contraseña, rol, idRolSeleccionado);
                     formEditar.ShowDialog();
                     CargarDatos();
                 }
@@ -204,7 +211,8 @@ namespace PuntoDeVentaGameBox
                     u.email AS 'Correo',
                     u.telefono AS 'Telefono',
                     u.contraseña,
-                    r.nombre AS 'Rol'
+                    r.nombre AS 'Rol',
+                    r.id_rol AS 'IdRol'
                 FROM
                     usuario AS u
                 INNER JOIN
@@ -323,3 +331,4 @@ namespace PuntoDeVentaGameBox
         }
     }
 }
+

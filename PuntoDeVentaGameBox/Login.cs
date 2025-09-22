@@ -117,6 +117,11 @@ namespace PuntoDeVentaGameBox
         {
             this.Close();
         }
+
+        private void LListTitle_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

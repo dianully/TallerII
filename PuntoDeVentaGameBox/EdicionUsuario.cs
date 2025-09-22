@@ -15,13 +15,16 @@ namespace PuntoDeVentaGameBox
     {
         private int idUsuario;
         private string connectionString = "server=localhost;Database=game_box;Trusted_Connection=True";
+        private int idRolOriginal;
 
-        public EdicionUsuario(int id, string nombre, string apellido, string dni, string email, string telefono, string contraseña, string rol)
+        public EdicionUsuario(int id, string nombre, string apellido, string dni, string email, string telefono, string contraseña, string rol, int idRol)
         {
             InitializeComponent();
             CargarRoles();
 
             this.idUsuario = id;
+            this.idRolOriginal = idRol;
+
             tEditarNombre.Text = nombre;
             tEditarApellido.Text = apellido;
             tEditarDni.Text = dni;
@@ -32,6 +35,12 @@ namespace PuntoDeVentaGameBox
             if (cbRol.Items.Count > 0 && !string.IsNullOrEmpty(rol))
             {
                 cbRol.SelectedIndex = cbRol.FindStringExact(rol);
+            }
+
+            // si no encontró el rol en el combo, setea el original
+            if (cbRol.SelectedIndex == -1)
+            {
+                cbRol.SelectedValue = idRolOriginal;
             }
 
             if (SesionUsuario.IdRol != 2)
@@ -47,6 +56,7 @@ namespace PuntoDeVentaGameBox
 
         private void CargarRoles()
         {
+            // Se mantienen solo Admin/Vendedor como en tu versión
             string query = "SELECT id_rol, nombre FROM rol WHERE id_rol IN (2, 3)";
             try
             {
@@ -140,11 +150,34 @@ namespace PuntoDeVentaGameBox
                         command.Parameters.AddWithValue("@email", tEditarEmail.Text);
                         command.Parameters.AddWithValue("@telefono", tEditarTelefono.Text);
                         command.Parameters.AddWithValue("@contraseña", tEditarContraseña.Text);
-                        command.Parameters.AddWithValue("@idRol", cbRol.SelectedValue);
+
+                        int idRolParaActualizar;
+                        if (cbRol.SelectedIndex == -1 || cbRol.SelectedValue == null)
+                            idRolParaActualizar = idRolOriginal; // usa el que venía de la BD
+                        else
+                            idRolParaActualizar = Convert.ToInt32(cbRol.SelectedValue);
+
+                        command.Parameters.Add("@idRol", SqlDbType.Int).Value = idRolParaActualizar;
+
+                        // 🔒 Aseguramos que el WHERE reciba el id correcto
                         command.Parameters.AddWithValue("@idUsuario", this.idUsuario);
 
                         connection.Open();
-                        command.ExecuteNonQuery();
+
+                        // 🔎 Verificamos cuántas filas modificó el UPDATE
+                        int filas = command.ExecuteNonQuery();
+
+                        if (filas == 0)
+                        {
+                            // Si no tocó ninguna fila, el id no coincide con un registro existente
+                            MessageBox.Show(
+                                $"No se encontró el usuario con id {this.idUsuario}. No se realizó ninguna actualización.",
+                                "Sin cambios",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning
+                            );
+                            return;
+                        }
 
                         MessageBox.Show("Usuario actualizado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -170,5 +203,11 @@ namespace PuntoDeVentaGameBox
         {
             this.Close();
         }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
-}   
+}
+

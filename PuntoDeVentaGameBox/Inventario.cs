@@ -76,5 +76,10 @@ namespace PuntoDeVentaGameBox
         {
 
         }
+
+        private void InventarioForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

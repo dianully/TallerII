@@ -108,9 +108,10 @@
             // 
             // PNLScroll
             // 
+            this.PNLScroll.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.PNLScroll.Controls.Add(this.panel1);
             this.PNLScroll.Controls.Add(this.TLPContent);
-            this.PNLScroll.Location = new System.Drawing.Point(3, 3);
+            this.PNLScroll.Location = new System.Drawing.Point(7, 6);
             this.PNLScroll.Name = "PNLScroll";
             this.PNLScroll.Padding = new System.Windows.Forms.Padding(16);
             this.PNLScroll.Size = new System.Drawing.Size(877, 653);
@@ -608,6 +609,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.ClientSize = new System.Drawing.Size(901, 678);
             this.Controls.Add(this.TPLRoot);

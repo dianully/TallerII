@@ -145,7 +145,7 @@
             this.bBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bBuscar.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bBuscar.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.bBuscar.Location = new System.Drawing.Point(172, 155);
+            this.bBuscar.Location = new System.Drawing.Point(198, 155);
             this.bBuscar.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.bBuscar.Name = "bBuscar";
             this.bBuscar.Size = new System.Drawing.Size(141, 39);
@@ -161,7 +161,7 @@
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button3.Location = new System.Drawing.Point(331, 155);
+            this.button3.Location = new System.Drawing.Point(357, 155);
             this.button3.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(141, 39);
@@ -282,7 +282,7 @@
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button4.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button4.Location = new System.Drawing.Point(742, 155);
+            this.button4.Location = new System.Drawing.Point(720, 155);
             this.button4.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(208, 39);
@@ -306,17 +306,18 @@
             // 
             // button1
             // 
+            this.button1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button1.Location = new System.Drawing.Point(490, 155);
+            this.button1.Location = new System.Drawing.Point(516, 155);
             this.button1.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(235, 39);
+            this.button1.Size = new System.Drawing.Size(197, 39);
             this.button1.TabIndex = 41;
-            this.button1.Text = "Mostrar Todos Los Usuarios";
+            this.button1.Text = "Mostrar Todos";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.MostrarTodo_Click);
             // 

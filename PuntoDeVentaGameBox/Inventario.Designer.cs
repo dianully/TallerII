@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.TLRoot = new System.Windows.Forms.TableLayoutPanel();
             this.TLKPI = new System.Windows.Forms.TableLayoutPanel();
             this.CardKpi1 = new System.Windows.Forms.Panel();
@@ -91,6 +91,7 @@
             // 
             // TLRoot
             // 
+            this.TLRoot.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.TLRoot.ColumnCount = 1;
             this.TLRoot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.TLRoot.Controls.Add(this.TLKPI, 0, 0);
@@ -98,7 +99,7 @@
             this.TLRoot.Controls.Add(this.PFilters, 0, 2);
             this.TLRoot.Controls.Add(this.PListHeader, 0, 3);
             this.TLRoot.Controls.Add(this.PGrid, 0, 4);
-            this.TLRoot.Location = new System.Drawing.Point(-7, -6);
+            this.TLRoot.Location = new System.Drawing.Point(17, 32);
             this.TLRoot.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TLRoot.Name = "TLRoot";
             this.TLRoot.RowCount = 5;
@@ -546,8 +547,8 @@
             // 
             this.DGV.AllowUserToAddRows = false;
             this.DGV.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.DGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.DGV.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
             this.DGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -576,8 +577,8 @@
             // ColId
             // 
             this.ColId.DataPropertyName = "Id";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.ColId.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.ColId.DefaultCellStyle = dataGridViewCellStyle8;
             this.ColId.FillWeight = 3.788457F;
             this.ColId.HeaderText = "ID";
             this.ColId.MinimumWidth = 6;
@@ -614,9 +615,9 @@
             // ColPrecio
             // 
             this.ColPrecio.DataPropertyName = "Precio";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle3.Format = "C2";
-            this.ColPrecio.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle9.Format = "C2";
+            this.ColPrecio.DefaultCellStyle = dataGridViewCellStyle9;
             this.ColPrecio.FillWeight = 19.25784F;
             this.ColPrecio.HeaderText = "Precio";
             this.ColPrecio.MinimumWidth = 6;
@@ -664,13 +665,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.ClientSize = new System.Drawing.Size(1181, 703);
+            this.ClientSize = new System.Drawing.Size(1224, 745);
             this.Controls.Add(this.TLRoot);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "InventarioForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Inventario";
+            this.Load += new System.EventHandler(this.InventarioForm_Load);
             this.TLRoot.ResumeLayout(false);
             this.TLKPI.ResumeLayout(false);
             this.CardKpi1.ResumeLayout(false);

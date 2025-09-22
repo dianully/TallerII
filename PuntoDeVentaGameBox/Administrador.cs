@@ -23,7 +23,7 @@ namespace PuntoDeVentaGameBox
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void AbrirFormInPanel(object Formhijo)
@@ -117,11 +117,18 @@ namespace PuntoDeVentaGameBox
                 SesionUsuario.Email,
                 SesionUsuario.Telefono,
                 SesionUsuario.Contraseña,
-                nombreRol
+                nombreRol,
+                SesionUsuario.IdRol   // 👈 nuevo parámetro
             );
 
             // Usamos ShowDialog() para que la ventana de edición sea modal.
             formEdicion.ShowDialog();
         }
+
+        private void panel3_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
+

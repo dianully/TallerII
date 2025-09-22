@@ -119,12 +119,13 @@
             this.LListTitle.AutoSize = true;
             this.LListTitle.Font = new System.Drawing.Font("Segoe UI", 12.2F, System.Drawing.FontStyle.Bold);
             this.LListTitle.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.LListTitle.Location = new System.Drawing.Point(40, 41);
+            this.LListTitle.Location = new System.Drawing.Point(30, 41);
             this.LListTitle.Margin = new System.Windows.Forms.Padding(0);
             this.LListTitle.Name = "LListTitle";
-            this.LListTitle.Size = new System.Drawing.Size(88, 30);
+            this.LListTitle.Size = new System.Drawing.Size(149, 30);
             this.LListTitle.TabIndex = 25;
-            this.LListTitle.Text = "Usuario";
+            this.LListTitle.Text = "Usuario (DNI)";
+            this.LListTitle.Click += new System.EventHandler(this.LListTitle_Click);
             // 
             // panel2
             // 

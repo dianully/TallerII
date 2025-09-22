@@ -64,6 +64,7 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(800, 450);
             this.panel1.TabIndex = 1;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // pLimpiarParametros
             // 
@@ -72,7 +73,7 @@
             this.pLimpiarParametros.Controls.Add(this.panel4);
             this.pLimpiarParametros.Location = new System.Drawing.Point(59, 48);
             this.pLimpiarParametros.Name = "pLimpiarParametros";
-            this.pLimpiarParametros.Size = new System.Drawing.Size(683, 354);
+            this.pLimpiarParametros.Size = new System.Drawing.Size(692, 364);
             this.pLimpiarParametros.TabIndex = 6;
             // 
             // panel5
@@ -81,7 +82,7 @@
             this.panel5.Controls.Add(this.button1);
             this.panel5.Controls.Add(this.bSalir);
             this.panel5.Controls.Add(this.bGuardarCambios);
-            this.panel5.Location = new System.Drawing.Point(369, 41);
+            this.panel5.Location = new System.Drawing.Point(398, 41);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(246, 272);
             this.panel5.TabIndex = 1;
@@ -150,9 +151,9 @@
             this.panel4.Controls.Add(this.label1);
             this.panel4.Controls.Add(this.tEditarTelefono);
             this.panel4.Controls.Add(this.label2);
-            this.panel4.Location = new System.Drawing.Point(64, 41);
+            this.panel4.Location = new System.Drawing.Point(38, 41);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(244, 272);
+            this.panel4.Size = new System.Drawing.Size(312, 272);
             this.panel4.TabIndex = 0;
             // 
             // cbRol
@@ -163,9 +164,9 @@
             this.cbRol.Items.AddRange(new object[] {
             "Administrador",
             "Vendedor"});
-            this.cbRol.Location = new System.Drawing.Point(116, 219);
+            this.cbRol.Location = new System.Drawing.Point(126, 219);
             this.cbRol.Name = "cbRol";
-            this.cbRol.Size = new System.Drawing.Size(121, 24);
+            this.cbRol.Size = new System.Drawing.Size(158, 24);
             this.cbRol.TabIndex = 43;
             // 
             // label7
@@ -174,7 +175,7 @@
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label7.Location = new System.Drawing.Point(36, 217);
+            this.label7.Location = new System.Drawing.Point(26, 217);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(39, 23);
             this.label7.TabIndex = 42;
@@ -185,7 +186,7 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label6.Location = new System.Drawing.Point(14, 185);
+            this.label6.Location = new System.Drawing.Point(19, 187);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(101, 23);
             this.label6.TabIndex = 41;
@@ -195,14 +196,14 @@
             // 
             this.tEditarNombre.Location = new System.Drawing.Point(126, 22);
             this.tEditarNombre.Name = "tEditarNombre";
-            this.tEditarNombre.Size = new System.Drawing.Size(100, 22);
+            this.tEditarNombre.Size = new System.Drawing.Size(158, 22);
             this.tEditarNombre.TabIndex = 0;
             // 
             // tEditarApellido
             // 
             this.tEditarApellido.Location = new System.Drawing.Point(126, 55);
             this.tEditarApellido.Name = "tEditarApellido";
-            this.tEditarApellido.Size = new System.Drawing.Size(100, 22);
+            this.tEditarApellido.Size = new System.Drawing.Size(158, 22);
             this.tEditarApellido.TabIndex = 1;
             // 
             // label5
@@ -220,7 +221,7 @@
             // 
             this.tEditarDni.Location = new System.Drawing.Point(126, 88);
             this.tEditarDni.Name = "tEditarDni";
-            this.tEditarDni.Size = new System.Drawing.Size(100, 22);
+            this.tEditarDni.Size = new System.Drawing.Size(158, 22);
             this.tEditarDni.TabIndex = 2;
             // 
             // label4
@@ -228,7 +229,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label4.Location = new System.Drawing.Point(31, 119);
+            this.label4.Location = new System.Drawing.Point(21, 120);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(66, 23);
             this.label4.TabIndex = 39;
@@ -238,7 +239,7 @@
             // 
             this.tEditarContraseña.Location = new System.Drawing.Point(126, 187);
             this.tEditarContraseña.Name = "tEditarContraseña";
-            this.tEditarContraseña.Size = new System.Drawing.Size(100, 22);
+            this.tEditarContraseña.Size = new System.Drawing.Size(158, 22);
             this.tEditarContraseña.TabIndex = 5;
             // 
             // label3
@@ -246,7 +247,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label3.Location = new System.Drawing.Point(36, 88);
+            this.label3.Location = new System.Drawing.Point(21, 87);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(44, 23);
             this.label3.TabIndex = 38;
@@ -256,7 +257,7 @@
             // 
             this.tEditarEmail.Location = new System.Drawing.Point(126, 121);
             this.tEditarEmail.Name = "tEditarEmail";
-            this.tEditarEmail.Size = new System.Drawing.Size(100, 22);
+            this.tEditarEmail.Size = new System.Drawing.Size(158, 22);
             this.tEditarEmail.TabIndex = 3;
             // 
             // label1
@@ -274,7 +275,7 @@
             // 
             this.tEditarTelefono.Location = new System.Drawing.Point(126, 154);
             this.tEditarTelefono.Name = "tEditarTelefono";
-            this.tEditarTelefono.Size = new System.Drawing.Size(100, 22);
+            this.tEditarTelefono.Size = new System.Drawing.Size(158, 22);
             this.tEditarTelefono.TabIndex = 4;
             // 
             // label2
