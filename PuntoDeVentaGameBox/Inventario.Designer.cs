@@ -117,7 +117,7 @@
             this.TLKPI.ColumnCount = 3;
             this.TLKPI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.TLKPI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.TLKPI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 401F));
+            this.TLKPI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 402F));
             this.TLKPI.Controls.Add(this.CardKpi1, 0, 0);
             this.TLKPI.Controls.Add(this.CardKpi3, 2, 0);
             this.TLKPI.Controls.Add(this.CardKpi2, 1, 0);
@@ -272,7 +272,7 @@
             this.PBanner.Location = new System.Drawing.Point(11, 120);
             this.PBanner.Margin = new System.Windows.Forms.Padding(11, 10, 11, 10);
             this.PBanner.Name = "PBanner";
-            this.PBanner.Padding = new System.Windows.Forms.Padding(12, 12, 12, 12);
+            this.PBanner.Padding = new System.Windows.Forms.Padding(12);
             this.PBanner.Size = new System.Drawing.Size(1173, 100);
             this.PBanner.TabIndex = 2;
             // 
@@ -313,7 +313,7 @@
             this.PFilters.Location = new System.Drawing.Point(11, 240);
             this.PFilters.Margin = new System.Windows.Forms.Padding(11, 10, 11, 10);
             this.PFilters.Name = "PFilters";
-            this.PFilters.Padding = new System.Windows.Forms.Padding(16, 16, 16, 16);
+            this.PFilters.Padding = new System.Windows.Forms.Padding(16);
             this.PFilters.Size = new System.Drawing.Size(1173, 140);
             this.PFilters.TabIndex = 3;
             this.PFilters.Paint += new System.Windows.Forms.PaintEventHandler(this.PFilters_Paint);
@@ -496,7 +496,7 @@
             this.PListHeader.Location = new System.Drawing.Point(11, 400);
             this.PListHeader.Margin = new System.Windows.Forms.Padding(11, 10, 11, 10);
             this.PListHeader.Name = "PListHeader";
-            this.PListHeader.Padding = new System.Windows.Forms.Padding(12, 12, 12, 12);
+            this.PListHeader.Padding = new System.Windows.Forms.Padding(12);
             this.PListHeader.Size = new System.Drawing.Size(1173, 51);
             this.PListHeader.TabIndex = 4;
             // 

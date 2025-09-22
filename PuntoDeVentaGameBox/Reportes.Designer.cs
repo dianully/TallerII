@@ -30,6 +30,10 @@
         {
             this.TPLRoot = new System.Windows.Forms.TableLayoutPanel();
             this.PNLScroll = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.BExportarCVC = new System.Windows.Forms.Button();
+            this.BExportarPDF = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
             this.TLPContent = new System.Windows.Forms.TableLayoutPanel();
             this.GBPeriodo = new System.Windows.Forms.GroupBox();
             this.TLPPeriodo = new System.Windows.Forms.TableLayoutPanel();
@@ -70,12 +74,9 @@
             this.DGVProductoCVentas = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DGVProductoCTicketPromedio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label13 = new System.Windows.Forms.Label();
-            this.BExportarPDF = new System.Windows.Forms.Button();
-            this.BExportarCVC = new System.Windows.Forms.Button();
             this.TPLRoot.SuspendLayout();
             this.PNLScroll.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.TLPContent.SuspendLayout();
             this.GBPeriodo.SuspendLayout();
             this.TLPPeriodo.SuspendLayout();
@@ -89,7 +90,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.DGVTopProductos)).BeginInit();
             this.GVVendedores.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVVendedores)).BeginInit();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // TPLRoot
@@ -115,6 +115,49 @@
             this.PNLScroll.Padding = new System.Windows.Forms.Padding(16);
             this.PNLScroll.Size = new System.Drawing.Size(877, 653);
             this.PNLScroll.TabIndex = 3;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.BExportarCVC);
+            this.panel1.Controls.Add(this.BExportarPDF);
+            this.panel1.Controls.Add(this.label13);
+            this.panel1.Location = new System.Drawing.Point(16, 567);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(854, 75);
+            this.panel1.TabIndex = 1;
+            // 
+            // BExportarCVC
+            // 
+            this.BExportarCVC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(82)))), ((int)(((byte)(77)))));
+            this.BExportarCVC.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.BExportarCVC.Location = new System.Drawing.Point(428, 32);
+            this.BExportarCVC.Name = "BExportarCVC";
+            this.BExportarCVC.Size = new System.Drawing.Size(417, 35);
+            this.BExportarCVC.TabIndex = 2;
+            this.BExportarCVC.Text = "Exportar CVC";
+            this.BExportarCVC.UseVisualStyleBackColor = false;
+            // 
+            // BExportarPDF
+            // 
+            this.BExportarPDF.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(82)))), ((int)(((byte)(77)))));
+            this.BExportarPDF.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.BExportarPDF.Location = new System.Drawing.Point(14, 32);
+            this.BExportarPDF.Name = "BExportarPDF";
+            this.BExportarPDF.Size = new System.Drawing.Size(408, 35);
+            this.BExportarPDF.TabIndex = 1;
+            this.BExportarPDF.Text = "Exportar PDF";
+            this.BExportarPDF.UseVisualStyleBackColor = false;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label13.Location = new System.Drawing.Point(3, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(166, 28);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "Exportar Reporte";
             // 
             // TLPContent
             // 
@@ -560,49 +603,6 @@
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.BExportarCVC);
-            this.panel1.Controls.Add(this.BExportarPDF);
-            this.panel1.Controls.Add(this.label13);
-            this.panel1.Location = new System.Drawing.Point(16, 567);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(854, 75);
-            this.panel1.TabIndex = 1;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label13.Location = new System.Drawing.Point(3, 0);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(166, 28);
-            this.label13.TabIndex = 0;
-            this.label13.Text = "Exportar Reporte";
-            // 
-            // BExportarPDF
-            // 
-            this.BExportarPDF.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(82)))), ((int)(((byte)(77)))));
-            this.BExportarPDF.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.BExportarPDF.Location = new System.Drawing.Point(14, 32);
-            this.BExportarPDF.Name = "BExportarPDF";
-            this.BExportarPDF.Size = new System.Drawing.Size(408, 35);
-            this.BExportarPDF.TabIndex = 1;
-            this.BExportarPDF.Text = "Exportar PDF";
-            this.BExportarPDF.UseVisualStyleBackColor = false;
-            // 
-            // BExportarCVC
-            // 
-            this.BExportarCVC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(82)))), ((int)(((byte)(77)))));
-            this.BExportarCVC.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.BExportarCVC.Location = new System.Drawing.Point(428, 32);
-            this.BExportarCVC.Name = "BExportarCVC";
-            this.BExportarCVC.Size = new System.Drawing.Size(417, 35);
-            this.BExportarCVC.TabIndex = 2;
-            this.BExportarCVC.Text = "Exportar CVC";
-            this.BExportarCVC.UseVisualStyleBackColor = false;
-            // 
             // Reportes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -618,6 +618,8 @@
             this.TPLRoot.ResumeLayout(false);
             this.PNLScroll.ResumeLayout(false);
             this.PNLScroll.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.TLPContent.ResumeLayout(false);
             this.GBPeriodo.ResumeLayout(false);
             this.TLPPeriodo.ResumeLayout(false);
@@ -637,8 +639,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.DGVTopProductos)).EndInit();
             this.GVVendedores.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVVendedores)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
