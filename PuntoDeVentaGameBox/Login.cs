@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PuntoDeVentaGameBox
@@ -22,11 +15,17 @@ namespace PuntoDeVentaGameBox
 
         private void BIngresar_Click(object sender, EventArgs e)
         {
-            // Consulta SQL para buscar el usuario por DNI y contraseña, y obtener su nombre, apellido y rol
+            if (string.IsNullOrWhiteSpace(TxUsuario.Text) || string.IsNullOrWhiteSpace(TxContraseña.Text))
+            {
+                MessageBox.Show("Por favor, ingrese DNI y contraseña.", "Campos Vacíos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Consulta SQL para buscar al usuario y obtener todos sus datos
             string query = @"
-            SELECT u.nombre, u.apellido, u.id_rol
-            FROM usuario AS u
-            WHERE u.dni = @dni AND u.contraseña = @contraseña";
+                SELECT id_usuario, nombre, apellido, dni, email, telefono, contraseña, id_rol 
+                FROM usuario 
+                WHERE dni = @dni AND contraseña = @contraseña";
 
             try
             {
@@ -39,35 +38,47 @@ namespace PuntoDeVentaGameBox
 
                         connection.Open();
 
-                        SqlDataReader reader = command.ExecuteReader();
-
-                        if (reader.Read())
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            string nombre = reader["nombre"].ToString();
-                            string apellido = reader["apellido"].ToString();
-                            int idRol = Convert.ToInt32(reader["id_rol"]);
+                            if (reader.Read())
+                            {
+                                // Si se encuentra el usuario, guarda sus datos en la clase SesionUsuario
+                                SesionUsuario.IdUsuario = Convert.ToInt32(reader["id_usuario"]);
+                                SesionUsuario.Nombre = reader["nombre"].ToString();
+                                SesionUsuario.Apellido = reader["apellido"].ToString();
+                                SesionUsuario.Dni = reader["dni"].ToString();
+                                SesionUsuario.Email = reader["email"].ToString();
+                                SesionUsuario.Telefono = reader["telefono"].ToString();
+                                SesionUsuario.Contraseña = reader["contraseña"].ToString();
+                                SesionUsuario.IdRol = Convert.ToInt32(reader["id_rol"]);
 
-                            if (idRol == 1) // ID de Gerente
-                            {
-                                // Aquí puedes abrir el formulario de Gerente
-                                // Gerente formGerente = new Gerente();
-                                // formGerente.Show();
-                                MessageBox.Show("Acceso de Gerente concedido.");
-                            }
-                            else if (idRol == 2) // ID de Vendedor
-                            {
-                                Vendedor formVendedor = new Vendedor(nombre, apellido);
-                                formVendedor.Show();
-                                this.Hide();
+                                // Ahora, redirige según el rol
+                                switch (SesionUsuario.IdRol)
+                                {
+                                    case 3: // Vendedor
+                                        Vendedor formVendedor = new Vendedor();
+                                        formVendedor.Show();
+                                        this.Hide();
+                                        break;
+                                    case 2: // Administrador
+                                        Administrador formAdmin = new Administrador();
+                                        formAdmin.Show();
+                                        this.Hide();
+                                        break;
+                                    case 1: // Gerente (Asumiendo que el rol 1 es Gerente)
+                                        PanelGerente formGerente = new PanelGerente();
+                                        formGerente.Show();
+                                        this.Hide();
+                                        break;
+                                    default:
+                                        MessageBox.Show("Rol de usuario no reconocido o sin acceso.", "Acceso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        break;
+                                }
                             }
                             else
                             {
-                                MessageBox.Show("Rol de usuario no reconocido.", "Error de Rol", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                MessageBox.Show("DNI o contraseña incorrectos. Intente de nuevo.", "Error de Autenticación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
-                        }
-                        else
-                        {
-                            MessageBox.Show("DNI o contraseña incorrectos. Intente de nuevo.", "Error de Autenticación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                 }
@@ -80,27 +91,32 @@ namespace PuntoDeVentaGameBox
 
         private void Login_Load(object sender, EventArgs e)
         {
+
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
+
         }
 
         private void TxContraseña_TextChanged(object sender, EventArgs e)
         {
+
         }
 
         private void TxUsuario_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
-            {
-                e.Handled = true;
-            }
-
-            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            // Permite solo números y la tecla de retroceso
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
         }
+
+        private void bSalir_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
+

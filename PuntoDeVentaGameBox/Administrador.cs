@@ -15,7 +15,11 @@ namespace PuntoDeVentaGameBox
         public Administrador()
         {
             InitializeComponent();
+            // Asigna el nombre y apellido del usuario logueado al label lAdministrador
+            lAdministrador.Text = $"{SesionUsuario.Nombre} {SesionUsuario.Apellido}";
         }
+
+        //
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -77,7 +81,47 @@ namespace PuntoDeVentaGameBox
 
         private void BSalir_Click(object sender, EventArgs e)
         {
+            SesionUsuario.LimpiarSesion();
 
+            // Oculta el formulario actual
+            this.Hide();
+
+            // Crea una nueva instancia del formulario de Login y la muestra
+            Login loginForm = new Login();
+            loginForm.Show();
+        }
+
+        private void lAdministrador_Click_1(object sender, EventArgs e)
+        {
+            // Determina el nombre del rol basado en el IdRol
+            string nombreRol = "";
+            switch (SesionUsuario.IdRol)
+            {
+                case 2:
+                    nombreRol = "Administrador";
+                    break;
+                case 3:
+                    nombreRol = "Vendedor";
+                    break;
+                default:
+                    nombreRol = "Gerente";
+                    break;
+            }
+
+            // Abre el formulario de edición, pasando los datos del usuario actual desde la sesión
+            EdicionUsuario formEdicion = new EdicionUsuario(
+                SesionUsuario.IdUsuario,
+                SesionUsuario.Nombre,
+                SesionUsuario.Apellido,
+                SesionUsuario.Dni,
+                SesionUsuario.Email,
+                SesionUsuario.Telefono,
+                SesionUsuario.Contraseña,
+                nombreRol
+            );
+
+            // Usamos ShowDialog() para que la ventana de edición sea modal.
+            formEdicion.ShowDialog();
         }
     }
 }

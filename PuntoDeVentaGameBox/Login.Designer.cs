@@ -31,7 +31,7 @@
             this.TxUsuario = new System.Windows.Forms.TextBox();
             this.TxContraseña = new System.Windows.Forms.TextBox();
             this.BAplicar = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.bSalir = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.LListTitle = new System.Windows.Forms.Label();
@@ -74,20 +74,21 @@
             this.BAplicar.UseVisualStyleBackColor = false;
             this.BAplicar.Click += new System.EventHandler(this.BIngresar_Click);
             // 
-            // button1
+            // bSalir
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button1.Location = new System.Drawing.Point(348, 329);
-            this.button1.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(141, 39);
-            this.button1.TabIndex = 23;
-            this.button1.Text = "Salir";
-            this.button1.UseVisualStyleBackColor = false;
+            this.bSalir.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bSalir.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.bSalir.FlatAppearance.BorderSize = 0;
+            this.bSalir.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bSalir.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.bSalir.Location = new System.Drawing.Point(348, 329);
+            this.bSalir.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.bSalir.Name = "bSalir";
+            this.bSalir.Size = new System.Drawing.Size(141, 39);
+            this.bSalir.TabIndex = 23;
+            this.bSalir.Text = "Salir";
+            this.bSalir.UseVisualStyleBackColor = false;
+            this.bSalir.Click += new System.EventHandler(this.bSalir_Click);
             // 
             // panel1
             // 
@@ -132,7 +133,7 @@
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.panel1);
-            this.panel2.Controls.Add(this.button1);
+            this.panel2.Controls.Add(this.bSalir);
             this.panel2.Controls.Add(this.BAplicar);
             this.panel2.Location = new System.Drawing.Point(274, 124);
             this.panel2.Name = "panel2";
@@ -159,6 +160,7 @@
             this.ClientSize = new System.Drawing.Size(1181, 703);
             this.Controls.Add(this.panel2);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Login";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Inicio de Sesion";
@@ -175,7 +177,7 @@
         private System.Windows.Forms.TextBox TxUsuario;
         private System.Windows.Forms.TextBox TxContraseña;
         private System.Windows.Forms.Button BAplicar;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button bSalir;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label LListTitle;
