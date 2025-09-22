@@ -33,7 +33,6 @@ namespace PuntoDeVentaGameBox
             dataGridView1.ClearSelection();
         }
 
-        // Método para cargar los roles en el ComboBox
         private void CargarRoles()
         {
             string query = "SELECT id_rol, nombre FROM rol ORDER BY id_rol;";
@@ -49,9 +48,8 @@ namespace PuntoDeVentaGameBox
                     cbRol.DisplayMember = "nombre";
                     cbRol.ValueMember = "id_rol";
 
-                    // Agrega la opción "Todos" al inicio
                     DataRow newRow = rolesTable.NewRow();
-                    newRow["id_rol"] = -1; // Un valor que no exista en la base de datos
+                    newRow["id_rol"] = -1;
                     newRow["nombre"] = "Todos";
                     rolesTable.Rows.InsertAt(newRow, 0);
 
@@ -64,10 +62,8 @@ namespace PuntoDeVentaGameBox
             }
         }
 
-        // Método unificado para refrescar la tabla
         private void RefrescarTabla(SqlDataAdapter adapter)
         {
-            // Limpia las columnas existentes para evitar duplicados al recargar la tabla
             dataGridView1.Columns.Clear();
 
             DataTable table = new DataTable();
@@ -78,11 +74,14 @@ namespace PuntoDeVentaGameBox
             {
                 dataGridView1.Columns["id_usuario"].Visible = false;
             }
+            if (dataGridView1.Columns.Contains("contraseña"))
+            {
+                dataGridView1.Columns["contraseña"].Visible = false;
+            }
 
-            // Agrega las columnas de los botones solo después de que se ha cargado la tabla
             DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
             btnEliminar.Name = "Eliminar";
-            btnEliminar.HeaderText = ""; // Sin encabezado
+            btnEliminar.HeaderText = "";
             btnEliminar.Text = "Eliminar";
             btnEliminar.UseColumnTextForButtonValue = true;
             btnEliminar.FlatStyle = FlatStyle.Popup;
@@ -96,7 +95,6 @@ namespace PuntoDeVentaGameBox
             btnEditar.FlatStyle = FlatStyle.Popup;
             dataGridView1.Columns.Add(btnEditar);
 
-            // Ancho equitativo de columnas
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
@@ -112,6 +110,7 @@ namespace PuntoDeVentaGameBox
                 u.dni AS 'DNI',
                 u.email AS 'Correo',
                 u.telefono AS 'Telefono',
+                u.contraseña,
                 r.nombre AS 'Rol'
             FROM
                 usuario AS u
@@ -159,9 +158,10 @@ namespace PuntoDeVentaGameBox
                     string dni = fila.Cells["DNI"].Value.ToString();
                     string email = fila.Cells["Correo"].Value.ToString();
                     string telefono = fila.Cells["Telefono"].Value.ToString();
+                    string contraseña = fila.Cells["contraseña"].Value.ToString(); // Obtiene el valor de la contraseña
                     string rol = fila.Cells["Rol"].Value.ToString();
 
-                    EdicionUsuario formEditar = new EdicionUsuario(idUsuario, nombre, apellido, dni, email, telefono);
+                    EdicionUsuario formEditar = new EdicionUsuario(idUsuario, nombre, apellido, dni, email, telefono, contraseña, rol);
                     formEditar.ShowDialog();
                     CargarDatos();
                 }
@@ -203,6 +203,7 @@ namespace PuntoDeVentaGameBox
                     u.dni AS 'DNI',
                     u.email AS 'Correo',
                     u.telefono AS 'Telefono',
+                    u.contraseña,
                     r.nombre AS 'Rol'
                 FROM
                     usuario AS u
@@ -235,7 +236,6 @@ namespace PuntoDeVentaGameBox
 
             if (conditions.Count > 0)
             {
-                // Unimos las condiciones con AND para que la búsqueda sea precisa
                 query += " WHERE " + string.Join(" AND ", conditions);
             }
 
@@ -286,7 +286,7 @@ namespace PuntoDeVentaGameBox
             tbBusquedaDNI.Clear();
             tbCorreo.Clear();
             tbTelefono.Clear();
-            cbRol.SelectedIndex = 0; // Vuelve a seleccionar "Todos"
+            cbRol.SelectedIndex = 0;
             CargarDatos();
         }
 
@@ -303,6 +303,22 @@ namespace PuntoDeVentaGameBox
 
         private void LSub_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void tbBusquedaDNI_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permite los números, la tecla de retroceso (BackSpace) y el punto decimal
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true; // Deshabilita la tecla si no es un número o un punto
+            }
+
+            // Solo permite un punto decimal
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
 
         }
     }

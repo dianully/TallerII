@@ -136,6 +136,7 @@
             this.tbBusquedaDNI.Size = new System.Drawing.Size(181, 22);
             this.tbBusquedaDNI.TabIndex = 35;
             this.tbBusquedaDNI.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.tbBusquedaDNI.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbBusquedaDNI_KeyPress);
             // 
             // bBuscar
             // 
@@ -250,6 +251,7 @@
             this.tbTelefono.Name = "tbTelefono";
             this.tbTelefono.Size = new System.Drawing.Size(181, 22);
             this.tbTelefono.TabIndex = 35;
+            this.tbTelefono.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbBusquedaDNI_KeyPress);
             // 
             // label3
             // 
@@ -280,7 +282,7 @@
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button4.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button4.Location = new System.Drawing.Point(732, 155);
+            this.button4.Location = new System.Drawing.Point(742, 155);
             this.button4.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(208, 39);
@@ -309,7 +311,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button1.Location = new System.Drawing.Point(479, 155);
+            this.button1.Location = new System.Drawing.Point(490, 155);
             this.button1.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(235, 39);
