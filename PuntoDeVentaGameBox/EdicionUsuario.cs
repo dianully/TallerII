@@ -20,6 +20,14 @@ namespace PuntoDeVentaGameBox
         public EdicionUsuario(int id, string nombre, string apellido, string dni, string email, string telefono, string contraseña, string rol, int idRol)
         {
             InitializeComponent();
+
+            // 👉 Solo números en DNI y Teléfono
+            AttachNumericOnlyHandlers();
+
+            // 👉 Limites de longitud
+            tEditarDni.MaxLength = 8;
+            tEditarTelefono.MaxLength = 10;
+
             CargarRoles();
 
             this.idUsuario = id;
@@ -52,6 +60,13 @@ namespace PuntoDeVentaGameBox
         public EdicionUsuario()
         {
             InitializeComponent();
+
+            // 👉 Solo números en DNI y Teléfono
+            AttachNumericOnlyHandlers();
+
+            // 👉 Limites de longitud
+            tEditarDni.MaxLength = 8;
+            tEditarTelefono.MaxLength = 10;
         }
 
         private void CargarRoles()
@@ -85,6 +100,23 @@ namespace PuntoDeVentaGameBox
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@dni", dni);
+                    command.Parameters.AddWithValue("@idUsuario", idUsuarioActual);
+                    connection.Open();
+                    int count = (int)command.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
+
+        // 🔎 validación de email único
+        private bool EmailYaExiste(string email, int idUsuarioActual)
+        {
+            string query = "SELECT COUNT(*) FROM usuario WHERE email = @email AND id_usuario != @idUsuario";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@email", email);
                     command.Parameters.AddWithValue("@idUsuario", idUsuarioActual);
                     connection.Open();
                     int count = (int)command.ExecuteScalar();
@@ -133,6 +165,13 @@ namespace PuntoDeVentaGameBox
             if (!tEditarEmail.Text.Contains("@") || !tEditarEmail.Text.EndsWith(".com"))
             {
                 MessageBox.Show("El correo electrónico debe tener el formato 'nombre@dominio.com'.", "Correo Inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // ✅ bloquear correos duplicados
+            if (EmailYaExiste(tEditarEmail.Text, this.idUsuario))
+            {
+                MessageBox.Show("Este correo electronico ya está registrado. Por favor inserte otro.", "Correo Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -208,6 +247,50 @@ namespace PuntoDeVentaGameBox
         {
 
         }
+
+        // ======== SOLO NÚMEROS EN DNI Y TELÉFONO ========
+
+        /// <summary>
+        /// Engancha handlers para permitir únicamente dígitos en DNI y Teléfono.
+        /// Bloquea caracteres no numéricos y filtra pegados (Ctrl+V).
+        /// </summary>
+        private void AttachNumericOnlyHandlers()
+        {
+            tEditarDni.KeyPress += SoloDigitos_KeyPress;
+            tEditarTelefono.KeyPress += SoloDigitos_KeyPress;
+
+            tEditarDni.TextChanged += SoloDigitos_TextChanged;
+            tEditarTelefono.TextChanged += SoloDigitos_TextChanged;
+        }
+
+        private void SoloDigitos_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permite teclas de control (Backspace, Delete, flechas, Ctrl+C/V/X, etc.)
+            if (char.IsControl(e.KeyChar))
+                return;
+
+            // Acepta solo dígitos
+            if (!char.IsDigit(e.KeyChar))
+                e.Handled = true;
+        }
+
+        private void SoloDigitos_TextChanged(object sender, EventArgs e)
+        {
+            // Filtra contenido pegado para que queden solo números
+            var tb = sender as TextBox;
+            if (tb == null) return;
+
+            int sel = tb.SelectionStart;
+            string soloDigitos = new string(tb.Text.Where(char.IsDigit).ToArray());
+            if (soloDigitos != tb.Text)
+            {
+                tb.Text = soloDigitos;
+                // reubicar el cursor sin saltos raros
+                tb.SelectionStart = Math.Min(sel, tb.Text.Length);
+            }
+        }
     }
 }
+
+
 

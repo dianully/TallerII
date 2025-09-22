@@ -32,6 +32,12 @@ namespace PuntoDeVentaGameBox
             CargarRoles();
             CargarDatos();
             dataGridView1.ClearSelection();
+
+            // 🔒 Limitar el campo de búsqueda por DNI a 8 caracteres
+            tbBusquedaDNI.MaxLength = 8;
+
+            // 🔒 Limitar el campo de búsqueda por Teléfono a 10 caracteres
+            tbTelefono.MaxLength = 10;
         }
 
         private void CargarRoles()
@@ -329,6 +335,13 @@ namespace PuntoDeVentaGameBox
             }
 
         }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }
+
+
 
