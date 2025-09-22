@@ -305,5 +305,21 @@ namespace PuntoDeVentaGameBox
         {
 
         }
+
+        private void tbBusquedaDNI_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permite los números, la tecla de retroceso (BackSpace) y el punto decimal
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true; // Deshabilita la tecla si no es un número o un punto
+            }
+
+            // Solo permite un punto decimal
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+
+        }
     }
 }

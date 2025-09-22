@@ -136,6 +136,7 @@
             this.tbBusquedaDNI.Size = new System.Drawing.Size(181, 22);
             this.tbBusquedaDNI.TabIndex = 35;
             this.tbBusquedaDNI.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.tbBusquedaDNI.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbBusquedaDNI_KeyPress);
             // 
             // bBuscar
             // 
@@ -250,6 +251,7 @@
             this.tbTelefono.Name = "tbTelefono";
             this.tbTelefono.Size = new System.Drawing.Size(181, 22);
             this.tbTelefono.TabIndex = 35;
+            this.tbTelefono.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbBusquedaDNI_KeyPress);
             // 
             // label3
             // 
