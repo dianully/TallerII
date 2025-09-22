@@ -165,10 +165,10 @@
             this.CBFiltroProveedores.Items.AddRange(new object[] {
             "Todos",
             "Recientes"});
-            this.CBFiltroProveedores.Location = new System.Drawing.Point(514, 40);
+            this.CBFiltroProveedores.Location = new System.Drawing.Point(514, 39);
             this.CBFiltroProveedores.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.CBFiltroProveedores.Name = "CBFiltroProveedores";
-            this.CBFiltroProveedores.Size = new System.Drawing.Size(145, 22);
+            this.CBFiltroProveedores.Size = new System.Drawing.Size(145, 25);
             this.CBFiltroProveedores.TabIndex = 3;
             // 
             // LCantProveedores
@@ -178,9 +178,9 @@
             this.LCantProveedores.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.LCantProveedores.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LCantProveedores.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.LCantProveedores.Location = new System.Drawing.Point(694, 41);
+            this.LCantProveedores.Location = new System.Drawing.Point(683, 39);
             this.LCantProveedores.Name = "LCantProveedores";
-            this.LCantProveedores.Size = new System.Drawing.Size(97, 19);
+            this.LCantProveedores.Size = new System.Drawing.Size(119, 23);
             this.LCantProveedores.TabIndex = 4;
             this.LCantProveedores.Text = "0 Proveedores";
             // 
@@ -203,16 +203,16 @@
             // 
             this.TBBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.TBBuscar.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TBBuscar.Location = new System.Drawing.Point(168, 38);
+            this.TBBuscar.Location = new System.Drawing.Point(168, 36);
             this.TBBuscar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.TBBuscar.Name = "TBBuscar";
-            this.TBBuscar.Size = new System.Drawing.Size(211, 26);
+            this.TBBuscar.Size = new System.Drawing.Size(211, 30);
             this.TBBuscar.TabIndex = 2;
             this.TBBuscar.Text = "Buscar por Nombre o Correo";
             // 
             // Proveedores
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.ClientSize = new System.Drawing.Size(846, 538);
