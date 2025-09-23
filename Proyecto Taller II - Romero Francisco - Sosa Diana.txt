@@ -1,0 +1,26 @@
+Proyecto Taller II - Romero Francisco Ignacio - Sosa Diana Abril
+
+Link del repositorio:
+
+Usuarios:
+- Administrador
+	Usuario: 12345678
+	Contraseña:admi
+- Gerente
+	Usuario: 90890988
+	Contraseña: dianully
+- Vendedor
+	Usuario: 74125898
+	Contraseña: nosi
+
+Link al GitHub del proyecto:
+https://github.com/dianully/TallerII
+
+Actualizaciones respecto de la defensa:
+* Se agregaron restricciones faltantes(Vista de ADMINISTRADOR - Alta usuario)
+	Ahora los campos de DNI y teléfono solo aceptan caracteres numéricos.
+
+* Se han agregado funcionalidades faltantes(Vista de GERENTE):
+	Ahora están las vistas de "Agregar y Editar producto" y "Agregar y Editar Proveedores"
+	
+	
