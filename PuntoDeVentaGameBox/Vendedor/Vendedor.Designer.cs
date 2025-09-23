@@ -392,10 +392,11 @@
             // 
             // lVendedor
             // 
+            this.lVendedor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lVendedor.AutoSize = true;
             this.lVendedor.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lVendedor.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lVendedor.Location = new System.Drawing.Point(1007, 9);
+            this.lVendedor.Location = new System.Drawing.Point(932, 9);
             this.lVendedor.Name = "lVendedor";
             this.lVendedor.Size = new System.Drawing.Size(163, 38);
             this.lVendedor.TabIndex = 1;

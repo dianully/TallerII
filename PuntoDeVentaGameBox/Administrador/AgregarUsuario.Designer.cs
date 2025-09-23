@@ -60,6 +60,7 @@
             // tTelefono
             // 
             this.tTelefono.Location = new System.Drawing.Point(122, 175);
+            this.tTelefono.MaxLength = 10;
             this.tTelefono.Name = "tTelefono";
             this.tTelefono.Size = new System.Drawing.Size(100, 22);
             this.tTelefono.TabIndex = 4;
@@ -75,10 +76,10 @@
             // tDni
             // 
             this.tDni.Location = new System.Drawing.Point(122, 109);
+            this.tDni.MaxLength = 8;
             this.tDni.Name = "tDni";
             this.tDni.Size = new System.Drawing.Size(100, 22);
             this.tDni.TabIndex = 2;
-           
             // 
             // tApellido
             // 
