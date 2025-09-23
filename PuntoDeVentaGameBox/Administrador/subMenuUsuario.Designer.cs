@@ -1,4 +1,4 @@
-﻿namespace PuntoDeVentaGameBox
+﻿namespace PuntoDeVentaGameBox.Administrador
 {
     partial class subMenuUsuario
     {

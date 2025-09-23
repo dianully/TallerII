@@ -7,32 +7,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PuntoDeVentaGameBox.Vendedor;
+using PuntoDeVentaGameBox.Administrador;
+using PuntoDeVentaGameBox.Gerente;
 
-namespace PuntoDeVentaGameBox
+namespace PuntoDeVentaGameBox.Gerente
 {
-    public partial class Administrador : Form
+    public partial class PanelGerente : Form
     {
-        public Administrador()
+        public PanelGerente()
         {
             InitializeComponent();
-            // Asigna el nombre y apellido del usuario logueado al label lAdministrador
-            lAdministrador.Text = $"{SesionUsuario.Nombre} {SesionUsuario.Apellido}";
+
+
+            // Asigna el nombre y apellido desde la clase SesionUsuario al label
+            LNombreUsuario.Text = $"{SesionUsuario.Nombre} {SesionUsuario.Apellido}";
+
+            // La siguiente línea fue eliminada para evitar que el evento se registre dos veces
+            // this.lVendedor.Click += new System.EventHandler(this.lVendedor_Click_1);
         }
-
-        //
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void AbrirFormInPanel(object Formhijo)
         {
             // Verifica si el panel ya tiene un formulario y lo cierra
-            if (this.panel3.Controls.Count > 0)
+            if (this.PVistaGerente.Controls.Count > 0)
             {
                 // Remueve el formulario anterior
-                this.panel3.Controls.RemoveAt(0);
+                this.PVistaGerente.Controls.RemoveAt(0);
             }
 
             // Convierte el objeto a un formulario para poder usar sus propiedades
@@ -48,35 +48,37 @@ namespace PuntoDeVentaGameBox
             fh.Dock = DockStyle.Fill;
 
             // Agrega el formulario al panel
-            this.panel3.Controls.Add(fh);
+            this.PVistaGerente.Controls.Add(fh);
 
             // Muestra el formulario
             fh.Show();
         }
 
-        private void BUsuarios_Click(object sender, EventArgs e)
-        {
-            AbrirFormInPanel(new subMenuUsuario());
-        }
 
-        private void BCopiaDeSeguridad_Click(object sender, EventArgs e)
-        {
-            AbrirFormInPanel(new subMenuCopiaDeSeguridad());
-        }
 
-        private void LTitle_Click(object sender, EventArgs e)
+        private void PVistaGerente_Paint(object sender, PaintEventArgs e)
         {
 
         }
 
-        private void Administrador_Load(object sender, EventArgs e)
+        private void PanelGerente_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void label3_Click(object sender, EventArgs e)
+        private void BInventario_Click(object sender, EventArgs e)
         {
+            AbrirFormInPanel(new InventarioForm());
+        }
 
+        private void BReportes_Click(object sender, EventArgs e)
+        {
+            AbrirFormInPanel(new Reportes());
+        }
+
+        private void BProveedores_Click(object sender, EventArgs e)
+        {
+            AbrirFormInPanel(new Proveedores());
         }
 
         private void BSalir_Click(object sender, EventArgs e)
@@ -89,10 +91,12 @@ namespace PuntoDeVentaGameBox
             // Crea una nueva instancia del formulario de Login y la muestra
             Login loginForm = new Login();
             loginForm.Show();
+
         }
 
-        private void lAdministrador_Click_1(object sender, EventArgs e)
+        private void label1_Click(object sender, EventArgs e)
         {
+
             // Determina el nombre del rol basado en el IdRol
             string nombreRol = "";
             switch (SesionUsuario.IdRol)
@@ -119,16 +123,13 @@ namespace PuntoDeVentaGameBox
                 SesionUsuario.Contraseña,
                 nombreRol,
                 SesionUsuario.IdRol   // 👈 nuevo parámetro
+
             );
 
             // Usamos ShowDialog() para que la ventana de edición sea modal.
             formEdicion.ShowDialog();
         }
-
-        private void panel3_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
     }
+
 }
 

@@ -7,78 +7,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PuntoDeVentaGameBox.Vendedor;
+using PuntoDeVentaGameBox.Administrador;
+using PuntoDeVentaGameBox.Gerente;
 
-namespace PuntoDeVentaGameBox
+namespace PuntoDeVentaGameBox.Vendedor
 {
-    public partial class PanelGerente : Form
+    public partial class Vendedor : Form
     {
-        public PanelGerente()
+        // Constructor
+        public Vendedor()
         {
             InitializeComponent();
-
-
             // Asigna el nombre y apellido desde la clase SesionUsuario al label
-            LNombreUsuario.Text = $"{SesionUsuario.Nombre} {SesionUsuario.Apellido}";
+            lVendedor.Text = $"{SesionUsuario.Nombre} {SesionUsuario.Apellido}";
 
             // La siguiente línea fue eliminada para evitar que el evento se registre dos veces
             // this.lVendedor.Click += new System.EventHandler(this.lVendedor_Click_1);
         }
-        private void AbrirFormInPanel(object Formhijo)
-        {
-            // Verifica si el panel ya tiene un formulario y lo cierra
-            if (this.PVistaGerente.Controls.Count > 0)
-            {
-                // Remueve el formulario anterior
-                this.PVistaGerente.Controls.RemoveAt(0);
-            }
 
-            // Convierte el objeto a un formulario para poder usar sus propiedades
-            Form fh = Formhijo as Form;
+        string conecctionString = "server=localhost;Database=game_box;Trusted_Connection=True";
 
-            // Le dice al formulario que no es una ventana independiente
-            fh.TopLevel = false;
-
-            // Lo hace invisible para el usuario antes de agregarlo
-            fh.FormBorderStyle = FormBorderStyle.None;
-
-            // Ancla el formulario para que llene todo el panel
-            fh.Dock = DockStyle.Fill;
-
-            // Agrega el formulario al panel
-            this.PVistaGerente.Controls.Add(fh);
-
-            // Muestra el formulario
-            fh.Show();
-        }
-
-
-
-        private void PVistaGerente_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void PanelGerente_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BInventario_Click(object sender, EventArgs e)
-        {
-            AbrirFormInPanel(new InventarioForm());
-        }
-
-        private void BReportes_Click(object sender, EventArgs e)
-        {
-            AbrirFormInPanel(new Reportes());
-        }
-
-        private void BProveedores_Click(object sender, EventArgs e)
-        {
-            AbrirFormInPanel(new Proveedores());
-        }
-
-        private void BSalir_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
             SesionUsuario.LimpiarSesion();
 
@@ -88,12 +38,33 @@ namespace PuntoDeVentaGameBox
             // Crea una nueva instancia del formulario de Login y la muestra
             Login loginForm = new Login();
             loginForm.Show();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbElegirUsuario.SelectedItem != null)
+            {
+                string rolSeleccionado = cbElegirUsuario.SelectedItem.ToString();
+                string rolDeseado = "Nuevo Cliente";
+
+                if (rolSeleccionado == rolDeseado)
+                {
+                    gbCliente.Enabled = true;
+                }
+                else
+                {
+                    gbCliente.Enabled = false;
+                }
+            }
+        }
+
+        private void gbCliente_Enter(object sender, EventArgs e)
+        {
 
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void lVendedor_Click_1(object sender, EventArgs e)
         {
-
             // Determina el nombre del rol basado en el IdRol
             string nombreRol = "";
             switch (SesionUsuario.IdRol)
@@ -120,13 +91,11 @@ namespace PuntoDeVentaGameBox
                 SesionUsuario.Contraseña,
                 nombreRol,
                 SesionUsuario.IdRol   // 👈 nuevo parámetro
-
             );
 
             // Usamos ShowDialog() para que la ventana de edición sea modal.
             formEdicion.ShowDialog();
         }
     }
-
 }
 

@@ -1,4 +1,4 @@
-﻿namespace PuntoDeVentaGameBox
+﻿namespace PuntoDeVentaGameBox.Gerente
 {
     partial class PanelGerente
     {

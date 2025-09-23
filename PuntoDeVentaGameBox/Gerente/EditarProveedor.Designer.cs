@@ -1,6 +1,6 @@
-﻿namespace PuntoDeVentaGameBox
+﻿namespace PuntoDeVentaGameBox.Gerente
 {
-    partial class AgregarProveedor
+    partial class EditarProveedor
     {
         /// <summary>
         /// Required designer variable.
@@ -56,7 +56,7 @@
             this.panel3.Location = new System.Drawing.Point(59, 48);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(683, 354);
-            this.panel3.TabIndex = 2;
+            this.panel3.TabIndex = 3;
             // 
             // PanelAcciones
             // 
@@ -96,7 +96,7 @@
             this.BRegistrarProveedor.Name = "BRegistrarProveedor";
             this.BRegistrarProveedor.Size = new System.Drawing.Size(178, 39);
             this.BRegistrarProveedor.TabIndex = 43;
-            this.BRegistrarProveedor.Text = "Registrar Proveedor";
+            this.BRegistrarProveedor.Text = "Guardar Cambios";
             this.BRegistrarProveedor.UseVisualStyleBackColor = false;
             // 
             // PDatosProveedores
@@ -149,7 +149,6 @@
             this.LDireccion.Size = new System.Drawing.Size(85, 23);
             this.LDireccion.TabIndex = 38;
             this.LDireccion.Text = "Direccion:";
-            this.LDireccion.Click += new System.EventHandler(this.label3_Click);
             // 
             // LApellido
             // 
@@ -208,7 +207,7 @@
             this.TBDireccion.Size = new System.Drawing.Size(100, 22);
             this.TBDireccion.TabIndex = 2;
             // 
-            // AgregarProveedor
+            // EditarProveedor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -216,9 +215,9 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.panel3);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "AgregarProveedor";
+            this.Name = "EditarProveedor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "AgregarProveedor";
+            this.Text = "EditarProveedor";
             this.panel3.ResumeLayout(false);
             this.PanelAcciones.ResumeLayout(false);
             this.PDatosProveedores.ResumeLayout(false);

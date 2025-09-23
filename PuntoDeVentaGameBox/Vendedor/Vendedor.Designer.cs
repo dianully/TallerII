@@ -1,4 +1,4 @@
-﻿namespace PuntoDeVentaGameBox
+﻿namespace PuntoDeVentaGameBox.Vendedor
 {
     partial class Vendedor
     {

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using PuntoDeVentaGameBox.Vendedor;
+using PuntoDeVentaGameBox.Administrador;
+using PuntoDeVentaGameBox.Gerente;
 
 namespace PuntoDeVentaGameBox
 {
@@ -56,12 +59,12 @@ namespace PuntoDeVentaGameBox
                                 switch (SesionUsuario.IdRol)
                                 {
                                     case 3: // Vendedor
-                                        Vendedor formVendedor = new Vendedor();
+                                        PuntoDeVentaGameBox.Vendedor.Vendedor formVendedor = new PuntoDeVentaGameBox.Vendedor.Vendedor();
                                         formVendedor.Show();
                                         this.Hide();
                                         break;
                                     case 2: // Administrador
-                                        Administrador formAdmin = new Administrador();
+                                        PuntoDeVentaGameBox.Administrador.Administrador formAdmin = new PuntoDeVentaGameBox.Administrador.Administrador();
                                         formAdmin.Show();
                                         this.Hide();
                                         break;

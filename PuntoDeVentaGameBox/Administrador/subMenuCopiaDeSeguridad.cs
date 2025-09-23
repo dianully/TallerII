@@ -7,8 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PuntoDeVentaGameBox.Vendedor;
+using PuntoDeVentaGameBox.Administrador;
+using PuntoDeVentaGameBox.Gerente;
 
-namespace PuntoDeVentaGameBox
+namespace PuntoDeVentaGameBox.Administrador
 {
     public partial class subMenuCopiaDeSeguridad : Form
     {

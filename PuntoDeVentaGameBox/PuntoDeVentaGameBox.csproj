@@ -47,70 +47,70 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Administrador.cs">
+    <Compile Include="Administrador\Administrador.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Administrador.Designer.cs">
+    <Compile Include="Administrador\Administrador.Designer.cs">
       <DependentUpon>Administrador.cs</DependentUpon>
     </Compile>
-    <Compile Include="AgregarProducto.cs">
+    <Compile Include="Gerente\AgregarProducto.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AgregarProducto.Designer.cs">
+    <Compile Include="Gerente\AgregarProducto.Designer.cs">
       <DependentUpon>AgregarProducto.cs</DependentUpon>
     </Compile>
-    <Compile Include="AgregarProveedor.cs">
+    <Compile Include="Gerente\AgregarProveedor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AgregarProveedor.Designer.cs">
+    <Compile Include="Gerente\AgregarProveedor.Designer.cs">
       <DependentUpon>AgregarProveedor.cs</DependentUpon>
     </Compile>
-    <Compile Include="AgregarUsuario.cs">
+    <Compile Include="Administrador\AgregarUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AgregarUsuario.Designer.cs">
+    <Compile Include="Administrador\AgregarUsuario.Designer.cs">
       <DependentUpon>AgregarUsuario.cs</DependentUpon>
     </Compile>
-    <Compile Include="EdicionUsuario.cs">
+    <Compile Include="Administrador\EdicionUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EdicionUsuario.Designer.cs">
+    <Compile Include="Administrador\EdicionUsuario.Designer.cs">
       <DependentUpon>EdicionUsuario.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditarProducto.cs">
+    <Compile Include="Gerente\EditarProducto.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditarProducto.Designer.cs">
+    <Compile Include="Gerente\EditarProducto.Designer.cs">
       <DependentUpon>EditarProducto.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditarProveedor.cs">
+    <Compile Include="Gerente\EditarProveedor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditarProveedor.Designer.cs">
+    <Compile Include="Gerente\EditarProveedor.Designer.cs">
       <DependentUpon>EditarProveedor.cs</DependentUpon>
     </Compile>
-    <Compile Include="PanelGerente.cs">
+    <Compile Include="Gerente\PanelGerente.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PanelGerente.Designer.cs">
+    <Compile Include="Gerente\PanelGerente.Designer.cs">
       <DependentUpon>PanelGerente.cs</DependentUpon>
     </Compile>
-    <Compile Include="Proveedores.cs">
+    <Compile Include="Gerente\Proveedores.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Proveedores.Designer.cs">
+    <Compile Include="Gerente\Proveedores.Designer.cs">
       <DependentUpon>Proveedores.cs</DependentUpon>
     </Compile>
-    <Compile Include="Reportes.cs">
+    <Compile Include="Gerente\Reportes.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Reportes.Designer.cs">
+    <Compile Include="Gerente\Reportes.Designer.cs">
       <DependentUpon>Reportes.cs</DependentUpon>
     </Compile>
-    <Compile Include="Inventario.cs">
+    <Compile Include="Gerente\Inventario.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Inventario.Designer.cs">
+    <Compile Include="Gerente\Inventario.Designer.cs">
       <DependentUpon>Inventario.cs</DependentUpon>
     </Compile>
     <Compile Include="Login.cs">
@@ -122,55 +122,55 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SesionUsuario.cs" />
-    <Compile Include="subMenuCopiaDeSeguridad.cs">
+    <Compile Include="Administrador\subMenuCopiaDeSeguridad.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="subMenuCopiaDeSeguridad.Designer.cs">
+    <Compile Include="Administrador\subMenuCopiaDeSeguridad.Designer.cs">
       <DependentUpon>subMenuCopiaDeSeguridad.cs</DependentUpon>
     </Compile>
-    <Compile Include="subMenuUsuario.cs">
+    <Compile Include="Administrador\subMenuUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="subMenuUsuario.Designer.cs">
+    <Compile Include="Administrador\subMenuUsuario.Designer.cs">
       <DependentUpon>subMenuUsuario.cs</DependentUpon>
     </Compile>
-    <Compile Include="Vendedor.cs">
+    <Compile Include="Vendedor\Vendedor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Vendedor.Designer.cs">
+    <Compile Include="Vendedor\Vendedor.Designer.cs">
       <DependentUpon>Vendedor.cs</DependentUpon>
     </Compile>
-    <Compile Include="VistaAdministrador.cs">
+    <Compile Include="Administrador\VistaAdministrador.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="VistaAdministrador.Designer.cs">
+    <Compile Include="Administrador\VistaAdministrador.Designer.cs">
       <DependentUpon>VistaAdministrador.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Administrador.resx">
+    <EmbeddedResource Include="Administrador\Administrador.resx">
       <DependentUpon>Administrador.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AgregarProducto.resx">
+    <EmbeddedResource Include="Gerente\AgregarProducto.resx">
       <DependentUpon>AgregarProducto.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AgregarProveedor.resx">
+    <EmbeddedResource Include="Gerente\AgregarProveedor.resx">
       <DependentUpon>AgregarProveedor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AgregarUsuario.resx">
+    <EmbeddedResource Include="Administrador\AgregarUsuario.resx">
       <DependentUpon>AgregarUsuario.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EdicionUsuario.resx">
+    <EmbeddedResource Include="Administrador\EdicionUsuario.resx">
       <DependentUpon>EdicionUsuario.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EditarProducto.resx">
+    <EmbeddedResource Include="Gerente\EditarProducto.resx">
       <DependentUpon>EditarProducto.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EditarProveedor.resx">
+    <EmbeddedResource Include="Gerente\EditarProveedor.resx">
       <DependentUpon>EditarProveedor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PanelGerente.resx">
+    <EmbeddedResource Include="Gerente\PanelGerente.resx">
       <DependentUpon>PanelGerente.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Inventario.resx">
+    <EmbeddedResource Include="Gerente\Inventario.resx">
       <DependentUpon>Inventario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
@@ -185,22 +185,22 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Proveedores.resx">
+    <EmbeddedResource Include="Gerente\Proveedores.resx">
       <DependentUpon>Proveedores.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reportes.resx">
+    <EmbeddedResource Include="Gerente\Reportes.resx">
       <DependentUpon>Reportes.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="subMenuCopiaDeSeguridad.resx">
+    <EmbeddedResource Include="Administrador\subMenuCopiaDeSeguridad.resx">
       <DependentUpon>subMenuCopiaDeSeguridad.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="subMenuUsuario.resx">
+    <EmbeddedResource Include="Administrador\subMenuUsuario.resx">
       <DependentUpon>subMenuUsuario.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Vendedor.resx">
+    <EmbeddedResource Include="Vendedor\Vendedor.resx">
       <DependentUpon>Vendedor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="VistaAdministrador.resx">
+    <EmbeddedResource Include="Administrador\VistaAdministrador.resx">
       <DependentUpon>VistaAdministrador.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
@@ -216,5 +216,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,8 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using PuntoDeVentaGameBox.Vendedor;
+using PuntoDeVentaGameBox.Administrador;
+using PuntoDeVentaGameBox.Gerente;
 
-namespace PuntoDeVentaGameBox
+namespace PuntoDeVentaGameBox.Administrador
 {
     public partial class EdicionUsuario : Form
     {
