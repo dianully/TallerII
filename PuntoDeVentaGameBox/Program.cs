@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PuntoDeVentaGameBox.Vendedor;
+using PuntoDeVentaGameBox.Administrador;
+using PuntoDeVentaGameBox.Gerente;
 
 namespace PuntoDeVentaGameBox
 {

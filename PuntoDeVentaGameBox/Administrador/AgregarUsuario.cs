@@ -21,7 +21,7 @@ namespace PuntoDeVentaGameBox.Administrador
         {
             InitializeComponent();
 
-            // 👉 Aplica "solo números" de forma reutilizable
+            // Aplica "solo números" de forma reutilizable
             AplicarSoloNumeros(tDni);
             AplicarSoloNumeros(tTelefono);
         }
@@ -37,6 +37,22 @@ namespace PuntoDeVentaGameBox.Administrador
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@dni", dni);
+                    connection.Open();
+                    int count = (int)command.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
+
+        // Nuevo método para validar si un Email ya existe en la base de datos
+        private bool EmailYaExiste(string email)
+        {
+            string query = "SELECT COUNT(*) FROM usuario WHERE email = @email";
+            using (SqlConnection connection = new SqlConnection(conecctionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@email", email);
                     connection.Open();
                     int count = (int)command.ExecuteScalar();
                     return count > 0;
@@ -76,22 +92,29 @@ namespace PuntoDeVentaGameBox.Administrador
                 return;
             }
 
-            // 3. Validar la longitud del DNI
+            // 3. Validar que el Email no exista en la base de datos (nueva validación)
+            if (EmailYaExiste(tEmail.Text))
+            {
+                MessageBox.Show("El correo electrónico ingresado ya está registrado.", "Email Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 4. Validar la longitud del DNI
             if (tDni.Text.Length != 8)
             {
                 MessageBox.Show("El DNI debe tener exactamente 8 caracteres.", "DNI Inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // 4. Validar la longitud del teléfono
+            // 5. Validar la longitud del teléfono
             if (tTelefono.Text.Length != 10)
             {
                 MessageBox.Show("Ingrese un numero de teléfono válido", "Teléfono Inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // 5. Validar la nomenclatura del correo electrónico
-            if (!tEmail.Text.Contains("@") || !tEmail.Text.EndsWith(".com"))
+            // 6. Validar la nomenclatura del correo electrónico
+            if (!tEmail.Text.Contains("@") || !tEmail.Text.Contains(".com"))
             {
                 MessageBox.Show("El correo electrónico debe tener el formato 'nombre@dominio.com'.", "Correo Inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -99,26 +122,26 @@ namespace PuntoDeVentaGameBox.Administrador
 
             // Consulta SQL para insertar un nuevo usuario
             string query = @"
-        INSERT INTO usuario (
-            nombre, 
-            apellido, 
-            dni, 
-            email, 
-            telefono, 
-            contraseña, 
-            activo, 
-            id_rol
-        )
-        VALUES (
-            @nombre, 
-            @apellido, 
-            @dni, 
-            @email, 
-            @telefono, 
-            @contraseña, 
-            1,    
-            3     
-        )";
+            INSERT INTO usuario (
+                nombre, 
+                apellido, 
+                dni, 
+                email, 
+                telefono, 
+                contraseña, 
+                activo, 
+                id_rol
+            )
+            VALUES (
+                @nombre, 
+                @apellido, 
+                @dni, 
+                @email, 
+                @telefono, 
+                @contraseña, 
+                1,  
+                3   
+            )";
 
             try
             {
@@ -165,7 +188,10 @@ namespace PuntoDeVentaGameBox.Administrador
                 int cursorPosition = tNombre.SelectionStart;
 
                 // Convierte la primera letra a mayúscula
-                tNombre.Text = tNombre.Text.Substring(0, 1).ToUpper() + tNombre.Text.Substring(1);
+                if (tNombre.Text.Length > 0)
+                {
+                    tNombre.Text = char.ToUpper(tNombre.Text[0]) + tNombre.Text.Substring(1);
+                }
 
                 // Restablece el cursor a su posición original para una mejor experiencia de usuario
                 tNombre.SelectionStart = cursorPosition;
@@ -180,7 +206,10 @@ namespace PuntoDeVentaGameBox.Administrador
                 int cursorPosition = tApellido.SelectionStart;
 
                 // Convierte la primera letra a mayúscula
-                tApellido.Text = tApellido.Text.Substring(0, 1).ToUpper() + tApellido.Text.Substring(1);
+                if (tApellido.Text.Length > 0)
+                {
+                    tApellido.Text = char.ToUpper(tApellido.Text[0]) + tApellido.Text.Substring(1);
+                }
 
                 // Restablece el cursor a su posición original para una mejor experiencia de usuario
                 tApellido.SelectionStart = cursorPosition;
@@ -220,5 +249,3 @@ namespace PuntoDeVentaGameBox.Administrador
         }
     }
 }
-
-
