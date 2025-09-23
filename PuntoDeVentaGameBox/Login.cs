@@ -125,6 +125,11 @@ namespace PuntoDeVentaGameBox
         {
 
         }
+
+        private void TxUsuario_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

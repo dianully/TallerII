@@ -223,6 +223,7 @@
             this.tEditarDni.Name = "tEditarDni";
             this.tEditarDni.Size = new System.Drawing.Size(158, 22);
             this.tEditarDni.TabIndex = 2;
+            this.tEditarDni.TextChanged += new System.EventHandler(this.tEditarDni_TextChanged);
             // 
             // label4
             // 

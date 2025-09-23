@@ -292,6 +292,11 @@ namespace PuntoDeVentaGameBox.Administrador
                 tb.SelectionStart = Math.Min(sel, tb.Text.Length);
             }
         }
+
+        private void tEditarDni_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 
