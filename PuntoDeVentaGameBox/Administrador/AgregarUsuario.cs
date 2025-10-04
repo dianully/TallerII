@@ -218,6 +218,11 @@ namespace PuntoDeVentaGameBox.Administrador
                 }
             };
         }
+
+        private void tEmail_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

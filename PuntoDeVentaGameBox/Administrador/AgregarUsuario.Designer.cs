@@ -71,6 +71,7 @@
             this.tEmail.Name = "tEmail";
             this.tEmail.Size = new System.Drawing.Size(100, 22);
             this.tEmail.TabIndex = 3;
+            this.tEmail.TextChanged += new System.EventHandler(this.tEmail_TextChanged);
             // 
             // tDni
             // 
@@ -78,7 +79,6 @@
             this.tDni.Name = "tDni";
             this.tDni.Size = new System.Drawing.Size(100, 22);
             this.tDni.TabIndex = 2;
-           
             // 
             // tApellido
             // 
