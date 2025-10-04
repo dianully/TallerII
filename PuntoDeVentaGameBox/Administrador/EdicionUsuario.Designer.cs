@@ -220,6 +220,7 @@
             // tEditarDni
             // 
             this.tEditarDni.Location = new System.Drawing.Point(126, 88);
+            this.tEditarDni.MaxLength = 8;
             this.tEditarDni.Name = "tEditarDni";
             this.tEditarDni.Size = new System.Drawing.Size(158, 22);
             this.tEditarDni.TabIndex = 2;
@@ -275,6 +276,7 @@
             // tEditarTelefono
             // 
             this.tEditarTelefono.Location = new System.Drawing.Point(126, 154);
+            this.tEditarTelefono.MaxLength = 10;
             this.tEditarTelefono.Name = "tEditarTelefono";
             this.tEditarTelefono.Size = new System.Drawing.Size(158, 22);
             this.tEditarTelefono.TabIndex = 4;

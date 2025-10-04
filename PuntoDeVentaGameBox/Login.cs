@@ -24,9 +24,9 @@ namespace PuntoDeVentaGameBox
                 return;
             }
 
-            // Consulta SQL para buscar al usuario y obtener todos sus datos
+            // Consulta SQL para buscar al usuario y obtener sus datos, incluyendo el campo 'activo'
             string query = @"
-                SELECT id_usuario, nombre, apellido, dni, email, telefono, contraseña, id_rol 
+                SELECT id_usuario, nombre, apellido, dni, email, telefono, contraseña, id_rol, activo
                 FROM usuario 
                 WHERE dni = @dni AND contraseña = @contraseña";
 
@@ -54,6 +54,14 @@ namespace PuntoDeVentaGameBox
                                 SesionUsuario.Telefono = reader["telefono"].ToString();
                                 SesionUsuario.Contraseña = reader["contraseña"].ToString();
                                 SesionUsuario.IdRol = Convert.ToInt32(reader["id_rol"]);
+
+                                // Valida si la cuenta está activa (activo = 1) o deshabilitada (activo = 0)
+                                int activo = Convert.ToInt32(reader["activo"]);
+                                if (activo == 0)
+                                {
+                                    MessageBox.Show("Tu cuenta ha sido deshabilitada. Por favor, contacta a un administrador.", "Cuenta Deshabilitada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
 
                                 // Ahora, redirige según el rol
                                 switch (SesionUsuario.IdRol)
@@ -132,4 +140,3 @@ namespace PuntoDeVentaGameBox
         }
     }
 }
-
