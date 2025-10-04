@@ -147,6 +147,16 @@ namespace PuntoDeVentaGameBox.Vendedor
                 }
             };
         }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Vendedor_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

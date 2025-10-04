@@ -304,7 +304,6 @@ namespace PuntoDeVentaGameBox.Administrador
             tbCorreo.Clear();
             tbTelefono.Clear();
             cbRol.SelectedIndex = 0;
-            CargarDatos();
         }
 
         private void bAgregarUsuario_Click(object sender, EventArgs e)

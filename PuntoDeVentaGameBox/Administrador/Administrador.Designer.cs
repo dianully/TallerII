@@ -36,6 +36,7 @@
             this.BSalir = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.lAdministrador = new System.Windows.Forms.Label();
+            this.buttonClientes = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -75,6 +76,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.buttonClientes);
             this.panel2.Controls.Add(this.button2);
             this.panel2.Controls.Add(this.BSalir);
             this.panel2.Controls.Add(this.button1);
@@ -89,7 +91,7 @@
             this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.button2.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.LightGray;
-            this.button2.Location = new System.Drawing.Point(447, 3);
+            this.button2.Location = new System.Drawing.Point(304, 3);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(283, 110);
             this.button2.TabIndex = 1;
@@ -102,7 +104,7 @@
             this.BSalir.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.BSalir.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BSalir.ForeColor = System.Drawing.Color.LightGray;
-            this.BSalir.Location = new System.Drawing.Point(863, 3);
+            this.BSalir.Location = new System.Drawing.Point(882, 3);
             this.BSalir.Name = "BSalir";
             this.BSalir.Size = new System.Drawing.Size(284, 110);
             this.BSalir.TabIndex = 3;
@@ -135,6 +137,18 @@
             this.lAdministrador.Text = "(Administrador)";
             this.lAdministrador.Click += new System.EventHandler(this.lAdministrador_Click_1);
             // 
+            // buttonClientes
+            // 
+            this.buttonClientes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.buttonClientes.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonClientes.ForeColor = System.Drawing.Color.LightGray;
+            this.buttonClientes.Location = new System.Drawing.Point(593, 3);
+            this.buttonClientes.Name = "buttonClientes";
+            this.buttonClientes.Size = new System.Drawing.Size(283, 110);
+            this.buttonClientes.TabIndex = 4;
+            this.buttonClientes.Text = "Clientes";
+            this.buttonClientes.UseVisualStyleBackColor = false;
+            // 
             // Administrador
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -165,5 +179,6 @@
         private System.Windows.Forms.Button BSalir;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button buttonClientes;
     }
 }

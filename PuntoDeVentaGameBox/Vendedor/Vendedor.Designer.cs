@@ -53,20 +53,18 @@
             this.bCerrar = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.lVendedor = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
+            this.bNuevoCliente = new System.Windows.Forms.Button();
+            this.bDescargarFactura = new System.Windows.Forms.Button();
             this.gbCliente.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // LProducto
@@ -222,7 +220,7 @@
             "Cliente General",
             "Cliente Registrado",
             "Nuevo Cliente"});
-            this.cbElegirUsuario.Location = new System.Drawing.Point(197, 59);
+            this.cbElegirUsuario.Location = new System.Drawing.Point(105, 59);
             this.cbElegirUsuario.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbElegirUsuario.Name = "cbElegirUsuario";
             this.cbElegirUsuario.Size = new System.Drawing.Size(121, 24);
@@ -248,6 +246,7 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.bNuevoCliente);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.button2);
@@ -267,11 +266,12 @@
             this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(104, 58);
+            this.label6.Location = new System.Drawing.Point(12, 58);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(87, 25);
             this.label6.TabIndex = 26;
             this.label6.Text = "Cliente:";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // label5
             // 
@@ -304,7 +304,7 @@
             this.LTitle.AutoSize = true;
             this.LTitle.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LTitle.ForeColor = System.Drawing.SystemColors.Control;
-            this.LTitle.Location = new System.Drawing.Point(5, 10);
+            this.LTitle.Location = new System.Drawing.Point(53, 654);
             this.LTitle.Name = "LTitle";
             this.LTitle.Size = new System.Drawing.Size(105, 45);
             this.LTitle.TabIndex = 20;
@@ -316,7 +316,7 @@
             this.BAplicar.FlatAppearance.BorderSize = 0;
             this.BAplicar.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BAplicar.ForeColor = System.Drawing.SystemColors.Control;
-            this.BAplicar.Location = new System.Drawing.Point(791, 622);
+            this.BAplicar.Location = new System.Drawing.Point(774, 664);
             this.BAplicar.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.BAplicar.Name = "BAplicar";
             this.BAplicar.Size = new System.Drawing.Size(141, 39);
@@ -330,7 +330,7 @@
             this.bCerrar.FlatAppearance.BorderSize = 0;
             this.bCerrar.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bCerrar.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.bCerrar.Location = new System.Drawing.Point(939, 622);
+            this.bCerrar.Location = new System.Drawing.Point(984, 664);
             this.bCerrar.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.bCerrar.Name = "bCerrar";
             this.bCerrar.Size = new System.Drawing.Size(141, 39);
@@ -342,7 +342,7 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(64, 228);
+            this.dataGridView1.Location = new System.Drawing.Point(47, 270);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
@@ -354,19 +354,10 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(207, 523);
+            this.label1.Location = new System.Drawing.Point(190, 565);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(0, 45);
             this.label1.TabIndex = 24;
-            // 
-            // panel2
-            // 
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel2.Controls.Add(this.LTitle);
-            this.panel2.Location = new System.Drawing.Point(64, 610);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(112, 68);
-            this.panel2.TabIndex = 27;
             // 
             // panel4
             // 
@@ -409,27 +400,18 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.Control;
-            this.label2.Location = new System.Drawing.Point(12, 10);
+            this.label2.Location = new System.Drawing.Point(164, 654);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(183, 45);
             this.label2.TabIndex = 26;
             this.label2.Text = "(Cantidad)";
-            // 
-            // panel3
-            // 
-            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel3.Controls.Add(this.label2);
-            this.panel3.Location = new System.Drawing.Point(182, 610);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(213, 68);
-            this.panel3.TabIndex = 28;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.Control;
-            this.label4.Location = new System.Drawing.Point(427, 628);
+            this.label4.Location = new System.Drawing.Point(410, 670);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(152, 25);
             this.label4.TabIndex = 42;
@@ -437,12 +419,40 @@
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(585, 622);
+            this.textBox3.Location = new System.Drawing.Point(568, 664);
             this.textBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(188, 39);
             this.textBox3.TabIndex = 42;
+            // 
+            // bNuevoCliente
+            // 
+            this.bNuevoCliente.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bNuevoCliente.FlatAppearance.BorderSize = 0;
+            this.bNuevoCliente.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bNuevoCliente.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.bNuevoCliente.Location = new System.Drawing.Point(303, 59);
+            this.bNuevoCliente.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.bNuevoCliente.Name = "bNuevoCliente";
+            this.bNuevoCliente.Size = new System.Drawing.Size(179, 39);
+            this.bNuevoCliente.TabIndex = 27;
+            this.bNuevoCliente.Text = "Nuevo Cliente";
+            this.bNuevoCliente.UseVisualStyleBackColor = false;
+            // 
+            // bDescargarFactura
+            // 
+            this.bDescargarFactura.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bDescargarFactura.FlatAppearance.BorderSize = 0;
+            this.bDescargarFactura.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bDescargarFactura.ForeColor = System.Drawing.SystemColors.Control;
+            this.bDescargarFactura.Location = new System.Drawing.Point(883, 635);
+            this.bDescargarFactura.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.bDescargarFactura.Name = "bDescargarFactura";
+            this.bDescargarFactura.Size = new System.Drawing.Size(172, 39);
+            this.bDescargarFactura.TabIndex = 43;
+            this.bDescargarFactura.Text = "Descargar Factura";
+            this.bDescargarFactura.UseVisualStyleBackColor = false;
             // 
             // Vendedor
             // 
@@ -450,11 +460,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.ClientSize = new System.Drawing.Size(1182, 721);
+            this.Controls.Add(this.bDescargarFactura);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.LTitle);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.panel4);
-            this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.bCerrar);
@@ -466,17 +477,14 @@
             this.Name = "Vendedor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Vendedor";
+            this.Load += new System.EventHandler(this.Vendedor_Load);
             this.gbCliente.ResumeLayout(false);
             this.gbCliente.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -500,7 +508,6 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lVendedor;
@@ -511,11 +518,12 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Button bNuevoCliente;
+        private System.Windows.Forms.Button bDescargarFactura;
     }
 }
