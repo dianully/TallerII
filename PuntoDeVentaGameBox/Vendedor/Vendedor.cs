@@ -1,20 +1,24 @@
-﻿using System;
+﻿using PuntoDeVentaGameBox.Administrador;
+using PuntoDeVentaGameBox.Clases;
+using PuntoDeVentaGameBox.Gerente;
+using PuntoDeVentaGameBox.Vendedor;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using PuntoDeVentaGameBox.Vendedor;
-using PuntoDeVentaGameBox.Administrador;
-using PuntoDeVentaGameBox.Gerente;
 
 namespace PuntoDeVentaGameBox.Vendedor
 {
     public partial class Vendedor : Form
     {
+
+        string conecctionString = "server=localhost;Database=game_box;Trusted_Connection=True";
         // Constructor
         public Vendedor()
         {
@@ -55,7 +59,8 @@ namespace PuntoDeVentaGameBox.Vendedor
             ConfigurarPlaceholder(tbClienteGmail, "Correo");
             ConfigurarPlaceholder(tbSexo, "Sexo");
             ConfigurarPlaceholder(tbTelefono, "Telefono");
-            
+
+
         }
 
         private void tbMontoPagado_Enter(object sender, EventArgs e)
@@ -122,9 +127,7 @@ namespace PuntoDeVentaGameBox.Vendedor
         }
 
 
-
-
-        string conecctionString = "server=localhost;Database=game_box;Trusted_Connection=True";
+        
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -230,8 +233,72 @@ namespace PuntoDeVentaGameBox.Vendedor
 
         private void Vendedor_Load(object sender, EventArgs e)
         {
+            CargarProductosEnComboBox();
+        }
 
+        private void CargarProductosEnComboBox()
+        {
+            // Llamada directa al método estático de la clase Producto
+            List<Producto> productos = Producto.ObtenerTodosLosProductos();
+
+            cbCodigoProducto.DataSource = productos;
+
+            // Este define el valor interno que se usará (el ID)
+            cbCodigoProducto.ValueMember = "IdProducto";
+
+            // ¡¡¡CAMBIO CLAVE AQUÍ!!!
+            // Este define qué propiedad del objeto Producto se mostrará en la lista.
+            cbCodigoProducto.DisplayMember = "IdProducto";
+
+            cbCodigoProducto.SelectedIndex = 0;
+        }
+
+        private void cbCodigoProducto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // 1. Obtener el objeto Producto directamente desde el ComboBox.
+            Producto productoSeleccionado = cbCodigoProducto.SelectedItem as Producto;
+
+            // 2. Verificar que la selección es válida (no es null y no es el ID 0).
+            if (productoSeleccionado != null && productoSeleccionado.IdProducto > 0)
+            {
+                int idSeleccionado = productoSeleccionado.IdProducto;
+
+                // 3. Llamar al método estático para obtener todos los detalles del producto
+                // (Nombre, PrecioVenta, CantidadStock, etc.)
+                Producto detallesCompletos = Producto.BuscarDetallesPorId(idSeleccionado);
+
+                if (detallesCompletos != null)
+                {
+                    // 4. Mostrar el NOMBRE del producto en el TextBox (tbNombreProducto)
+                    tbNombreProducto.Text = detallesCompletos.Nombre;
+
+                    // 5. Llenar otros TextBoxes con los detalles
+                    // Aquí puedes rellenar la Cantidad, el Precio de Venta, etc.
+                    // Ejemplo:
+                    // txtPrecioVenta.Text = detallesCompletos.PrecioVenta.ToString("N2");
+                    // txtStock.Text = detallesCompletos.CantidadStock.ToString();
+                }
+            }
+            else
+            {
+                // 6. Limpiar el TextBox y otros campos si se selecciona la opción inicial (ID=0)
+                tbNombreProducto.Text = string.Empty;
+                // txtPrecioVenta.Text = string.Empty;
+                // txtStock.Text = string.Empty;
+            }
+        }
+
+        // **Función de Búsqueda de Detalles por ID (necesaria para obtener Precio/Stock/etc.)**
+        public Producto BuscarDetallesProductoPorId(int idProducto)
+        {
+            // Aquí repetirías una lógica similar a ObtenerTodosLosProductos,
+            // pero con un WHERE id_producto = @idProducto y seleccionando *TODOS* los campos
+            // (Nombre, Precio, Stock, etc.) en lugar de solo id_producto y Nombre.
+            // Deberías completar la clase Producto con Precio y Stock para que funcione.
+
+            // Por simplicidad, retornamos el objeto del ComboBox:
+            return cbCodigoProducto.SelectedItem as Producto;
         }
     }
-}
+ }
 

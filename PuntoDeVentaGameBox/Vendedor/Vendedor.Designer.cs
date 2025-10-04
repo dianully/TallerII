@@ -49,6 +49,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.bDescargarFactura = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tbNombreProducto = new System.Windows.Forms.TextBox();
+            this.cbCodigoProducto = new System.Windows.Forms.ComboBox();
             this.panel5 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -62,7 +65,6 @@
             this.label13 = new System.Windows.Forms.Label();
             this.tbMontoPagado = new System.Windows.Forms.TextBox();
             this.tbCambio = new System.Windows.Forms.TextBox();
-            this.cbProducto = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListaDeCompra)).BeginInit();
             this.panel4.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -77,11 +79,11 @@
             this.LProducto.AutoSize = true;
             this.LProducto.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LProducto.ForeColor = System.Drawing.SystemColors.Control;
-            this.LProducto.Location = new System.Drawing.Point(12, 79);
+            this.LProducto.Location = new System.Drawing.Point(8, 51);
             this.LProducto.Name = "LProducto";
-            this.LProducto.Size = new System.Drawing.Size(105, 25);
+            this.LProducto.Size = new System.Drawing.Size(215, 25);
             this.LProducto.TabIndex = 0;
-            this.LProducto.Text = "Producto:";
+            this.LProducto.Text = "Codigo del Producto:";
             // 
             // checkBox2
             // 
@@ -140,7 +142,7 @@
             // 
             // tbCantidad
             // 
-            this.tbCantidad.Location = new System.Drawing.Point(376, 84);
+            this.tbCantidad.Location = new System.Drawing.Point(391, 100);
             this.tbCantidad.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbCantidad.Name = "tbCantidad";
             this.tbCantidad.Size = new System.Drawing.Size(100, 22);
@@ -166,7 +168,7 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.SystemColors.Control;
-            this.label5.Location = new System.Drawing.Point(264, 81);
+            this.label5.Location = new System.Drawing.Point(279, 97);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(106, 25);
             this.label5.TabIndex = 25;
@@ -310,7 +312,9 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.cbProducto);
+            this.panel2.Controls.Add(this.label4);
+            this.panel2.Controls.Add(this.tbNombreProducto);
+            this.panel2.Controls.Add(this.cbCodigoProducto);
             this.panel2.Controls.Add(this.panel5);
             this.panel2.Controls.Add(this.label5);
             this.panel2.Controls.Add(this.bCargarProducto);
@@ -320,6 +324,39 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(515, 192);
             this.panel2.TabIndex = 44;
+            // 
+            // label4
+            // 
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.SystemColors.Control;
+            this.label4.Location = new System.Drawing.Point(8, 94);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(94, 25);
+            this.label4.TabIndex = 37;
+            this.label4.Text = "Nombre:";
+            // 
+            // tbNombreProducto
+            // 
+            this.tbNombreProducto.Enabled = false;
+            this.tbNombreProducto.Location = new System.Drawing.Point(97, 97);
+            this.tbNombreProducto.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tbNombreProducto.Name = "tbNombreProducto";
+            this.tbNombreProducto.ReadOnly = true;
+            this.tbNombreProducto.Size = new System.Drawing.Size(176, 22);
+            this.tbNombreProducto.TabIndex = 36;
+            // 
+            // cbCodigoProducto
+            // 
+            this.cbCodigoProducto.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbCodigoProducto.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cbCodigoProducto.FormattingEnabled = true;
+            this.cbCodigoProducto.Location = new System.Drawing.Point(222, 54);
+            this.cbCodigoProducto.Name = "cbCodigoProducto";
+            this.cbCodigoProducto.Size = new System.Drawing.Size(227, 24);
+            this.cbCodigoProducto.TabIndex = 35;
+            this.cbCodigoProducto.SelectedIndexChanged += new System.EventHandler(this.cbCodigoProducto_SelectedIndexChanged);
             // 
             // panel5
             // 
@@ -461,14 +498,6 @@
             this.tbCambio.Size = new System.Drawing.Size(192, 33);
             this.tbCambio.TabIndex = 46;
             // 
-            // cbProducto
-            // 
-            this.cbProducto.FormattingEnabled = true;
-            this.cbProducto.Location = new System.Drawing.Point(122, 82);
-            this.cbProducto.Name = "cbProducto";
-            this.cbProducto.Size = new System.Drawing.Size(121, 24);
-            this.cbProducto.TabIndex = 35;
-            // 
             // Vendedor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -548,6 +577,8 @@
         private System.Windows.Forms.TextBox tbNombreCliente;
         private System.Windows.Forms.TextBox tbMontoPagado;
         private System.Windows.Forms.TextBox tbCambio;
-        private System.Windows.Forms.ComboBox cbProducto;
+        private System.Windows.Forms.ComboBox cbCodigoProducto;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox tbNombreProducto;
     }
 }
