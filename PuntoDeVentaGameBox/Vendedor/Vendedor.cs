@@ -23,7 +23,7 @@ namespace PuntoDeVentaGameBox.Vendedor
             lVendedor.Text = $"{SesionUsuario.Nombre} {SesionUsuario.Apellido}";
 
             // Aplica la validación para que solo acepte números en el DNI del cliente
-            AplicarSoloNumeros(TBDniCliente);
+            //AplicarSoloNumeros(TBDniCliente);
 
             // Aplica la validación para que el correo contenga '@' y '.com'
             TBClienteGmail.TextChanged += tClienteGmail_TextChanged;
@@ -46,23 +46,6 @@ namespace PuntoDeVentaGameBox.Vendedor
             loginForm.Show();
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cbElegirUsuario.SelectedItem != null)
-            {
-                string rolSeleccionado = cbElegirUsuario.SelectedItem.ToString();
-                string rolDeseado = "Nuevo Cliente";
-
-                if (rolSeleccionado == rolDeseado)
-                {
-                    gbCliente.Enabled = true;
-                }
-                else
-                {
-                    gbCliente.Enabled = false;
-                }
-            }
-        }
 
         private void gbCliente_Enter(object sender, EventArgs e)
         {
