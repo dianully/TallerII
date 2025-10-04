@@ -41,7 +41,7 @@
             this.LTitle = new System.Windows.Forms.Label();
             this.bCobrar = new System.Windows.Forms.Button();
             this.bCerrar = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dgvListaDeCompra = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
@@ -63,7 +63,7 @@
             this.tbMontoPagado = new System.Windows.Forms.TextBox();
             this.tbCambio = new System.Windows.Forms.TextBox();
             this.cbProducto = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvListaDeCompra)).BeginInit();
             this.panel4.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -87,6 +87,7 @@
             // 
             this.checkBox2.AutoSize = true;
             this.checkBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox2.ForeColor = System.Drawing.SystemColors.Control;
             this.checkBox2.Location = new System.Drawing.Point(316, 693);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(85, 24);
@@ -98,6 +99,7 @@
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox1.ForeColor = System.Drawing.SystemColors.Control;
             this.checkBox1.Location = new System.Drawing.Point(316, 663);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(91, 24);
@@ -118,17 +120,21 @@
             // 
             // tbClienteGmail
             // 
+            this.tbClienteGmail.Enabled = false;
             this.tbClienteGmail.Location = new System.Drawing.Point(31, 150);
             this.tbClienteGmail.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbClienteGmail.Name = "tbClienteGmail";
+            this.tbClienteGmail.ReadOnly = true;
             this.tbClienteGmail.Size = new System.Drawing.Size(100, 22);
             this.tbClienteGmail.TabIndex = 15;
             // 
             // tbApellidoCliente
             // 
+            this.tbApellidoCliente.Enabled = false;
             this.tbApellidoCliente.Location = new System.Drawing.Point(387, 124);
             this.tbApellidoCliente.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbApellidoCliente.Name = "tbApellidoCliente";
+            this.tbApellidoCliente.ReadOnly = true;
             this.tbApellidoCliente.Size = new System.Drawing.Size(100, 22);
             this.tbApellidoCliente.TabIndex = 13;
             // 
@@ -221,15 +227,15 @@
             this.bCerrar.UseVisualStyleBackColor = false;
             this.bCerrar.Click += new System.EventHandler(this.button1_Click);
             // 
-            // dataGridView1
+            // dgvListaDeCompra
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(47, 270);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.Size = new System.Drawing.Size(1048, 359);
-            this.dataGridView1.TabIndex = 23;
+            this.dgvListaDeCompra.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvListaDeCompra.Location = new System.Drawing.Point(47, 270);
+            this.dgvListaDeCompra.Margin = new System.Windows.Forms.Padding(4);
+            this.dgvListaDeCompra.Name = "dgvListaDeCompra";
+            this.dgvListaDeCompra.RowHeadersWidth = 51;
+            this.dgvListaDeCompra.Size = new System.Drawing.Size(1048, 359);
+            this.dgvListaDeCompra.TabIndex = 23;
             // 
             // label1
             // 
@@ -367,8 +373,10 @@
             // 
             // tbNombreCliente
             // 
+            this.tbNombreCliente.Enabled = false;
             this.tbNombreCliente.Location = new System.Drawing.Point(220, 124);
             this.tbNombreCliente.Name = "tbNombreCliente";
+            this.tbNombreCliente.ReadOnly = true;
             this.tbNombreCliente.Size = new System.Drawing.Size(100, 22);
             this.tbNombreCliente.TabIndex = 33;
             // 
@@ -382,17 +390,21 @@
             // 
             // tbSexo
             // 
+            this.tbSexo.Enabled = false;
             this.tbSexo.Location = new System.Drawing.Point(387, 150);
             this.tbSexo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbSexo.Name = "tbSexo";
+            this.tbSexo.ReadOnly = true;
             this.tbSexo.Size = new System.Drawing.Size(100, 22);
             this.tbSexo.TabIndex = 31;
             // 
             // tbTelefono
             // 
+            this.tbTelefono.Enabled = false;
             this.tbTelefono.Location = new System.Drawing.Point(220, 148);
             this.tbTelefono.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbTelefono.Name = "tbTelefono";
+            this.tbTelefono.ReadOnly = true;
             this.tbTelefono.Size = new System.Drawing.Size(100, 22);
             this.tbTelefono.TabIndex = 30;
             // 
@@ -440,11 +452,13 @@
             // 
             // tbCambio
             // 
+            this.tbCambio.Enabled = false;
             this.tbCambio.Location = new System.Drawing.Point(514, 677);
             this.tbCambio.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbCambio.Multiline = true;
             this.tbCambio.Name = "tbCambio";
-            this.tbCambio.Size = new System.Drawing.Size(185, 33);
+            this.tbCambio.ReadOnly = true;
+            this.tbCambio.Size = new System.Drawing.Size(192, 33);
             this.tbCambio.TabIndex = 46;
             // 
             // cbProducto
@@ -473,7 +487,7 @@
             this.Controls.Add(this.LTitle);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.dgvListaDeCompra);
             this.Controls.Add(this.bCerrar);
             this.Controls.Add(this.bCobrar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -482,7 +496,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Vendedor";
             this.Load += new System.EventHandler(this.Vendedor_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvListaDeCompra)).EndInit();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -507,7 +521,7 @@
         private System.Windows.Forms.Label LTitle;
         private System.Windows.Forms.Button bCobrar;
         private System.Windows.Forms.Button bCerrar;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dgvListaDeCompra;
         private System.Windows.Forms.Button bCargarProducto;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel4;

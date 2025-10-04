@@ -43,6 +43,19 @@ namespace PuntoDeVentaGameBox.Vendedor
             // Asignar los eventos
             tbMontoPagado.Enter += tbMontoPagado_Enter;
             tbMontoPagado.Leave += tbMontoPagado_Leave;
+
+            ConfigurarPlaceholder(tbCambio, "Cambio");
+            tbCambio.ForeColor = Color.Gray;
+            tbCambio.Font = new Font(tbCambio.Font.FontFamily, 14, FontStyle.Regular); // Mantén el tamaño de fuente aquí
+
+
+            // Aplicar a otros TextBoxes con diferentes textos
+            ConfigurarPlaceholder(tbNombreCliente, "Nombre");
+            ConfigurarPlaceholder(tbApellidoCliente, "Apellido");
+            ConfigurarPlaceholder(tbClienteGmail, "Correo");
+            ConfigurarPlaceholder(tbSexo, "Sexo");
+            ConfigurarPlaceholder(tbTelefono, "Telefono");
+            
         }
 
         private void tbMontoPagado_Enter(object sender, EventArgs e)
@@ -68,6 +81,48 @@ namespace PuntoDeVentaGameBox.Vendedor
                 // tbMontoPagado.Font = new Font(tbMontoPagado.Font.FontFamily, 14, FontStyle.Regular); 
             }
         }
+
+        private void ConfigurarPlaceholder(TextBox textBox, string placeholderText)
+        {
+            // 1. Configuración inicial
+            textBox.Text = placeholderText;
+            textBox.ForeColor = Color.Gray;
+
+            // 2. Asignar los eventos con la lógica de placeholder
+            textBox.Enter -= Placeholder_Enter; // Asegura que el evento no esté duplicado
+            textBox.Leave -= Placeholder_Leave;
+
+            textBox.Enter += Placeholder_Enter;
+            textBox.Leave += Placeholder_Leave;
+
+            // 3. Almacenar el texto original para el evento Leave
+            textBox.Tag = placeholderText;
+        }
+
+        // Evento genérico para cuando el TextBox recibe el foco
+        private void Placeholder_Enter(object sender, EventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+            if (tb != null && tb.Text == tb.Tag.ToString())
+            {
+                tb.Text = "";
+                tb.ForeColor = Color.Gray;
+            }
+        }
+
+        // Evento genérico para cuando el TextBox pierde el foco
+        private void Placeholder_Leave(object sender, EventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+            if (tb != null && string.IsNullOrWhiteSpace(tb.Text))
+            {
+                tb.Text = tb.Tag.ToString(); // Usa el texto guardado en la propiedad Tag
+                tb.ForeColor = Color.Gray;
+            }
+        }
+
+
+
 
         string conecctionString = "server=localhost;Database=game_box;Trusted_Connection=True";
 
