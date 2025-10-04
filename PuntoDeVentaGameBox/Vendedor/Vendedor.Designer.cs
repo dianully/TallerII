@@ -32,15 +32,14 @@
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.TBClienteGmail = new System.Windows.Forms.TextBox();
-            this.TBApellidoCliente = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.tbClienteGmail = new System.Windows.Forms.TextBox();
+            this.tbApellidoCliente = new System.Windows.Forms.TextBox();
+            this.tbCantidad = new System.Windows.Forms.TextBox();
             this.bNuevoCliente = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.bCargarProducto = new System.Windows.Forms.Button();
             this.LTitle = new System.Windows.Forms.Label();
-            this.BAplicar = new System.Windows.Forms.Button();
+            this.bCobrar = new System.Windows.Forms.Button();
             this.bCerrar = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
@@ -53,16 +52,17 @@
             this.panel5 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.rbClienteRegistrado = new System.Windows.Forms.RadioButton();
+            this.tbNombreCliente = new System.Windows.Forms.TextBox();
+            this.cbCliente = new System.Windows.Forms.ComboBox();
+            this.tbSexo = new System.Windows.Forms.TextBox();
+            this.tbTelefono = new System.Windows.Forms.TextBox();
+            this.rbClienteGeneral = new System.Windows.Forms.RadioButton();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label13 = new System.Windows.Forms.Label();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.tbNombreCliente = new System.Windows.Forms.TextBox();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.tbMontoPagado = new System.Windows.Forms.TextBox();
+            this.tbCambio = new System.Windows.Forms.TextBox();
+            this.cbProducto = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel4.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -77,7 +77,7 @@
             this.LProducto.AutoSize = true;
             this.LProducto.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LProducto.ForeColor = System.Drawing.SystemColors.Control;
-            this.LProducto.Location = new System.Drawing.Point(30, 78);
+            this.LProducto.Location = new System.Drawing.Point(12, 79);
             this.LProducto.Name = "LProducto";
             this.LProducto.Size = new System.Drawing.Size(105, 25);
             this.LProducto.TabIndex = 0;
@@ -116,37 +116,29 @@
             this.label11.TabIndex = 39;
             this.label11.Text = "Metodo de Pago:";
             // 
-            // TBClienteGmail
+            // tbClienteGmail
             // 
-            this.TBClienteGmail.Location = new System.Drawing.Point(31, 150);
-            this.TBClienteGmail.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.TBClienteGmail.Name = "TBClienteGmail";
-            this.TBClienteGmail.Size = new System.Drawing.Size(100, 22);
-            this.TBClienteGmail.TabIndex = 15;
+            this.tbClienteGmail.Location = new System.Drawing.Point(31, 150);
+            this.tbClienteGmail.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tbClienteGmail.Name = "tbClienteGmail";
+            this.tbClienteGmail.Size = new System.Drawing.Size(100, 22);
+            this.tbClienteGmail.TabIndex = 15;
             // 
-            // TBApellidoCliente
+            // tbApellidoCliente
             // 
-            this.TBApellidoCliente.Location = new System.Drawing.Point(387, 124);
-            this.TBApellidoCliente.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.TBApellidoCliente.Name = "TBApellidoCliente";
-            this.TBApellidoCliente.Size = new System.Drawing.Size(100, 22);
-            this.TBApellidoCliente.TabIndex = 13;
+            this.tbApellidoCliente.Location = new System.Drawing.Point(387, 124);
+            this.tbApellidoCliente.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tbApellidoCliente.Name = "tbApellidoCliente";
+            this.tbApellidoCliente.Size = new System.Drawing.Size(100, 22);
+            this.tbApellidoCliente.TabIndex = 13;
             // 
-            // textBox1
+            // tbCantidad
             // 
-            this.textBox1.Location = new System.Drawing.Point(132, 85);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 22);
-            this.textBox1.TabIndex = 16;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(376, 85);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 22);
-            this.textBox2.TabIndex = 17;
+            this.tbCantidad.Location = new System.Drawing.Point(376, 84);
+            this.tbCantidad.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tbCantidad.Name = "tbCantidad";
+            this.tbCantidad.Size = new System.Drawing.Size(100, 22);
+            this.tbCantidad.TabIndex = 17;
             // 
             // bNuevoCliente
             // 
@@ -200,19 +192,19 @@
             this.LTitle.TabIndex = 20;
             this.LTitle.Text = "Total:";
             // 
-            // BAplicar
+            // bCobrar
             // 
-            this.BAplicar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.BAplicar.FlatAppearance.BorderSize = 0;
-            this.BAplicar.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BAplicar.ForeColor = System.Drawing.SystemColors.Control;
-            this.BAplicar.Location = new System.Drawing.Point(738, 660);
-            this.BAplicar.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
-            this.BAplicar.Name = "BAplicar";
-            this.BAplicar.Size = new System.Drawing.Size(114, 39);
-            this.BAplicar.TabIndex = 21;
-            this.BAplicar.Text = "Cobrar";
-            this.BAplicar.UseVisualStyleBackColor = false;
+            this.bCobrar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bCobrar.FlatAppearance.BorderSize = 0;
+            this.bCobrar.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bCobrar.ForeColor = System.Drawing.SystemColors.Control;
+            this.bCobrar.Location = new System.Drawing.Point(738, 660);
+            this.bCobrar.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.bCobrar.Name = "bCobrar";
+            this.bCobrar.Size = new System.Drawing.Size(114, 39);
+            this.bCobrar.TabIndex = 21;
+            this.bCobrar.Text = "Cobrar";
+            this.bCobrar.UseVisualStyleBackColor = false;
             // 
             // bCerrar
             // 
@@ -290,7 +282,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.Control;
-            this.label2.Location = new System.Drawing.Point(122, 654);
+            this.label2.Location = new System.Drawing.Point(107, 654);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(183, 45);
             this.label2.TabIndex = 26;
@@ -312,11 +304,11 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.cbProducto);
             this.panel2.Controls.Add(this.panel5);
             this.panel2.Controls.Add(this.label5);
             this.panel2.Controls.Add(this.bCargarProducto);
-            this.panel2.Controls.Add(this.textBox1);
-            this.panel2.Controls.Add(this.textBox2);
+            this.panel2.Controls.Add(this.tbCantidad);
             this.panel2.Controls.Add(this.LProducto);
             this.panel2.Location = new System.Drawing.Point(47, 62);
             this.panel2.Name = "panel2";
@@ -345,20 +337,77 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.radioButton2);
+            this.panel3.Controls.Add(this.rbClienteRegistrado);
             this.panel3.Controls.Add(this.tbNombreCliente);
-            this.panel3.Controls.Add(this.comboBox1);
-            this.panel3.Controls.Add(this.textBox5);
-            this.panel3.Controls.Add(this.textBox4);
-            this.panel3.Controls.Add(this.radioButton1);
+            this.panel3.Controls.Add(this.cbCliente);
+            this.panel3.Controls.Add(this.tbSexo);
+            this.panel3.Controls.Add(this.tbTelefono);
+            this.panel3.Controls.Add(this.rbClienteGeneral);
             this.panel3.Controls.Add(this.bNuevoCliente);
             this.panel3.Controls.Add(this.panel6);
-            this.panel3.Controls.Add(this.TBApellidoCliente);
-            this.panel3.Controls.Add(this.TBClienteGmail);
+            this.panel3.Controls.Add(this.tbApellidoCliente);
+            this.panel3.Controls.Add(this.tbClienteGmail);
             this.panel3.Location = new System.Drawing.Point(568, 62);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(527, 192);
             this.panel3.TabIndex = 45;
+            // 
+            // rbClienteRegistrado
+            // 
+            this.rbClienteRegistrado.AutoSize = true;
+            this.rbClienteRegistrado.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbClienteRegistrado.ForeColor = System.Drawing.SystemColors.Control;
+            this.rbClienteRegistrado.Location = new System.Drawing.Point(31, 83);
+            this.rbClienteRegistrado.Name = "rbClienteRegistrado";
+            this.rbClienteRegistrado.Size = new System.Drawing.Size(210, 29);
+            this.rbClienteRegistrado.TabIndex = 34;
+            this.rbClienteRegistrado.TabStop = true;
+            this.rbClienteRegistrado.Text = "Cliente Registrado";
+            this.rbClienteRegistrado.UseVisualStyleBackColor = true;
+            // 
+            // tbNombreCliente
+            // 
+            this.tbNombreCliente.Location = new System.Drawing.Point(220, 124);
+            this.tbNombreCliente.Name = "tbNombreCliente";
+            this.tbNombreCliente.Size = new System.Drawing.Size(100, 22);
+            this.tbNombreCliente.TabIndex = 33;
+            // 
+            // cbCliente
+            // 
+            this.cbCliente.FormattingEnabled = true;
+            this.cbCliente.Location = new System.Drawing.Point(31, 124);
+            this.cbCliente.Name = "cbCliente";
+            this.cbCliente.Size = new System.Drawing.Size(121, 24);
+            this.cbCliente.TabIndex = 32;
+            // 
+            // tbSexo
+            // 
+            this.tbSexo.Location = new System.Drawing.Point(387, 150);
+            this.tbSexo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tbSexo.Name = "tbSexo";
+            this.tbSexo.Size = new System.Drawing.Size(100, 22);
+            this.tbSexo.TabIndex = 31;
+            // 
+            // tbTelefono
+            // 
+            this.tbTelefono.Location = new System.Drawing.Point(220, 148);
+            this.tbTelefono.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tbTelefono.Name = "tbTelefono";
+            this.tbTelefono.Size = new System.Drawing.Size(100, 22);
+            this.tbTelefono.TabIndex = 30;
+            // 
+            // rbClienteGeneral
+            // 
+            this.rbClienteGeneral.AutoSize = true;
+            this.rbClienteGeneral.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbClienteGeneral.ForeColor = System.Drawing.SystemColors.Control;
+            this.rbClienteGeneral.Location = new System.Drawing.Point(31, 54);
+            this.rbClienteGeneral.Name = "rbClienteGeneral";
+            this.rbClienteGeneral.Size = new System.Drawing.Size(183, 29);
+            this.rbClienteGeneral.TabIndex = 28;
+            this.rbClienteGeneral.TabStop = true;
+            this.rbClienteGeneral.Text = "Cliente General";
+            this.rbClienteGeneral.UseVisualStyleBackColor = true;
             // 
             // panel6
             // 
@@ -380,80 +429,31 @@
             this.label13.TabIndex = 4;
             this.label13.Text = "Informacion del Cliente";
             // 
-            // radioButton1
+            // tbMontoPagado
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButton1.ForeColor = System.Drawing.SystemColors.Control;
-            this.radioButton1.Location = new System.Drawing.Point(31, 54);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(183, 29);
-            this.radioButton1.TabIndex = 28;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Cliente General";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.tbMontoPagado.Location = new System.Drawing.Point(514, 637);
+            this.tbMontoPagado.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tbMontoPagado.Multiline = true;
+            this.tbMontoPagado.Name = "tbMontoPagado";
+            this.tbMontoPagado.Size = new System.Drawing.Size(192, 33);
+            this.tbMontoPagado.TabIndex = 35;
             // 
-            // textBox4
+            // tbCambio
             // 
-            this.textBox4.Location = new System.Drawing.Point(220, 148);
-            this.textBox4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 22);
-            this.textBox4.TabIndex = 30;
+            this.tbCambio.Location = new System.Drawing.Point(514, 677);
+            this.tbCambio.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tbCambio.Multiline = true;
+            this.tbCambio.Name = "tbCambio";
+            this.tbCambio.Size = new System.Drawing.Size(185, 33);
+            this.tbCambio.TabIndex = 46;
             // 
-            // textBox5
+            // cbProducto
             // 
-            this.textBox5.Location = new System.Drawing.Point(387, 150);
-            this.textBox5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 22);
-            this.textBox5.TabIndex = 31;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(31, 124);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 24);
-            this.comboBox1.TabIndex = 32;
-            // 
-            // tbNombreCliente
-            // 
-            this.tbNombreCliente.Location = new System.Drawing.Point(220, 124);
-            this.tbNombreCliente.Name = "tbNombreCliente";
-            this.tbNombreCliente.Size = new System.Drawing.Size(100, 22);
-            this.tbNombreCliente.TabIndex = 33;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButton2.ForeColor = System.Drawing.SystemColors.Control;
-            this.radioButton2.Location = new System.Drawing.Point(31, 83);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(210, 29);
-            this.radioButton2.TabIndex = 34;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Cliente Registrado";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(514, 637);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox3.Multiline = true;
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(185, 33);
-            this.textBox3.TabIndex = 35;
-            // 
-            // textBox6
-            // 
-            this.textBox6.Location = new System.Drawing.Point(514, 677);
-            this.textBox6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox6.Multiline = true;
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(185, 33);
-            this.textBox6.TabIndex = 46;
+            this.cbProducto.FormattingEnabled = true;
+            this.cbProducto.Location = new System.Drawing.Point(122, 82);
+            this.cbProducto.Name = "cbProducto";
+            this.cbProducto.Size = new System.Drawing.Size(121, 24);
+            this.cbProducto.TabIndex = 35;
             // 
             // Vendedor
             // 
@@ -461,8 +461,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.ClientSize = new System.Drawing.Size(1182, 721);
-            this.Controls.Add(this.textBox6);
-            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.tbCambio);
+            this.Controls.Add(this.tbMontoPagado);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.checkBox1);
@@ -475,7 +475,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.bCerrar);
-            this.Controls.Add(this.BAplicar);
+            this.Controls.Add(this.bCobrar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Vendedor";
@@ -501,12 +501,11 @@
         #endregion
 
         private System.Windows.Forms.Label LProducto;
-        private System.Windows.Forms.TextBox TBClienteGmail;
-        private System.Windows.Forms.TextBox TBApellidoCliente;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox tbClienteGmail;
+        private System.Windows.Forms.TextBox tbApellidoCliente;
+        private System.Windows.Forms.TextBox tbCantidad;
         private System.Windows.Forms.Label LTitle;
-        private System.Windows.Forms.Button BAplicar;
+        private System.Windows.Forms.Button bCobrar;
         private System.Windows.Forms.Button bCerrar;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button bCargarProducto;
@@ -527,13 +526,14 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton rbClienteGeneral;
+        private System.Windows.Forms.ComboBox cbCliente;
+        private System.Windows.Forms.TextBox tbSexo;
+        private System.Windows.Forms.TextBox tbTelefono;
+        private System.Windows.Forms.RadioButton rbClienteRegistrado;
         private System.Windows.Forms.TextBox tbNombreCliente;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox tbMontoPagado;
+        private System.Windows.Forms.TextBox tbCambio;
+        private System.Windows.Forms.ComboBox cbProducto;
     }
 }

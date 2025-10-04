@@ -26,10 +26,47 @@ namespace PuntoDeVentaGameBox.Vendedor
             //AplicarSoloNumeros(TBDniCliente);
 
             // Aplica la validación para que el correo contenga '@' y '.com'
-            TBClienteGmail.TextChanged += tClienteGmail_TextChanged;
+            tbClienteGmail.TextChanged += tClienteGmail_TextChanged;
 
             // La siguiente línea fue eliminada para evitar que el evento se registre dos veces
             // this.lVendedor.Click += new System.EventHandler(this.lVendedor_Click_1);
+
+
+            // >>> CAMBIO CLAVE AQUÍ: AUMENTAR EL TAMAÑO DE LA FUENTE <<<
+            tbMontoPagado.Font = new Font(tbMontoPagado.Font.FontFamily, 14, FontStyle.Regular);
+            // Puedes probar con 16 si 14 no es suficiente.
+
+            // Configuración inicial del Placeholder
+            tbMontoPagado.Text = "Ingresar Monto";
+            tbMontoPagado.ForeColor = Color.Gray;
+
+            // Asignar los eventos
+            tbMontoPagado.Enter += tbMontoPagado_Enter;
+            tbMontoPagado.Leave += tbMontoPagado_Leave;
+        }
+
+        private void tbMontoPagado_Enter(object sender, EventArgs e)
+        {
+            if (tbMontoPagado.Text == "Ingresar Monto")
+            {
+                tbMontoPagado.Text = "";
+                tbMontoPagado.ForeColor = Color.Black; // Cambia el color a uno normal
+
+                // Opcional: Si quieres que el texto escrito sea negrita
+                // tbMontoPagado.Font = new Font(tbMontoPagado.Font.FontFamily, 14, FontStyle.Bold); 
+            }
+        }
+
+        private void tbMontoPagado_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(tbMontoPagado.Text))
+            {
+                tbMontoPagado.Text = "Ingresar Monto";
+                tbMontoPagado.ForeColor = Color.Gray; // Restaura el color del placeholder
+
+                // Asegúrate de que el estilo de fuente se mantenga si lo cambiaste en Enter
+                // tbMontoPagado.Font = new Font(tbMontoPagado.Font.FontFamily, 14, FontStyle.Regular); 
+            }
         }
 
         string conecctionString = "server=localhost;Database=game_box;Trusted_Connection=True";
