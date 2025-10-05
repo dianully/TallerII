@@ -46,7 +46,7 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.lVendedor = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lCantidad = new System.Windows.Forms.Label();
             this.bDescargarFactura = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
@@ -65,6 +65,10 @@
             this.label13 = new System.Windows.Forms.Label();
             this.tbMontoPagado = new System.Windows.Forms.TextBox();
             this.tbCambio = new System.Windows.Forms.TextBox();
+            this.Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PrecioUnitario = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Cantidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CantidadTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListaDeCompra)).BeginInit();
             this.panel4.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -187,6 +191,7 @@
             this.bCargarProducto.TabIndex = 24;
             this.bCargarProducto.Text = "Cargar Producto";
             this.bCargarProducto.UseVisualStyleBackColor = false;
+            this.bCargarProducto.Click += new System.EventHandler(this.bCargarProducto_Click);
             // 
             // LTitle
             // 
@@ -232,12 +237,18 @@
             // dgvListaDeCompra
             // 
             this.dgvListaDeCompra.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvListaDeCompra.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Nombre,
+            this.PrecioUnitario,
+            this.Cantidad,
+            this.CantidadTotal});
             this.dgvListaDeCompra.Location = new System.Drawing.Point(47, 270);
             this.dgvListaDeCompra.Margin = new System.Windows.Forms.Padding(4);
             this.dgvListaDeCompra.Name = "dgvListaDeCompra";
             this.dgvListaDeCompra.RowHeadersWidth = 51;
             this.dgvListaDeCompra.Size = new System.Drawing.Size(1048, 359);
             this.dgvListaDeCompra.TabIndex = 23;
+            this.dgvListaDeCompra.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListaDeCompra_CellContentClick);
             // 
             // label1
             // 
@@ -284,17 +295,17 @@
             this.lVendedor.Text = "(Vendedor)";
             this.lVendedor.Click += new System.EventHandler(this.lVendedor_Click_1);
             // 
-            // label2
+            // lCantidad
             // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.Control;
-            this.label2.Location = new System.Drawing.Point(107, 654);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(183, 45);
-            this.label2.TabIndex = 26;
-            this.label2.Text = "(Cantidad)";
+            this.lCantidad.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lCantidad.AutoSize = true;
+            this.lCantidad.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lCantidad.ForeColor = System.Drawing.SystemColors.Control;
+            this.lCantidad.Location = new System.Drawing.Point(107, 654);
+            this.lCantidad.Name = "lCantidad";
+            this.lCantidad.Size = new System.Drawing.Size(183, 45);
+            this.lCantidad.TabIndex = 26;
+            this.lCantidad.Text = "(Cantidad)";
             // 
             // bDescargarFactura
             // 
@@ -498,6 +509,34 @@
             this.tbCambio.Size = new System.Drawing.Size(192, 33);
             this.tbCambio.TabIndex = 46;
             // 
+            // Nombre
+            // 
+            this.Nombre.HeaderText = "Nombre";
+            this.Nombre.MinimumWidth = 6;
+            this.Nombre.Name = "Nombre";
+            this.Nombre.Width = 125;
+            // 
+            // PrecioUnitario
+            // 
+            this.PrecioUnitario.HeaderText = "Precio Unitario";
+            this.PrecioUnitario.MinimumWidth = 6;
+            this.PrecioUnitario.Name = "PrecioUnitario";
+            this.PrecioUnitario.Width = 125;
+            // 
+            // Cantidad
+            // 
+            this.Cantidad.HeaderText = "Cantidad";
+            this.Cantidad.MinimumWidth = 6;
+            this.Cantidad.Name = "Cantidad";
+            this.Cantidad.Width = 125;
+            // 
+            // CantidadTotal
+            // 
+            this.CantidadTotal.HeaderText = "Total";
+            this.CantidadTotal.MinimumWidth = 6;
+            this.CantidadTotal.Name = "CantidadTotal";
+            this.CantidadTotal.Width = 125;
+            // 
             // Vendedor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -512,7 +551,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.bDescargarFactura);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lCantidad);
             this.Controls.Add(this.LTitle);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.label1);
@@ -557,7 +596,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lVendedor;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lCantidad;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.CheckBox checkBox2;
@@ -580,5 +619,9 @@
         private System.Windows.Forms.ComboBox cbCodigoProducto;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox tbNombreProducto;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Nombre;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PrecioUnitario;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Cantidad;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CantidadTotal;
     }
 }

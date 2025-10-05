@@ -234,6 +234,169 @@ namespace PuntoDeVentaGameBox.Vendedor
         private void Vendedor_Load(object sender, EventArgs e)
         {
             CargarProductosEnComboBox();
+            ConfigurarDataGridView();
+            CalcularTotalGeneral();
+        }
+
+        private void CalcularTotalGeneral()
+        {
+            decimal totalGeneral = 0m; // Inicializar en 0 (la 'm' indica decimal)
+
+            // Iterar sobre todas las filas del DataGridView
+            foreach (DataGridViewRow row in dgvListaDeCompra.Rows)
+            {
+                // Asegurarse de que la fila no sea la de "nueva fila" y que el valor exista
+                if (!row.IsNewRow && row.Cells["Total"].Value != null)
+                {
+                    // Intentar convertir el valor de la celda a decimal y sumarlo
+                    if (decimal.TryParse(row.Cells["Total"].Value.ToString(), out decimal totalFila))
+                    {
+                        totalGeneral += totalFila;
+                    }
+                }
+            }
+
+            // Mostrar el total general formateado como moneda en el Label
+            // Asumo que lCantidad es el Label que muestra el total a pagar
+            lCantidad.Text = totalGeneral.ToString("C2"); // "C2" da formato de moneda local (ej: $0.00)
+        }
+
+        private void ConfigurarDataGridView()
+        {
+            dgvListaDeCompra.Columns.Clear();
+            dgvListaDeCompra.AutoGenerateColumns = false; // Necesario para la columna Button
+
+            // 1. Nombre
+            dgvListaDeCompra.Columns.Add("Nombre", "Nombre");
+
+            // 2. Precio Unitario (Formato de moneda)
+            DataGridViewTextBoxColumn colPrecio = new DataGridViewTextBoxColumn();
+            colPrecio.Name = "PrecioUnitario";
+            colPrecio.HeaderText = "Precio Unitario";
+            colPrecio.DefaultCellStyle.Format = "C2"; // Formato de moneda (ej: $49.99)
+            dgvListaDeCompra.Columns.Add(colPrecio);
+
+            // 3. Cantidad
+            dgvListaDeCompra.Columns.Add("Cantidad", "Cantidad");
+
+            // 4. Total (Formato de moneda, de solo lectura)
+            DataGridViewTextBoxColumn colTotal = new DataGridViewTextBoxColumn();
+            colTotal.Name = "Total";
+            colTotal.HeaderText = "Total";
+            colTotal.DefaultCellStyle.Format = "C2";
+            colTotal.ReadOnly = true;
+            dgvListaDeCompra.Columns.Add(colTotal);
+
+            // 5. Columna Botón Eliminar (AHORA EN EL ÍNDICE 4)
+            DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
+            btnEliminar.HeaderText = "Acción";
+            btnEliminar.Text = "Eliminar";
+            btnEliminar.Name = "btnEliminar";
+            btnEliminar.UseColumnTextForButtonValue = true;
+            dgvListaDeCompra.Columns.Add(btnEliminar); // Última columna visible
+
+            // 6. Columna oculta para el ID del Producto (ÍNDICE 5 - CRUCIAL para evitar duplicados)
+            dgvListaDeCompra.Columns.Add("IdProducto", "IdProducto");
+            dgvListaDeCompra.Columns["IdProducto"].Visible = false;
+        }
+
+        private void bCargarProducto_Click(object sender, EventArgs e)
+        {
+            // 1. Obtener y validar la selección del producto
+            Producto productoSeleccionado = cbCodigoProducto.SelectedItem as Producto;
+
+            if (productoSeleccionado == null || productoSeleccionado.IdProducto == 0)
+            {
+                MessageBox.Show("Debe seleccionar un producto válido.", "Error de Selección", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 2. Obtener y validar la cantidad deseada
+            int cantidadDeseada;
+            if (!int.TryParse(tbCantidad.Text, out cantidadDeseada) || cantidadDeseada <= 0)
+            {
+                MessageBox.Show("Ingrese una cantidad válida (número entero mayor que cero).", "Error de Cantidad", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 3. Obtener los detalles completos del producto (para Stock y Precio)
+            Producto detalles = Producto.BuscarDetallesPorId(productoSeleccionado.IdProducto);
+
+            if (detalles == null)
+            {
+                MessageBox.Show("No se encontraron detalles del producto.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // 4. Validación de Stock
+            if (cantidadDeseada > detalles.CantidadStock)
+            {
+                MessageBox.Show($"Stock insuficiente. Stock actual: {detalles.CantidadStock}.", "Sin Stock", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 5. Validación de Producto Duplicado en la Lista
+            int idProductoNuevo = detalles.IdProducto;
+
+            foreach (DataGridViewRow row in dgvListaDeCompra.Rows)
+            {
+                // Se itera para verificar si el IdProducto (columna oculta) ya existe.
+                if (!row.IsNewRow && row.Cells["IdProducto"].Value != null && Convert.ToInt32(row.Cells["IdProducto"].Value) == idProductoNuevo)
+                {
+                    MessageBox.Show($"El producto '{detalles.Nombre}' ya se encuentra en la lista. Por favor, elimínelo y agréguelo de nuevo con la cantidad correcta.",
+                                    "Producto Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return; // Detiene la adición si el producto ya existe
+                }
+            }
+
+            // 6. Cálculo del Total
+            decimal precioUnitario = detalles.PrecioVenta;
+            decimal total = precioUnitario * cantidadDeseada;
+
+            // 7. Agregar la Fila al DataGridView
+            // El orden de las columnas debe coincidir con ConfigurarDataGridView():
+            // [Nombre, PrecioUnitario, Cantidad, Total, Acción(Eliminar), IdProducto(Oculta)]
+            dgvListaDeCompra.Rows.Add(
+                detalles.Nombre,              // Columna 0: Nombre
+                precioUnitario,               // Columna 1: Precio Unitario
+                cantidadDeseada,              // Columna 2: Cantidad
+                total,                        // Columna 3: Total
+                "Eliminar",                   // Columna 4: Botón (Acción)
+                detalles.IdProducto           // Columna 5: IdProducto (oculta)
+            );
+
+            // 8. Recalcular el total general y actualizar el Label lCantidad
+            CalcularTotalGeneral();
+
+            // 9. Limpiar campos después de agregar
+            tbCantidad.Text = "1";
+            tbNombreProducto.Text = string.Empty;
+            cbCodigoProducto.SelectedIndex = 0; // Vuelve a la opción "-- Seleccione un Producto --"
+        }
+
+        // Debes crear este método y asociarlo al evento CellContentClick del dgvListaDeCompra
+
+        private void dgvListaDeCompra_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Verifica que se haya hecho clic en la columna del botón "Eliminar"
+            if (dgvListaDeCompra.Columns[e.ColumnIndex].Name == "btnEliminar" && e.RowIndex >= 0)
+            {
+                DialogResult result = MessageBox.Show("¿Está seguro de que desea eliminar este producto de la lista?",
+                                                      "Confirmar Eliminación",
+                                                      MessageBoxButtons.YesNo,
+                                                      MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    // Eliminar la fila
+                    dgvListaDeCompra.Rows.RemoveAt(e.RowIndex);
+
+                    // =========================================================
+                    // NUEVO PASO: Recalcular el total general después de eliminar
+                    // =========================================================
+                    CalcularTotalGeneral();
+                }
+            }
         }
 
         private void CargarProductosEnComboBox()
