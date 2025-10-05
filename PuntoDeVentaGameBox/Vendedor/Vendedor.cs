@@ -60,6 +60,9 @@ namespace PuntoDeVentaGameBox.Vendedor
             ConfigurarPlaceholder(tbSexo, "Sexo");
             ConfigurarPlaceholder(tbTelefono, "Telefono");
 
+          
+
+            CargarClientesEnComboBox();
 
         }
 
@@ -126,8 +129,109 @@ namespace PuntoDeVentaGameBox.Vendedor
             }
         }
 
+        private void AlternarControlesCliente()
+        {
+            bool registradoSeleccionado = rbClienteRegistrado.Checked;
 
-        
+            // Si usaste un Panel/GroupBox para agrupar los controles (RECOMENDADO):
+            // pnlClienteRegistrado.Enabled = registradoSeleccionado;
+
+            // Si manejas los controles individualmente:
+            cbCliente.Enabled = registradoSeleccionado;
+
+            // Deshabilita los TextBoxes de información si no está registrado
+            // y los limpia.
+            tbNombreCliente.Enabled = false;
+            tbApellidoCliente.Enabled = false;
+            tbClienteGmail.Enabled = false;
+            tbTelefono.Enabled = false;
+            tbSexo.Enabled = false;
+
+            if (!registradoSeleccionado)
+            {
+                // Si se cambia a Cliente General, limpia los campos de datos
+                LimpiarCamposCliente();
+                // Asegúrate de que el ComboBox de cliente vuelva a "Cliente General"
+                cbCliente.SelectedIndex = 0;
+            }
+        }
+
+        private void rbClienteGeneral_CheckedChanged(object sender, EventArgs e)
+        {
+            // Solo actuamos si el RadioButton está siendo marcado, no desmarcado
+            if (rbClienteGeneral.Checked)
+            {
+                AlternarControlesCliente();
+            }
+        }
+
+        private void rbClienteRegistrado_CheckedChanged(object sender, EventArgs e)
+        {
+            // Solo actuamos si el RadioButton está siendo marcado, no desmarcado
+            if (rbClienteRegistrado.Checked)
+            {
+                AlternarControlesCliente();
+
+                // Opcional: Enfocar el ComboBox para que el usuario empiece a buscar
+                cbCliente.Focus();
+            }
+        }
+
+        private void CargarClientesEnComboBox()
+        {
+            List<Cliente> clientes = Cliente.ObtenerTodosLosClientes();
+
+            cbCliente.DataSource = clientes;
+            // ValueMember: Usamos el ID interno
+            cbCliente.ValueMember = "Dni";
+            // DisplayMember: No lo definimos para que use ToString(), que devuelve el DNI.
+            // cbCliente.DisplayMember = "Dni"; // Si lo dejas así, también funciona.
+
+            cbCliente.SelectedIndex = 0; // Selecciona la opción "Cliente General" (DNI=0)
+        }
+
+        private void cbCliente_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!rbClienteRegistrado.Checked)
+            {
+                return;
+            }
+            // Obtener el objeto Cliente directamente
+            Cliente clienteSeleccionado = cbCliente.SelectedItem as Cliente;
+
+            // Si el objeto no es nulo y el DNI es válido (> 0)
+            if (clienteSeleccionado != null && clienteSeleccionado.Dni > 0)
+            {
+                int dniSeleccionado = clienteSeleccionado.Dni;
+
+                // Buscar todos los detalles usando el DNI
+                Cliente detallesCompletos = Cliente.BuscarDetallesPorDni(dniSeleccionado);
+
+                if (detallesCompletos != null)
+                {
+                    // Llenar los TextBoxes del formulario
+                    tbNombreCliente.Text = detallesCompletos.Nombre;
+                    tbApellidoCliente.Text = detallesCompletos.Apellido;
+                    tbClienteGmail.Text = detallesCompletos.Email;
+                    tbTelefono.Text = detallesCompletos.Telefono;
+                    tbSexo.Text = detallesCompletos.Genero; // Asumo tbSexo corresponde a Genero
+                }
+            }
+            else
+            {
+                // Limpiar todos los campos si se selecciona la opción "Cliente General" (DNI=0) o no hay selección.
+                LimpiarCamposCliente();
+            }
+        }
+
+        private void LimpiarCamposCliente()
+        {
+            tbNombreCliente.Text = string.Empty;
+            tbApellidoCliente.Text = string.Empty;
+            tbClienteGmail.Text = string.Empty;
+            tbTelefono.Text = string.Empty;
+            tbSexo.Text = string.Empty;
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -236,6 +340,8 @@ namespace PuntoDeVentaGameBox.Vendedor
             CargarProductosEnComboBox();
             ConfigurarDataGridView();
             CalcularTotalGeneral();
+            rbClienteGeneral.Checked = true;
+            AlternarControlesCliente();
         }
 
         private void CalcularTotalGeneral()
@@ -461,6 +567,69 @@ namespace PuntoDeVentaGameBox.Vendedor
 
             // Por simplicidad, retornamos el objeto del ComboBox:
             return cbCodigoProducto.SelectedItem as Producto;
+        }
+
+        private void bCobrar_Click(object sender, EventArgs e)
+        {
+            // Asumo: lCantidad.Text contiene el Total, tbMontoPagado es el monto ingresado, y tbCambio es el campo para el cambio.
+            // También asumo que los CheckBox son cbEfectivo y cbCredito.
+
+            // 1. VALIDACIÓN DE MÉTODO DE PAGO
+            if (!cbEfectivo.Checked && !cbCredito.Checked)
+            {
+                MessageBox.Show("Debe seleccionar al menos un método de pago (Efectivo o Crédito).", "Método de Pago Requerido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 2. OBTENER EL TOTAL A PAGAR (de lCantidad)
+            // Usamos CultureInfo.CurrentCulture para manejar el signo de dólar ($) y el formato decimal.
+            decimal totalAPagar;
+            if (!decimal.TryParse(lCantidad.Text, System.Globalization.NumberStyles.Currency, System.Globalization.CultureInfo.CurrentCulture, out totalAPagar))
+            {
+                MessageBox.Show("Error al leer el total de la compra. Intente recargar la lista de productos.", "Error de Cálculo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Si el total es $0.00, no hay nada que cobrar
+            if (totalAPagar <= 0)
+            {
+                MessageBox.Show("La lista de compra está vacía.", "No hay productos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+
+            // 3. VALIDACIÓN Y OBTENCIÓN DEL MONTO PAGADO (de tbMontoPagado)
+            decimal montoPagado;
+            if (string.IsNullOrWhiteSpace(tbMontoPagado.Text) || !decimal.TryParse(tbMontoPagado.Text, out montoPagado))
+            {
+                MessageBox.Show("Por favor, ingrese un monto válido en el campo 'Ingresar Monto'.", "Monto Requerido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 4. VALIDACIÓN: MONTO PAGADO VS TOTAL A PAGAR
+            if (montoPagado < totalAPagar)
+            {
+                // Solo aplica si el pago es en EFECTIVO.
+                // Si es Crédito/Combinado, la lógica de la terminal de punto de venta es más compleja, 
+                // pero para Efectivo, no se puede pagar menos.
+                if (cbEfectivo.Checked && !cbCredito.Checked) // Solo si es pago en efectivo
+                {
+                    MessageBox.Show($"El monto ingresado ({montoPagado:C2}) es menor al total a pagar ({totalAPagar:C2}).", "Monto Insuficiente", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
+            // 5. CÁLCULO DEL CAMBIO
+            decimal cambio = montoPagado - totalAPagar;
+
+            // 6. MOSTRAR RESULTADO Y FINALIZAR TRANSACCIÓN
+
+            // Mostrar el cambio (Formateado como moneda)
+            tbCambio.Text = cambio.ToString("C2");
+
+
+            // Mensaje de éxito (Opcional, se puede omitir para una transición más fluida)
+            MessageBox.Show($"Venta completada. Total: {totalAPagar:C2}, Pagado: {montoPagado:C2}, Cambio: {cambio:C2}.", "Transacción Exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
  }

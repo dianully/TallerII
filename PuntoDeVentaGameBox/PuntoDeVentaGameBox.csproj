@@ -65,6 +65,7 @@
     <Compile Include="Administrador\subMenuClientes.Designer.cs">
       <DependentUpon>subMenuClientes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Clases\Cliente.cs" />
     <Compile Include="Clases\Producto.cs" />
     <Compile Include="Gerente\AgregarProducto.cs">
       <SubType>Form</SubType>
