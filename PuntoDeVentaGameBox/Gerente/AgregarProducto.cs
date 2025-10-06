@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 
@@ -56,6 +57,13 @@ namespace PuntoDeVentaGameBox.Gerente
                 BSalir.Click -= BSalir_Click; // evita doble suscripcion
                 BSalir.Click += BSalir_Click; // cierra solo este formulario
             }
+
+            // restricciones de entrada en precio y cantidad
+            TBPrecioVentaProducto.KeyPress -= TBPrecioVentaProducto_KeyPressSoloNumeroDecimal; // evita doble wiring
+            TBPrecioVentaProducto.KeyPress += TBPrecioVentaProducto_KeyPressSoloNumeroDecimal; // restringe a numero decimal
+
+            TBCantidadProducto.KeyPress -= TBCantidadProducto_KeyPressSoloEntero; // evita doble wiring
+            TBCantidadProducto.KeyPress += TBCantidadProducto_KeyPressSoloEntero; // restringe a entero
         }
 
         private void PrepararControles()
@@ -212,6 +220,42 @@ namespace PuntoDeVentaGameBox.Gerente
                 ActualizarProducto(_idEditar.Value, precio, stock, prov, cat); // edicion
         }
 
+        // ==================== validaciones y restricciones ====================
+
+        private void TBCantidadProducto_KeyPressSoloEntero(object sender, KeyPressEventArgs e)
+        {
+            // permite solo numeros y teclas de control
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+                e.Handled = true; // bloquea caracter no numerico
+        }
+
+        private void TBPrecioVentaProducto_KeyPressSoloNumeroDecimal(object sender, KeyPressEventArgs e)
+        {
+            // permite digitos, coma, punto y teclas de control
+            if (char.IsControl(e.KeyChar)) return; // deja backspace etc
+            if (char.IsDigit(e.KeyChar)) return; // deja digitos
+
+            // permite un unico separador decimal . o ,
+            if ((e.KeyChar == ',' || e.KeyChar == '.') &&
+                (sender as TextBox).Text.IndexOfAny(new[] { ',', '.' }) == -1)
+                return; // permite primer separador
+
+            e.Handled = true; // bloquea lo demas
+        }
+
+        private bool TryParsePrecio(string txt, out decimal value)
+        {
+            // intenta parsear precio respetando coma o punto
+            txt = (txt ?? "").Trim();
+            // primero intenta con cultura actual
+            if (decimal.TryParse(txt, NumberStyles.Number, CultureInfo.CurrentCulture, out value)) return true;
+            // reemplaza punto por coma y vuelve a intentar
+            var alt = txt.Replace(".", ",");
+            if (decimal.TryParse(alt, NumberStyles.Number, new CultureInfo("es-AR"), out value)) return true;
+            // intenta invariante por si acaso
+            return decimal.TryParse(txt, NumberStyles.Number, CultureInfo.InvariantCulture, out value);
+        }
+
         private bool ValidarFormulario(out decimal precio, out int stock, out int? prov, out int? cat)
         {
             // valida datos obligatorios y parsea numericos
@@ -223,12 +267,14 @@ namespace PuntoDeVentaGameBox.Gerente
                 return false;
             }
 
-            if (!decimal.TryParse(TBPrecioVentaProducto.Text, out precio) || precio < 0)
+            // usa parser tolerante a coma o punto y valida >= 0
+            if (!TryParsePrecio(TBPrecioVentaProducto.Text, out precio) || precio < 0)
             {
-                MessageBox.Show("precio debe ser numero y mayor o igual a 0", "Validacion", MessageBoxButtons.OK, MessageBoxIcon.Warning); // valida precio
+                MessageBox.Show("precio invalido", "Validacion", MessageBoxButtons.OK, MessageBoxIcon.Warning); // valida precio
                 return false;
             }
 
+            // cantidad entero y >= 0
             if (!int.TryParse(TBCantidadProducto.Text, out stock) || stock < 0)
             {
                 MessageBox.Show("stock debe ser entero y mayor o igual a 0", "Validacion", MessageBoxButtons.OK, MessageBoxIcon.Warning); // valida stock
