@@ -12,6 +12,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.IO;    
+
 
 namespace PuntoDeVentaGameBox.Vendedor
 {
@@ -20,24 +24,24 @@ namespace PuntoDeVentaGameBox.Vendedor
 
         string conecctionString = "server=localhost;Database=game_box;Trusted_Connection=True";
         // Constructor
+
+        public struct ItemDetalle
+        {
+            public int IdProducto { get; set; }
+            public int Cantidad { get; set; }
+            public decimal PrecioTotalLinea { get; set; }
+        }
+
         public Vendedor()
         {
             InitializeComponent();
-            // Asigna el nombre y apellido desde la clase SesionUsuario al label
+
             lVendedor.Text = $"{SesionUsuario.Nombre} {SesionUsuario.Apellido}";
 
-            // Aplica la validación para que solo acepte números en el DNI del cliente
-            //AplicarSoloNumeros(TBDniCliente);
-
-            // Aplica la validación para que el correo contenga '@' y '.com'
             tbClienteGmail.TextChanged += tClienteGmail_TextChanged;
 
-            // La siguiente línea fue eliminada para evitar que el evento se registre dos veces
-            // this.lVendedor.Click += new System.EventHandler(this.lVendedor_Click_1);
+            tbMontoPagado.Font = new System.Drawing.Font(tbMontoPagado.Font.FontFamily, 14, System.Drawing.FontStyle.Regular);
 
-
-            // >>> CAMBIO CLAVE AQUÍ: AUMENTAR EL TAMAÑO DE LA FUENTE <<<
-            tbMontoPagado.Font = new Font(tbMontoPagado.Font.FontFamily, 14, FontStyle.Regular);
             // Puedes probar con 16 si 14 no es suficiente.
 
             // Configuración inicial del Placeholder
@@ -50,7 +54,7 @@ namespace PuntoDeVentaGameBox.Vendedor
 
             ConfigurarPlaceholder(tbCambio, "Cambio");
             tbCambio.ForeColor = Color.Gray;
-            tbCambio.Font = new Font(tbCambio.Font.FontFamily, 14, FontStyle.Regular); // Mantén el tamaño de fuente aquí
+            tbCambio.Font = new System.Drawing.Font(tbCambio.Font.FontFamily, 14, System.Drawing.FontStyle.Regular);
 
 
             // Aplicar a otros TextBoxes con diferentes textos
@@ -60,10 +64,7 @@ namespace PuntoDeVentaGameBox.Vendedor
             ConfigurarPlaceholder(tbSexo, "Sexo");
             ConfigurarPlaceholder(tbTelefono, "Telefono");
 
-          
-
             CargarClientesEnComboBox();
-
         }
 
         private void tbMontoPagado_Enter(object sender, EventArgs e)
@@ -72,8 +73,6 @@ namespace PuntoDeVentaGameBox.Vendedor
             {
                 tbMontoPagado.Text = "";
                 tbMontoPagado.ForeColor = Color.Black; // Cambia el color a uno normal
-
-                // Opcional: Si quieres que el texto escrito sea negrita
                 // tbMontoPagado.Font = new Font(tbMontoPagado.Font.FontFamily, 14, FontStyle.Bold); 
             }
         }
@@ -84,8 +83,6 @@ namespace PuntoDeVentaGameBox.Vendedor
             {
                 tbMontoPagado.Text = "Ingresar Monto";
                 tbMontoPagado.ForeColor = Color.Gray; // Restaura el color del placeholder
-
-                // Asegúrate de que el estilo de fuente se mantenga si lo cambiaste en Enter
                 // tbMontoPagado.Font = new Font(tbMontoPagado.Font.FontFamily, 14, FontStyle.Regular); 
             }
         }
@@ -95,18 +92,14 @@ namespace PuntoDeVentaGameBox.Vendedor
             // 1. Configuración inicial
             textBox.Text = placeholderText;
             textBox.ForeColor = Color.Gray;
-
             // 2. Asignar los eventos con la lógica de placeholder
             textBox.Enter -= Placeholder_Enter; // Asegura que el evento no esté duplicado
             textBox.Leave -= Placeholder_Leave;
-
             textBox.Enter += Placeholder_Enter;
             textBox.Leave += Placeholder_Leave;
-
             // 3. Almacenar el texto original para el evento Leave
             textBox.Tag = placeholderText;
         }
-
         // Evento genérico para cuando el TextBox recibe el foco
         private void Placeholder_Enter(object sender, EventArgs e)
         {
@@ -117,7 +110,6 @@ namespace PuntoDeVentaGameBox.Vendedor
                 tb.ForeColor = Color.Gray;
             }
         }
-
         // Evento genérico para cuando el TextBox pierde el foco
         private void Placeholder_Leave(object sender, EventArgs e)
         {
@@ -571,66 +563,290 @@ namespace PuntoDeVentaGameBox.Vendedor
 
         private void bCobrar_Click(object sender, EventArgs e)
         {
-            // Asumo: lCantidad.Text contiene el Total, tbMontoPagado es el monto ingresado, y tbCambio es el campo para el cambio.
-            // También asumo que los CheckBox son cbEfectivo y cbCredito.
+            // ... (Validaciones de Método de Pago, Total y Monto Pagado, Mismos que antes) ...
 
-            // 1. VALIDACIÓN DE MÉTODO DE PAGO
             if (!cbEfectivo.Checked && !cbCredito.Checked)
             {
                 MessageBox.Show("Debe seleccionar al menos un método de pago (Efectivo o Crédito).", "Método de Pago Requerido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // 2. OBTENER EL TOTAL A PAGAR (de lCantidad)
-            // Usamos CultureInfo.CurrentCulture para manejar el signo de dólar ($) y el formato decimal.
             decimal totalAPagar;
             if (!decimal.TryParse(lCantidad.Text, System.Globalization.NumberStyles.Currency, System.Globalization.CultureInfo.CurrentCulture, out totalAPagar))
             {
-                MessageBox.Show("Error al leer el total de la compra. Intente recargar la lista de productos.", "Error de Cálculo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al leer el total de la compra.", "Error de Cálculo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // Si el total es $0.00, no hay nada que cobrar
             if (totalAPagar <= 0)
             {
-                MessageBox.Show("La lista de compra está vacía.", "No hay productos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("La lista de compra está vacía. No hay productos que cobrar.", "No hay productos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-
-            // 3. VALIDACIÓN Y OBTENCIÓN DEL MONTO PAGADO (de tbMontoPagado)
             decimal montoPagado;
-            if (string.IsNullOrWhiteSpace(tbMontoPagado.Text) || !decimal.TryParse(tbMontoPagado.Text, out montoPagado))
+            // Usar InvariantCulture y reemplazar ',' por '.' para parsear el monto pagado de forma segura
+            if (string.IsNullOrWhiteSpace(tbMontoPagado.Text) || !decimal.TryParse(tbMontoPagado.Text.Replace(',', '.'), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out montoPagado))
             {
                 MessageBox.Show("Por favor, ingrese un monto válido en el campo 'Ingresar Monto'.", "Monto Requerido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // 4. VALIDACIÓN: MONTO PAGADO VS TOTAL A PAGAR
             if (montoPagado < totalAPagar)
             {
-                // Solo aplica si el pago es en EFECTIVO.
-                // Si es Crédito/Combinado, la lógica de la terminal de punto de venta es más compleja, 
-                // pero para Efectivo, no se puede pagar menos.
-                if (cbEfectivo.Checked && !cbCredito.Checked) // Solo si es pago en efectivo
+                if (cbEfectivo.Checked && !cbCredito.Checked)
                 {
                     MessageBox.Show($"El monto ingresado ({montoPagado:C2}) es menor al total a pagar ({totalAPagar:C2}).", "Monto Insuficiente", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
             }
 
-            // 5. CÁLCULO DEL CAMBIO
             decimal cambio = montoPagado - totalAPagar;
 
-            // 6. MOSTRAR RESULTADO Y FINALIZAR TRANSACCIÓN
+            // =========================================================
+            // 7. PREPARAR DATOS DE LA VENTA Y DETALLES
+            // =========================================================
 
-            // Mostrar el cambio (Formateado como moneda)
-            tbCambio.Text = cambio.ToString("C2");
+            // 7.1. Obtener ID del Vendedor (Usuario conectado)
+            int idVendedor = 0;
+            try
+            {
+                idVendedor = SesionUsuario.IdUsuario;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al obtener el ID del Vendedor. La sesión podría no estar inicializada correctamente: {ex.Message}",
+                                "Error de Sesión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (idVendedor <= 0)
+            {
+                MessageBox.Show("Error: La sesión del Vendedor no contiene un ID de usuario válido (ID <= 0). Cierre y vuelva a iniciar sesión.",
+                                "Error de Sesión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
 
-            // Mensaje de éxito (Opcional, se puede omitir para una transición más fluida)
-            MessageBox.Show($"Venta completada. Total: {totalAPagar:C2}, Pagado: {montoPagado:C2}, Cambio: {cambio:C2}.", "Transacción Exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            // 7.2. Determinar ID del Cliente
+            int? idCliente = null;
+            if (rbClienteRegistrado.Checked)
+            {
+                // Asegúrate de que la clase Cliente está disponible via using PuntoDeVentaGameBox.Clases;
+                Cliente clienteSeleccionado = cbCliente.SelectedItem as Cliente;
+                if (clienteSeleccionado != null && clienteSeleccionado.IdCliente > 0)
+                {
+                    idCliente = clienteSeleccionado.IdCliente;
+                }
+            }
+
+            // 7.3. Determinar Método de Pago
+            string metodoPago = "";
+            if (cbEfectivo.Checked) metodoPago += "Efectivo";
+            if (cbCredito.Checked)
+            {
+                if (!string.IsNullOrEmpty(metodoPago)) metodoPago += ", ";
+                metodoPago += "Crédito";
+            }
+
+            // 7.4. Recolectar Detalles del DataGridView (CON PARSEO ROBUSTO)
+            List<ItemDetalle> detallesVenta = new List<ItemDetalle>();
+
+            foreach (DataGridViewRow row in dgvListaDeCompra.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                int idProducto;
+                int cantidad;
+                decimal precioTotalLinea;
+
+                // --- VALIDACIÓN Y PARSEO ROBUSTO PARA IdProducto ---
+                var idProductoValue = row.Cells["IdProducto"].Value;
+                if (idProductoValue == null || !int.TryParse(idProductoValue.ToString(), out idProducto))
+                {
+                    MessageBox.Show("Error de datos: El ID del producto en una fila es inválido o no existe.", "Error en DataGridView", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // --- VALIDACIÓN Y PARSEO ROBUSTO PARA Cantidad ---
+                // *** CORRECCIÓN FINAL: La cantidad se extrae de la columna "Cantidad" ***
+                var cantidadValue = row.Cells["Cantidad"].Value;
+                if (cantidadValue == null || !int.TryParse(cantidadValue.ToString(), out cantidad))
+                {
+                    MessageBox.Show($"Error de datos: La cantidad para el producto ID {idProducto} es inválida o no existe.", "Error en DataGridView", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // --- VALIDACIÓN Y PARSEO ROBUSTO PARA Subtotal de la Línea ---
+                // *** CORRECCIÓN FINAL: El subtotal de la línea (Total) se extrae de la columna "CantidadTotal" ***
+                var totalValue = row.Cells["Total"].Value;
+                if (totalValue == null || !decimal.TryParse(totalValue.ToString(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.CurrentCulture, out precioTotalLinea))
+                {
+                    MessageBox.Show($"Error de datos: El subtotal para el producto ID {idProducto} es inválido o no existe.", "Error en DataGridView", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // --- VALIDACIÓN CRÍTICA: EVITAR DIVISIÓN POR CERO EN Facturacion.cs ---
+                if (cantidad <= 0)
+                {
+                    MessageBox.Show($"Error de datos: La cantidad para el producto ID {idProducto} debe ser mayor a cero.", "Error en DataGridView", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                detallesVenta.Add(new ItemDetalle
+                {
+                    IdProducto = idProducto,
+                    Cantidad = cantidad,
+                    PrecioTotalLinea = precioTotalLinea // Esto es el subtotal que se usará para calcular el precio unitario en Facturacion.cs
+                });
+            }
+
+            // Validar que se haya podido extraer al menos un detalle
+            if (detallesVenta.Count == 0)
+            {
+                MessageBox.Show("No se pudo procesar ningún detalle de la lista de compra. Revise los datos de la tabla.", "Error de Procesamiento", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+
+            // =========================================================
+            // 8. REGISTRAR EN BASE DE DATOS
+            // =========================================================
+            bool exito = Facturacion.RegistrarVentaCompleta(
+                idVendedor,
+                idCliente,
+                totalAPagar,
+                montoPagado,
+                metodoPago,
+                detallesVenta
+            );
+
+            // =========================================================
+            // 9. FINALIZAR TRANSACCIÓN Y UI
+            // =========================================================
+            if (exito)
+            {
+                // Mostrar el cambio (Formateado como moneda)
+                tbCambio.Text = cambio.ToString("C2");
+
+
+                MessageBox.Show("¡Venta registrada exitosamente!", "Cobro Completado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            // Si no fue exitoso, el mensaje de error ya se mostró dentro de Facturacion.RegistrarVentaCompleta
+
         }
+
+        private void bDescargarFactura_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conecctionString))
+                {
+                    connection.Open();
+
+                    // 1. Obtener la última factura
+                    string queryFactura = @"
+                SELECT TOP 1 * 
+                FROM factura 
+                ORDER BY fecha_compra DESC";
+
+                    SqlCommand cmdFactura = new SqlCommand(queryFactura, connection);
+                    SqlDataReader readerFactura = cmdFactura.ExecuteReader();
+
+                    if (!readerFactura.Read())
+                    {
+                        MessageBox.Show("No se encontró ninguna factura registrada.", "Sin Facturas", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+
+                    int idFactura = Convert.ToInt32(readerFactura["id_factura"]);
+                    DateTime fechaCompra = Convert.ToDateTime(readerFactura["fecha_compra"]);
+                    decimal total = Convert.ToDecimal(readerFactura["total"]);
+                    decimal montoPagado = Convert.ToDecimal(readerFactura["monto_pagado"]);
+                    string metodoPago = readerFactura["metodo_pago"].ToString();
+                    object idClienteObj = readerFactura["id_cliente"];
+
+                    readerFactura.Close();
+
+                    // 2. Obtener detalles de la factura
+                    string queryDetalles = @"
+                SELECT fd.cantidad, fd.precio, p.nombre 
+                FROM factura_detalle fd
+                JOIN producto p ON p.id_producto = fd.id_producto
+                WHERE fd.id_factura_cabecera = @IdFactura";
+
+                    SqlCommand cmdDetalles = new SqlCommand(queryDetalles, connection);
+                    cmdDetalles.Parameters.AddWithValue("@IdFactura", idFactura);
+                    SqlDataReader readerDetalles = cmdDetalles.ExecuteReader();
+
+                    List<string> lineasDetalle = new List<string>();
+                    while (readerDetalles.Read())
+                    {
+                        string nombreProducto = readerDetalles["nombre"].ToString();
+                        int cantidad = Convert.ToInt32(readerDetalles["cantidad"]);
+                        decimal precio = Convert.ToDecimal(readerDetalles["precio"]);
+                        decimal subtotal = cantidad * precio;
+
+                        lineasDetalle.Add($"{nombreProducto} - Cantidad: {cantidad} - Precio: {precio:C2} - Subtotal: {subtotal:C2}");
+                    }
+                    readerDetalles.Close();
+
+                    // 3. Obtener datos del cliente (si existe)
+                    string nombreCliente = "Cliente General";
+                    if (idClienteObj != DBNull.Value)
+                    {
+                        int idCliente = Convert.ToInt32(idClienteObj);
+                        string queryCliente = "SELECT nombre, apellido FROM cliente WHERE id_cliente = @IdCliente";
+                        SqlCommand cmdCliente = new SqlCommand(queryCliente, connection);
+                        cmdCliente.Parameters.AddWithValue("@IdCliente", idCliente);
+                        SqlDataReader readerCliente = cmdCliente.ExecuteReader();
+
+                        if (readerCliente.Read())
+                        {
+                            nombreCliente = $"{readerCliente["nombre"]} {readerCliente["apellido"]}";
+                        }
+                        readerCliente.Close();
+                    }
+
+                    // 4. Crear el PDF
+                    string rutaEscritorio = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    string nombreArchivo = $"Factura_{idFactura}.pdf";
+                    string rutaCompleta = Path.Combine(rutaEscritorio, nombreArchivo);
+
+                    Document doc = new Document();
+                    PdfWriter.GetInstance(doc, new FileStream(rutaCompleta, FileMode.Create));
+                    doc.Open();
+
+                    // Encabezado
+                    doc.Add(new Paragraph("Factura GameBox", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18)));
+                    doc.Add(new Paragraph($"Fecha: {fechaCompra.ToShortDateString()}"));
+                    doc.Add(new Paragraph($"Cliente: {nombreCliente}"));
+                    doc.Add(new Paragraph($"Método de Pago: {metodoPago}"));
+                    doc.Add(new Paragraph(" "));
+
+                    // Detalles
+                    doc.Add(new Paragraph("Detalles de la compra:", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14)));
+                    foreach (var linea in lineasDetalle)
+                    {
+                        doc.Add(new Paragraph(linea));
+                    }
+
+                    doc.Add(new Paragraph(" "));
+                    doc.Add(new Paragraph($"Total: {total:C2}"));
+                    doc.Add(new Paragraph($"Monto Pagado: {montoPagado:C2}"));
+                    doc.Add(new Paragraph($"Cambio: {(montoPagado - total):C2}"));
+
+                    doc.Close();
+
+                    MessageBox.Show($"Factura PDF generada exitosamente en:\n{rutaCompleta}", "PDF Creado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al generar la factura PDF:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
     }
- }
+}
 

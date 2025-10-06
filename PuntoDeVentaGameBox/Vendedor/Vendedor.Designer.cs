@@ -185,7 +185,7 @@
             this.bCargarProducto.FlatAppearance.BorderSize = 0;
             this.bCargarProducto.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bCargarProducto.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.bCargarProducto.Location = new System.Drawing.Point(167, 138);
+            this.bCargarProducto.Location = new System.Drawing.Point(53, 138);
             this.bCargarProducto.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.bCargarProducto.Name = "bCargarProducto";
             this.bCargarProducto.Size = new System.Drawing.Size(179, 39);
@@ -350,6 +350,7 @@
             this.bDescargarFactura.TabIndex = 43;
             this.bDescargarFactura.Text = "Descargar Factura";
             this.bDescargarFactura.UseVisualStyleBackColor = false;
+            this.bDescargarFactura.Click += new System.EventHandler(this.bDescargarFactura_Click);
             // 
             // panel2
             // 
