@@ -34,7 +34,7 @@
             this.TLRoot = new System.Windows.Forms.TableLayoutPanel();
             this.PBanner = new System.Windows.Forms.Panel();
             this.LAvisoStockBajo = new System.Windows.Forms.Label();
-            this.BVerSoloBajo = new System.Windows.Forms.Button();
+            this.BVerSoloStockBajo = new System.Windows.Forms.Button();
             this.TLKPI = new System.Windows.Forms.TableLayoutPanel();
             this.CardKpi1 = new System.Windows.Forms.Panel();
             this.LProductostotales = new System.Windows.Forms.Label();
@@ -55,8 +55,8 @@
             this.LFiltroOrden = new System.Windows.Forms.Label();
             this.LFiltroID = new System.Windows.Forms.Label();
             this.CBGenero = new System.Windows.Forms.ComboBox();
-            this.BLimpiar = new System.Windows.Forms.Button();
-            this.BAplicar = new System.Windows.Forms.Button();
+            this.BLimpiarFiltrosProductos = new System.Windows.Forms.Button();
+            this.BAplicarFiltrosProductos = new System.Windows.Forms.Button();
             this.TBID = new System.Windows.Forms.TextBox();
             this.TBNombre = new System.Windows.Forms.TextBox();
             this.LFiltroNombre = new System.Windows.Forms.Label();
@@ -117,7 +117,7 @@
             this.PBanner.BackColor = System.Drawing.Color.Transparent;
             this.PBanner.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PBanner.Controls.Add(this.LAvisoStockBajo);
-            this.PBanner.Controls.Add(this.BVerSoloBajo);
+            this.PBanner.Controls.Add(this.BVerSoloStockBajo);
             this.PBanner.Location = new System.Drawing.Point(11, 120);
             this.PBanner.Margin = new System.Windows.Forms.Padding(11, 10, 11, 10);
             this.PBanner.Name = "PBanner";
@@ -136,21 +136,21 @@
             this.LAvisoStockBajo.Text = "Tienes ... productos con stock bajo. Es recomendable reabastecer estos productos." +
     "";
             // 
-            // BVerSoloBajo
+            // BVerSoloStockBajo
             // 
-            this.BVerSoloBajo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BVerSoloBajo.AutoSize = true;
-            this.BVerSoloBajo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.BVerSoloBajo.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(158)))), ((int)(((byte)(11)))));
-            this.BVerSoloBajo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BVerSoloBajo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(158)))), ((int)(((byte)(11)))));
-            this.BVerSoloBajo.Location = new System.Drawing.Point(875, 37);
-            this.BVerSoloBajo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.BVerSoloBajo.Name = "BVerSoloBajo";
-            this.BVerSoloBajo.Size = new System.Drawing.Size(179, 34);
-            this.BVerSoloBajo.TabIndex = 1;
-            this.BVerSoloBajo.Text = "Ver solo stock bajo";
-            this.BVerSoloBajo.UseVisualStyleBackColor = true;
+            this.BVerSoloStockBajo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BVerSoloStockBajo.AutoSize = true;
+            this.BVerSoloStockBajo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BVerSoloStockBajo.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(158)))), ((int)(((byte)(11)))));
+            this.BVerSoloStockBajo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BVerSoloStockBajo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(158)))), ((int)(((byte)(11)))));
+            this.BVerSoloStockBajo.Location = new System.Drawing.Point(875, 37);
+            this.BVerSoloStockBajo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.BVerSoloStockBajo.Name = "BVerSoloStockBajo";
+            this.BVerSoloStockBajo.Size = new System.Drawing.Size(179, 34);
+            this.BVerSoloStockBajo.TabIndex = 1;
+            this.BVerSoloStockBajo.Text = "Ver solo stock bajo";
+            this.BVerSoloStockBajo.UseVisualStyleBackColor = true;
             // 
             // TLKPI
             // 
@@ -330,8 +330,8 @@
             this.TLFlters.Controls.Add(this.LFiltroOrden, 3, 0);
             this.TLFlters.Controls.Add(this.LFiltroID, 1, 0);
             this.TLFlters.Controls.Add(this.CBGenero, 2, 1);
-            this.TLFlters.Controls.Add(this.BLimpiar, 1, 2);
-            this.TLFlters.Controls.Add(this.BAplicar, 0, 2);
+            this.TLFlters.Controls.Add(this.BLimpiarFiltrosProductos, 1, 2);
+            this.TLFlters.Controls.Add(this.BAplicarFiltrosProductos, 0, 2);
             this.TLFlters.Controls.Add(this.TBID, 1, 1);
             this.TLFlters.Controls.Add(this.TBNombre, 0, 1);
             this.TLFlters.Controls.Add(this.LFiltroNombre, 0, 0);
@@ -421,33 +421,34 @@
             this.CBGenero.Size = new System.Drawing.Size(267, 31);
             this.CBGenero.TabIndex = 2;
             // 
-            // BLimpiar
+            // BLimpiarFiltrosProductos
             // 
-            this.BLimpiar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.BLimpiar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.BLimpiar.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BLimpiar.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.BLimpiar.Location = new System.Drawing.Point(302, 95);
-            this.BLimpiar.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
-            this.BLimpiar.Name = "BLimpiar";
-            this.BLimpiar.Size = new System.Drawing.Size(91, 39);
-            this.BLimpiar.TabIndex = 7;
-            this.BLimpiar.Text = "Limpiar";
-            this.BLimpiar.UseVisualStyleBackColor = false;
+            this.BLimpiarFiltrosProductos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.BLimpiarFiltrosProductos.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.BLimpiarFiltrosProductos.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BLimpiarFiltrosProductos.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.BLimpiarFiltrosProductos.Location = new System.Drawing.Point(302, 95);
+            this.BLimpiarFiltrosProductos.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.BLimpiarFiltrosProductos.Name = "BLimpiarFiltrosProductos";
+            this.BLimpiarFiltrosProductos.Size = new System.Drawing.Size(91, 39);
+            this.BLimpiarFiltrosProductos.TabIndex = 7;
+            this.BLimpiarFiltrosProductos.Text = "Limpiar";
+            this.BLimpiarFiltrosProductos.UseVisualStyleBackColor = false;
             // 
-            // BAplicar
+            // BAplicarFiltrosProductos
             // 
-            this.BAplicar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.BAplicar.FlatAppearance.BorderSize = 0;
-            this.BAplicar.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BAplicar.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.BAplicar.Location = new System.Drawing.Point(16, 95);
-            this.BAplicar.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
-            this.BAplicar.Name = "BAplicar";
-            this.BAplicar.Size = new System.Drawing.Size(141, 39);
-            this.BAplicar.TabIndex = 4;
-            this.BAplicar.Text = "Aplicar filtros";
-            this.BAplicar.UseVisualStyleBackColor = false;
+            this.BAplicarFiltrosProductos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.BAplicarFiltrosProductos.FlatAppearance.BorderSize = 0;
+            this.BAplicarFiltrosProductos.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BAplicarFiltrosProductos.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.BAplicarFiltrosProductos.Location = new System.Drawing.Point(16, 95);
+            this.BAplicarFiltrosProductos.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.BAplicarFiltrosProductos.Name = "BAplicarFiltrosProductos";
+            this.BAplicarFiltrosProductos.Size = new System.Drawing.Size(141, 39);
+            this.BAplicarFiltrosProductos.TabIndex = 4;
+            this.BAplicarFiltrosProductos.Text = "Aplicar filtros";
+            this.BAplicarFiltrosProductos.UseVisualStyleBackColor = false;
+            this.BAplicarFiltrosProductos.Click += new System.EventHandler(this.BAplicarFiltrosProducto_Click);
             // 
             // TBID
             // 
@@ -471,6 +472,7 @@
             this.TBNombre.Name = "TBNombre";
             this.TBNombre.Size = new System.Drawing.Size(267, 30);
             this.TBNombre.TabIndex = 0;
+            this.TBNombre.TextChanged += new System.EventHandler(this.TBNombre_TextChanged);
             // 
             // LFiltroNombre
             // 
@@ -709,7 +711,7 @@
         private System.Windows.Forms.Label LUnidadeseninventario;
         private System.Windows.Forms.Label LStockmenora;
         private System.ComponentModel.BackgroundWorker backgroundWorker2;
-        private System.Windows.Forms.Button BVerSoloBajo;
+        private System.Windows.Forms.Button BVerSoloStockBajo;
         private System.Windows.Forms.TableLayoutPanel TLFlters;
         private System.Windows.Forms.Label LFiltroNombre;
         private System.Windows.Forms.Label LFiltroID;
@@ -719,8 +721,8 @@
         private System.Windows.Forms.TextBox TBID;
         private System.Windows.Forms.TextBox TBNombre;
         private System.Windows.Forms.ComboBox CBGenero;
-        private System.Windows.Forms.Button BLimpiar;
-        private System.Windows.Forms.Button BAplicar;
+        private System.Windows.Forms.Button BLimpiarFiltrosProductos;
+        private System.Windows.Forms.Button BAplicarFiltrosProductos;
         private System.Windows.Forms.Label LListTitle;
         private System.Windows.Forms.Button BNuevoProducto;
         private System.Windows.Forms.DataGridView DGVProductos;

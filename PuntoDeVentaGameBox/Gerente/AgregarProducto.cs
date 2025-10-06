@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Windows.Forms;
@@ -17,6 +18,9 @@ namespace PuntoDeVentaGameBox.Gerente
             _idEditar = null; // modo alta
             BRegistrarProducto.Text = "Registrar Producto"; // texto de alta
             WireEventos(); // vincula eventos
+            CargarCategorias(); // llena combo de generos
+            CargarProveedores(); // llena combo de proveedores
+            PrepararControles(); // estados iniciales de controles
         }
 
         public AgregarProducto(int idProducto)
@@ -25,6 +29,9 @@ namespace PuntoDeVentaGameBox.Gerente
             _idEditar = idProducto; // modo edicion
             BRegistrarProducto.Text = "Guardar Cambios"; // texto de edicion
             WireEventos(); // vincula eventos
+            CargarCategorias(); // llena combo de generos
+            CargarProveedores(); // llena combo de proveedores
+            PrepararControles(); // estados iniciales
             CargarProducto(idProducto); // carga datos del producto
         }
 
@@ -32,10 +39,10 @@ namespace PuntoDeVentaGameBox.Gerente
 
         private void WireEventos()
         {
-            // limpia handlers viejos del diseñador
+            // limpia handlers viejos del disenador
             BRegistrarProducto.Click -= BAbrirImagen_Click;  // evita que registrar abra el explorador
             BRegistrarProducto.Click -= bBuscar_Click;       // desengancha handler viejo si estaba
-            BAbrirImagen.Click -= bBuscar_Click;        // evita doble wiring en abrir imagen
+            BAbrirImagen.Click -= bBuscar_Click;             // evita doble wiring en abrir imagen
 
             // engancha handlers correctos
             BAbrirImagen.Click -= BAbrirImagen_Click;   // evita doble suscripcion
@@ -43,8 +50,87 @@ namespace PuntoDeVentaGameBox.Gerente
 
             BRegistrarProducto.Click -= BRegistrarProducto_Click; // evita doble suscripcion
             BRegistrarProducto.Click += BRegistrarProducto_Click; // guarda alta o edicion
+
+            if (BSalir != null)
+            {
+                BSalir.Click -= BSalir_Click; // evita doble suscripcion
+                BSalir.Click += BSalir_Click; // cierra solo este formulario
+            }
         }
 
+        private void PrepararControles()
+        {
+            // configura controles base
+            if (DTPFechaAlta != null) DTPFechaAlta.Value = DateTime.Today; // setea fecha por defecto
+
+            if (CBGeneroProducto != null)
+            {
+                CBGeneroProducto.DropDownStyle = ComboBoxStyle.DropDownList; // obliga a elegir de la lista
+                CBGeneroProducto.MaxDropDownItems = 4; // muestra maximo 4 sin scroll
+                CBGeneroProducto.SelectedIndex = -1; // sin seleccion
+            }
+
+            if (CBProveedorProducto != null)
+            {
+                CBProveedorProducto.DropDownStyle = ComboBoxStyle.DropDownList; // obliga a elegir de la lista
+                CBProveedorProducto.MaxDropDownItems = 4; // muestra maximo 4 sin scroll
+                CBProveedorProducto.SelectedIndex = -1; // sin seleccion
+            }
+        }
+
+        private void CargarCategorias()
+        {
+            // carga generos desde la tabla categoria
+            try
+            {
+                using (var cn = NuevaConexion())
+                using (var da = new SqlDataAdapter("SELECT id_categoria, nombre FROM dbo.categoria ORDER BY nombre", cn))
+                {
+                    var dt = new DataTable(); // tabla en memoria
+                    da.Fill(dt); // llena tabla
+                    CBGeneroProducto.DisplayMember = "nombre"; // muestra nombre
+                    CBGeneroProducto.ValueMember = "id_categoria"; // valor es id
+                    CBGeneroProducto.DataSource = dt; // asigna datasource
+                    CBGeneroProducto.SelectedIndex = -1; // sin seleccion
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"error al cargar generos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); // muestra error
+            }
+        }
+
+        private void CargarProveedores()
+        {
+            // carga proveedores activos si existe la columna activo, sino carga todos
+            try
+            {
+                using (var cn = NuevaConexion())
+                using (var da = new SqlDataAdapter("SELECT id_proveedor, nombre FROM dbo.proveedor WHERE activo = 1 ORDER BY nombre", cn))
+                {
+                    var dt = new DataTable(); // tabla para proveedores
+                    try
+                    {
+                        da.Fill(dt); // intenta con filtro activo
+                    }
+                    catch (SqlException)
+                    {
+                        da.SelectCommand.CommandText = "SELECT id_proveedor, nombre FROM dbo.proveedor ORDER BY nombre"; // fallback sin activo
+                        dt.Clear(); // limpia
+                        da.Fill(dt); // vuelve a llenar
+                    }
+
+                    CBProveedorProducto.DisplayMember = "nombre"; // muestra nombre
+                    CBProveedorProducto.ValueMember = "id_proveedor"; // valor es id
+                    CBProveedorProducto.DataSource = dt; // asigna datasource
+                    CBProveedorProducto.SelectedIndex = -1; // arranca sin seleccion
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"error al cargar proveedores: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); // muestra error
+            }
+        }
 
         private void BAbrirImagen_Click(object sender, EventArgs e)
         {
@@ -58,7 +144,7 @@ namespace PuntoDeVentaGameBox.Gerente
                 if (ofd.ShowDialog(this) == DialogResult.OK)
                 {
                     TBDireccionImagen.Text = ofd.FileName; // setea ruta
-                    PBImagenProducto.ImageLocation = ofd.FileName; // muestra imagen en picturebox
+                    PBImagenProducto.ImageLocation = ofd.FileName; // muestra imagen
                 }
             }
         }
@@ -73,7 +159,7 @@ namespace PuntoDeVentaGameBox.Gerente
                 {
                     cmd.CommandText = @"
                         SELECT nombre, descripcion, precio_venta, cantidad_stock, url_imagen,
-                               fecha_alta, fecha_edicion, id_proveedor, id_categoria
+                               fecha_alta, id_proveedor, id_categoria
                         FROM dbo.producto
                         WHERE id_producto = @id"; // consulta por id
                     cmd.Parameters.AddWithValue("@id", id); // setea id
@@ -87,10 +173,21 @@ namespace PuntoDeVentaGameBox.Gerente
                             TBPrecioVentaProducto.Text = Convert.ToDecimal(rd["precio_venta"]).ToString("0.##"); // llena precio
                             TBCantidadProducto.Text = rd["cantidad_stock"]?.ToString(); // llena stock
                             TBDireccionImagen.Text = rd["url_imagen"]?.ToString(); // llena ruta imagen
-                            TBFechaAltaProducto.Text = rd["fecha_alta"]?.ToString(); // llena fecha alta
-                            TBFechaEdicionProducto.Text = rd["fecha_edicion"]?.ToString(); // llena fecha edicion
-                            TBProveedorProducto.Text = rd["id_proveedor"]?.ToString(); // llena proveedor
-                            TBGeneroProducto.Text = rd["id_categoria"]?.ToString(); // llena categoria
+
+                            if (rd["fecha_alta"] != DBNull.Value)
+                                DTPFechaAlta.Value = Convert.ToDateTime(rd["fecha_alta"]); // setea fecha alta
+                            else
+                                DTPFechaAlta.Value = DateTime.Today; // por defecto
+
+                            if (rd["id_categoria"] != DBNull.Value)
+                                CBGeneroProducto.SelectedValue = Convert.ToInt32(rd["id_categoria"]); // selecciona categoria
+                            else
+                                CBGeneroProducto.SelectedIndex = -1; // sin seleccion
+
+                            if (rd["id_proveedor"] != DBNull.Value)
+                                CBProveedorProducto.SelectedValue = Convert.ToInt32(rd["id_proveedor"]); // selecciona proveedor
+                            else
+                                CBProveedorProducto.SelectedIndex = -1; // sin seleccion
 
                             var ruta = TBDireccionImagen.Text; // toma ruta
                             PBImagenProducto.ImageLocation = File.Exists(ruta) ? ruta : null; // muestra imagen si existe
@@ -118,7 +215,7 @@ namespace PuntoDeVentaGameBox.Gerente
         private bool ValidarFormulario(out decimal precio, out int stock, out int? prov, out int? cat)
         {
             // valida datos obligatorios y parsea numericos
-            precio = 0m; stock = 0; prov = null; cat = null; // inicializa variables
+            precio = 0m; stock = 0; prov = null; cat = null; // inicializa
 
             if (string.IsNullOrWhiteSpace(TBNombreProducto.Text))
             {
@@ -138,21 +235,16 @@ namespace PuntoDeVentaGameBox.Gerente
                 return false;
             }
 
-            // proveedor ahora se ingresa por nombre, no validamos entero aca
+            // toma proveedor del combo si esta seleccionado
+            if (CBProveedorProducto.SelectedValue != null && int.TryParse(CBProveedorProducto.SelectedValue.ToString(), out var provId))
+                prov = provId; // setea id de proveedor
 
-            if (!string.IsNullOrWhiteSpace(TBGeneroProducto.Text))
-            {
-                if (int.TryParse(TBGeneroProducto.Text, out var g)) cat = g;
-                else
-                {
-                    MessageBox.Show("genero debe ser entero", "Validacion", MessageBoxButtons.OK, MessageBoxIcon.Warning); // valida categoria
-                    return false;
-                }
-            }
+            // toma categoria del combo si esta seleccionada
+            if (CBGeneroProducto.SelectedValue != null && int.TryParse(CBGeneroProducto.SelectedValue.ToString(), out var catId))
+                cat = catId; // setea id de categoria
 
             return true; // validaciones correctas
         }
-
 
         private void InsertarProducto(decimal precio, int stock, int? prov, int? cat)
         {
@@ -164,21 +256,22 @@ namespace PuntoDeVentaGameBox.Gerente
                 {
                     cn.Open(); // abre conexion
 
-                    // resuelve proveedor por nombre o id
-                    var provId = ResolverProveedorId(cn, TBProveedorProducto.Text); // resuelve id proveedor
-
                     cmd.CommandText = @"
-                INSERT INTO dbo.producto
-                    (nombre, descripcion, precio_venta, cantidad_stock, url_imagen, fecha_alta, fecha_edicion, id_proveedor, id_categoria, activo)
-                VALUES
-                    (@nombre, @descripcion, @precio, @stock, @img, GETDATE(), NULL, @prov, @cat, 1)"; // insert parametrizado
+                        INSERT INTO dbo.producto
+                            (nombre, descripcion, precio_venta, cantidad_stock, url_imagen, fecha_alta, fecha_edicion, id_proveedor, id_categoria, activo)
+                        VALUES
+                            (@nombre, @descripcion, @precio, @stock, @img, @falta, NULL, @prov, @cat, 1)"; // insert parametrizado
 
                     cmd.Parameters.AddWithValue("@nombre", TBNombreProducto.Text.Trim()); // setea nombre
-                    cmd.Parameters.AddWithValue("@descripcion", (object)TBDescripcionProducto.Text.Trim() ?? DBNull.Value); // setea descripcion
+                    cmd.Parameters.AddWithValue("@descripcion", (object)(TBDescripcionProducto.Text ?? "").Trim()); // setea descripcion
                     cmd.Parameters.AddWithValue("@precio", precio); // setea precio
                     cmd.Parameters.AddWithValue("@stock", stock); // setea stock
                     cmd.Parameters.AddWithValue("@img", string.IsNullOrWhiteSpace(TBDireccionImagen.Text) ? (object)DBNull.Value : TBDireccionImagen.Text.Trim()); // setea imagen
-                    cmd.Parameters.AddWithValue("@prov", (object)provId ?? DBNull.Value); // setea proveedor resuelto
+
+                    var pFecha = cmd.Parameters.Add("@falta", SqlDbType.Date); // crea parametro date
+                    pFecha.Value = DTPFechaAlta.Value.Date; // setea solo la fecha
+
+                    cmd.Parameters.AddWithValue("@prov", (object)prov ?? DBNull.Value); // setea proveedor seleccionado
                     cmd.Parameters.AddWithValue("@cat", (object)cat ?? DBNull.Value); // setea categoria
 
                     cmd.ExecuteNonQuery(); // ejecuta insert
@@ -194,7 +287,6 @@ namespace PuntoDeVentaGameBox.Gerente
             }
         }
 
-
         private void ActualizarProducto(int id, decimal precio, int stock, int? prov, int? cat)
         {
             // actualiza un producto existente
@@ -205,32 +297,29 @@ namespace PuntoDeVentaGameBox.Gerente
                 {
                     cn.Open(); // abre conexion
 
-                    var provId = ResolverProveedorId(cn, TBProveedorProducto.Text); // resuelve id proveedor
-
                     cmd.CommandText = @"
-                UPDATE dbo.producto
-                SET nombre = @nombre,
-                    descripcion = @descripcion,
-                    precio_venta = @precio,
-                    cantidad_stock = @stock,
-                    url_imagen = @img,
-                    fecha_edicion = GETDATE(),
-                    id_proveedor = @prov,
-                    id_categoria = @cat
-                WHERE id_producto = @id"; // update parametrizado
+                        UPDATE dbo.producto
+                        SET nombre = @nombre,
+                            descripcion = @descripcion,
+                            precio_venta = @precio,
+                            cantidad_stock = @stock,
+                            url_imagen = @img,
+                            fecha_edicion = GETDATE(),
+                            id_proveedor = @prov,
+                            id_categoria = @cat
+                        WHERE id_producto = @id"; // update parametrizado
 
                     cmd.Parameters.AddWithValue("@nombre", TBNombreProducto.Text.Trim()); // setea nombre
-                    cmd.Parameters.AddWithValue("@descripcion", (object)TBDescripcionProducto.Text.Trim() ?? DBNull.Value); // setea descripcion
+                    cmd.Parameters.AddWithValue("@descripcion", (object)(TBDescripcionProducto.Text ?? "").Trim()); // setea descripcion
                     cmd.Parameters.AddWithValue("@precio", precio); // setea precio
                     cmd.Parameters.AddWithValue("@stock", stock); // setea stock
                     cmd.Parameters.AddWithValue("@img", string.IsNullOrWhiteSpace(TBDireccionImagen.Text) ? (object)DBNull.Value : TBDireccionImagen.Text.Trim()); // setea imagen
-                    cmd.Parameters.AddWithValue("@prov", (object)provId ?? DBNull.Value); // setea proveedor resuelto
+                    cmd.Parameters.AddWithValue("@prov", (object)prov ?? DBNull.Value); // setea proveedor seleccionado
                     cmd.Parameters.AddWithValue("@cat", (object)cat ?? DBNull.Value); // setea categoria
                     cmd.Parameters.AddWithValue("@id", id); // setea id
 
                     cmd.ExecuteNonQuery(); // ejecuta update
                 }
-
 
                 MessageBox.Show("producto actualizado", "Ok", MessageBoxButtons.OK, MessageBoxIcon.Information); // muestra exito
                 this.DialogResult = DialogResult.OK; // devuelve ok al inventario
@@ -241,88 +330,32 @@ namespace PuntoDeVentaGameBox.Gerente
                 MessageBox.Show($"error al actualizar producto: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); // muestra error
             }
         }
-        // ====== STUBS AUTOGENERADOS POR EL DISENADOR ======
-        // estos metodos existen solo para que compile porque hay eventos conectados en el .Designer
-        // podes dejarlos vacios o redirigirlos a handlers reales
 
-        private void AgregarProducto_Load(object sender, EventArgs e)
+        private void BSalir_Click(object sender, EventArgs e)
         {
-            // evento load autogenerado por el disenador
-            // no hacemos nada aca porque el flujo real lo manejamos en los constructores
+            // cierra solo este formulario
+            this.Close(); // cierra la ventana actual
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        // ====== stubs para eventos del disenador que pueden seguir conectados ======
+
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e) { }
+        private void panel3_Paint(object sender, PaintEventArgs e) { }
+        private void PBImagenProducto_Click(object sender, EventArgs e) { }
+        private void TBDireccionImagen_TextChanged(object sender, EventArgs e) { }
+        private void button2_Click(object sender, EventArgs e) { }
+        private void PDatosProductos_Paint(object sender, PaintEventArgs e) { }
+        private void label9_Click(object sender, EventArgs e) { }
+        private void LFechaAlta_Click(object sender, EventArgs e) { }
+        private void LDescripcion_Click(object sender, EventArgs e) { }
+        private void TBNombreProducto_TextChanged(object sender, EventArgs e) { }
+        private void TBPrecioVentaProducto_TextChanged(object sender, EventArgs e) { }
+        private void bBuscar_Click(object sender, EventArgs e) { BAbrirImagen_Click(sender, e); }
+        private void AgregarProducto_Load(object sender, EventArgs e) { }
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // click de un boton autogenerado por el disenador
-            // cierro por si era el boton salir
-            this.Close(); // cierra el formulario si corresponde
-        }
-
-        private void bBuscar_Click(object sender, EventArgs e)
-        {
-            // viejo handler de buscar imagen
-            // reutilizo el handler nuevo para abrir imagen
-            BAbrirImagen_Click(sender, e); // invoca el handler real de abrir imagen
-        }
-
-        private void panel3_Paint(object sender, PaintEventArgs e)
-        {
-            // evento paint autogenerado por el disenador
-            // no hacemos nada aca
-        }
-
-        private void label9_Click(object sender, EventArgs e)
-        {
-            // click de label autogenerado por el disenador
-            // no hacemos nada aca
-        }
-
-        private int? ResolverProveedorId(SqlConnection cn, string valor)
-        {
-            // resuelve id_proveedor a partir de un texto que puede ser id o nombre
-            // si no existe proveedor con ese nombre lo crea y devuelve su id
-
-            // si viene vacio devolvemos null
-            if (string.IsNullOrWhiteSpace(valor)) return null; // sin proveedor
-
-            // si ponen un numero y existe ese id lo usamos
-            if (int.TryParse(valor.Trim(), out var idPosible))
-            {
-                using (var cmd = cn.CreateCommand())
-                {
-                    cmd.CommandText = "SELECT COUNT(1) FROM dbo.proveedor WHERE id_proveedor = @id";
-                    cmd.Parameters.AddWithValue("@id", idPosible);
-                    var existe = (int)cmd.ExecuteScalar() > 0; // consulta existencia
-                    if (existe) return idPosible; // usa id existente
-                }
-                // si no existe, seguimos como si fuera nombre
-            }
-
-            var nombre = valor.Trim(); // toma nombre
-
-            // buscamos por nombre
-            using (var cmd = cn.CreateCommand())
-            {
-                cmd.CommandText = "SELECT TOP 1 id_proveedor FROM dbo.proveedor WHERE nombre = @nom ORDER BY id_proveedor";
-                cmd.Parameters.AddWithValue("@nom", nombre);
-                var found = cmd.ExecuteScalar();
-                if (found != null && found != DBNull.Value) return Convert.ToInt32(found); // devuelve id encontrado
-            }
-
-            // si no existe lo creamos con campos minimos
-            using (var cmd = cn.CreateCommand())
-            {
-                cmd.CommandText = @"
-                    INSERT INTO dbo.proveedor(nombre)
-                    VALUES(@nom);
-                    SELECT CAST(SCOPE_IDENTITY() AS int);";
-                cmd.Parameters.AddWithValue("@nom", nombre);
-                var nuevoId = (int)cmd.ExecuteScalar(); // crea proveedor y devuelve id
-                return nuevoId; // devuelve id nuevo
-            }
+            // evento viejo del disenador sin uso
         }
 
     }
-
 }
-
