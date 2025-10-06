@@ -1,199 +1,444 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using PuntoDeVentaGameBox.Vendedor;
-using PuntoDeVentaGameBox.Administrador;
-using PuntoDeVentaGameBox.Gerente;
+using System.IO;
 
 namespace PuntoDeVentaGameBox.Gerente
 {
     public partial class InventarioForm : Form
     {
+        // usa cadena fija sin appconfig
+        private readonly string _connString = "Server=localhost;Database=game_box;Trusted_Connection=True;TrustServerCertificate=True"; // cadena de conexion fija
+
+        // umbral para considerar stock bajo
+        private const int UMBRAL_STOCK_BAJO = 25; // define umbral de stock bajo
+
+        // cache de placeholder para imagen faltante
+        private static Image _placeholderImagen; // cache de imagen de relleno
+
         public InventarioForm()
         {
             InitializeComponent();
 
-            // Asegurar que el click de celdas del DGV dispare nuestro handler
-            DGV.CellContentClick -= DGV_CellContentClick;
-            DGV.CellContentClick += DGV_CellContentClick;
+            // asegura handler unico de clicks en celdas
+            DGVProductos.CellContentClick -= DGV_CellContentClick; // evita doble suscripcion
+            DGVProductos.CellContentClick += DGV_CellContentClick; // maneja botones editar y eliminar
 
-            // Texto en negro para todas las filas
-            DGV.DefaultCellStyle.ForeColor = Color.Black;
-            DGV.RowsDefaultCellStyle.ForeColor = Color.Black;
-            DGV.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black;
+            // convierte url_imagen en miniatura y maneja errores de formato
+            DGVProductos.CellFormatting -= DGVProductos_CellFormatting; // evita doble suscripcion
+            DGVProductos.CellFormatting += DGVProductos_CellFormatting; // renderiza imagen en la grilla
+            DGVProductos.DataError -= DGVProductos_DataError; // evita doble suscripcion
+            DGVProductos.DataError += DGVProductos_DataError; // suprime popups de error de formato
+
+            // estilo del dgv
+            DGVProductos.DefaultCellStyle.ForeColor = Color.Black; // asegura texto negro
+            DGVProductos.RowsDefaultCellStyle.ForeColor = Color.Black; // asegura texto negro
+            DGVProductos.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black; // asegura texto negro
+
+            // wire del boton nuevo
+            BNuevoProducto.Click -= BNuevoproducto_Click; // evita doble suscripcion
+            BNuevoProducto.Click += BNuevoproducto_Click; // abre formulario de alta
         }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e) { }
-        private void TLRoot_Paint(object sender, PaintEventArgs e) { }
-        private void PFilters_Paint(object sender, PaintEventArgs e) { }
-        private void LSub_Click(object sender, EventArgs e) { }
-        private void label2_Click(object sender, EventArgs e) { }
-        private void LProductostotales_Click(object sender, EventArgs e) { }
-        private void LUnidadeseninventario_Click(object sender, EventArgs e) { }
-        private void LblBanner_Click(object sender, EventArgs e) { }
-        private void label1_Click(object sender, EventArgs e) { }
-        private void tableLayoutPanel1_Paint_1(object sender, PaintEventArgs e) { }
-        private void TBID_TextChanged(object sender, EventArgs e) { }
-        private void LTitle_Click(object sender, EventArgs e) { }
 
         private void InventarioForm_Load(object sender, EventArgs e)
         {
-            // Cargar datos de ejemplo (Columnas esperadas: ID, Imagen, Nombre, Género, Precio, Stock)
-            DGV.Rows.Add(1, @"C:\Imagenes\Juegos\elden_ring.jpg", "Elden Ring", "RPG", 79.99m, 8);
-            DGV.Rows.Add(2, @"C:\Imagenes\Juegos\fifa25.jpg", "FIFA 25", "Deportes", 69.99m, 15);
-            DGV.Rows.Add(3, @"C:\Imagenes\Juegos\minecraft.png", "Minecraft", "Aventura", 29.99m, 30);
-            DGV.Rows.Add(4, @"C:\Imagenes\Juegos\god_of_war.jpg", "God of War", "Acción", 59.99m, 12);
-            DGV.Rows.Add(5, @"C:\Imagenes\Juegos\fortnite.jpg", "Fortnite", "Shooter", 0.00m, 99);
-
-            // Dejar exactamente UNA columna Editar y UNA Eliminar (y que sean botones con texto)
-            NormalizarBotonAccion("Editar");
-            NormalizarBotonAccion("Eliminar");
+            // prepara columnas exactas y carga datos desde la base
+            PrepararColumnas(); // define columnas manuales y orden
+            CargarProductos();  // trae productos activos con nombre de categoria
         }
+
+        private SqlConnection NuevaConexion() => new SqlConnection(_connString); // crea conexion sql
+
+        // ==================== columnas y carga ====================
+
+        private void PrepararColumnas()
+        {
+            // definimos columnas manuales para evitar duplicados y controlar tamaños
+            DGVProductos.AutoGenerateColumns = false; // desactiva autogeneracion de columnas
+            DGVProductos.Columns.Clear(); // limpia columnas existentes
+
+            // id
+            var colId = new DataGridViewTextBoxColumn
+            {
+                Name = "ID",
+                HeaderText = "ID",
+                DataPropertyName = "id_producto",
+                ReadOnly = true,
+                FillWeight = 8,
+                MinimumWidth = 55
+            };
+            DGVProductos.Columns.Add(colId); // agrega columna id
+
+            // imagen miniatura desde url_imagen
+            var colImg = new DataGridViewImageColumn
+            {
+                Name = "Imagen",
+                HeaderText = "Imagen",
+                DataPropertyName = "url_imagen", // se transforma a Image en CellFormatting
+                ImageLayout = DataGridViewImageCellLayout.Zoom,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None, // ancho fijo chico
+                Width = 56
+            };
+            colImg.DefaultCellStyle.NullValue = null; // evita castear null a imagen
+            DGVProductos.Columns.Add(colImg); // agrega columna imagen
+
+            // nombre del juego
+            var colNombre = new DataGridViewTextBoxColumn
+            {
+                Name = "Nombre",
+                HeaderText = "Nombre",
+                DataPropertyName = "nombre",
+                ReadOnly = true,
+                FillWeight = 48,
+                MinimumWidth = 260
+            };
+            DGVProductos.Columns.Add(colNombre); // agrega columna nombre
+
+            // genero con nombre de la categoria
+            var colGenero = new DataGridViewTextBoxColumn
+            {
+                Name = "Genero",
+                HeaderText = "Genero",
+                DataPropertyName = "genero", // viene del join a categoria
+                ReadOnly = true,
+                FillWeight = 18,
+                MinimumWidth = 120
+            };
+            DGVProductos.Columns.Add(colGenero); // agrega columna genero
+
+            // precio
+            var colPrecio = new DataGridViewTextBoxColumn
+            {
+                Name = "Precio",
+                HeaderText = "Precio",
+                DataPropertyName = "precio_venta",
+                ReadOnly = true,
+                FillWeight = 14,
+                MinimumWidth = 90
+            };
+            colPrecio.DefaultCellStyle.Format = "N2"; // muestra dos decimales
+            colPrecio.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; // alinea a la derecha
+            DGVProductos.Columns.Add(colPrecio); // agrega columna precio
+
+            // stock
+            var colStock = new DataGridViewTextBoxColumn
+            {
+                Name = "Stock",
+                HeaderText = "Stock",
+                DataPropertyName = "cantidad_stock",
+                ReadOnly = true,
+                FillWeight = 12,
+                MinimumWidth = 70
+            };
+            colStock.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter; // centra el numero
+            DGVProductos.Columns.Add(colStock); // agrega columna stock
+
+            // boton editar
+            DGVProductos.Columns.Add(new DataGridViewButtonColumn
+            {
+                Name = "Editar",
+                HeaderText = "Editar",
+                Text = "Editar",
+                UseColumnTextForButtonValue = true,
+                FlatStyle = FlatStyle.Popup,
+                FillWeight = 8,
+                MinimumWidth = 80
+            }); // agrega boton editar
+
+            // boton eliminar
+            DGVProductos.Columns.Add(new DataGridViewButtonColumn
+            {
+                Name = "Eliminar",
+                HeaderText = "Eliminar",
+                Text = "Eliminar",
+                UseColumnTextForButtonValue = true,
+                FlatStyle = FlatStyle.Popup,
+                FillWeight = 8,
+                MinimumWidth = 90
+            }); // agrega boton eliminar
+
+            // formato general del grid
+            DGVProductos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // reparte el espacio segun fillweight
+            DGVProductos.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None; // altura fija de filas
+            DGVProductos.RowTemplate.Height = 56; // miniatura chica
+            DGVProductos.ReadOnly = false; // habilita botones
+            DGVProductos.SelectionMode = DataGridViewSelectionMode.FullRowSelect; // seleccion por fila completa
+            DGVProductos.MultiSelect = false; // seleccion unica
+        }
+
+        private void CargarProductos(string filtroNombre = null, int? filtroId = null, int? filtroCategoria = null)
+        {
+            // lee productos activos con join a categoria para traer el nombre del genero
+            try
+            {
+                using (var cn = NuevaConexion()) // abre la conexion con la base de datos
+                using (var da = new SqlDataAdapter())
+                using (var cmd = cn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT
+                            p.id_producto,
+                            p.url_imagen,
+                            p.nombre,
+                            c.nombre AS genero,
+                            p.precio_venta,
+                            p.cantidad_stock
+                        FROM dbo.producto p
+                        LEFT JOIN dbo.categoria c ON c.id_categoria = p.id_categoria
+                        WHERE p.activo = 1
+                          AND (@nom IS NULL OR p.nombre LIKE @like)
+                          AND (@id IS NULL OR p.id_producto = @id)
+                          AND (@cat IS NULL OR p.id_categoria = @cat)
+                        ORDER BY p.id_producto DESC"; // consulta con join y filtros
+
+                    cmd.Parameters.AddWithValue("@nom", (object)filtroNombre ?? DBNull.Value); // parametro nombre
+                    cmd.Parameters.AddWithValue("@like", filtroNombre == null ? (object)DBNull.Value : $"%{filtroNombre}%"); // parametro like
+                    cmd.Parameters.AddWithValue("@id", (object)filtroId ?? DBNull.Value); // parametro id
+                    cmd.Parameters.AddWithValue("@cat", (object)filtroCategoria ?? DBNull.Value); // parametro categoria
+
+                    da.SelectCommand = cmd; // asigna select al adapter
+                    var dt = new DataTable(); // crea tabla en memoria
+                    da.Fill(dt); // ejecuta select
+
+                    DGVProductos.DataSource = dt; // vincula al dgv
+                }
+
+                ActualizarResumenInventario(); // actualiza tarjetas con los numeros actuales
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"error al cargar productos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); // muestra error
+            }
+        }
+
+        // ==================== imagenes ====================
+
+        private static Image PlaceholderImagen()
+        {
+            // crea un bitmap simple gris con una x para usar como placeholder
+            if (_placeholderImagen != null) return _placeholderImagen; // devuelve cache si existe
+            var bmp = new Bitmap(64, 64); // crea bitmap en memoria
+            using (var g = Graphics.FromImage(bmp))
+            {
+                g.Clear(Color.LightGray); // fondo gris claro
+                using (var p = new Pen(Color.DarkGray, 3))
+                {
+                    g.DrawRectangle(p, 1, 1, 62, 62); // dibuja borde
+                    g.DrawLine(p, 14, 14, 50, 50); // dibuja linea diagonal
+                    g.DrawLine(p, 50, 14, 14, 50); // dibuja otra diagonal
+                }
+            }
+            _placeholderImagen = bmp; // guarda en cache
+            return _placeholderImagen; // devuelve placeholder
+        }
+
+        private static Image CargarImagenSinBloquear(string ruta)
+        {
+            // carga imagen desde archivo sin bloquear el archivo
+            try
+            {
+                using (var fs = new FileStream(ruta, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (var imgTemp = Image.FromStream(fs))
+                {
+                    return new Bitmap(imgTemp); // devuelve copia que no bloquea
+                }
+            }
+            catch
+            {
+                return PlaceholderImagen(); // si falla devuelve placeholder
+            }
+        }
+
+        private void DGVProductos_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            // convierte ruta en imagen solo para la columna imagen
+            if (e.RowIndex >= 0 && DGVProductos.Columns[e.ColumnIndex].Name == "Imagen")
+            {
+                try
+                {
+                    var drv = DGVProductos.Rows[e.RowIndex].DataBoundItem as DataRowView; // toma fila
+                    var ruta = drv?["url_imagen"]?.ToString(); // obtiene la ruta
+                    if (string.IsNullOrWhiteSpace(ruta))
+                    {
+                        e.Value = PlaceholderImagen(); // muestra placeholder si no hay ruta
+                        e.FormattingApplied = true; // marca formato aplicado
+                        return;
+                    }
+
+                    // si es http o https no intentamos descargar, usamos placeholder
+                    if (ruta.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+                        ruta.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                    {
+                        e.Value = PlaceholderImagen(); // usa placeholder para urls remotas
+                        e.FormattingApplied = true; // marca formato aplicado
+                        return;
+                    }
+
+                    // si el archivo existe lo cargamos
+                    if (File.Exists(ruta))
+                    {
+                        e.Value = CargarImagenSinBloquear(ruta); // carga imagen desde archivo
+                        e.FormattingApplied = true; // marca formato aplicado
+                    }
+                    else
+                    {
+                        e.Value = PlaceholderImagen(); // si no existe mostramos placeholder
+                        e.FormattingApplied = true; // marca formato aplicado
+                    }
+                }
+                catch
+                {
+                    e.Value = PlaceholderImagen(); // evita que se caiga si falla la carga
+                    e.FormattingApplied = true; // marca formato aplicado
+                }
+            }
+        }
+
+        private void DGVProductos_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // suprime dialogo por errores de formato y pone placeholder en imagen
+            e.ThrowException = false; // evita popup del datagridview
+            if (e.RowIndex >= 0 && DGVProductos.Columns[e.ColumnIndex].Name == "Imagen")
+            {
+                DGVProductos.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = PlaceholderImagen(); // asigna placeholder
+            }
+        }
+
+        // ==================== acciones de grilla ====================
 
         private void DGV_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+            // maneja clicks en los botones editar y eliminar
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return; // valida indices
 
-            var col = DGV.Columns[e.ColumnIndex];
-            string name = col.Name ?? "";
-            string header = col.HeaderText ?? "";
+            var col = DGVProductos.Columns[e.ColumnIndex]; // toma columna clickeada
+            bool esEditar = col.Name.Equals("Editar", StringComparison.OrdinalIgnoreCase); // detecta boton editar
+            bool esEliminar = col.Name.Equals("Eliminar", StringComparison.OrdinalIgnoreCase); // detecta boton eliminar
+            if (!esEditar && !esEliminar) return; // ignora si no es boton
 
-            bool esEditar = name.Equals("Editar", StringComparison.OrdinalIgnoreCase) ||
-                            header.Equals("Editar", StringComparison.OrdinalIgnoreCase);
-            bool esEliminar = name.Equals("Eliminar", StringComparison.OrdinalIgnoreCase) ||
-                              header.Equals("Eliminar", StringComparison.OrdinalIgnoreCase);
+            var id = Convert.ToInt32(DGVProductos.Rows[e.RowIndex].Cells["ID"].Value); // toma id seleccionado
 
             if (esEditar)
             {
-                // Abrir el formulario EditarProducto (modal)
-                using (var frm = new EditarProducto())
+                // abre la vista de edicion como antes
+                using (var frm = new EditarProducto()) // si tu editar recibe id cambia a new EditarProducto(id)
                 {
-                    frm.ShowDialog(this);
+                    frm.ShowDialog(this); // abre modal
                 }
             }
             else if (esEliminar)
             {
-                var fila = DGV.Rows[e.RowIndex];
-
-                // Obtener el nombre de forma robusta (por Name, por HeaderText o por índice 2)
-                string nombre = GetCellText(DGV, fila, "Nombre");
-                if (string.IsNullOrWhiteSpace(nombre) && DGV.Columns.Count > 2)
-                    nombre = Convert.ToString(fila.Cells[2].Value); // 0=ID, 1=Imagen, 2=Nombre según Rows.Add
-
-                var resp = MessageBox.Show(
-                    $"¿Eliminar el producto \"{nombre}\"?",
-                    "Confirmar eliminación",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning);
-
-                if (resp == DialogResult.Yes)
-                {
-                    // Aquí podrías llamar a tu eliminación en BD; por ahora removemos la fila de la grilla
-                    DGV.Rows.RemoveAt(e.RowIndex);
-                }
+                // por ahora solo mostramos la vista de confirmacion
+                var nombre = Convert.ToString(DGVProductos.Rows[e.RowIndex].Cells["Nombre"].Value); // toma nombre del producto
+                MessageBox.Show($"se mostraria la vista de eliminar para \"{nombre}\" (id {id})", "Eliminar", MessageBoxButtons.OK, MessageBoxIcon.Information); // muestra vista mock
+                // cuando quieras hacer baja logica aca reemplazamos por update a activo=0 y recarga
             }
-        }
-
-        // ================= Helpers =================
-
-        /// <summary>
-        /// Garantiza que exista exactamente UNA columna botón con el header y nombre indicados.
-        /// Si hay duplicadas, deja la primera y elimina el resto. Si no es botón, la reemplaza por una de botón.
-        /// Asegura texto visible y color negro en el botón.
-        /// </summary>
-        private void NormalizarBotonAccion(string titulo)
-        {
-            // Buscar columnas que coincidan por Name o HeaderText
-            var coinciden = DGV.Columns
-                .Cast<DataGridViewColumn>()
-                .Where(c => string.Equals(c.Name, titulo, StringComparison.OrdinalIgnoreCase) ||
-                            string.Equals(c.HeaderText, titulo, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-
-            if (coinciden.Count == 0)
-            {
-                // No existe: crearla
-                var btn = NuevaColumnaBoton(titulo);
-                DGV.Columns.Add(btn);
-            }
-            else
-            {
-                // Dejar solo una
-                for (int i = 1; i < coinciden.Count; i++)
-                    DGV.Columns.Remove(coinciden[i]);
-
-                // Asegurar que sea botón y tenga texto visible
-                var col = coinciden[0];
-                if (!(col is DataGridViewButtonColumn))
-                {
-                    int idx = col.Index;
-                    DGV.Columns.Remove(col);
-                    DGV.Columns.Insert(idx, NuevaColumnaBoton(titulo));
-                }
-                else
-                {
-                    var btn = (DataGridViewButtonColumn)col;
-                    btn.Text = titulo;
-                    btn.UseColumnTextForButtonValue = true;
-                    btn.DefaultCellStyle.ForeColor = Color.Black;
-                    btn.HeaderText = titulo;
-                    btn.Name = titulo; // normalizamos el Name
-                }
-            }
-        }
-
-        private DataGridViewButtonColumn NuevaColumnaBoton(string titulo)
-        {
-            return new DataGridViewButtonColumn
-            {
-                Name = titulo,
-                HeaderText = titulo,
-                Text = titulo,
-                UseColumnTextForButtonValue = true,
-                FlatStyle = FlatStyle.Popup,
-                DefaultCellStyle = new DataGridViewCellStyle
-                {
-                    ForeColor = Color.Black
-                }
-            };
-        }
-
-        /// <summary>
-        /// Devuelve el texto de una celda buscando primero por Name exacto,
-        /// luego por HeaderText y, si no existe, retorna null.
-        /// </summary>
-        private string GetCellText(DataGridView grid, DataGridViewRow row, params string[] posiblesNombres)
-        {
-            foreach (var n in posiblesNombres)
-            {
-                // 1) Por Name exacto
-                if (grid.Columns.Contains(n))
-                    return Convert.ToString(row.Cells[n].Value);
-
-                // 2) Por HeaderText (o Name con otra capitalización)
-                var col = grid.Columns.Cast<DataGridViewColumn>()
-                    .FirstOrDefault(c =>
-                        string.Equals(c.HeaderText, n, StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(c.Name, n, StringComparison.OrdinalIgnoreCase));
-
-                if (col != null)
-                    return Convert.ToString(row.Cells[col.Index].Value);
-            }
-            return null;
         }
 
         private void BNuevoproducto_Click(object sender, EventArgs e)
         {
-            using (var frm = new AgregarProducto())
+            // abre formulario de alta
+            using (var frm = new AgregarProducto()) // modo alta
             {
-                frm.ShowDialog(this);
+                var dr = frm.ShowDialog(this); // abre modal
+                if (dr == DialogResult.OK) CargarProductos(); // recarga si creo producto
             }
+        }
+
+        // ==================== resumen tablero ====================
+
+        private void ActualizarResumenInventario()
+        {
+            // calcula productos totales, stock total y cuantos tienen stock bajo y actualiza los labels que me diste
+            try
+            {
+                using (var cn = NuevaConexion()) // abre conexion
+                using (var cmd = cn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT
+                            COUNT(*)                                 AS productos_totales,
+                            ISNULL(SUM(p.cantidad_stock), 0)         AS stock_total,
+                            SUM(CASE WHEN p.cantidad_stock <= @u THEN 1 ELSE 0 END) AS stock_bajo
+                        FROM dbo.producto p
+                        WHERE p.activo = 1"; // consulta agregada sobre activos
+
+                    cmd.Parameters.AddWithValue("@u", UMBRAL_STOCK_BAJO); // pasa umbral
+                    cn.Open(); // abre conexion
+
+                    using (var rd = cmd.ExecuteReader()) // ejecuta lector
+                    {
+                        if (rd.Read())
+                        {
+                            int productosTotales = Convert.ToInt32(rd["productos_totales"]); // toma total de productos
+                            int stockTotal = Convert.ToInt32(rd["stock_total"]); // toma suma de stock
+                            int conStockBajo = Convert.ToInt32(rd["stock_bajo"]); // toma cantidad con stock bajo
+
+                            // actualiza directamente los labels provistos
+                            KpiTotal.Text = productosTotales.ToString(); // pone numero en productos totales
+                            KpiStock.Text = stockTotal.ToString();       // pone numero en total stock
+                            KpiBajo.Text = conStockBajo.ToString();     // pone numero en con stock bajo
+
+                            // reemplaza los tres puntitos por el valor en el banner
+                            var txt = LAvisoStockBajo.Text ?? ""; // toma texto actual
+                            if (txt.Contains("..."))
+                                LAvisoStockBajo.Text = txt.Replace("...", conStockBajo.ToString()); // reemplaza puntitos por numero
+                            else
+                                LAvisoStockBajo.Text = $"Tienes {conStockBajo} productos con stock bajo. Es recomendable reabastecer estos productos."; // setea texto si no estaba
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"error al actualizar resumen: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); // muestra error
+            }
+        }
+
+        // ====== stubs autogenerados por el disenador ======
+        // estos metodos existen solo para que compile porque hay eventos conectados en el .designer
+
+        private void TLRoot_Paint(object sender, PaintEventArgs e)
+        {
+            // evento paint autogenerado por el disenador
+        }
+
+        private void LProductostotales_Click(object sender, EventArgs e)
+        {
+            // click de label autogenerado por el disenador
+        }
+
+        private void LUnidadeseninventario_Click(object sender, EventArgs e)
+        {
+            // click de label autogenerado por el disenador
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+            // click de label autogenerado por el disenador
+        }
+
+        private void PFilters_Paint(object sender, PaintEventArgs e)
+        {
+            // evento paint autogenerado por el disenador
+        }
+
+        private void tableLayoutPanel1_Paint_1(object sender, PaintEventArgs e)
+        {
+            // evento paint autogenerado por el disenador
+        }
+
+        private void TBID_TextChanged(object sender, EventArgs e)
+        {
+            // cambio de texto autogenerado por el disenador
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            // click de label autogenerado por el disenador
         }
     }
 }
