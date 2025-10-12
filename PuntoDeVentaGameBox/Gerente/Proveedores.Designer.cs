@@ -43,6 +43,8 @@
             this.LCantProveedores = new System.Windows.Forms.Label();
             this.BNuevoProveedor = new System.Windows.Forms.Button();
             this.TBBuscar = new System.Windows.Forms.TextBox();
+            this.BAplicarFiltros = new System.Windows.Forms.Button();
+            this.BLimpiarFiltros = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVDatosProveedores)).BeginInit();
             this.TLPFiltros.SuspendLayout();
@@ -51,13 +53,15 @@
             // panel2
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Controls.Add(this.BLimpiarFiltros);
+            this.panel2.Controls.Add(this.BAplicarFiltros);
             this.panel2.Controls.Add(this.DGVDatosProveedores);
             this.panel2.Controls.Add(this.TLPFiltros);
             this.panel2.Font = new System.Drawing.Font("Segoe Fluent Icons", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel2.Location = new System.Drawing.Point(3, -69);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(831, 765);
+            this.panel2.Size = new System.Drawing.Size(831, 774);
             this.panel2.TabIndex = 1;
             // 
             // DGVDatosProveedores
@@ -72,12 +76,12 @@
             this.DGVProveedorCVer,
             this.DGVProveedorCEditar,
             this.DGVProveedorCEliminar});
-            this.DGVDatosProveedores.Location = new System.Drawing.Point(12, 199);
+            this.DGVDatosProveedores.Location = new System.Drawing.Point(12, 238);
             this.DGVDatosProveedores.Name = "DGVDatosProveedores";
             this.DGVDatosProveedores.RowHeadersVisible = false;
             this.DGVDatosProveedores.RowHeadersWidth = 51;
             this.DGVDatosProveedores.RowTemplate.Height = 24;
-            this.DGVDatosProveedores.Size = new System.Drawing.Size(812, 396);
+            this.DGVDatosProveedores.Size = new System.Drawing.Size(812, 357);
             this.DGVDatosProveedores.TabIndex = 3;
             this.DGVDatosProveedores.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVDatosProveedores_CellContentClick);
             // 
@@ -137,12 +141,12 @@
             this.TLPFiltros.Controls.Add(this.LCantProveedores, 4, 0);
             this.TLPFiltros.Controls.Add(this.BNuevoProveedor, 0, 0);
             this.TLPFiltros.Controls.Add(this.TBBuscar, 1, 0);
-            this.TLPFiltros.Location = new System.Drawing.Point(4, 76);
+            this.TLPFiltros.Location = new System.Drawing.Point(4, 81);
             this.TLPFiltros.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.TLPFiltros.Name = "TLPFiltros";
             this.TLPFiltros.RowCount = 1;
             this.TLPFiltros.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.TLPFiltros.Size = new System.Drawing.Size(824, 102);
+            this.TLPFiltros.Size = new System.Drawing.Size(824, 82);
             this.TLPFiltros.TabIndex = 2;
             // 
             // BBuscar
@@ -151,7 +155,7 @@
             this.BBuscar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.BBuscar.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BBuscar.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.BBuscar.Location = new System.Drawing.Point(385, 29);
+            this.BBuscar.Location = new System.Drawing.Point(385, 19);
             this.BBuscar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.BBuscar.Name = "BBuscar";
             this.BBuscar.Size = new System.Drawing.Size(123, 43);
@@ -166,7 +170,7 @@
             this.CBFiltroProveedores.Items.AddRange(new object[] {
             "Todos",
             "Recientes"});
-            this.CBFiltroProveedores.Location = new System.Drawing.Point(514, 38);
+            this.CBFiltroProveedores.Location = new System.Drawing.Point(514, 28);
             this.CBFiltroProveedores.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.CBFiltroProveedores.Name = "CBFiltroProveedores";
             this.CBFiltroProveedores.Size = new System.Drawing.Size(145, 25);
@@ -179,7 +183,7 @@
             this.LCantProveedores.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.LCantProveedores.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LCantProveedores.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.LCantProveedores.Location = new System.Drawing.Point(683, 39);
+            this.LCantProveedores.Location = new System.Drawing.Point(683, 29);
             this.LCantProveedores.Name = "LCantProveedores";
             this.LCantProveedores.Size = new System.Drawing.Size(119, 23);
             this.LCantProveedores.TabIndex = 4;
@@ -192,7 +196,7 @@
             this.BNuevoProveedor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.BNuevoProveedor.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BNuevoProveedor.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.BNuevoProveedor.Location = new System.Drawing.Point(3, 27);
+            this.BNuevoProveedor.Location = new System.Drawing.Point(3, 17);
             this.BNuevoProveedor.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.BNuevoProveedor.Name = "BNuevoProveedor";
             this.BNuevoProveedor.Size = new System.Drawing.Size(159, 48);
@@ -205,12 +209,36 @@
             // 
             this.TBBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.TBBuscar.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TBBuscar.Location = new System.Drawing.Point(168, 36);
+            this.TBBuscar.Location = new System.Drawing.Point(168, 26);
             this.TBBuscar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.TBBuscar.Name = "TBBuscar";
             this.TBBuscar.Size = new System.Drawing.Size(211, 30);
             this.TBBuscar.TabIndex = 2;
             this.TBBuscar.Text = "Buscar por Nombre o Correo";
+            // 
+            // BAplicarFiltros
+            // 
+            this.BAplicarFiltros.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.BAplicarFiltros.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BAplicarFiltros.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.BAplicarFiltros.Location = new System.Drawing.Point(518, 185);
+            this.BAplicarFiltros.Name = "BAplicarFiltros";
+            this.BAplicarFiltros.Size = new System.Drawing.Size(145, 35);
+            this.BAplicarFiltros.TabIndex = 4;
+            this.BAplicarFiltros.Text = "Aplicar Filtros";
+            this.BAplicarFiltros.UseVisualStyleBackColor = false;
+            // 
+            // BLimpiarFiltros
+            // 
+            this.BLimpiarFiltros.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.BLimpiarFiltros.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BLimpiarFiltros.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.BLimpiarFiltros.Location = new System.Drawing.Point(669, 185);
+            this.BLimpiarFiltros.Name = "BLimpiarFiltros";
+            this.BLimpiarFiltros.Size = new System.Drawing.Size(155, 35);
+            this.BLimpiarFiltros.TabIndex = 5;
+            this.BLimpiarFiltros.Text = "Limpiar Filtros";
+            this.BLimpiarFiltros.UseVisualStyleBackColor = false;
             // 
             // Proveedores
             // 
@@ -225,6 +253,7 @@
             this.Name = "Proveedores";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Proveedores";
+            this.Load += new System.EventHandler(this.Proveedores_Load_1);
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVDatosProveedores)).EndInit();
             this.TLPFiltros.ResumeLayout(false);
@@ -249,5 +278,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn DGVProveedorCVer;
         private System.Windows.Forms.DataGridViewTextBoxColumn DGVProveedorCEditar;
         private System.Windows.Forms.DataGridViewTextBoxColumn DGVProveedorCEliminar;
+        private System.Windows.Forms.Button BLimpiarFiltros;
+        private System.Windows.Forms.Button BAplicarFiltros;
     }
 }
