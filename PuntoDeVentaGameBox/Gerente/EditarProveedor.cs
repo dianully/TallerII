@@ -9,13 +9,16 @@ namespace PuntoDeVentaGameBox.Gerente
     public partial class EditarProveedor : Form
     {
         // usa cadena fija sin appconfig
-        private readonly string _connString = "Server=localhost;Database=game_box;Trusted_Connection=True;TrustServerCertificate=True"; // cadena de conexion fija
+        private readonly string _connString =
+            "Server=localhost;Database=game_box;Trusted_Connection=True;TrustServerCertificate=True"; // cadena de conexion fija
+
         private readonly int? _idEditar; // guarda id a editar
 
         public EditarProveedor()
         {
             InitializeComponent();
             _idEditar = null; // sin id no se puede editar
+
             // wire por si se usa como modal vacio
             BGuardarCambiosProveedor.Click -= BGuardarCambiosProveedor_Click;
             BGuardarCambiosProveedor.Click += BGuardarCambiosProveedor_Click;
@@ -29,6 +32,7 @@ namespace PuntoDeVentaGameBox.Gerente
         {
             InitializeComponent();
             _idEditar = idProveedor; // guarda id
+
             // wire boton guardar
             BGuardarCambiosProveedor.Click -= BGuardarCambiosProveedor_Click;
             BGuardarCambiosProveedor.Click += BGuardarCambiosProveedor_Click;
@@ -56,14 +60,18 @@ namespace PuntoDeVentaGameBox.Gerente
             try
             {
                 using (var cn = NuevaConexion())
-                using (var da = new SqlDataAdapter(@"SELECT nombre, telefono, email, direccion FROM dbo.proveedor WHERE id_proveedor = @id", cn))
+                using (var da = new SqlDataAdapter(
+                           @"SELECT nombre, telefono, email, direccion
+                             FROM dbo.proveedor
+                             WHERE id_proveedor = @id", cn))
                 {
                     da.SelectCommand.Parameters.AddWithValue("@id", id);
                     var dt = new DataTable();
                     da.Fill(dt);
                     if (dt.Rows.Count == 0)
                     {
-                        MessageBox.Show("proveedor no encontrado", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("proveedor no encontrado", "Aviso",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
                     var r = dt.Rows[0];
@@ -75,7 +83,8 @@ namespace PuntoDeVentaGameBox.Gerente
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"error al cargar proveedor: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"error al cargar proveedor: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -84,14 +93,16 @@ namespace PuntoDeVentaGameBox.Gerente
             // nombre requerido
             if (string.IsNullOrWhiteSpace(TBNombre.Text))
             {
-                MessageBox.Show("nombre es obligatorio", "Validacion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("nombre es obligatorio", "Validacion",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
             // telefono numerico si existe
             if (!string.IsNullOrWhiteSpace(TBTelefono.Text) && !long.TryParse(TBTelefono.Text, out _))
             {
-                MessageBox.Show("telefono debe ser numerico", "Validacion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("telefono debe ser numerico", "Validacion",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
@@ -101,7 +112,8 @@ namespace PuntoDeVentaGameBox.Gerente
                 var re = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
                 if (!re.IsMatch(TBCorreo.Text.Trim()))
                 {
-                    MessageBox.Show("correo no tiene formato valido", "Validacion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("correo no tiene formato valido", "Validacion",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
             }
@@ -114,7 +126,8 @@ namespace PuntoDeVentaGameBox.Gerente
             // guarda cambios con validaciones
             if (_idEditar == null)
             {
-                MessageBox.Show("no se indico proveedor a editar", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("no se indico proveedor a editar", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -127,7 +140,11 @@ namespace PuntoDeVentaGameBox.Gerente
                 {
                     cmd.CommandText = @"
                         UPDATE dbo.proveedor
-                        SET nombre = @n, telefono = @t, email = @e, direccion = @d
+                        SET nombre        = @n,
+                            telefono      = @t,
+                            email         = @e,
+                            direccion     = @d,
+                            fecha_edicion = GETDATE()   -- <<< marca fecha de actualización
                         WHERE id_proveedor = @id";
                     cmd.Parameters.AddWithValue("@n", TBNombre.Text.Trim());
                     cmd.Parameters.AddWithValue("@t", string.IsNullOrWhiteSpace(TBTelefono.Text) ? (object)DBNull.Value : TBTelefono.Text.Trim());
@@ -139,18 +156,19 @@ namespace PuntoDeVentaGameBox.Gerente
                     cmd.ExecuteNonQuery();
                 }
 
-                MessageBox.Show("proveedor actualizado", "Ok", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("proveedor actualizado", "Ok",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.DialogResult = DialogResult.OK; // avisa al padre que recargue
                 this.Close(); // cierra form
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"error al actualizar proveedor: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"error al actualizar proveedor: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         // ===== stubs autogenerados por el diseñador que debo mantener =====
-
         private void BSalir_Click(object sender, EventArgs e) { this.Close(); } // salir solo de este form
         private void EditarProveedor_Load(object sender, EventArgs e) { } // stub del diseñador
     }

@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using PuntoDeVentaGameBox.Vendedor;
 using PuntoDeVentaGameBox.Administrador;
@@ -13,14 +14,24 @@ namespace PuntoDeVentaGameBox.Gerente
 {
     public partial class Proveedores : Form
     {
-        // usa cadena fija sin appconfig
-        private readonly string _connString = "Server=localhost;Database=game_box;Trusted_Connection=True;TrustServerCertificate=True"; // cadena de conexion fija
+        // cadena fija sin appconfig
+        private readonly string _connString =
+            "Server=localhost;Database=game_box;Trusted_Connection=True;TrustServerCertificate=True";
 
         // popup de sugerencias
-        private Panel _suggestPanel; // panel flotante
-        private ListBox _suggestList; // lista de sugerencias
-        private readonly List<int> _recientesIds = new List<int>(); // cache de ultimos ids elegidos
-        private const int MAX_RECIENTES = 5; // limite de recientes
+        private Panel _suggestPanel;
+        private ListBox _suggestList;
+        private readonly List<int> _recientesIds = new List<int>();
+        private const int MAX_RECIENTES = 5;
+
+        // --- Cue Banner (placeholder real) ---
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern Int32 SendMessage(IntPtr hWnd, int msg, int wParam, string lParam);
+        private const int EM_SETCUEBANNER = 0x1501;
+        private void SetPlaceholder(TextBox tb, string text)
+        {
+            try { SendMessage(tb.Handle, EM_SETCUEBANNER, 1, text); } catch { /* fallback noop */ }
+        }
 
         public Proveedores()
         {
@@ -34,69 +45,78 @@ namespace PuntoDeVentaGameBox.Gerente
             DGVDatosProveedores.CellContentClick += DGVDatosProveedores_CellContentClick;
 
             // texto en negro para toda la grilla
-            DGVDatosProveedores.DefaultCellStyle.ForeColor = Color.Black; // asegura texto negro
-            DGVDatosProveedores.RowsDefaultCellStyle.ForeColor = Color.Black; // asegura texto negro
-            DGVDatosProveedores.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black; // asegura texto negro
+            DGVDatosProveedores.DefaultCellStyle.ForeColor = Color.Black;
+            DGVDatosProveedores.RowsDefaultCellStyle.ForeColor = Color.Black;
+            DGVDatosProveedores.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black;
 
             // eventos de buscador
-            TBBuscar.TextChanged -= TBBuscar_TextChanged; // evita doble suscripcion
-            TBBuscar.TextChanged += TBBuscar_TextChanged; // sugiere mientras escribe
-            TBBuscar.Enter -= TBBuscar_Enter; // evita doble suscripcion
-            TBBuscar.Enter += TBBuscar_Enter; // limpia placeholder visual
-            TBBuscar.KeyDown -= TBBuscar_KeyDown; // evita doble suscripcion
-            TBBuscar.KeyDown += TBBuscar_KeyDown; // enter dispara buscar
+            TBBuscar.TextChanged -= TBBuscar_TextChanged;
+            TBBuscar.TextChanged += TBBuscar_TextChanged;
 
-            BBuscar.Click -= BBuscar_Click; // evita doble suscripcion
-            BBuscar.Click += BBuscar_Click; // ejecuta busqueda
+            TBBuscar.Enter -= TBBuscar_Enter;
+            TBBuscar.Enter += TBBuscar_Enter;
 
-            this.Click -= Proveedores_Click; // evita doble suscripcion
-            this.Click += Proveedores_Click; // oculta popup al clickear fuera
+            TBBuscar.KeyDown -= TBBuscar_KeyDown;
+            TBBuscar.KeyDown += TBBuscar_KeyDown;
 
-            // NUEVO: wire correcto para +Nuevo
+            BBuscar.Click -= BBuscar_Click;
+            BBuscar.Click += BBuscar_Click;
+
+            this.Click -= Proveedores_Click;
+            this.Click += Proveedores_Click;
+
             BNuevoProveedor.Click -= BNuevoProveedor_Click;
             BNuevoProveedor.Click += BNuevoProveedor_Click;
 
-            // combo filtro todos/recientes
+            // nuevos botones de filtros
+            BAplicarFiltros.Click -= BAplicarFiltros_Click;
+            BAplicarFiltros.Click += BAplicarFiltros_Click;
+
+            BLimpiarFiltros.Click -= BLimpiarFiltros_Click;
+            BLimpiarFiltros.Click += BLimpiarFiltros_Click;
+
+            // combo filtro
             CBFiltroProveedores.Items.Clear();
             CBFiltroProveedores.Items.Add("todos");
             CBFiltroProveedores.Items.Add("recientes");
-            CBFiltroProveedores.SelectedIndex = 0; // por defecto todos
+            CBFiltroProveedores.Items.Add("A - Z");
+            CBFiltroProveedores.Items.Add("Z - A");
+            CBFiltroProveedores.Items.Add("ID ascendente");
+            CBFiltroProveedores.SelectedIndex = 0; // por defecto
         }
 
-        private SqlConnection NuevaConexion() => new SqlConnection(_connString); // crea conexion sql
+        private SqlConnection NuevaConexion() => new SqlConnection(_connString);
 
         private void Proveedores_Load(object sender, EventArgs e)
         {
-            PrepararColumnas();     // prepara columnas exactas
-            CargarProveedores();    // carga proveedores desde la base
-            ActualizarContador();   // actualiza label de cantidad
-            NormalizarBotonAccion("Ver");      // asegura boton ver
-            NormalizarBotonAccion("Editar");   // asegura boton editar
-            NormalizarBotonAccion("Eliminar"); // asegura boton eliminar
+            // placeholder real (no texto)
+            TBBuscar.Text = string.Empty;
+            SetPlaceholder(TBBuscar, "Buscar por nombre o ID");
+
+            PrepararColumnas();
+            CargarProveedores();
+            ActualizarContador();
+            NormalizarBotonAccion("Ver");
+            NormalizarBotonAccion("Editar");
+            NormalizarBotonAccion("Eliminar");
         }
 
-        // ======= NUEVO: handler existente ahora implementado =======
         private void BNuevoProveedor_Click(object sender, EventArgs e)
         {
             using (var frm = new AgregarProveedor())
             {
-                var dr = frm.ShowDialog(this); // abre modal
+                var dr = frm.ShowDialog(this);
                 if (dr == DialogResult.OK)
-                {
-                    // refresca manteniendo lo elegido en los filtros/buscador
                     BBuscar_Click(this, EventArgs.Empty);
-                }
             }
         }
-        // ============================================================
 
-        // =============== columnas y carga ===============
+        // ================== columnas y carga ==================
 
         private void PrepararColumnas()
         {
-            // define columnas manuales
-            DGVDatosProveedores.AutoGenerateColumns = false; // no autogenerar
-            DGVDatosProveedores.Columns.Clear(); // limpia columnas
+            DGVDatosProveedores.AutoGenerateColumns = false;
+            DGVDatosProveedores.Columns.Clear();
 
             DGVDatosProveedores.Columns.Add(new DataGridViewTextBoxColumn
             {
@@ -192,7 +212,11 @@ namespace PuntoDeVentaGameBox.Gerente
             }
         }
 
-        private void CargarProveedores(string texto = null, bool soloRecientes = false)
+        /// <summary>
+        /// Carga proveedores con búsqueda opcional y con orden segun 'ordenCode'.
+        /// ordenCode: null/'todos', 'recientes', 'AZ', 'ZA', 'ID_ASC'
+        /// </summary>
+        private void CargarProveedores(string texto = null, bool soloRecientes = false, string ordenCode = null)
         {
             try
             {
@@ -204,24 +228,38 @@ namespace PuntoDeVentaGameBox.Gerente
                     bool tieneActivo = ExisteColumnaActivo(cn);
 
                     string whereBase = tieneActivo ? "WHERE p.activo = 1" : "WHERE 1=1";
+
+                    // filtro por texto: nombre o ID (parcial)
                     string filtro = "";
                     if (!string.IsNullOrWhiteSpace(texto))
                     {
-                        filtro = @" AND (LOWER(p.nombre) LIKE LOWER(@q) OR LOWER(p.email) LIKE LOWER(@q))";
+                        filtro = @" AND (LOWER(p.nombre) LIKE LOWER(@q)
+                                    OR CAST(p.id_proveedor AS varchar(20)) LIKE @qId )";
                         cmd.Parameters.AddWithValue("@q", $"%{texto.Trim()}%");
+                        cmd.Parameters.AddWithValue("@qId", $"%{texto.Trim()}%");
                     }
 
-                    string recientesJoin = "";
+                    // recientes: limitar a ultimos ids elegidos del popup
+                    string recientes = "";
                     if (soloRecientes && _recientesIds.Count > 0)
+                        recientes = " AND p.id_proveedor IN (" + string.Join(",", _recientesIds) + ")";
+
+                    // orden
+                    string order = " ORDER BY p.nombre";
+                    switch (ordenCode)
                     {
-                        recientesJoin = " AND p.id_proveedor IN (" + string.Join(",", _recientesIds) + ")";
+                        case "AZ": order = " ORDER BY p.nombre ASC"; break;
+                        case "ZA": order = " ORDER BY p.nombre DESC"; break;
+                        case "ID_ASC": order = " ORDER BY p.id_proveedor ASC"; break;
+                        case "REC": order = " ORDER BY p.nombre"; break; // mismos que default
+                        default: order = " ORDER BY p.nombre"; break;
                     }
 
                     cmd.CommandText = $@"
                         SELECT p.id_proveedor, p.nombre, p.direccion, p.telefono, p.email
                         FROM dbo.proveedor p
-                        {whereBase} {filtro} {recientesJoin}
-                        ORDER BY p.nombre";
+                        {whereBase} {filtro} {recientes}
+                        {order}";
                     da.SelectCommand = cmd;
 
                     var dt = new DataTable();
@@ -233,7 +271,8 @@ namespace PuntoDeVentaGameBox.Gerente
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"error al cargar proveedores: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"error al cargar proveedores: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -259,7 +298,7 @@ namespace PuntoDeVentaGameBox.Gerente
             }
         }
 
-        // =============== buscador: sugerencias y acciones ===============
+        // ================= buscador: sugerencias y acciones =================
 
         private void EnsureSuggestControls()
         {
@@ -282,8 +321,7 @@ namespace PuntoDeVentaGameBox.Gerente
             {
                 int id = Convert.ToInt32(r["id_proveedor"]);
                 string nombre = Convert.ToString(r["nombre"]) ?? "";
-                string email = Convert.ToString(r["email"]) ?? "";
-                _suggestList.Items.Add(new SItem(id, $"{nombre}  <{email}>"));
+                _suggestList.Items.Add(new SItem(id, $"{nombre}  (ID {id})"));
             }
             _suggestList.EndUpdate();
 
@@ -325,9 +363,10 @@ namespace PuntoDeVentaGameBox.Gerente
 
                 using (var cn = NuevaConexion())
                 using (var da = new SqlDataAdapter(@"
-                        SELECT TOP 50 id_proveedor, nombre, email
+                        SELECT TOP 50 id_proveedor, nombre
                         FROM dbo.proveedor
-                        WHERE LOWER(nombre) LIKE LOWER(@q + '%') OR LOWER(email) LIKE LOWER(@q + '%')
+                        WHERE LOWER(nombre) LIKE LOWER(@q + '%')
+                           OR CAST(id_proveedor AS varchar(20)) LIKE @q
                         ORDER BY nombre", cn))
                 {
                     da.SelectCommand.Parameters.AddWithValue("@q", q);
@@ -371,7 +410,9 @@ namespace PuntoDeVentaGameBox.Gerente
 
         private void TBBuscar_Enter(object sender, EventArgs e)
         {
-            TBBuscar.SelectAll();
+            // selecciona todo si había algo, para reescribir rápido
+            if (!string.IsNullOrEmpty(TBBuscar.Text))
+                TBBuscar.SelectAll();
         }
 
         private void TBBuscar_KeyDown(object sender, KeyEventArgs e)
@@ -388,12 +429,58 @@ namespace PuntoDeVentaGameBox.Gerente
             HideSuggestions();
         }
 
+        // Boton Buscar: usa lo escrito (parcial) por nombre o ID
         private void BBuscar_Click(object sender, EventArgs e)
         {
-            string q = string.IsNullOrWhiteSpace(TBBuscar.Text) ? null : TBBuscar.Text.Trim();
-            bool soloRecientes = (CBFiltroProveedores.SelectedItem?.ToString()?.Equals("recientes", StringComparison.OrdinalIgnoreCase) ?? false);
-            CargarProveedores(q, soloRecientes);
+            string q =
+                string.IsNullOrWhiteSpace(TBBuscar.Text) ? null : TBBuscar.Text.Trim();
+
+            // si el texto viene del popup (ej. "Nombre (ID 5)") extraemos el número al final
+            int idPopup;
+            if (!string.IsNullOrEmpty(q) &&
+                q.EndsWith(")") &&
+                int.TryParse(new string(q.Reverse().Skip(1).TakeWhile(char.IsDigit).Reverse().ToArray()), out idPopup))
+            {
+                CargarProveedorPorId(idPopup);
+                HideSuggestions();
+                return;
+            }
+
+            bool soloRecientes = CBFiltroProveedores.SelectedItem?.ToString()
+                                     .Equals("recientes", StringComparison.OrdinalIgnoreCase) == true;
+
+            string orden = MapOrden(CBFiltroProveedores.SelectedItem?.ToString());
+            CargarProveedores(q, soloRecientes, orden);
             HideSuggestions();
+        }
+
+        private void BAplicarFiltros_Click(object sender, EventArgs e)
+        {
+            string q = string.IsNullOrWhiteSpace(TBBuscar.Text) ? null : TBBuscar.Text.Trim();
+            bool soloRecientes = CBFiltroProveedores.SelectedItem?.ToString()
+                                     .Equals("recientes", StringComparison.OrdinalIgnoreCase) == true;
+            string orden = MapOrden(CBFiltroProveedores.SelectedItem?.ToString());
+            CargarProveedores(q, soloRecientes, orden);
+            HideSuggestions();
+        }
+
+        private void BLimpiarFiltros_Click(object sender, EventArgs e)
+        {
+            TBBuscar.Clear();
+            SetPlaceholder(TBBuscar, "Buscar por nombre o ID");
+            CBFiltroProveedores.SelectedIndex = 0; // "todos"
+            HideSuggestions();
+            CargarProveedores(null, false, "AZ"); // o default por nombre
+        }
+
+        private string MapOrden(string sel)
+        {
+            if (string.IsNullOrWhiteSpace(sel)) return null;
+            if (sel.Equals("A - Z", StringComparison.OrdinalIgnoreCase)) return "AZ";
+            if (sel.Equals("Z - A", StringComparison.OrdinalIgnoreCase)) return "ZA";
+            if (sel.Equals("ID ascendente", StringComparison.OrdinalIgnoreCase)) return "ID_ASC";
+            if (sel.Equals("recientes", StringComparison.OrdinalIgnoreCase)) return "REC";
+            return null; // "todos" cae en default
         }
 
         private void CargarProveedorPorId(int id)
@@ -401,7 +488,10 @@ namespace PuntoDeVentaGameBox.Gerente
             try
             {
                 using (var cn = NuevaConexion())
-                using (var da = new SqlDataAdapter(@"SELECT id_proveedor, nombre, direccion, telefono, email FROM dbo.proveedor WHERE id_proveedor = @id", cn))
+                using (var da = new SqlDataAdapter(
+                           @"SELECT id_proveedor, nombre, direccion, telefono, email
+                             FROM dbo.proveedor
+                             WHERE id_proveedor = @id", cn))
                 {
                     da.SelectCommand.Parameters.AddWithValue("@id", id);
                     var dt = new DataTable();
@@ -412,7 +502,8 @@ namespace PuntoDeVentaGameBox.Gerente
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"error al cargar proveedor: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"error al cargar proveedor: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -424,7 +515,7 @@ namespace PuntoDeVentaGameBox.Gerente
             public override string ToString() => Display;
         }
 
-        // =============== acciones de grilla ===============
+        // ================= acciones de grilla =================
 
         private void DGVDatosProveedores_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -442,12 +533,20 @@ namespace PuntoDeVentaGameBox.Gerente
             int id = Convert.ToInt32(drv["id_proveedor"]);
             string nombre = Convert.ToString(drv["nombre"]);
 
+            // VER
             if (esVer)
             {
-                MessageBox.Show($"vista ver proveedor pendiente para \"{nombre}\"", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                using (var frm = new VerProveedor(id))
+                {
+                    frm.ShowDialog(this);
+                }
+                _recientesIds.Remove(id);
+                _recientesIds.Insert(0, id);
+                if (_recientesIds.Count > MAX_RECIENTES) _recientesIds.RemoveAt(_recientesIds.Count - 1);
                 return;
             }
 
+            // EDITAR
             if (esEditar)
             {
                 using (var frm = new EditarProveedor(id))
@@ -459,9 +558,12 @@ namespace PuntoDeVentaGameBox.Gerente
                 return;
             }
 
+            // ELIMINAR (baja lógica si existe 'activo')
             if (esEliminar)
             {
-                var resp = MessageBox.Show($"confirmar eliminacion de \"{nombre}\"", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                var resp = MessageBox.Show(
+                    $"confirmar eliminacion de \"{nombre}\"",
+                    "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (resp != DialogResult.Yes) return;
 
                 try
@@ -480,7 +582,9 @@ namespace PuntoDeVentaGameBox.Gerente
                         }
                         catch
                         {
-                            var respHard = MessageBox.Show("la tabla proveedor no tiene columna activo, desea eliminar fisicamente el registro?", "Aviso", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            var respHard = MessageBox.Show(
+                                "la tabla proveedor no tiene columna activo, desea eliminar fisicamente el registro?",
+                                "Aviso", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                             if (respHard == DialogResult.Yes)
                             {
                                 cmd.Parameters.Clear();
@@ -492,17 +596,19 @@ namespace PuntoDeVentaGameBox.Gerente
                         }
                     }
 
-                    MessageBox.Show("proveedor eliminado", "Ok", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("proveedor eliminado", "Ok",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
                     BBuscar_Click(this, EventArgs.Empty);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"error al eliminar proveedor: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"error al eliminar proveedor: {ex.Message}", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
-        // =============== helpers de botones del grid (se conservan) ===============
+        // ================= helpers botones grid =================
 
         private void NormalizarBotonAccion(string titulo)
         {
@@ -552,7 +658,7 @@ namespace PuntoDeVentaGameBox.Gerente
             };
         }
 
-        // ===== stubs autogenerados por el diseñador que debo mantener =====
+        // ===== stubs autogenerados por el diseñador =====
         private void label1_Click(object sender, EventArgs e) { }
         private void Proveedores_Load_1(object sender, EventArgs e) { }
     }
