@@ -98,7 +98,9 @@ namespace PuntoDeVentaGameBox.Gerente
                 CBProveedorProducto.SelectedIndex = -1; // sin seleccion
             }
 
-            if (DTPFechaAlta != null) DTPFechaAlta.Value = DateTime.Today; // sugiere hoy
+            // CAMBIO: se elimina DTPFechaAlta; ahora se usa TBFechaAlta (no seteamos nada aquí)
+            // if (DTPFechaAlta != null) DTPFechaAlta.Value = DateTime.Today;
+
             if (DTPFechaEdicionProducto != null) DTPFechaEdicionProducto.Value = DateTime.Today; // solo informativo
         }
 
@@ -187,8 +189,11 @@ namespace PuntoDeVentaGameBox.Gerente
                         TBCantidadProducto.Text = rd["cantidad_stock"]?.ToString(); // llena stock
                         TBDireccionImagen.Text = rd["url_imagen"]?.ToString(); // llena ruta
 
-                        if (rd["fecha_alta"] != DBNull.Value)
-                            DTPFechaAlta.Value = Convert.ToDateTime(rd["fecha_alta"]); // setea fecha alta
+                        // CAMBIO: fecha de alta ahora va al TextBox TBFechaAlta
+                        TBFechaAlta.Text = (rd["fecha_alta"] == DBNull.Value)
+                            ? ""
+                            : Convert.ToDateTime(rd["fecha_alta"]).ToString("yyyy-MM-dd");
+
                         if (rd["fecha_edicion"] != DBNull.Value && DTPFechaEdicionProducto != null)
                             DTPFechaEdicionProducto.Value = Convert.ToDateTime(rd["fecha_edicion"]); // setea fecha edicion
 
@@ -245,10 +250,10 @@ namespace PuntoDeVentaGameBox.Gerente
             return decimal.TryParse(txt, NumberStyles.Number, CultureInfo.InvariantCulture, out value);
         }
 
-        private bool ValidarFormulario(out decimal precio, out int stock, out int? idProv, out int? idCat)
+        private bool ValidarFormulario(out decimal precio, out int stock, out int? idProv, out int? idCat, out DateTime fechaAlta)
         {
             // valida y convierte entradas
-            precio = 0m; stock = 0; idProv = null; idCat = null; // inicializa
+            precio = 0m; stock = 0; idProv = null; idCat = null; fechaAlta = DateTime.MinValue; // inicializa
 
             if (string.IsNullOrWhiteSpace(TBNombreProducto.Text))
             {
@@ -265,6 +270,13 @@ namespace PuntoDeVentaGameBox.Gerente
             if (!int.TryParse(TBCantidadProducto.Text, out stock) || stock < 0)
             {
                 MessageBox.Show("stock debe ser entero y mayor o igual a 0", "Validacion", MessageBoxButtons.OK, MessageBoxIcon.Warning); // valida stock
+                return false;
+            }
+
+            if (!DateTime.TryParse(TBFechaAlta.Text?.Trim(), out fechaAlta))
+            {
+                MessageBox.Show("Fecha de alta inválida. Usar formato AAAA-MM-DD.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
@@ -320,7 +332,7 @@ namespace PuntoDeVentaGameBox.Gerente
                 return;
             }
 
-            if (!ValidarFormulario(out var precio, out var stock, out var idProv, out var idCat)) return; // valida form
+            if (!ValidarFormulario(out var precio, out var stock, out var idProv, out var idCat, out var fechaAlta)) return; // valida form
 
             try
             {
@@ -348,8 +360,9 @@ namespace PuntoDeVentaGameBox.Gerente
                     cmd.Parameters.AddWithValue("@stock", stock); // setea stock
                     cmd.Parameters.AddWithValue("@img", string.IsNullOrWhiteSpace(TBDireccionImagen.Text) ? (object)DBNull.Value : TBDireccionImagen.Text.Trim()); // setea imagen
 
+                    // CAMBIO: tomamos fecha de alta desde TBFechaAlta
                     var pFecha = cmd.Parameters.Add("@falta", SqlDbType.Date); // parametro date
-                    pFecha.Value = DTPFechaAlta.Value.Date; // usa datepicker de alta
+                    pFecha.Value = fechaAlta.Date;
 
                     cmd.Parameters.AddWithValue("@prov", (object)idProv ?? DBNull.Value); // setea proveedor
                     cmd.Parameters.AddWithValue("@cat", (object)idCat ?? DBNull.Value); // setea categoria
@@ -376,5 +389,10 @@ namespace PuntoDeVentaGameBox.Gerente
         private void pLimpiarParametros_Paint(object sender, PaintEventArgs e) { } // evento viejo
         private void TBDescripcionProducto_TextChanged(object sender, EventArgs e) { } // evento viejo
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) { } // evento viejo
+
+        private void EditarProducto_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -171,6 +171,19 @@ namespace PuntoDeVentaGameBox.Gerente
             colStock.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter; // centra el numero
             DGVProductos.Columns.Add(colStock); // agrega columna stock
 
+            // >>>>>>>>>>>>>>>>>>>>>> CAMBIO: botón "Ver"
+            DGVProductos.Columns.Add(new DataGridViewButtonColumn
+            {
+                Name = "Ver",
+                HeaderText = "Ver",
+                Text = "Ver",
+                UseColumnTextForButtonValue = true,
+                FlatStyle = FlatStyle.Popup,
+                FillWeight = 8,
+                MinimumWidth = 70
+            });
+            // <<<<<<<<<<<<<<<<<<<<<< CAMBIO
+
             // boton editar
             DGVProductos.Columns.Add(new DataGridViewButtonColumn
             {
@@ -425,9 +438,10 @@ namespace PuntoDeVentaGameBox.Gerente
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return; // valida indices
 
             var col = DGVProductos.Columns[e.ColumnIndex]; // obtiene columna clickeada
+            bool esVer = col.Name.Equals("Ver", StringComparison.OrdinalIgnoreCase);   // CAMBIO: boton ver
             bool esEditar = col.Name.Equals("Editar", StringComparison.OrdinalIgnoreCase);   // detecta boton editar
             bool esEliminar = col.Name.Equals("Eliminar", StringComparison.OrdinalIgnoreCase); // detecta boton eliminar
-            if (!esEditar && !esEliminar) return; // ignora si no es boton
+            if (!esVer && !esEditar && !esEliminar) return; // ignora si no es boton
 
             // intenta obtener id de forma robusta
             int id = 0; object raw = null; // inicializa
@@ -441,6 +455,17 @@ namespace PuntoDeVentaGameBox.Gerente
                 MessageBox.Show("no se pudo obtener el id del producto", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning); // muestra aviso
                 return;
             }
+
+            // >>>>>>>>>>>>>>>>>>>>>> CAMBIO: navegar a Form1 con el id
+            if (esVer)
+            {
+                using (var frm = new Form1(id)) // abre detalles de producto
+                {
+                    frm.ShowDialog(this); // modal
+                }
+                return;
+            }
+            // <<<<<<<<<<<<<<<<<<<<<< CAMBIO
 
             if (esEditar)
             {

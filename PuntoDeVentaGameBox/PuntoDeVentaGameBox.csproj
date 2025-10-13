@@ -89,6 +89,12 @@
     <Compile Include="Gerente\EditarProveedor.Designer.cs">
       <DependentUpon>EditarProveedor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gerente\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gerente\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gerente\VerProveedor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -172,6 +178,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gerente\EditarProveedor.resx">
       <DependentUpon>EditarProveedor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gerente\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gerente\VerProveedor.resx">
       <DependentUpon>VerProveedor.cs</DependentUpon>
