@@ -155,6 +155,12 @@
     <Compile Include="Administrador\subMenuUsuario.Designer.cs">
       <DependentUpon>subMenuUsuario.cs</DependentUpon>
     </Compile>
+    <Compile Include="Vendedor\DescargarFactura.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vendedor\DescargarFactura.Designer.cs">
+      <DependentUpon>DescargarFactura.cs</DependentUpon>
+    </Compile>
     <Compile Include="Vendedor\Vendedor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -220,6 +226,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Administrador\subMenuUsuario.resx">
       <DependentUpon>subMenuUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vendedor\DescargarFactura.resx">
+      <DependentUpon>DescargarFactura.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Vendedor\Vendedor.resx">
       <DependentUpon>Vendedor.cs</DependentUpon>
