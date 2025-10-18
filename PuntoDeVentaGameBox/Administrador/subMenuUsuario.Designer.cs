@@ -108,9 +108,8 @@
             this.cbRol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbRol.FormattingEnabled = true;
             this.cbRol.Items.AddRange(new object[] {
-            "Gerente",
-            "Administrador",
-            "Vendedor"});
+            "Masculino",
+            "Femenino"});
             this.cbRol.Location = new System.Drawing.Point(47, 41);
             this.cbRol.Margin = new System.Windows.Forms.Padding(4);
             this.cbRol.Name = "cbRol";

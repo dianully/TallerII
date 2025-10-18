@@ -33,6 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.4.0\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.4, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.4\lib\net461\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Messaging" />
@@ -53,6 +59,21 @@
     <Compile Include="Administrador\Administrador.Designer.cs">
       <DependentUpon>Administrador.cs</DependentUpon>
     </Compile>
+    <Compile Include="Administrador\AgregarCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Administrador\AgregarCliente.Designer.cs">
+      <DependentUpon>AgregarCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administrador\subMenuClientes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Administrador\subMenuClientes.Designer.cs">
+      <DependentUpon>subMenuClientes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Clases\Cliente.cs" />
+    <Compile Include="Clases\Facturacion.cs" />
+    <Compile Include="Clases\Producto.cs" />
     <Compile Include="Gerente\AgregarProducto.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,6 +167,12 @@
     <Compile Include="Administrador\subMenuUsuario.Designer.cs">
       <DependentUpon>subMenuUsuario.cs</DependentUpon>
     </Compile>
+    <Compile Include="Vendedor\DescargarFactura.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vendedor\DescargarFactura.Designer.cs">
+      <DependentUpon>DescargarFactura.cs</DependentUpon>
+    </Compile>
     <Compile Include="Vendedor\Vendedor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,6 +187,9 @@
     </Compile>
     <EmbeddedResource Include="Administrador\Administrador.resx">
       <DependentUpon>Administrador.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administrador\subMenuClientes.resx">
+      <DependentUpon>subMenuClientes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gerente\AgregarProducto.resx">
       <DependentUpon>AgregarProducto.cs</DependentUpon>
@@ -215,12 +245,16 @@
     <EmbeddedResource Include="Administrador\subMenuUsuario.resx">
       <DependentUpon>subMenuUsuario.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Vendedor\DescargarFactura.resx">
+      <DependentUpon>DescargarFactura.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Vendedor\Vendedor.resx">
       <DependentUpon>Vendedor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Administrador\VistaAdministrador.resx">
       <DependentUpon>VistaAdministrador.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
