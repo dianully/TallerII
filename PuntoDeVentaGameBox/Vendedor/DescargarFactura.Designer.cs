@@ -257,7 +257,7 @@
             this.MetodoDePago,
             this.montoPagado,
             this.Cliente});
-            this.dgvFacturasVendedor.Location = new System.Drawing.Point(24, 200);
+            this.dgvFacturasVendedor.Location = new System.Drawing.Point(24, 210);
             this.dgvFacturasVendedor.Margin = new System.Windows.Forms.Padding(4);
             this.dgvFacturasVendedor.Name = "dgvFacturasVendedor";
             this.dgvFacturasVendedor.RowHeadersVisible = false;
