@@ -31,17 +31,17 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.tbCorreo = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
             this.tbTelefono = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             this.tbBusquedaDNI = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.cbRol = new System.Windows.Forms.ComboBox();
             this.LProducto = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.cbRol = new System.Windows.Forms.ComboBox();
             this.bNuevoCliente = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.dgvFacturasVendedor = new System.Windows.Forms.DataGridView();
@@ -102,6 +102,18 @@
             this.panel4.Size = new System.Drawing.Size(276, 86);
             this.panel4.TabIndex = 39;
             // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.Control;
+            this.label1.Location = new System.Drawing.Point(94, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(87, 25);
+            this.label1.TabIndex = 38;
+            this.label1.Text = "Cliente:";
+            // 
             // tbCorreo
             // 
             this.tbCorreo.Location = new System.Drawing.Point(49, 43);
@@ -120,6 +132,18 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(277, 86);
             this.panel3.TabIndex = 38;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.SystemColors.Control;
+            this.label3.Location = new System.Drawing.Point(59, 12);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(191, 25);
+            this.label3.TabIndex = 39;
+            this.label3.Text = "Fecha de Compra:";
             // 
             // tbTelefono
             // 
@@ -140,6 +164,18 @@
             this.panel2.Size = new System.Drawing.Size(276, 86);
             this.panel2.TabIndex = 37;
             // 
+            // label2
+            // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.Control;
+            this.label2.Location = new System.Drawing.Point(55, 12);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(180, 25);
+            this.label2.TabIndex = 38;
+            this.label2.Text = "Metodo De Pago:";
+            // 
             // tbBusquedaDNI
             // 
             this.tbBusquedaDNI.Location = new System.Drawing.Point(54, 41);
@@ -159,19 +195,6 @@
             this.panel1.Size = new System.Drawing.Size(276, 86);
             this.panel1.TabIndex = 34;
             // 
-            // cbRol
-            // 
-            this.cbRol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbRol.FormattingEnabled = true;
-            this.cbRol.Items.AddRange(new object[] {
-            "Masculino",
-            "Femenino"});
-            this.cbRol.Location = new System.Drawing.Point(47, 41);
-            this.cbRol.Margin = new System.Windows.Forms.Padding(4);
-            this.cbRol.Name = "cbRol";
-            this.cbRol.Size = new System.Drawing.Size(185, 24);
-            this.cbRol.TabIndex = 36;
-            // 
             // LProducto
             // 
             this.LProducto.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -184,41 +207,18 @@
             this.LProducto.TabIndex = 37;
             this.LProducto.Text = "Fecha de Compra:";
             // 
-            // label1
+            // cbRol
             // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.Control;
-            this.label1.Location = new System.Drawing.Point(94, 12);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(87, 25);
-            this.label1.TabIndex = 38;
-            this.label1.Text = "Cliente:";
-            // 
-            // label2
-            // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.Control;
-            this.label2.Location = new System.Drawing.Point(55, 12);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(180, 25);
-            this.label2.TabIndex = 38;
-            this.label2.Text = "Metodo De Pago:";
-            // 
-            // label3
-            // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.SystemColors.Control;
-            this.label3.Location = new System.Drawing.Point(59, 12);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(191, 25);
-            this.label3.TabIndex = 39;
-            this.label3.Text = "Fecha de Compra:";
+            this.cbRol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbRol.FormattingEnabled = true;
+            this.cbRol.Items.AddRange(new object[] {
+            "Masculino",
+            "Femenino"});
+            this.cbRol.Location = new System.Drawing.Point(47, 41);
+            this.cbRol.Margin = new System.Windows.Forms.Padding(4);
+            this.cbRol.Name = "cbRol";
+            this.cbRol.Size = new System.Drawing.Size(185, 24);
+            this.cbRol.TabIndex = 36;
             // 
             // bNuevoCliente
             // 
@@ -240,7 +240,7 @@
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button1.Location = new System.Drawing.Point(596, 155);
+            this.button1.Location = new System.Drawing.Point(618, 155);
             this.button1.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(164, 39);
