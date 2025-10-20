@@ -129,14 +129,5 @@ namespace PuntoDeVentaGameBox
             Application.Exit();
         }
 
-        private void LListTitle_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TxUsuario_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

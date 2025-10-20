@@ -48,7 +48,7 @@
             this.TxUsuario.Name = "TxUsuario";
             this.TxUsuario.Size = new System.Drawing.Size(124, 22);
             this.TxUsuario.TabIndex = 3;
-            this.TxUsuario.TextChanged += new System.EventHandler(this.TxUsuario_TextChanged);
+        
             this.TxUsuario.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxUsuario_KeyPress);
             // 
             // TxContraseña
@@ -127,7 +127,7 @@
             this.LListTitle.Size = new System.Drawing.Size(149, 30);
             this.LListTitle.TabIndex = 25;
             this.LListTitle.Text = "Usuario (DNI)";
-            this.LListTitle.Click += new System.EventHandler(this.LListTitle_Click);
+           
             // 
             // panel2
             // 

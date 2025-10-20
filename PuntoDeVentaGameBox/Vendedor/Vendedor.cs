@@ -738,7 +738,9 @@ namespace PuntoDeVentaGameBox.Vendedor
 
         private void bDescargarFactura_Click(object sender, EventArgs e)
         {
-            try
+            DescargarFactura descargarFactura = new DescargarFactura();
+            descargarFactura.ShowDialog();
+            /*try
             {
                 using (SqlConnection connection = new SqlConnection(conecctionString))
                 {
@@ -844,7 +846,7 @@ namespace PuntoDeVentaGameBox.Vendedor
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al generar la factura PDF:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            }*/
         }
 
     }
