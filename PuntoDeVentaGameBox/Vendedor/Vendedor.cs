@@ -62,7 +62,7 @@ namespace PuntoDeVentaGameBox.Vendedor
             ConfigurarPlaceholder(tbApellidoCliente, "Apellido");
             ConfigurarPlaceholder(tbClienteGmail, "Correo");
             ConfigurarPlaceholder(tbSexo, "Sexo");
-            ConfigurarPlaceholder(tbTelefono, "Telefono");
+            ConfigurarPlaceholder(tbDNI, "Telefono");
 
             CargarClientesEnComboBox();
         }
@@ -136,7 +136,7 @@ namespace PuntoDeVentaGameBox.Vendedor
             tbNombreCliente.Enabled = false;
             tbApellidoCliente.Enabled = false;
             tbClienteGmail.Enabled = false;
-            tbTelefono.Enabled = false;
+            tbDNI.Enabled = false;
             tbSexo.Enabled = false;
 
             if (!registradoSeleccionado)
@@ -205,7 +205,7 @@ namespace PuntoDeVentaGameBox.Vendedor
                     tbNombreCliente.Text = detallesCompletos.Nombre;
                     tbApellidoCliente.Text = detallesCompletos.Apellido;
                     tbClienteGmail.Text = detallesCompletos.Email;
-                    tbTelefono.Text = detallesCompletos.Telefono;
+                    tbDNI.Text = detallesCompletos.Telefono;
                     tbSexo.Text = detallesCompletos.Genero; // Asumo tbSexo corresponde a Genero
                 }
             }
@@ -221,7 +221,7 @@ namespace PuntoDeVentaGameBox.Vendedor
             tbNombreCliente.Text = string.Empty;
             tbApellidoCliente.Text = string.Empty;
             tbClienteGmail.Text = string.Empty;
-            tbTelefono.Text = string.Empty;
+            tbDNI.Text = string.Empty;
             tbSexo.Text = string.Empty;
         }
 
@@ -322,10 +322,6 @@ namespace PuntoDeVentaGameBox.Vendedor
             };
         }
 
-        private void label6_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void Vendedor_Load(object sender, EventArgs e)
         {
@@ -742,6 +738,10 @@ namespace PuntoDeVentaGameBox.Vendedor
             descargarFactura.ShowDialog();
         }
 
+        private void bNuevoCliente_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 
