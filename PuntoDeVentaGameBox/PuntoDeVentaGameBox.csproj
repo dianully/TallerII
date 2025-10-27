@@ -167,6 +167,18 @@
     <Compile Include="Administrador\subMenuUsuario.Designer.cs">
       <DependentUpon>subMenuUsuario.cs</DependentUpon>
     </Compile>
+    <Compile Include="Vendedor\BuscarCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vendedor\BuscarCliente.Designer.cs">
+      <DependentUpon>BuscarCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vendedor\BuscarProducto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vendedor\BuscarProducto.Designer.cs">
+      <DependentUpon>BuscarProducto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Vendedor\DescargarFactura.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -247,6 +259,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Vendedor\AgregarCliente.resx">
       <DependentUpon>AgregarCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vendedor\BuscarCliente.resx">
+      <DependentUpon>BuscarCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vendedor\BuscarProducto.resx">
+      <DependentUpon>BuscarProducto.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Vendedor\DescargarFactura.resx">
       <DependentUpon>DescargarFactura.cs</DependentUpon>
