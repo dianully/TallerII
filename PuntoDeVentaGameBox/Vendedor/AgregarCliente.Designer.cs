@@ -30,8 +30,8 @@
         {
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
-            this.bBuscar = new System.Windows.Forms.Button();
+            this.bSalir = new System.Windows.Forms.Button();
+            this.bRegistrarCliente = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -43,8 +43,8 @@
             this.tTelefono = new System.Windows.Forms.TextBox();
             this.tEmail = new System.Windows.Forms.TextBox();
             this.tApellido = new System.Windows.Forms.TextBox();
-            this.tContraseña = new System.Windows.Forms.TextBox();
             this.tDni = new System.Windows.Forms.TextBox();
+            this.cbGenero = new System.Windows.Forms.ComboBox();
             this.panel3.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -63,46 +63,49 @@
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.SystemColors.Control;
-            this.panel5.Controls.Add(this.button2);
-            this.panel5.Controls.Add(this.bBuscar);
+            this.panel5.Controls.Add(this.bSalir);
+            this.panel5.Controls.Add(this.bRegistrarCliente);
             this.panel5.Location = new System.Drawing.Point(375, 41);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(240, 272);
             this.panel5.TabIndex = 1;
             // 
-            // button2
+            // bSalir
             // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button2.Location = new System.Drawing.Point(49, 150);
-            this.button2.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(157, 39);
-            this.button2.TabIndex = 44;
-            this.button2.Text = "Salir";
-            this.button2.UseVisualStyleBackColor = false;
+            this.bSalir.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bSalir.FlatAppearance.BorderSize = 0;
+            this.bSalir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bSalir.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bSalir.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.bSalir.Location = new System.Drawing.Point(49, 150);
+            this.bSalir.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.bSalir.Name = "bSalir";
+            this.bSalir.Size = new System.Drawing.Size(157, 39);
+            this.bSalir.TabIndex = 44;
+            this.bSalir.Text = "Salir";
+            this.bSalir.UseVisualStyleBackColor = false;
+            this.bSalir.Click += new System.EventHandler(this.bSalir_Click);
             // 
-            // bBuscar
+            // bRegistrarCliente
             // 
-            this.bBuscar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.bBuscar.FlatAppearance.BorderSize = 0;
-            this.bBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bBuscar.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bBuscar.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.bBuscar.Location = new System.Drawing.Point(49, 76);
-            this.bBuscar.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
-            this.bBuscar.Name = "bBuscar";
-            this.bBuscar.Size = new System.Drawing.Size(157, 39);
-            this.bBuscar.TabIndex = 43;
-            this.bBuscar.Text = "Registrar Usuario";
-            this.bBuscar.UseVisualStyleBackColor = false;
+            this.bRegistrarCliente.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bRegistrarCliente.FlatAppearance.BorderSize = 0;
+            this.bRegistrarCliente.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bRegistrarCliente.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bRegistrarCliente.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.bRegistrarCliente.Location = new System.Drawing.Point(49, 76);
+            this.bRegistrarCliente.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.bRegistrarCliente.Name = "bRegistrarCliente";
+            this.bRegistrarCliente.Size = new System.Drawing.Size(157, 39);
+            this.bRegistrarCliente.TabIndex = 43;
+            this.bRegistrarCliente.Text = "Registrar Cliente";
+            this.bRegistrarCliente.UseVisualStyleBackColor = false;
+            this.bRegistrarCliente.Click += new System.EventHandler(this.bRegistrarCliente_Click);
             // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.SystemColors.Control;
+            this.panel4.Controls.Add(this.cbGenero);
             this.panel4.Controls.Add(this.label6);
             this.panel4.Controls.Add(this.label5);
             this.panel4.Controls.Add(this.label4);
@@ -113,7 +116,6 @@
             this.panel4.Controls.Add(this.tTelefono);
             this.panel4.Controls.Add(this.tEmail);
             this.panel4.Controls.Add(this.tApellido);
-            this.panel4.Controls.Add(this.tContraseña);
             this.panel4.Controls.Add(this.tDni);
             this.panel4.Location = new System.Drawing.Point(64, 41);
             this.panel4.Name = "panel4";
@@ -127,9 +129,9 @@
             this.label6.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label6.Location = new System.Drawing.Point(15, 206);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(101, 23);
+            this.label6.Size = new System.Drawing.Size(70, 23);
             this.label6.TabIndex = 41;
-            this.label6.Text = "Contraseña:";
+            this.label6.Text = "Genero:";
             // 
             // label5
             // 
@@ -215,13 +217,6 @@
             this.tApellido.Size = new System.Drawing.Size(100, 22);
             this.tApellido.TabIndex = 1;
             // 
-            // tContraseña
-            // 
-            this.tContraseña.Location = new System.Drawing.Point(122, 208);
-            this.tContraseña.Name = "tContraseña";
-            this.tContraseña.Size = new System.Drawing.Size(100, 22);
-            this.tContraseña.TabIndex = 5;
-            // 
             // tDni
             // 
             this.tDni.Location = new System.Drawing.Point(122, 109);
@@ -229,6 +224,17 @@
             this.tDni.Name = "tDni";
             this.tDni.Size = new System.Drawing.Size(100, 22);
             this.tDni.TabIndex = 2;
+            // 
+            // cbGenero
+            // 
+            this.cbGenero.FormattingEnabled = true;
+            this.cbGenero.Items.AddRange(new object[] {
+            "Masculino",
+            "Femenino"});
+            this.cbGenero.Location = new System.Drawing.Point(116, 206);
+            this.cbGenero.Name = "cbGenero";
+            this.cbGenero.Size = new System.Drawing.Size(121, 24);
+            this.cbGenero.TabIndex = 2;
             // 
             // AgregarCliente
             // 
@@ -253,8 +259,8 @@
 
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button bBuscar;
+        private System.Windows.Forms.Button bSalir;
+        private System.Windows.Forms.Button bRegistrarCliente;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
@@ -266,7 +272,7 @@
         private System.Windows.Forms.TextBox tTelefono;
         private System.Windows.Forms.TextBox tEmail;
         private System.Windows.Forms.TextBox tApellido;
-        private System.Windows.Forms.TextBox tContraseña;
         private System.Windows.Forms.TextBox tDni;
+        private System.Windows.Forms.ComboBox cbGenero;
     }
 }

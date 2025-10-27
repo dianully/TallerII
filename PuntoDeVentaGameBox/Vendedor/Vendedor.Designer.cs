@@ -51,7 +51,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.panelCliente = new System.Windows.Forms.Panel();
             this.lNombreCliente = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.bNuevoCliente = new System.Windows.Forms.Button();
             this.tbNombreCliente = new System.Windows.Forms.TextBox();
             this.tbSexo = new System.Windows.Forms.TextBox();
             this.tbDNI = new System.Windows.Forms.TextBox();
@@ -327,7 +327,7 @@
             // panelCliente
             // 
             this.panelCliente.Controls.Add(this.lNombreCliente);
-            this.panelCliente.Controls.Add(this.button2);
+            this.panelCliente.Controls.Add(this.bNuevoCliente);
             this.panelCliente.Controls.Add(this.tbNombreCliente);
             this.panelCliente.Controls.Add(this.tbSexo);
             this.panelCliente.Controls.Add(this.tbDNI);
@@ -350,19 +350,20 @@
             this.lNombreCliente.TabIndex = 39;
             this.lNombreCliente.Text = "Nombre Completo:";
             // 
-            // button2
+            // bNuevoCliente
             // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button2.Location = new System.Drawing.Point(280, 54);
-            this.button2.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(164, 39);
-            this.button2.TabIndex = 34;
-            this.button2.Text = "Nuevo Cliente";
-            this.button2.UseVisualStyleBackColor = false;
+            this.bNuevoCliente.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bNuevoCliente.FlatAppearance.BorderSize = 0;
+            this.bNuevoCliente.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bNuevoCliente.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.bNuevoCliente.Location = new System.Drawing.Point(280, 54);
+            this.bNuevoCliente.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.bNuevoCliente.Name = "bNuevoCliente";
+            this.bNuevoCliente.Size = new System.Drawing.Size(164, 39);
+            this.bNuevoCliente.TabIndex = 34;
+            this.bNuevoCliente.Text = "Nuevo Cliente";
+            this.bNuevoCliente.UseVisualStyleBackColor = false;
+            this.bNuevoCliente.Click += new System.EventHandler(this.bNuevoCliente_Click);
             // 
             // tbNombreCliente
             // 
@@ -517,7 +518,7 @@
         private System.Windows.Forms.TextBox tbNombreProducto;
         private System.Windows.Forms.Button bElegirProducto;
         private System.Windows.Forms.ComboBox cbMetodoDePago;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button bNuevoCliente;
         private System.Windows.Forms.Label lNombreCliente;
     }
 }

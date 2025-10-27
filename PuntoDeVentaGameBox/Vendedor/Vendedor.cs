@@ -441,6 +441,11 @@ namespace PuntoDeVentaGameBox.Vendedor
             }
         }
 
+        private void bNuevoCliente_Click(object sender, EventArgs e)
+        {
+            AgregarCliente pagina = new AgregarCliente();
+            pagina.ShowDialog();
+        }
     }
 }
 
