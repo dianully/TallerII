@@ -69,7 +69,7 @@
             this.TLPPanelGerente.Name = "TLPPanelGerente";
             this.TLPPanelGerente.RowCount = 1;
             this.TLPPanelGerente.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.TLPPanelGerente.Size = new System.Drawing.Size(1181, 116);
+            this.TLPPanelGerente.Size = new System.Drawing.Size(1242, 116);
             this.TLPPanelGerente.TabIndex = 2;
             // 
             // BInventario
@@ -91,7 +91,7 @@
             this.BReportes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.BReportes.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BReportes.ForeColor = System.Drawing.Color.LightGray;
-            this.BReportes.Location = new System.Drawing.Point(298, 2);
+            this.BReportes.Location = new System.Drawing.Point(313, 2);
             this.BReportes.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BReportes.Name = "BReportes";
             this.BReportes.Size = new System.Drawing.Size(283, 110);
@@ -105,7 +105,7 @@
             this.BProveedores.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.BProveedores.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BProveedores.ForeColor = System.Drawing.Color.LightGray;
-            this.BProveedores.Location = new System.Drawing.Point(593, 2);
+            this.BProveedores.Location = new System.Drawing.Point(623, 2);
             this.BProveedores.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BProveedores.Name = "BProveedores";
             this.BProveedores.Size = new System.Drawing.Size(283, 110);
@@ -119,7 +119,7 @@
             this.BSalir.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.BSalir.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BSalir.ForeColor = System.Drawing.Color.LightGray;
-            this.BSalir.Location = new System.Drawing.Point(888, 2);
+            this.BSalir.Location = new System.Drawing.Point(933, 2);
             this.BSalir.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BSalir.Name = "BSalir";
             this.BSalir.Size = new System.Drawing.Size(284, 110);
@@ -131,10 +131,10 @@
             // PVistaGerente
             // 
             this.PVistaGerente.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.PVistaGerente.Location = new System.Drawing.Point(0, 183);
+            this.PVistaGerente.Location = new System.Drawing.Point(0, 252);
             this.PVistaGerente.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.PVistaGerente.Name = "PVistaGerente";
-            this.PVistaGerente.Size = new System.Drawing.Size(1181, 803);
+            this.PVistaGerente.Size = new System.Drawing.Size(1242, 803);
             this.PVistaGerente.TabIndex = 3;
             this.PVistaGerente.Paint += new System.Windows.Forms.PaintEventHandler(this.PVistaGerente_Paint);
             // 
@@ -147,7 +147,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1181, 171);
+            this.panel1.Size = new System.Drawing.Size(1242, 171);
             this.panel1.TabIndex = 4;
             // 
             // LNombreUsuario
@@ -168,7 +168,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.ClientSize = new System.Drawing.Size(1181, 986);
+            this.ClientSize = new System.Drawing.Size(1242, 1055);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.PVistaGerente);
             this.ForeColor = System.Drawing.Color.WhiteSmoke;
