@@ -30,11 +30,11 @@
         {
             this.TPLRoot = new System.Windows.Forms.TableLayoutPanel();
             this.PNLScroll = new System.Windows.Forms.Panel();
+            this.TLPContent = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.BExportarCVC = new System.Windows.Forms.Button();
             this.BExportarPDF = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
-            this.TLPContent = new System.Windows.Forms.TableLayoutPanel();
             this.GBPeriodo = new System.Windows.Forms.GroupBox();
             this.TLPPeriodo = new System.Windows.Forms.TableLayoutPanel();
             this.LTipoPeriodo = new System.Windows.Forms.Label();
@@ -74,10 +74,13 @@
             this.DGVProductoCVentas = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DGVProductoCTicketPromedio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.BVerGraficosProductos = new System.Windows.Forms.Button();
+            this.BVerGraficosVendedores = new System.Windows.Forms.Button();
+            this.TPLBotonesGraficos = new System.Windows.Forms.TableLayoutPanel();
             this.TPLRoot.SuspendLayout();
             this.PNLScroll.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.TLPContent.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.GBPeriodo.SuspendLayout();
             this.TLPPeriodo.SuspendLayout();
             this.PVentas.SuspendLayout();
@@ -90,6 +93,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.DGVTopProductos)).BeginInit();
             this.GVVendedores.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVVendedores)).BeginInit();
+            this.TPLBotonesGraficos.SuspendLayout();
             this.SuspendLayout();
             // 
             // TPLRoot
@@ -97,12 +101,12 @@
             this.TPLRoot.ColumnCount = 1;
             this.TPLRoot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.TPLRoot.Controls.Add(this.PNLScroll, 0, 0);
-            this.TPLRoot.Location = new System.Drawing.Point(0, 0);
+            this.TPLRoot.Location = new System.Drawing.Point(12, 0);
             this.TPLRoot.Name = "TPLRoot";
             this.TPLRoot.RowCount = 1;
             this.TPLRoot.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.TPLRoot.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.TPLRoot.Size = new System.Drawing.Size(891, 665);
+            this.TPLRoot.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 720F));
+            this.TPLRoot.Size = new System.Drawing.Size(902, 731);
             this.TPLRoot.TabIndex = 0;
             this.TPLRoot.Paint += new System.Windows.Forms.PaintEventHandler(this.TPLRoot_Paint);
             // 
@@ -111,21 +115,48 @@
             this.PNLScroll.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.PNLScroll.AutoScroll = true;
             this.PNLScroll.Controls.Add(this.TLPContent);
-            this.PNLScroll.Location = new System.Drawing.Point(7, 6);
+            this.PNLScroll.Location = new System.Drawing.Point(11, 4);
             this.PNLScroll.Name = "PNLScroll";
             this.PNLScroll.Padding = new System.Windows.Forms.Padding(16);
-            this.PNLScroll.Size = new System.Drawing.Size(877, 653);
+            this.PNLScroll.Size = new System.Drawing.Size(880, 723);
             this.PNLScroll.TabIndex = 3;
             this.PNLScroll.Paint += new System.Windows.Forms.PaintEventHandler(this.PNLScroll_Paint);
             // 
+            // TLPContent
+            // 
+            this.TLPContent.AutoScroll = true;
+            this.TLPContent.AutoSize = true;
+            this.TLPContent.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.TLPContent.ColumnCount = 1;
+            this.TLPContent.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.TLPContent.Controls.Add(this.GBPeriodo, 0, 0);
+            this.TLPContent.Controls.Add(this.PVentas, 0, 1);
+            this.TLPContent.Controls.Add(this.GVTopProductos, 0, 2);
+            this.TLPContent.Controls.Add(this.GVVendedores, 0, 3);
+            this.TLPContent.Controls.Add(this.panel1, 0, 5);
+            this.TLPContent.Controls.Add(this.TPLBotonesGraficos, 0, 4);
+            this.TLPContent.Location = new System.Drawing.Point(0, 0);
+            this.TLPContent.Name = "TLPContent";
+            this.TLPContent.RowCount = 6;
+            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 178F));
+            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 118F));
+            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 136F));
+            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 47F));
+            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 104F));
+            this.TLPContent.Size = new System.Drawing.Size(860, 722);
+            this.TLPContent.TabIndex = 0;
+            this.TLPContent.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
+            // 
             // panel1
             // 
+            this.panel1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.panel1.Controls.Add(this.BExportarCVC);
             this.panel1.Controls.Add(this.BExportarPDF);
             this.panel1.Controls.Add(this.label13);
-            this.panel1.Location = new System.Drawing.Point(3, 553);
+            this.panel1.Location = new System.Drawing.Point(3, 621);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(854, 75);
+            this.panel1.Size = new System.Drawing.Size(854, 69);
             this.panel1.TabIndex = 1;
             // 
             // BExportarCVC
@@ -161,30 +192,6 @@
             this.label13.TabIndex = 0;
             this.label13.Text = "Exportar Reporte";
             // 
-            // TLPContent
-            // 
-            this.TLPContent.AutoScroll = true;
-            this.TLPContent.AutoSize = true;
-            this.TLPContent.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.TLPContent.ColumnCount = 1;
-            this.TLPContent.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.TLPContent.Controls.Add(this.panel1, 0, 4);
-            this.TLPContent.Controls.Add(this.GBPeriodo, 0, 0);
-            this.TLPContent.Controls.Add(this.PVentas, 0, 1);
-            this.TLPContent.Controls.Add(this.GVTopProductos, 0, 2);
-            this.TLPContent.Controls.Add(this.GVVendedores, 0, 3);
-            this.TLPContent.Location = new System.Drawing.Point(3, 5);
-            this.TLPContent.Name = "TLPContent";
-            this.TLPContent.RowCount = 5;
-            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 186F));
-            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 136F));
-            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 107F));
-            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 97F));
-            this.TLPContent.Size = new System.Drawing.Size(860, 647);
-            this.TLPContent.TabIndex = 0;
-            this.TLPContent.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
-            // 
             // GBPeriodo
             // 
             this.GBPeriodo.Controls.Add(this.TLPPeriodo);
@@ -193,7 +200,7 @@
             this.GBPeriodo.Margin = new System.Windows.Forms.Padding(8);
             this.GBPeriodo.Name = "GBPeriodo";
             this.GBPeriodo.Padding = new System.Windows.Forms.Padding(16);
-            this.GBPeriodo.Size = new System.Drawing.Size(838, 170);
+            this.GBPeriodo.Size = new System.Drawing.Size(838, 162);
             this.GBPeriodo.TabIndex = 0;
             this.GBPeriodo.TabStop = false;
             this.GBPeriodo.Text = "Periodo del Reporte";
@@ -216,7 +223,7 @@
             this.TLPPeriodo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 53.73134F));
             this.TLPPeriodo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.TLPPeriodo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
-            this.TLPPeriodo.Size = new System.Drawing.Size(813, 135);
+            this.TLPPeriodo.Size = new System.Drawing.Size(813, 132);
             this.TLPPeriodo.TabIndex = 0;
             this.TLPPeriodo.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel3_Paint);
             // 
@@ -238,7 +245,7 @@
             "Semanal",
             "Mensual",
             "Anual"});
-            this.CBTipoPeriodo.Location = new System.Drawing.Point(3, 32);
+            this.CBTipoPeriodo.Location = new System.Drawing.Point(3, 30);
             this.CBTipoPeriodo.Name = "CBTipoPeriodo";
             this.CBTipoPeriodo.Size = new System.Drawing.Size(143, 31);
             this.CBTipoPeriodo.TabIndex = 1;
@@ -248,7 +255,7 @@
             this.LDesde.AutoSize = true;
             this.LDesde.Dock = System.Windows.Forms.DockStyle.Top;
             this.LDesde.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LDesde.Location = new System.Drawing.Point(3, 62);
+            this.LDesde.Location = new System.Drawing.Point(3, 59);
             this.LDesde.Name = "LDesde";
             this.LDesde.Size = new System.Drawing.Size(388, 23);
             this.LDesde.TabIndex = 1;
@@ -259,7 +266,7 @@
             this.LHasta.AutoSize = true;
             this.LHasta.Dock = System.Windows.Forms.DockStyle.Top;
             this.LHasta.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LHasta.Location = new System.Drawing.Point(397, 62);
+            this.LHasta.Location = new System.Drawing.Point(397, 59);
             this.LHasta.Name = "LHasta";
             this.LHasta.Size = new System.Drawing.Size(413, 23);
             this.LHasta.TabIndex = 2;
@@ -267,14 +274,14 @@
             // 
             // DTPDesde
             // 
-            this.DTPDesde.Location = new System.Drawing.Point(3, 96);
+            this.DTPDesde.Location = new System.Drawing.Point(3, 93);
             this.DTPDesde.Name = "DTPDesde";
             this.DTPDesde.Size = new System.Drawing.Size(200, 30);
             this.DTPDesde.TabIndex = 3;
             // 
             // DTPHasta
             // 
-            this.DTPHasta.Location = new System.Drawing.Point(397, 96);
+            this.DTPHasta.Location = new System.Drawing.Point(397, 93);
             this.DTPHasta.Name = "DTPHasta";
             this.DTPHasta.Size = new System.Drawing.Size(200, 30);
             this.DTPHasta.TabIndex = 4;
@@ -283,9 +290,9 @@
             // 
             this.PVentas.Controls.Add(this.LResumenTitulo);
             this.PVentas.Controls.Add(this.TPLVentas);
-            this.PVentas.Location = new System.Drawing.Point(3, 189);
+            this.PVentas.Location = new System.Drawing.Point(3, 181);
             this.PVentas.Name = "PVentas";
-            this.PVentas.Size = new System.Drawing.Size(847, 130);
+            this.PVentas.Size = new System.Drawing.Size(851, 112);
             this.PVentas.TabIndex = 3;
             // 
             // LResumenTitulo
@@ -313,12 +320,12 @@
             this.TPLVentas.Controls.Add(this.PCardVentas, 1, 0);
             this.TPLVentas.Controls.Add(this.PCardTicket, 2, 0);
             this.TPLVentas.Controls.Add(this.PCardProductos, 3, 0);
-            this.TPLVentas.Location = new System.Drawing.Point(6, 34);
+            this.TPLVentas.Location = new System.Drawing.Point(6, 31);
             this.TPLVentas.Margin = new System.Windows.Forms.Padding(0);
             this.TPLVentas.Name = "TPLVentas";
             this.TPLVentas.RowCount = 1;
             this.TPLVentas.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 48F));
-            this.TPLVentas.Size = new System.Drawing.Size(836, 99);
+            this.TPLVentas.Size = new System.Drawing.Size(836, 90);
             this.TPLVentas.TabIndex = 2;
             // 
             // PCardTotal
@@ -330,15 +337,15 @@
             this.PCardTotal.Controls.Add(this.label2);
             this.PCardTotal.Controls.Add(this.label1);
             this.PCardTotal.ForeColor = System.Drawing.SystemColors.Control;
-            this.PCardTotal.Location = new System.Drawing.Point(4, 3);
+            this.PCardTotal.Location = new System.Drawing.Point(4, 7);
             this.PCardTotal.Name = "PCardTotal";
-            this.PCardTotal.Size = new System.Drawing.Size(200, 93);
+            this.PCardTotal.Size = new System.Drawing.Size(200, 75);
             this.PCardTotal.TabIndex = 0;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(-4, 64);
+            this.label3.Location = new System.Drawing.Point(-4, 51);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(203, 23);
             this.label3.TabIndex = 2;
@@ -347,10 +354,10 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(35, 27);
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(45, 23);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(120, 35);
+            this.label2.Size = new System.Drawing.Size(101, 28);
             this.label2.TabIndex = 1;
             this.label2.Text = "$847,250";
             // 
@@ -373,15 +380,15 @@
             this.PCardVentas.Controls.Add(this.label5);
             this.PCardVentas.Controls.Add(this.label4);
             this.PCardVentas.ForeColor = System.Drawing.SystemColors.Control;
-            this.PCardVentas.Location = new System.Drawing.Point(213, 3);
+            this.PCardVentas.Location = new System.Drawing.Point(213, 7);
             this.PCardVentas.Name = "PCardVentas";
-            this.PCardVentas.Size = new System.Drawing.Size(200, 93);
+            this.PCardVentas.Size = new System.Drawing.Size(200, 76);
             this.PCardVentas.TabIndex = 1;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(-4, 67);
+            this.label6.Location = new System.Drawing.Point(-4, 52);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(207, 23);
             this.label6.TabIndex = 2;
@@ -391,7 +398,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(65, 30);
+            this.label5.Location = new System.Drawing.Point(62, 24);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(72, 31);
             this.label5.TabIndex = 1;
@@ -401,7 +408,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(22, 7);
+            this.label4.Location = new System.Drawing.Point(22, 1);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(153, 23);
             this.label4.TabIndex = 0;
@@ -419,13 +426,13 @@
             this.PCardTicket.ForeColor = System.Drawing.SystemColors.Control;
             this.PCardTicket.Location = new System.Drawing.Point(422, 3);
             this.PCardTicket.Name = "PCardTicket";
-            this.PCardTicket.Size = new System.Drawing.Size(200, 93);
+            this.PCardTicket.Size = new System.Drawing.Size(200, 84);
             this.PCardTicket.TabIndex = 2;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(-4, 67);
+            this.label9.Location = new System.Drawing.Point(-5, 52);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(207, 23);
             this.label9.TabIndex = 2;
@@ -435,7 +442,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(53, 30);
+            this.label8.Location = new System.Drawing.Point(53, 21);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(98, 31);
             this.label8.TabIndex = 1;
@@ -445,7 +452,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(36, 7);
+            this.label7.Location = new System.Drawing.Point(34, 1);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(134, 23);
             this.label7.TabIndex = 0;
@@ -460,15 +467,15 @@
             this.PCardProductos.Controls.Add(this.label11);
             this.PCardProductos.Controls.Add(this.label10);
             this.PCardProductos.ForeColor = System.Drawing.SystemColors.Control;
-            this.PCardProductos.Location = new System.Drawing.Point(632, 4);
+            this.PCardProductos.Location = new System.Drawing.Point(632, 3);
             this.PCardProductos.Name = "PCardProductos";
-            this.PCardProductos.Size = new System.Drawing.Size(199, 90);
+            this.PCardProductos.Size = new System.Drawing.Size(199, 83);
             this.PCardProductos.TabIndex = 3;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(3, 66);
+            this.label12.Location = new System.Drawing.Point(12, 51);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(172, 23);
             this.label12.TabIndex = 2;
@@ -478,7 +485,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(72, 29);
+            this.label11.Location = new System.Drawing.Point(69, 20);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(53, 31);
             this.label11.TabIndex = 1;
@@ -488,7 +495,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(51, 7);
+            this.label10.Location = new System.Drawing.Point(52, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(92, 23);
             this.label10.TabIndex = 0;
@@ -497,15 +504,16 @@
             // 
             // GVTopProductos
             // 
-            this.GVTopProductos.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.GVTopProductos.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.GVTopProductos.Controls.Add(this.DGVTopProductos);
             this.GVTopProductos.ForeColor = System.Drawing.SystemColors.Control;
-            this.GVTopProductos.Location = new System.Drawing.Point(3, 326);
+            this.GVTopProductos.Location = new System.Drawing.Point(10, 299);
             this.GVTopProductos.Name = "GVTopProductos";
-            this.GVTopProductos.Size = new System.Drawing.Size(843, 98);
+            this.GVTopProductos.Size = new System.Drawing.Size(839, 128);
             this.GVTopProductos.TabIndex = 4;
             this.GVTopProductos.TabStop = false;
             this.GVTopProductos.Text = "Productos Mas Vendidos";
+            this.GVTopProductos.Enter += new System.EventHandler(this.GVTopProductos_Enter);
             // 
             // DGVTopProductos
             // 
@@ -522,7 +530,7 @@
             this.DGVTopProductos.RowHeadersWidth = 51;
             this.DGVTopProductos.RowTemplate.Height = 24;
             this.DGVTopProductos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DGVTopProductos.Size = new System.Drawing.Size(834, 55);
+            this.DGVTopProductos.Size = new System.Drawing.Size(834, 111);
             this.DGVTopProductos.TabIndex = 0;
             // 
             // DGVProductoCVideojuego
@@ -550,9 +558,9 @@
             // 
             this.GVVendedores.Controls.Add(this.DGVVendedores);
             this.GVVendedores.ForeColor = System.Drawing.SystemColors.Control;
-            this.GVVendedores.Location = new System.Drawing.Point(3, 432);
+            this.GVVendedores.Location = new System.Drawing.Point(3, 435);
             this.GVVendedores.Name = "GVVendedores";
-            this.GVVendedores.Size = new System.Drawing.Size(843, 115);
+            this.GVVendedores.Size = new System.Drawing.Size(840, 133);
             this.GVVendedores.TabIndex = 5;
             this.GVVendedores.TabStop = false;
             this.GVVendedores.Text = "Rendimientos por Vendedor";
@@ -566,14 +574,14 @@
             this.DGVProductoCTotalDineroenVentas,
             this.DGVProductoCVentas,
             this.DGVProductoCTicketPromedio});
-            this.DGVVendedores.Location = new System.Drawing.Point(3, 26);
+            this.DGVVendedores.Location = new System.Drawing.Point(5, 29);
             this.DGVVendedores.Name = "DGVVendedores";
             this.DGVVendedores.ReadOnly = true;
             this.DGVVendedores.RowHeadersVisible = false;
             this.DGVVendedores.RowHeadersWidth = 51;
             this.DGVVendedores.RowTemplate.Height = 24;
             this.DGVVendedores.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DGVVendedores.Size = new System.Drawing.Size(834, 80);
+            this.DGVVendedores.Size = new System.Drawing.Size(832, 120);
             this.DGVVendedores.TabIndex = 0;
             // 
             // DGVVendedoresCVendedor
@@ -608,14 +616,45 @@
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
+            // BVerGraficosProductos
+            // 
+            this.BVerGraficosProductos.Location = new System.Drawing.Point(3, 3);
+            this.BVerGraficosProductos.Name = "BVerGraficosProductos";
+            this.BVerGraficosProductos.Size = new System.Drawing.Size(415, 35);
+            this.BVerGraficosProductos.TabIndex = 6;
+            this.BVerGraficosProductos.Text = "Ver Graficos de Ventas";
+            this.BVerGraficosProductos.UseVisualStyleBackColor = true;
+            // 
+            // BVerGraficosVendedores
+            // 
+            this.BVerGraficosVendedores.Location = new System.Drawing.Point(425, 3);
+            this.BVerGraficosVendedores.Name = "BVerGraficosVendedores";
+            this.BVerGraficosVendedores.Size = new System.Drawing.Size(417, 35);
+            this.BVerGraficosVendedores.TabIndex = 3;
+            this.BVerGraficosVendedores.Text = "Ver Graficos de Vendedores";
+            this.BVerGraficosVendedores.UseVisualStyleBackColor = true;
+            // 
+            // TPLBotonesGraficos
+            // 
+            this.TPLBotonesGraficos.ColumnCount = 2;
+            this.TPLBotonesGraficos.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TPLBotonesGraficos.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TPLBotonesGraficos.Controls.Add(this.BVerGraficosVendedores, 1, 0);
+            this.TPLBotonesGraficos.Controls.Add(this.BVerGraficosProductos, 0, 0);
+            this.TPLBotonesGraficos.Location = new System.Drawing.Point(3, 574);
+            this.TPLBotonesGraficos.Name = "TPLBotonesGraficos";
+            this.TPLBotonesGraficos.RowCount = 1;
+            this.TPLBotonesGraficos.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TPLBotonesGraficos.Size = new System.Drawing.Size(845, 41);
+            this.TPLBotonesGraficos.TabIndex = 6;
+            // 
             // Reportes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoScroll = true;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.ClientSize = new System.Drawing.Size(901, 678);
+            this.ClientSize = new System.Drawing.Size(926, 740);
             this.Controls.Add(this.TPLRoot);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -625,9 +664,9 @@
             this.TPLRoot.ResumeLayout(false);
             this.PNLScroll.ResumeLayout(false);
             this.PNLScroll.PerformLayout();
+            this.TLPContent.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.TLPContent.ResumeLayout(false);
             this.GBPeriodo.ResumeLayout(false);
             this.TLPPeriodo.ResumeLayout(false);
             this.TLPPeriodo.PerformLayout();
@@ -646,6 +685,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.DGVTopProductos)).EndInit();
             this.GVVendedores.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVVendedores)).EndInit();
+            this.TPLBotonesGraficos.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -698,5 +738,8 @@
         private System.Windows.Forms.Button BExportarCVC;
         private System.Windows.Forms.Button BExportarPDF;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button BVerGraficosProductos;
+        private System.Windows.Forms.TableLayoutPanel TPLBotonesGraficos;
+        private System.Windows.Forms.Button BVerGraficosVendedores;
     }
 }

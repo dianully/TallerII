@@ -44,6 +44,10 @@ namespace PuntoDeVentaGameBox.Gerente
             DGVDatosProveedores.CellContentClick -= DGVDatosProveedores_CellContentClick;
             DGVDatosProveedores.CellContentClick += DGVDatosProveedores_CellContentClick;
 
+            // NUEVO: formateo (colores y texto del botón Acción)
+            DGVDatosProveedores.DataBindingComplete -= DGVDatosProveedores_DataBindingComplete;
+            DGVDatosProveedores.DataBindingComplete += DGVDatosProveedores_DataBindingComplete;
+
             // texto en negro para toda la grilla
             DGVDatosProveedores.DefaultCellStyle.ForeColor = Color.Black;
             DGVDatosProveedores.RowsDefaultCellStyle.ForeColor = Color.Black;
@@ -75,13 +79,14 @@ namespace PuntoDeVentaGameBox.Gerente
             BLimpiarFiltros.Click -= BLimpiarFiltros_Click;
             BLimpiarFiltros.Click += BLimpiarFiltros_Click;
 
-            // combo filtro
+            // combo filtro (AGREGADO "Inactivos")
             CBFiltroProveedores.Items.Clear();
             CBFiltroProveedores.Items.Add("todos");
             CBFiltroProveedores.Items.Add("recientes");
             CBFiltroProveedores.Items.Add("A - Z");
             CBFiltroProveedores.Items.Add("Z - A");
             CBFiltroProveedores.Items.Add("ID ascendente");
+            CBFiltroProveedores.Items.Add("Inactivos"); // << nuevo
             CBFiltroProveedores.SelectedIndex = 0; // por defecto
         }
 
@@ -94,11 +99,12 @@ namespace PuntoDeVentaGameBox.Gerente
             SetPlaceholder(TBBuscar, "Buscar por nombre o ID");
 
             PrepararColumnas();
-            CargarProveedores();
+            CargarProveedores();  // default (activos)
             ActualizarContador();
+
+            // Normalizamos solo Ver y Editar; EliminAR ya no existe: ahora es "Accion" y se crea en PrepararColumnas.
             NormalizarBotonAccion("Ver");
             NormalizarBotonAccion("Editar");
-            NormalizarBotonAccion("Eliminar");
         }
 
         private void BNuevoProveedor_Click(object sender, EventArgs e)
@@ -182,15 +188,15 @@ namespace PuntoDeVentaGameBox.Gerente
                 MinimumWidth = 80
             });
 
+            // >>> Columna ACCIÓN dinámica (Eliminar / Reactivar)
             DGVDatosProveedores.Columns.Add(new DataGridViewButtonColumn
             {
-                Name = "Eliminar",
-                HeaderText = "Eliminar",
-                Text = "Eliminar",
-                UseColumnTextForButtonValue = true,
+                Name = "Accion",
+                HeaderText = "Acción",
+                UseColumnTextForButtonValue = false, // el texto lo seteo por fila
                 FlatStyle = FlatStyle.Popup,
                 FillWeight = 10,
-                MinimumWidth = 90
+                MinimumWidth = 100
             });
 
             DGVDatosProveedores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -213,8 +219,9 @@ namespace PuntoDeVentaGameBox.Gerente
         }
 
         /// <summary>
-        /// Carga proveedores con búsqueda opcional y con orden segun 'ordenCode'.
-        /// ordenCode: null/'todos', 'recientes', 'AZ', 'ZA', 'ID_ASC'
+        /// Carga proveedores con búsqueda/orden y filtro desde combo.
+        /// ordenCode: null/'todos', 'recientes', 'AZ', 'ZA', 'ID_ASC', 'INACTIVOS'
+        /// Por defecto: muestra ACTIVOS primero (blancos) y luego INACTIVOS (amarillos).
         /// </summary>
         private void CargarProveedores(string texto = null, bool soloRecientes = false, string ordenCode = null)
         {
@@ -227,14 +234,22 @@ namespace PuntoDeVentaGameBox.Gerente
                     cn.Open();
                     bool tieneActivo = ExisteColumnaActivo(cn);
 
-                    string whereBase = tieneActivo ? "WHERE p.activo = 1" : "WHERE 1=1";
+                    // columnas (incluimos 'activo' si existe para poder colorear/accionar)
+                    string cols = "p.id_proveedor, p.nombre, p.direccion, p.telefono, p.email";
+                    if (tieneActivo) cols += ", p.activo";
+
+                    // ⚠️ Por defecto mostramos TODOS (activos + inactivos).
+                    // Solo si el filtro es INACTIVOS, mostramos solo los inactivos.
+                    string whereBase = "WHERE 1=1";
+                    if (tieneActivo && string.Equals(ordenCode, "INACTIVOS", StringComparison.OrdinalIgnoreCase))
+                        whereBase = "WHERE p.activo = 0";
 
                     // filtro por texto: nombre o ID (parcial)
                     string filtro = "";
                     if (!string.IsNullOrWhiteSpace(texto))
                     {
                         filtro = @" AND (LOWER(p.nombre) LIKE LOWER(@q)
-                                    OR CAST(p.id_proveedor AS varchar(20)) LIKE @qId )";
+                            OR CAST(p.id_proveedor AS varchar(20)) LIKE @qId )";
                         cmd.Parameters.AddWithValue("@q", $"%{texto.Trim()}%");
                         cmd.Parameters.AddWithValue("@qId", $"%{texto.Trim()}%");
                     }
@@ -245,21 +260,35 @@ namespace PuntoDeVentaGameBox.Gerente
                         recientes = " AND p.id_proveedor IN (" + string.Join(",", _recientesIds) + ")";
 
                     // orden
-                    string order = " ORDER BY p.nombre";
+                    string order = "";
+                    if (tieneActivo)
+                    {
+                        // activos primero (1), luego inactivos (0)
+                        order = " ORDER BY p.activo DESC, p.id_proveedor DESC";
+                    }
+                    else
+                    {
+                        order = " ORDER BY p.id_proveedor DESC";
+                    }
+
+                    // si el usuario elige algún orden manual (AZ, ZA, etc.), lo respetamos
                     switch (ordenCode)
                     {
-                        case "AZ": order = " ORDER BY p.nombre ASC"; break;
-                        case "ZA": order = " ORDER BY p.nombre DESC"; break;
-                        case "ID_ASC": order = " ORDER BY p.id_proveedor ASC"; break;
-                        case "REC": order = " ORDER BY p.nombre"; break; // mismos que default
-                        default: order = " ORDER BY p.nombre"; break;
+                        case "AZ": order = tieneActivo ? " ORDER BY p.activo DESC, p.nombre ASC" : " ORDER BY p.nombre ASC"; break;
+                        case "ZA": order = tieneActivo ? " ORDER BY p.activo DESC, p.nombre DESC" : " ORDER BY p.nombre DESC"; break;
+                        case "ID_ASC": order = tieneActivo ? " ORDER BY p.activo DESC, p.id_proveedor ASC" : " ORDER BY p.id_proveedor ASC"; break;
+                        case "REC": order = tieneActivo ? " ORDER BY p.activo DESC, p.nombre" : " ORDER BY p.nombre"; break;
+                        case "INACTIVOS":
+                            // si filtro inactivos, ya son todos 0 — ordenamos por ID DESC
+                            order = " ORDER BY p.id_proveedor DESC";
+                            break;
                     }
 
                     cmd.CommandText = $@"
-                        SELECT p.id_proveedor, p.nombre, p.direccion, p.telefono, p.email
-                        FROM dbo.proveedor p
-                        {whereBase} {filtro} {recientes}
-                        {order}";
+                SELECT {cols}
+                FROM dbo.proveedor p
+                {whereBase} {filtro} {recientes}
+                {order}";
                     da.SelectCommand = cmd;
 
                     var dt = new DataTable();
@@ -275,6 +304,8 @@ namespace PuntoDeVentaGameBox.Gerente
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
 
         private void ActualizarContador()
         {
@@ -295,6 +326,34 @@ namespace PuntoDeVentaGameBox.Gerente
             catch
             {
                 LCantProveedores.Text = "0 Proveedores";
+            }
+        }
+
+        // ======== Colorear filas + texto del botón ACCIÓN =========
+        private void DGVDatosProveedores_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            try
+            {
+                foreach (DataGridViewRow row in DGVDatosProveedores.Rows)
+                {
+                    if (row.DataBoundItem is DataRowView drv)
+                    {
+                        int activo = drv.Row.Table.Columns.Contains("activo") && drv["activo"] != DBNull.Value
+                            ? Convert.ToInt32(drv["activo"])
+                            : 1;
+
+                        // color
+                        row.DefaultCellStyle.BackColor = (activo == 1) ? Color.White : Color.LightYellow;
+
+                        // botón Acción
+                        if (row.Cells["Accion"] is DataGridViewButtonCell c)
+                            c.Value = (activo == 1) ? "Eliminar" : "Reactivar";
+                    }
+                }
+            }
+            catch
+            {
+                // silencioso
             }
         }
 
@@ -480,7 +539,8 @@ namespace PuntoDeVentaGameBox.Gerente
             if (sel.Equals("Z - A", StringComparison.OrdinalIgnoreCase)) return "ZA";
             if (sel.Equals("ID ascendente", StringComparison.OrdinalIgnoreCase)) return "ID_ASC";
             if (sel.Equals("recientes", StringComparison.OrdinalIgnoreCase)) return "REC";
-            return null; // "todos" cae en default
+            if (sel.Equals("Inactivos", StringComparison.OrdinalIgnoreCase)) return "INACTIVOS";
+            return null; // "todos" cae en default (activos)
         }
 
         private void CargarProveedorPorId(int id)
@@ -489,9 +549,7 @@ namespace PuntoDeVentaGameBox.Gerente
             {
                 using (var cn = NuevaConexion())
                 using (var da = new SqlDataAdapter(
-                           @"SELECT id_proveedor, nombre, direccion, telefono, email
-                             FROM dbo.proveedor
-                             WHERE id_proveedor = @id", cn))
+                           @"SELECT id_proveedor, nombre, direccion, telefono, email FROM dbo.proveedor WHERE id_proveedor = @id", cn))
                 {
                     da.SelectCommand.Parameters.AddWithValue("@id", id);
                     var dt = new DataTable();
@@ -524,8 +582,8 @@ namespace PuntoDeVentaGameBox.Gerente
             var col = DGVDatosProveedores.Columns[e.ColumnIndex];
             bool esVer = col.Name.Equals("Ver", StringComparison.OrdinalIgnoreCase);
             bool esEditar = col.Name.Equals("Editar", StringComparison.OrdinalIgnoreCase);
-            bool esEliminar = col.Name.Equals("Eliminar", StringComparison.OrdinalIgnoreCase);
-            if (!esVer && !esEditar && !esEliminar) return;
+            bool esAccion = col.Name.Equals("Accion", StringComparison.OrdinalIgnoreCase);
+            if (!esVer && !esEditar && !esAccion) return;
 
             var row = DGVDatosProveedores.Rows[e.RowIndex];
             if (!(row.DataBoundItem is DataRowView drv)) return;
@@ -551,58 +609,74 @@ namespace PuntoDeVentaGameBox.Gerente
             {
                 using (var frm = new EditarProveedor(id))
                 {
-                    var dr = frm.ShowDialog(this);
-                    if (dr == DialogResult.OK)
+                    var dr2 = frm.ShowDialog(this);
+                    if (dr2 == DialogResult.OK)
                         BBuscar_Click(this, EventArgs.Empty);
                 }
                 return;
             }
 
-            // ELIMINAR (baja lógica si existe 'activo')
-            if (esEliminar)
+            // ACCIÓN (Eliminar / Reactivar)
+            if (esAccion)
             {
-                var resp = MessageBox.Show(
-                    $"confirmar eliminacion de \"{nombre}\"",
-                    "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (resp != DialogResult.Yes) return;
-
                 try
                 {
                     using (var cn = NuevaConexion())
-                    using (var cmd = cn.CreateCommand())
                     {
                         cn.Open();
+                        bool tieneActivo = ExisteColumnaActivo(cn);
 
-                        try
+                        if (!tieneActivo)
                         {
-                            cmd.CommandText = "UPDATE dbo.proveedor SET activo = 0 WHERE id_proveedor = @id";
-                            cmd.Parameters.AddWithValue("@id", id);
-                            int n = cmd.ExecuteNonQuery();
-                            if (n == 0) throw new Exception("no se actualizo ningun registro");
-                        }
-                        catch
-                        {
+                            // Sin columna 'activo' => eliminacion fisica (como hacías antes)
                             var respHard = MessageBox.Show(
-                                "la tabla proveedor no tiene columna activo, desea eliminar fisicamente el registro?",
-                                "Aviso", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                            if (respHard == DialogResult.Yes)
+                                $"La tabla proveedor no tiene columna 'activo'. ¿Eliminar físicamente \"{nombre}\" (ID {id})?",
+                                "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                            if (respHard != DialogResult.Yes) return;
+
+                            using (var cmd = cn.CreateCommand())
                             {
-                                cmd.Parameters.Clear();
                                 cmd.CommandText = "DELETE FROM dbo.proveedor WHERE id_proveedor = @id";
                                 cmd.Parameters.AddWithValue("@id", id);
                                 cmd.ExecuteNonQuery();
                             }
-                            else return;
-                        }
-                    }
 
-                    MessageBox.Show("proveedor eliminado", "Ok",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    BBuscar_Click(this, EventArgs.Empty);
+                            MessageBox.Show("Proveedor eliminado.", "OK",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            BBuscar_Click(this, EventArgs.Empty);
+                            return;
+                        }
+
+                        // Con 'activo': decidir acción según estado actual
+                        int activo = 1;
+                        if (drv.Row.Table.Columns.Contains("activo") && drv["activo"] != DBNull.Value)
+                            activo = Convert.ToInt32(drv["activo"]);
+
+                        bool vaAInactivar = (activo == 1);
+                        string confirm = vaAInactivar
+                            ? $"Confirmar eliminación (baja lógica) de \"{nombre}\" (ID {id})?"
+                            : $"Confirmar reactivación de \"{nombre}\" (ID {id})?";
+
+                        if (MessageBox.Show(confirm, "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                            return;
+
+                        using (var cmd = cn.CreateCommand())
+                        {
+                            cmd.CommandText = "UPDATE dbo.proveedor SET activo = @a WHERE id_proveedor = @id";
+                            cmd.Parameters.AddWithValue("@a", vaAInactivar ? 0 : 1);
+                            cmd.Parameters.AddWithValue("@id", id);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        MessageBox.Show(vaAInactivar ? "Proveedor inactivado." : "Proveedor reactivado.",
+                            "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        BBuscar_Click(this, EventArgs.Empty);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"error al eliminar proveedor: {ex.Message}", "Error",
+                    MessageBox.Show($"error al actualizar proveedor: {ex.Message}", "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }

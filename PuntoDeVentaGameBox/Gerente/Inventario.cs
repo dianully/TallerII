@@ -38,13 +38,17 @@ namespace PuntoDeVentaGameBox.Gerente
 
             // asegura handler unico de clicks en celdas
             DGVProductos.CellContentClick -= DGV_CellContentClick; // evita doble suscripcion
-            DGVProductos.CellContentClick += DGV_CellContentClick; // maneja botones editar y eliminar
+            DGVProductos.CellContentClick += DGV_CellContentClick; // maneja botones ver/editar/accion
 
             // convierte url_imagen en miniatura y maneja errores de formato
             DGVProductos.CellFormatting -= DGVProductos_CellFormatting; // evita doble suscripcion
             DGVProductos.CellFormatting += DGVProductos_CellFormatting; // renderiza imagen en la grilla
             DGVProductos.DataError -= DGVProductos_DataError; // evita doble suscripcion
             DGVProductos.DataError += DGVProductos_DataError; // suprime popups de error de formato
+
+            // al terminar el binding: seteo de colores y texto de boton Accion
+            DGVProductos.DataBindingComplete -= DGVProductos_DataBindingComplete;
+            DGVProductos.DataBindingComplete += DGVProductos_DataBindingComplete;
 
             // estilo del dgv
             DGVProductos.DefaultCellStyle.ForeColor = Color.Black; // asegura texto negro
@@ -57,7 +61,6 @@ namespace PuntoDeVentaGameBox.Gerente
 
             BVerSoloStockBajo.Click -= BVerSoloStockBajo_Click; // evita doble suscripcion
             BVerSoloStockBajo.Click += BVerSoloStockBajo_Click; // filtra por stock bajo rapido
-
 
             // wires de filtros
             TBNombre.TextChanged -= TBNombre_TextChanged; // evita doble suscripcion
@@ -82,7 +85,7 @@ namespace PuntoDeVentaGameBox.Gerente
             PrepararColumnas(); // define columnas manuales y orden
             CargarGeneros();    // llena el combo de generos
             CargarOrden();      // llena el combo de orden
-            CargarProductos();  // trae productos activos con nombre de categoria
+            CargarProductos();  // trae productos (activos e inactivos) con nombre de categoria
         }
 
         private SqlConnection NuevaConexion() => new SqlConnection(_connString); // crea conexion sql
@@ -171,7 +174,7 @@ namespace PuntoDeVentaGameBox.Gerente
             colStock.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter; // centra el numero
             DGVProductos.Columns.Add(colStock); // agrega columna stock
 
-            // >>>>>>>>>>>>>>>>>>>>>> CAMBIO: botón "Ver"
+            // botón ver
             DGVProductos.Columns.Add(new DataGridViewButtonColumn
             {
                 Name = "Ver",
@@ -182,7 +185,6 @@ namespace PuntoDeVentaGameBox.Gerente
                 FillWeight = 8,
                 MinimumWidth = 70
             });
-            // <<<<<<<<<<<<<<<<<<<<<< CAMBIO
 
             // boton editar
             DGVProductos.Columns.Add(new DataGridViewButtonColumn
@@ -196,17 +198,17 @@ namespace PuntoDeVentaGameBox.Gerente
                 MinimumWidth = 80
             }); // agrega boton editar
 
-            // boton eliminar
-            DGVProductos.Columns.Add(new DataGridViewButtonColumn
+            // boton ACCION (dinámico: Eliminar / Reactivar)
+            var colAccion = new DataGridViewButtonColumn
             {
-                Name = "Eliminar",
-                HeaderText = "Eliminar",
-                Text = "Eliminar",
-                UseColumnTextForButtonValue = true,
+                Name = "Accion",
+                HeaderText = "Acción",
+                UseColumnTextForButtonValue = false, // texto por fila
                 FlatStyle = FlatStyle.Popup,
                 FillWeight = 8,
                 MinimumWidth = 90
-            }); // agrega boton eliminar
+            };
+            DGVProductos.Columns.Add(colAccion);
 
             // formato general del grid
             DGVProductos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // reparte el espacio segun fillweight
@@ -219,14 +221,14 @@ namespace PuntoDeVentaGameBox.Gerente
 
         private void CargarProductos(string filtroNombre = null, int? filtroId = null, int? filtroCategoria = null, string ordenCode = null)
         {
-            // lee productos activos con join a categoria para traer el nombre del genero y aplica filtros
+            // trae productos (activos + inactivos por defecto) y aplica filtros
             try
             {
                 using (var cn = NuevaConexion())
                 using (var da = new SqlDataAdapter())
                 using (var cmd = cn.CreateCommand())
                 {
-                    // arma where base
+                    // arma where base (sin forzar activo = 1)
                     string sql = @"
                         SELECT
                             p.id_producto,
@@ -234,16 +236,23 @@ namespace PuntoDeVentaGameBox.Gerente
                             p.nombre,
                             c.nombre AS genero,
                             p.precio_venta,
-                            p.cantidad_stock
+                            p.cantidad_stock,
+                            p.activo
                         FROM dbo.producto p
                         LEFT JOIN dbo.categoria c ON c.id_categoria = p.id_categoria
-                        WHERE p.activo = 1
+                        WHERE 1=1
                           AND (@nom IS NULL OR p.nombre LIKE @like)
                           AND (@id IS NULL OR p.id_producto = @id)
                           AND (@cat IS NULL OR p.id_categoria = @cat)
                     ";
 
-                    // aplica filtros segun orden seleccionado
+                    // si el usuario selecciona "INACTIVOS", mostramos solo los inactivos
+                    if (string.Equals(ordenCode, "INACTIVOS", StringComparison.OrdinalIgnoreCase))
+                    {
+                        sql += " AND p.activo = 0";
+                    }
+
+                    // aplica ordenes
                     switch (ordenCode)
                     {
                         case "AZ":
@@ -252,20 +261,31 @@ namespace PuntoDeVentaGameBox.Gerente
                         case "ZA":
                             sql += " ORDER BY p.nombre DESC";
                             break;
-                        case "STOCK_LOW":   // menor stock (<=25)
-                            sql += " AND p.cantidad_stock <= @umbral ORDER BY p.cantidad_stock ASC";
+                        case "STOCK_LOW":   // solo <= umbral, orden asc por stock
+                            sql += " AND p.cantidad_stock <= @umbral ORDER BY p.cantidad_stock ASC, p.id_producto DESC";
                             break;
-                        case "STOCK_HIGH":  // mayor stock (>25)
-                            sql += " AND p.cantidad_stock > @umbral ORDER BY p.cantidad_stock DESC";
+                        case "STOCK_HIGH":  // solo > umbral, orden desc por stock
+                            sql += " AND p.cantidad_stock > @umbral ORDER BY p.cantidad_stock DESC, p.id_producto DESC";
                             break;
-                        case "PRICE_LOW":   // menor precio (<=80)
-                            sql += " AND p.precio_venta <= @precioLim ORDER BY p.precio_venta ASC";
-                            break;
-                        case "PRICE_HIGH":  // mayor precio (>80)
-                            sql += " AND p.precio_venta > @precioLim ORDER BY p.precio_venta DESC";
+                        case "INACTIVOS":
+                            // ya filtramos arriba; orden por id desc
+                            sql += " ORDER BY p.id_producto DESC";
                             break;
                         default:
-                            sql += " ORDER BY p.id_producto DESC";
+                            // ORDEN POR DEFECTO: grupo por color + id desc
+                            // grupo: 0 = blanco (activo y stock > umbral)
+                            //        1 = poco stock (activo y 0 < stock <= umbral)
+                            //        2 = sin stock (activo y stock = 0)
+                            //        3 = inactivos
+                            sql += @"
+                                ORDER BY
+                                    CASE
+                                        WHEN p.activo = 0 THEN 3
+                                        WHEN p.cantidad_stock = 0 THEN 2
+                                        WHEN p.cantidad_stock > 0 AND p.cantidad_stock <= @umbral THEN 1
+                                        ELSE 0
+                                    END ASC,
+                                    p.id_producto DESC";
                             break;
                     }
 
@@ -277,11 +297,8 @@ namespace PuntoDeVentaGameBox.Gerente
                     cmd.Parameters.AddWithValue("@id", (object)filtroId ?? DBNull.Value); // parametro id
                     cmd.Parameters.AddWithValue("@cat", (object)filtroCategoria ?? DBNull.Value); // parametro categoria
 
-                    // parametros para ordenes con umbral
-                    if (ordenCode == "STOCK_LOW" || ordenCode == "STOCK_HIGH")
-                        cmd.Parameters.AddWithValue("@umbral", UMBRAL_STOCK_BAJO); // umbral de stock
-                    if (ordenCode == "PRICE_LOW" || ordenCode == "PRICE_HIGH")
-                        cmd.Parameters.AddWithValue("@precioLim", 80m); // limite de precio
+                    // parametro umbral (lo usamos en default y en stock low/high)
+                    cmd.Parameters.AddWithValue("@umbral", UMBRAL_STOCK_BAJO);
 
                     da.SelectCommand = cmd; // asigna select al adapter
                     var dt = new DataTable(); // crea tabla en memoria
@@ -290,7 +307,7 @@ namespace PuntoDeVentaGameBox.Gerente
                     DGVProductos.DataSource = dt; // vincula al dgv
                 }
 
-                ActualizarResumenInventario(); // actualiza tarjetas con los numeros actuales
+                ActualizarResumenInventario(); // mantiene KPIs de activos
             }
             catch (Exception ex)
             {
@@ -323,21 +340,20 @@ namespace PuntoDeVentaGameBox.Gerente
 
         private void CargarOrden()
         {
-            // llena el combobox de orden con las seis opciones
+            // llena el combobox de orden (quitamos PRICE_LOW / PRICE_HIGH)
             var data = new[]
             {
                 new SortOption{ Code = "AZ",         Display = "A - Z" },
                 new SortOption{ Code = "ZA",         Display = "Z - A" },
                 new SortOption{ Code = "STOCK_LOW",  Display = "menor stock (<= 25)" },
                 new SortOption{ Code = "STOCK_HIGH", Display = "mayor stock (> 25)" },
-                new SortOption{ Code = "PRICE_LOW",  Display = "menor precio (<= 80)" },
-                new SortOption{ Code = "PRICE_HIGH", Display = "mayor precio (> 80)" },
+                new SortOption{ Code = "INACTIVOS",  Display = "Inactivos" }
             };
             CBOrden.DataSource = data; // setea datasource
             CBOrden.DisplayMember = "Display"; // muestra texto
             CBOrden.ValueMember = "Code"; // valor es codigo
             CBOrden.SelectedIndex = -1; // arranca sin seleccion
-            CBOrden.MaxDropDownItems = 6; // muestra todas
+            CBOrden.MaxDropDownItems = data.Length; // muestra todas
         }
 
         // ==================== imagenes ====================
@@ -431,6 +447,56 @@ namespace PuntoDeVentaGameBox.Gerente
             }
         }
 
+        // ===== formateo de filas y texto de botón Accion al completar binding =====
+        private void DGVProductos_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            try
+            {
+                foreach (DataGridViewRow row in DGVProductos.Rows)
+                {
+                    if (row.DataBoundItem is DataRowView drv)
+                    {
+                        int activo = drv.Row.Table.Columns.Contains("activo") && drv["activo"] != DBNull.Value
+                            ? Convert.ToInt32(drv["activo"])
+                            : 1;
+
+                        int stock = drv.Row.Table.Columns.Contains("cantidad_stock") && drv["cantidad_stock"] != DBNull.Value
+                            ? Convert.ToInt32(drv["cantidad_stock"])
+                            : 0;
+
+                        // Colorear fila según estado
+                        if (activo == 0)
+                        {
+                            row.DefaultCellStyle.BackColor = Color.LightYellow; // inactivo
+                        }
+                        else if (stock == 0)
+                        {
+                            row.DefaultCellStyle.BackColor = Color.LightCoral; // sin stock
+                        }
+                        else if (stock > 0 && stock <= UMBRAL_STOCK_BAJO)
+                        {
+                            row.DefaultCellStyle.BackColor = Color.MistyRose; // poco stock
+                        }
+                        else
+                        {
+                            row.DefaultCellStyle.BackColor = Color.White; // default
+                        }
+
+                        // Texto del botón Accion según estado
+                        var accionCell = row.Cells["Accion"] as DataGridViewButtonCell;
+                        if (accionCell != null)
+                        {
+                            accionCell.Value = (activo == 1) ? "Eliminar" : "Reactivar";
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // silencio formateo
+            }
+        }
+
         // ==================== acciones de grilla ====================
 
         private void DGV_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -438,10 +504,10 @@ namespace PuntoDeVentaGameBox.Gerente
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return; // valida indices
 
             var col = DGVProductos.Columns[e.ColumnIndex]; // obtiene columna clickeada
-            bool esVer = col.Name.Equals("Ver", StringComparison.OrdinalIgnoreCase);   // CAMBIO: boton ver
-            bool esEditar = col.Name.Equals("Editar", StringComparison.OrdinalIgnoreCase);   // detecta boton editar
-            bool esEliminar = col.Name.Equals("Eliminar", StringComparison.OrdinalIgnoreCase); // detecta boton eliminar
-            if (!esVer && !esEditar && !esEliminar) return; // ignora si no es boton
+            bool esVer = col.Name.Equals("Ver", StringComparison.OrdinalIgnoreCase);
+            bool esEditar = col.Name.Equals("Editar", StringComparison.OrdinalIgnoreCase);
+            bool esAccion = col.Name.Equals("Accion", StringComparison.OrdinalIgnoreCase);
+            if (!esVer && !esEditar && !esAccion) return; // ignora si no es boton
 
             // intenta obtener id de forma robusta
             int id = 0; object raw = null; // inicializa
@@ -456,7 +522,11 @@ namespace PuntoDeVentaGameBox.Gerente
                 return;
             }
 
-            // >>>>>>>>>>>>>>>>>>>>>> CAMBIO: navegar a Form1 con el id
+            // estado actual (para saber si eliminar o reactivar)
+            int activoRow = 1;
+            if (DGVProductos.Rows[e.RowIndex].DataBoundItem is DataRowView drv2 && drv2.Row.Table.Columns.Contains("activo") && drv2["activo"] != DBNull.Value)
+                activoRow = Convert.ToInt32(drv2["activo"]);
+
             if (esVer)
             {
                 using (var frm = new Form1(id)) // abre detalles de producto
@@ -465,44 +535,57 @@ namespace PuntoDeVentaGameBox.Gerente
                 }
                 return;
             }
-            // <<<<<<<<<<<<<<<<<<<<<< CAMBIO
 
             if (esEditar)
             {
                 using (var frm = new EditarProducto(id)) // abre editar con id
                 {
                     var dr = frm.ShowDialog(this); // muestra modal
-                    if (dr == DialogResult.OK) CargarProductos(); // recarga si guardo
+                    if (dr == DialogResult.OK) CargarProductos(); // recarga
                 }
+                return;
             }
-            else // eliminar
+
+            if (esAccion)
             {
-                var nombre = Convert.ToString(DGVProductos.Rows[e.RowIndex].Cells["Nombre"].Value); // toma nombre para mensaje
-                var resp = MessageBox.Show($"confirmar eliminacion de \"{nombre}\" (id {id})", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question); // pide confirmacion
-                if (resp != DialogResult.Yes) return; // cancela si no confirma
+                // si está activo => Eliminar (activo=0). Si está inactivo => Reactivar (activo=1)
+                bool vaAInactivar = (activoRow == 1);
+                string verbo = vaAInactivar ? "eliminar" : "reactivar";
+                string confirmMsg = vaAInactivar
+                    ? $"confirmar eliminacion (baja lógica) del producto id {id}?"
+                    : $"confirmar reactivacion del producto id {id}?";
+
+                var resp = MessageBox.Show(confirmMsg, "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (resp != DialogResult.Yes) return;
 
                 try
                 {
-                    using (var cn = NuevaConexion()) // abre conexion
+                    using (var cn = NuevaConexion())
                     using (var cmd = cn.CreateCommand())
                     {
-                        cmd.CommandText = "UPDATE dbo.producto SET activo = 0, fecha_edicion = GETDATE() WHERE id_producto = @id"; // baja logica
-                        cmd.Parameters.AddWithValue("@id", id); // pasa id
-                        cn.Open(); // abre conexion
-                        cmd.ExecuteNonQuery(); // ejecuta update
+                        cmd.CommandText = @"
+                            UPDATE dbo.producto
+                               SET activo = @activo,
+                                   fecha_edicion = GETDATE()
+                             WHERE id_producto = @id";
+                        cmd.Parameters.AddWithValue("@activo", vaAInactivar ? 0 : 1);
+                        cmd.Parameters.AddWithValue("@id", id);
+                        cn.Open();
+                        cmd.ExecuteNonQuery();
                     }
 
-                    MessageBox.Show("producto eliminado", "Ok", MessageBoxButtons.OK, MessageBoxIcon.Information); // muestra exito
-                    CargarProductos(); // recarga grilla solo con activos
+                    MessageBox.Show(vaAInactivar ? "producto eliminado (inactivado)" : "producto reactivado",
+                        "Ok", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    CargarProductos(); // recarga grilla
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"error al eliminar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); // muestra error
+                    MessageBox.Show($"error al actualizar estado: {ex.Message}", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
-
-
 
         private void BNuevoproducto_Click(object sender, EventArgs e)
         {
@@ -623,7 +706,7 @@ namespace PuntoDeVentaGameBox.Gerente
                 using (var da = new SqlDataAdapter(@"
                         SELECT DISTINCT TOP 50 nombre
                         FROM dbo.producto
-                        WHERE activo = 1 AND nombre LIKE @p + '%'
+                        WHERE nombre LIKE @p + '%'
                         ORDER BY nombre", cn))
                 {
                     da.SelectCommand.Parameters.AddWithValue("@p", pref); // setea prefijo
@@ -654,7 +737,7 @@ namespace PuntoDeVentaGameBox.Gerente
                 using (var da = new SqlDataAdapter(@"
                         SELECT TOP 50 id_producto
                         FROM dbo.producto
-                        WHERE activo = 1 AND CAST(id_producto AS varchar(20)) LIKE @p + '%'
+                        WHERE CAST(id_producto AS varchar(20)) LIKE @p + '%'
                         ORDER BY id_producto", cn))
                 {
                     da.SelectCommand.Parameters.AddWithValue("@p", pref); // setea prefijo
@@ -701,7 +784,7 @@ namespace PuntoDeVentaGameBox.Gerente
             CBGenero.SelectedIndex = -1; // limpia genero
             CBOrden.SelectedIndex = -1; // limpia orden
             HideSuggestions(); // oculta popup
-            CargarProductos(); // recarga sin filtros
+            CargarProductos(); // recarga sin filtros (default)
         }
 
         private void BVerSoloStockBajo_Click(object sender, EventArgs e)
@@ -724,12 +807,11 @@ namespace PuntoDeVentaGameBox.Gerente
             HideSuggestions(); // oculta popup de sugerencias si estaba abierto
         }
 
-
         // ==================== resumen tablero ====================
 
         private void ActualizarResumenInventario()
         {
-            // calcula productos totales, stock total y cuantos tienen stock bajo y actualiza los labels
+            // calcula KPIs SOLO de activos (igual que antes)
             try
             {
                 using (var cn = NuevaConexion())
@@ -776,48 +858,15 @@ namespace PuntoDeVentaGameBox.Gerente
         // ====== stubs autogenerados por el disenador ======
         // estos metodos existen solo para que compile porque hay eventos conectados en el .designer
 
-        private void TLRoot_Paint(object sender, PaintEventArgs e)
-        {
-            // evento paint autogenerado por el disenador
-        }
-
-        private void LProductostotales_Click(object sender, EventArgs e)
-        {
-            // click de label autogenerado por el disenador
-        }
-
-        private void LUnidadeseninventario_Click(object sender, EventArgs e)
-        {
-            // click de label autogenerado por el disenador
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-            // click de label autogenerado por el disenador
-        }
-
-        private void PFilters_Paint(object sender, PaintEventArgs e)
-        {
-            // evento paint autogenerado por el disenador
-        }
-
-        private void tableLayoutPanel1_Paint_1(object sender, PaintEventArgs e)
-        {
-            // evento paint autogenerado por el disenador
-        }
-
-        private void TBID_TextChanged_old(object sender, EventArgs e) { } // placeholder si el diseñador estuviera apuntando a otro metodo
-
-        private void TBID_KeyPress_old(object sender, KeyPressEventArgs e) { } // placeholder idem
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-            // click de label autogenerado por el disenador
-        }
-
-        private void BAplicarFiltrosProducto_Click(object sender, EventArgs e)
-        {
-
-        }
+        private void TLRoot_Paint(object sender, PaintEventArgs e) { }
+        private void LProductostotales_Click(object sender, EventArgs e) { }
+        private void LUnidadeseninventario_Click(object sender, EventArgs e) { }
+        private void label2_Click(object sender, EventArgs e) { }
+        private void PFilters_Paint(object sender, PaintEventArgs e) { }
+        private void tableLayoutPanel1_Paint_1(object sender, PaintEventArgs e) { }
+        private void TBID_TextChanged_old(object sender, EventArgs e) { }
+        private void TBID_KeyPress_old(object sender, KeyPressEventArgs e) { }
+        private void label1_Click(object sender, EventArgs e) { }
+        private void BAplicarFiltrosProducto_Click(object sender, EventArgs e) { }
     }
 }
