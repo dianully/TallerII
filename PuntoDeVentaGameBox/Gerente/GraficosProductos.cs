@@ -196,7 +196,9 @@ ORDER BY Unidades DESC;";
         private void chartDistribucionGenero_Click(object sender, EventArgs e) { }
         private void PGraficos_Paint(object sender, PaintEventArgs e) { }
 
-        
+        private void PGraficos_Paint_1(object sender, PaintEventArgs e)
+        {
 
+        }
     }
 }

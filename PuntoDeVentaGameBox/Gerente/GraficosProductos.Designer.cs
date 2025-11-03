@@ -62,6 +62,7 @@
             this.PGraficos.Name = "PGraficos";
             this.PGraficos.Size = new System.Drawing.Size(1051, 757);
             this.PGraficos.TabIndex = 10;
+            this.PGraficos.Paint += new System.Windows.Forms.PaintEventHandler(this.PGraficos_Paint_1);
             // 
             // chartDistribucionGenero
             // 

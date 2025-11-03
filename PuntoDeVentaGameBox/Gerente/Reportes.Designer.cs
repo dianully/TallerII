@@ -31,18 +31,6 @@
             this.TPLRoot = new System.Windows.Forms.TableLayoutPanel();
             this.PNLScroll = new System.Windows.Forms.Panel();
             this.TLPContent = new System.Windows.Forms.TableLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.BExportarCVC = new System.Windows.Forms.Button();
-            this.BExportarPDF = new System.Windows.Forms.Button();
-            this.label13 = new System.Windows.Forms.Label();
-            this.GBPeriodo = new System.Windows.Forms.GroupBox();
-            this.TLPPeriodo = new System.Windows.Forms.TableLayoutPanel();
-            this.LTipoPeriodo = new System.Windows.Forms.Label();
-            this.CBTipoPeriodo = new System.Windows.Forms.ComboBox();
-            this.LDesde = new System.Windows.Forms.Label();
-            this.LHasta = new System.Windows.Forms.Label();
-            this.DTPDesde = new System.Windows.Forms.DateTimePicker();
-            this.DTPHasta = new System.Windows.Forms.DateTimePicker();
             this.PVentas = new System.Windows.Forms.Panel();
             this.LResumenTitulo = new System.Windows.Forms.Label();
             this.TPLVentas = new System.Windows.Forms.TableLayoutPanel();
@@ -63,27 +51,38 @@
             this.LCantProductos = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.GVTopProductos = new System.Windows.Forms.GroupBox();
+            this.BMasVendidosExtendido = new System.Windows.Forms.Button();
             this.DGVTopProductos = new System.Windows.Forms.DataGridView();
             this.DGVProductoCVideojuego = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DGVProductoCUnidadesVendidas = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DGVProductoCIngresos = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GVVendedores = new System.Windows.Forms.GroupBox();
+            this.BRendimientosExtendido = new System.Windows.Forms.Button();
             this.DGVVendedores = new System.Windows.Forms.DataGridView();
             this.DGVVendedoresCVendedor = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DGVProductoCTotalDineroenVentas = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DGVProductoCVentas = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DGVProductoCTicketPromedio = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.BVerGraficosProductos = new System.Windows.Forms.Button();
-            this.BVerGraficosVendedores = new System.Windows.Forms.Button();
             this.TPLBotonesGraficos = new System.Windows.Forms.TableLayoutPanel();
+            this.BVerGraficosVendedores = new System.Windows.Forms.Button();
+            this.BVerGraficosProductos = new System.Windows.Forms.Button();
+            this.GBPeriodo = new System.Windows.Forms.GroupBox();
+            this.TLPPeriodo = new System.Windows.Forms.TableLayoutPanel();
+            this.LDesde = new System.Windows.Forms.Label();
+            this.LHasta = new System.Windows.Forms.Label();
+            this.DTPDesde = new System.Windows.Forms.DateTimePicker();
+            this.DTPHasta = new System.Windows.Forms.DateTimePicker();
             this.BLimpiar = new System.Windows.Forms.Button();
+            this.LTipoPeriodo = new System.Windows.Forms.Label();
+            this.CBTipoPeriodo = new System.Windows.Forms.ComboBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.BExportarExcel = new System.Windows.Forms.Button();
+            this.BExportarPDF = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.TPLRoot.SuspendLayout();
             this.PNLScroll.SuspendLayout();
             this.TLPContent.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.GBPeriodo.SuspendLayout();
-            this.TLPPeriodo.SuspendLayout();
             this.PVentas.SuspendLayout();
             this.TPLVentas.SuspendLayout();
             this.PCardTotal.SuspendLayout();
@@ -95,6 +94,9 @@
             this.GVVendedores.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVVendedores)).BeginInit();
             this.TPLBotonesGraficos.SuspendLayout();
+            this.GBPeriodo.SuspendLayout();
+            this.TLPPeriodo.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // TPLRoot
@@ -130,171 +132,32 @@
             this.TLPContent.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.TLPContent.ColumnCount = 1;
             this.TLPContent.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.TLPContent.Controls.Add(this.GBPeriodo, 0, 0);
             this.TLPContent.Controls.Add(this.PVentas, 0, 1);
             this.TLPContent.Controls.Add(this.GVTopProductos, 0, 2);
             this.TLPContent.Controls.Add(this.GVVendedores, 0, 3);
-            this.TLPContent.Controls.Add(this.panel1, 0, 5);
             this.TLPContent.Controls.Add(this.TPLBotonesGraficos, 0, 4);
+            this.TLPContent.Controls.Add(this.GBPeriodo, 0, 0);
+            this.TLPContent.Controls.Add(this.panel1, 0, 5);
             this.TLPContent.Location = new System.Drawing.Point(0, 0);
             this.TLPContent.Name = "TLPContent";
             this.TLPContent.RowCount = 6;
-            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 178F));
-            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 118F));
-            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 136F));
+            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 182F));
+            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 123F));
+            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));
             this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 47F));
+            this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 44F));
             this.TLPContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 104F));
-            this.TLPContent.Size = new System.Drawing.Size(860, 722);
+            this.TLPContent.Size = new System.Drawing.Size(860, 725);
             this.TLPContent.TabIndex = 0;
             this.TLPContent.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
-            // 
-            // panel1
-            // 
-            this.panel1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.panel1.Controls.Add(this.BExportarCVC);
-            this.panel1.Controls.Add(this.BExportarPDF);
-            this.panel1.Controls.Add(this.label13);
-            this.panel1.Location = new System.Drawing.Point(3, 621);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(854, 69);
-            this.panel1.TabIndex = 1;
-            // 
-            // BExportarCVC
-            // 
-            this.BExportarCVC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(82)))), ((int)(((byte)(77)))));
-            this.BExportarCVC.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.BExportarCVC.Location = new System.Drawing.Point(428, 32);
-            this.BExportarCVC.Name = "BExportarCVC";
-            this.BExportarCVC.Size = new System.Drawing.Size(417, 35);
-            this.BExportarCVC.TabIndex = 2;
-            this.BExportarCVC.Text = "Exportar CVC";
-            this.BExportarCVC.UseVisualStyleBackColor = false;
-            // 
-            // BExportarPDF
-            // 
-            this.BExportarPDF.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(82)))), ((int)(((byte)(77)))));
-            this.BExportarPDF.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.BExportarPDF.Location = new System.Drawing.Point(14, 32);
-            this.BExportarPDF.Name = "BExportarPDF";
-            this.BExportarPDF.Size = new System.Drawing.Size(408, 35);
-            this.BExportarPDF.TabIndex = 1;
-            this.BExportarPDF.Text = "Exportar PDF";
-            this.BExportarPDF.UseVisualStyleBackColor = false;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label13.Location = new System.Drawing.Point(3, 0);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(166, 28);
-            this.label13.TabIndex = 0;
-            this.label13.Text = "Exportar Reporte";
-            // 
-            // GBPeriodo
-            // 
-            this.GBPeriodo.Controls.Add(this.TLPPeriodo);
-            this.GBPeriodo.ForeColor = System.Drawing.SystemColors.Control;
-            this.GBPeriodo.Location = new System.Drawing.Point(8, 8);
-            this.GBPeriodo.Margin = new System.Windows.Forms.Padding(8);
-            this.GBPeriodo.Name = "GBPeriodo";
-            this.GBPeriodo.Padding = new System.Windows.Forms.Padding(16);
-            this.GBPeriodo.Size = new System.Drawing.Size(838, 162);
-            this.GBPeriodo.TabIndex = 0;
-            this.GBPeriodo.TabStop = false;
-            this.GBPeriodo.Text = "Periodo del Reporte";
-            // 
-            // TLPPeriodo
-            // 
-            this.TLPPeriodo.ColumnCount = 2;
-            this.TLPPeriodo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.TLPPeriodo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 419F));
-            this.TLPPeriodo.Controls.Add(this.LDesde, 0, 2);
-            this.TLPPeriodo.Controls.Add(this.LHasta, 1, 2);
-            this.TLPPeriodo.Controls.Add(this.DTPDesde, 0, 3);
-            this.TLPPeriodo.Controls.Add(this.DTPHasta, 1, 3);
-            this.TLPPeriodo.Controls.Add(this.BLimpiar, 1, 0);
-            this.TLPPeriodo.Controls.Add(this.LTipoPeriodo, 0, 0);
-            this.TLPPeriodo.Controls.Add(this.CBTipoPeriodo, 0, 1);
-            this.TLPPeriodo.Location = new System.Drawing.Point(19, 26);
-            this.TLPPeriodo.Name = "TLPPeriodo";
-            this.TLPPeriodo.RowCount = 4;
-            this.TLPPeriodo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 61.01695F));
-            this.TLPPeriodo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 38.98305F));
-            this.TLPPeriodo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.TLPPeriodo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 37F));
-            this.TLPPeriodo.Size = new System.Drawing.Size(813, 132);
-            this.TLPPeriodo.TabIndex = 0;
-            this.TLPPeriodo.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel3_Paint);
-            // 
-            // LTipoPeriodo
-            // 
-            this.LTipoPeriodo.AutoSize = true;
-            this.LTipoPeriodo.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LTipoPeriodo.Location = new System.Drawing.Point(3, 0);
-            this.LTipoPeriodo.Name = "LTipoPeriodo";
-            this.LTipoPeriodo.Size = new System.Drawing.Size(130, 23);
-            this.LTipoPeriodo.TabIndex = 0;
-            this.LTipoPeriodo.Text = "Tipo de Periodo";
-            // 
-            // CBTipoPeriodo
-            // 
-            this.CBTipoPeriodo.FormattingEnabled = true;
-            this.CBTipoPeriodo.Items.AddRange(new object[] {
-            "Diario",
-            "Semanal",
-            "Mensual",
-            "Anual"});
-            this.CBTipoPeriodo.Location = new System.Drawing.Point(3, 39);
-            this.CBTipoPeriodo.Name = "CBTipoPeriodo";
-            this.CBTipoPeriodo.Size = new System.Drawing.Size(143, 31);
-            this.CBTipoPeriodo.TabIndex = 1;
-            // 
-            // LDesde
-            // 
-            this.LDesde.AutoSize = true;
-            this.LDesde.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LDesde.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LDesde.Location = new System.Drawing.Point(3, 59);
-            this.LDesde.Name = "LDesde";
-            this.LDesde.Size = new System.Drawing.Size(388, 23);
-            this.LDesde.TabIndex = 1;
-            this.LDesde.Text = "Fecha Incio";
-            // 
-            // LHasta
-            // 
-            this.LHasta.AutoSize = true;
-            this.LHasta.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LHasta.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LHasta.Location = new System.Drawing.Point(397, 59);
-            this.LHasta.Name = "LHasta";
-            this.LHasta.Size = new System.Drawing.Size(413, 23);
-            this.LHasta.TabIndex = 2;
-            this.LHasta.Text = "Fecha Fin";
-            // 
-            // DTPDesde
-            // 
-            this.DTPDesde.Location = new System.Drawing.Point(3, 97);
-            this.DTPDesde.Name = "DTPDesde";
-            this.DTPDesde.Size = new System.Drawing.Size(200, 30);
-            this.DTPDesde.TabIndex = 3;
-            // 
-            // DTPHasta
-            // 
-            this.DTPHasta.Location = new System.Drawing.Point(397, 97);
-            this.DTPHasta.Name = "DTPHasta";
-            this.DTPHasta.Size = new System.Drawing.Size(200, 30);
-            this.DTPHasta.TabIndex = 4;
             // 
             // PVentas
             // 
             this.PVentas.Controls.Add(this.LResumenTitulo);
             this.PVentas.Controls.Add(this.TPLVentas);
-            this.PVentas.Location = new System.Drawing.Point(3, 181);
+            this.PVentas.Location = new System.Drawing.Point(3, 185);
             this.PVentas.Name = "PVentas";
-            this.PVentas.Size = new System.Drawing.Size(851, 112);
+            this.PVentas.Size = new System.Drawing.Size(851, 117);
             this.PVentas.TabIndex = 3;
             // 
             // LResumenTitulo
@@ -339,10 +202,11 @@
             this.PCardTotal.Controls.Add(this.LPesosTotalDinero);
             this.PCardTotal.Controls.Add(this.label1);
             this.PCardTotal.ForeColor = System.Drawing.SystemColors.Control;
-            this.PCardTotal.Location = new System.Drawing.Point(4, 7);
+            this.PCardTotal.Location = new System.Drawing.Point(4, 5);
             this.PCardTotal.Name = "PCardTotal";
-            this.PCardTotal.Size = new System.Drawing.Size(200, 75);
+            this.PCardTotal.Size = new System.Drawing.Size(200, 80);
             this.PCardTotal.TabIndex = 0;
+            this.PCardTotal.Paint += new System.Windows.Forms.PaintEventHandler(this.PCardTotal_Paint);
             // 
             // label3
             // 
@@ -507,15 +371,29 @@
             // GVTopProductos
             // 
             this.GVTopProductos.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.GVTopProductos.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.GVTopProductos.Controls.Add(this.BMasVendidosExtendido);
             this.GVTopProductos.Controls.Add(this.DGVTopProductos);
             this.GVTopProductos.ForeColor = System.Drawing.SystemColors.Control;
-            this.GVTopProductos.Location = new System.Drawing.Point(10, 299);
+            this.GVTopProductos.Location = new System.Drawing.Point(10, 308);
             this.GVTopProductos.Name = "GVTopProductos";
-            this.GVTopProductos.Size = new System.Drawing.Size(839, 128);
+            this.GVTopProductos.Size = new System.Drawing.Size(839, 124);
             this.GVTopProductos.TabIndex = 4;
             this.GVTopProductos.TabStop = false;
             this.GVTopProductos.Text = "Productos Mas Vendidos";
             this.GVTopProductos.Enter += new System.EventHandler(this.GVTopProductos_Enter);
+            // 
+            // BMasVendidosExtendido
+            // 
+            this.BMasVendidosExtendido.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.BMasVendidosExtendido.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BMasVendidosExtendido.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.BMasVendidosExtendido.Location = new System.Drawing.Point(666, 1);
+            this.BMasVendidosExtendido.Name = "BMasVendidosExtendido";
+            this.BMasVendidosExtendido.Size = new System.Drawing.Size(137, 41);
+            this.BMasVendidosExtendido.TabIndex = 1;
+            this.BMasVendidosExtendido.Text = "Expandir";
+            this.BMasVendidosExtendido.UseVisualStyleBackColor = false;
             // 
             // DGVTopProductos
             // 
@@ -525,14 +403,14 @@
             this.DGVProductoCVideojuego,
             this.DGVProductoCUnidadesVendidas,
             this.DGVProductoCIngresos});
-            this.DGVTopProductos.Location = new System.Drawing.Point(3, 26);
+            this.DGVTopProductos.Location = new System.Drawing.Point(3, 41);
             this.DGVTopProductos.Name = "DGVTopProductos";
             this.DGVTopProductos.ReadOnly = true;
             this.DGVTopProductos.RowHeadersVisible = false;
             this.DGVTopProductos.RowHeadersWidth = 51;
             this.DGVTopProductos.RowTemplate.Height = 24;
             this.DGVTopProductos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DGVTopProductos.Size = new System.Drawing.Size(834, 111);
+            this.DGVTopProductos.Size = new System.Drawing.Size(834, 80);
             this.DGVTopProductos.TabIndex = 0;
             // 
             // DGVProductoCVideojuego
@@ -558,14 +436,27 @@
             // 
             // GVVendedores
             // 
+            this.GVVendedores.Controls.Add(this.BRendimientosExtendido);
             this.GVVendedores.Controls.Add(this.DGVVendedores);
             this.GVVendedores.ForeColor = System.Drawing.SystemColors.Control;
-            this.GVVendedores.Location = new System.Drawing.Point(3, 435);
+            this.GVVendedores.Location = new System.Drawing.Point(3, 438);
             this.GVVendedores.Name = "GVVendedores";
-            this.GVVendedores.Size = new System.Drawing.Size(840, 133);
+            this.GVVendedores.Size = new System.Drawing.Size(840, 136);
             this.GVVendedores.TabIndex = 5;
             this.GVVendedores.TabStop = false;
             this.GVVendedores.Text = "Rendimientos por Vendedor";
+            // 
+            // BRendimientosExtendido
+            // 
+            this.BRendimientosExtendido.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.BRendimientosExtendido.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BRendimientosExtendido.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.BRendimientosExtendido.Location = new System.Drawing.Point(673, 0);
+            this.BRendimientosExtendido.Name = "BRendimientosExtendido";
+            this.BRendimientosExtendido.Size = new System.Drawing.Size(137, 41);
+            this.BRendimientosExtendido.TabIndex = 2;
+            this.BRendimientosExtendido.Text = "Expandir";
+            this.BRendimientosExtendido.UseVisualStyleBackColor = false;
             // 
             // DGVVendedores
             // 
@@ -576,14 +467,14 @@
             this.DGVProductoCTotalDineroenVentas,
             this.DGVProductoCVentas,
             this.DGVProductoCTicketPromedio});
-            this.DGVVendedores.Location = new System.Drawing.Point(5, 29);
+            this.DGVVendedores.Location = new System.Drawing.Point(5, 43);
             this.DGVVendedores.Name = "DGVVendedores";
             this.DGVVendedores.ReadOnly = true;
             this.DGVVendedores.RowHeadersVisible = false;
             this.DGVVendedores.RowHeadersWidth = 51;
             this.DGVVendedores.RowTemplate.Height = 24;
             this.DGVVendedores.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DGVVendedores.Size = new System.Drawing.Size(832, 120);
+            this.DGVVendedores.Size = new System.Drawing.Size(832, 106);
             this.DGVVendedores.TabIndex = 0;
             // 
             // DGVVendedoresCVendedor
@@ -614,28 +505,6 @@
             this.DGVProductoCTicketPromedio.Name = "DGVProductoCTicketPromedio";
             this.DGVProductoCTicketPromedio.ReadOnly = true;
             // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            // 
-            // BVerGraficosProductos
-            // 
-            this.BVerGraficosProductos.Location = new System.Drawing.Point(3, 3);
-            this.BVerGraficosProductos.Name = "BVerGraficosProductos";
-            this.BVerGraficosProductos.Size = new System.Drawing.Size(415, 35);
-            this.BVerGraficosProductos.TabIndex = 6;
-            this.BVerGraficosProductos.Text = "Ver Graficos de Ventas";
-            this.BVerGraficosProductos.UseVisualStyleBackColor = true;
-            // 
-            // BVerGraficosVendedores
-            // 
-            this.BVerGraficosVendedores.Location = new System.Drawing.Point(425, 3);
-            this.BVerGraficosVendedores.Name = "BVerGraficosVendedores";
-            this.BVerGraficosVendedores.Size = new System.Drawing.Size(417, 35);
-            this.BVerGraficosVendedores.TabIndex = 3;
-            this.BVerGraficosVendedores.Text = "Ver Graficos de Vendedores";
-            this.BVerGraficosVendedores.UseVisualStyleBackColor = true;
-            // 
             // TPLBotonesGraficos
             // 
             this.TPLBotonesGraficos.ColumnCount = 2;
@@ -643,12 +512,102 @@
             this.TPLBotonesGraficos.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.TPLBotonesGraficos.Controls.Add(this.BVerGraficosVendedores, 1, 0);
             this.TPLBotonesGraficos.Controls.Add(this.BVerGraficosProductos, 0, 0);
-            this.TPLBotonesGraficos.Location = new System.Drawing.Point(3, 574);
+            this.TPLBotonesGraficos.Location = new System.Drawing.Point(3, 580);
             this.TPLBotonesGraficos.Name = "TPLBotonesGraficos";
             this.TPLBotonesGraficos.RowCount = 1;
             this.TPLBotonesGraficos.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.TPLBotonesGraficos.Size = new System.Drawing.Size(845, 41);
+            this.TPLBotonesGraficos.Size = new System.Drawing.Size(845, 38);
             this.TPLBotonesGraficos.TabIndex = 6;
+            // 
+            // BVerGraficosVendedores
+            // 
+            this.BVerGraficosVendedores.Location = new System.Drawing.Point(425, 3);
+            this.BVerGraficosVendedores.Name = "BVerGraficosVendedores";
+            this.BVerGraficosVendedores.Size = new System.Drawing.Size(417, 32);
+            this.BVerGraficosVendedores.TabIndex = 3;
+            this.BVerGraficosVendedores.Text = "Ver Graficos de Vendedores";
+            this.BVerGraficosVendedores.UseVisualStyleBackColor = true;
+            // 
+            // BVerGraficosProductos
+            // 
+            this.BVerGraficosProductos.Location = new System.Drawing.Point(3, 3);
+            this.BVerGraficosProductos.Name = "BVerGraficosProductos";
+            this.BVerGraficosProductos.Size = new System.Drawing.Size(415, 32);
+            this.BVerGraficosProductos.TabIndex = 6;
+            this.BVerGraficosProductos.Text = "Ver Graficos de Ventas";
+            this.BVerGraficosProductos.UseVisualStyleBackColor = true;
+            // 
+            // GBPeriodo
+            // 
+            this.GBPeriodo.Controls.Add(this.TLPPeriodo);
+            this.GBPeriodo.ForeColor = System.Drawing.SystemColors.Control;
+            this.GBPeriodo.Location = new System.Drawing.Point(8, 8);
+            this.GBPeriodo.Margin = new System.Windows.Forms.Padding(8);
+            this.GBPeriodo.Name = "GBPeriodo";
+            this.GBPeriodo.Padding = new System.Windows.Forms.Padding(16);
+            this.GBPeriodo.Size = new System.Drawing.Size(838, 162);
+            this.GBPeriodo.TabIndex = 0;
+            this.GBPeriodo.TabStop = false;
+            this.GBPeriodo.Text = "Periodo del Reporte";
+            // 
+            // TLPPeriodo
+            // 
+            this.TLPPeriodo.ColumnCount = 2;
+            this.TLPPeriodo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TLPPeriodo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 419F));
+            this.TLPPeriodo.Controls.Add(this.LDesde, 0, 2);
+            this.TLPPeriodo.Controls.Add(this.LHasta, 1, 2);
+            this.TLPPeriodo.Controls.Add(this.DTPDesde, 0, 3);
+            this.TLPPeriodo.Controls.Add(this.DTPHasta, 1, 3);
+            this.TLPPeriodo.Controls.Add(this.BLimpiar, 1, 0);
+            this.TLPPeriodo.Controls.Add(this.LTipoPeriodo, 0, 0);
+            this.TLPPeriodo.Controls.Add(this.CBTipoPeriodo, 0, 1);
+            this.TLPPeriodo.Location = new System.Drawing.Point(19, 26);
+            this.TLPPeriodo.Name = "TLPPeriodo";
+            this.TLPPeriodo.RowCount = 4;
+            this.TLPPeriodo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.14286F));
+            this.TLPPeriodo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.85714F));
+            this.TLPPeriodo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+            this.TLPPeriodo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+            this.TLPPeriodo.Size = new System.Drawing.Size(813, 136);
+            this.TLPPeriodo.TabIndex = 0;
+            this.TLPPeriodo.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel3_Paint);
+            // 
+            // LDesde
+            // 
+            this.LDesde.AutoSize = true;
+            this.LDesde.Dock = System.Windows.Forms.DockStyle.Top;
+            this.LDesde.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LDesde.Location = new System.Drawing.Point(3, 63);
+            this.LDesde.Name = "LDesde";
+            this.LDesde.Size = new System.Drawing.Size(388, 23);
+            this.LDesde.TabIndex = 1;
+            this.LDesde.Text = "Fecha Incio";
+            // 
+            // LHasta
+            // 
+            this.LHasta.AutoSize = true;
+            this.LHasta.Dock = System.Windows.Forms.DockStyle.Top;
+            this.LHasta.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LHasta.Location = new System.Drawing.Point(397, 63);
+            this.LHasta.Name = "LHasta";
+            this.LHasta.Size = new System.Drawing.Size(413, 23);
+            this.LHasta.TabIndex = 2;
+            this.LHasta.Text = "Fecha Fin";
+            // 
+            // DTPDesde
+            // 
+            this.DTPDesde.Location = new System.Drawing.Point(3, 93);
+            this.DTPDesde.Name = "DTPDesde";
+            this.DTPDesde.Size = new System.Drawing.Size(200, 30);
+            this.DTPDesde.TabIndex = 3;
+            // 
+            // DTPHasta
+            // 
+            this.DTPHasta.Location = new System.Drawing.Point(397, 93);
+            this.DTPHasta.Name = "DTPHasta";
+            this.DTPHasta.Size = new System.Drawing.Size(200, 30);
+            this.DTPHasta.TabIndex = 4;
             // 
             // BLimpiar
             // 
@@ -659,6 +618,78 @@
             this.BLimpiar.TabIndex = 5;
             this.BLimpiar.Text = "Limpiar";
             this.BLimpiar.UseVisualStyleBackColor = true;
+            // 
+            // LTipoPeriodo
+            // 
+            this.LTipoPeriodo.AutoSize = true;
+            this.LTipoPeriodo.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LTipoPeriodo.Location = new System.Drawing.Point(3, 0);
+            this.LTipoPeriodo.Name = "LTipoPeriodo";
+            this.LTipoPeriodo.Size = new System.Drawing.Size(130, 23);
+            this.LTipoPeriodo.TabIndex = 0;
+            this.LTipoPeriodo.Text = "Tipo de Periodo";
+            // 
+            // CBTipoPeriodo
+            // 
+            this.CBTipoPeriodo.FormattingEnabled = true;
+            this.CBTipoPeriodo.Items.AddRange(new object[] {
+            "Diario",
+            "Semanal",
+            "Mensual",
+            "Anual"});
+            this.CBTipoPeriodo.Location = new System.Drawing.Point(3, 39);
+            this.CBTipoPeriodo.Name = "CBTipoPeriodo";
+            this.CBTipoPeriodo.Size = new System.Drawing.Size(143, 31);
+            this.CBTipoPeriodo.TabIndex = 1;
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.panel1.Controls.Add(this.BExportarExcel);
+            this.panel1.Controls.Add(this.BExportarPDF);
+            this.panel1.Controls.Add(this.label13);
+            this.panel1.Location = new System.Drawing.Point(3, 624);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(854, 75);
+            this.panel1.TabIndex = 1;
+            // 
+            // BExportarExcel
+            // 
+            this.BExportarExcel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(82)))), ((int)(((byte)(77)))));
+            this.BExportarExcel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.BExportarExcel.Location = new System.Drawing.Point(428, 32);
+            this.BExportarExcel.Name = "BExportarExcel";
+            this.BExportarExcel.Size = new System.Drawing.Size(417, 35);
+            this.BExportarExcel.TabIndex = 2;
+            this.BExportarExcel.Text = "Exportar Excel";
+            this.BExportarExcel.UseVisualStyleBackColor = false;
+            // 
+            // BExportarPDF
+            // 
+            this.BExportarPDF.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(82)))), ((int)(((byte)(77)))));
+            this.BExportarPDF.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.BExportarPDF.Location = new System.Drawing.Point(14, 32);
+            this.BExportarPDF.Name = "BExportarPDF";
+            this.BExportarPDF.Size = new System.Drawing.Size(408, 35);
+            this.BExportarPDF.TabIndex = 1;
+            this.BExportarPDF.Text = "Exportar PDF";
+            this.BExportarPDF.UseVisualStyleBackColor = false;
+            this.BExportarPDF.Click += new System.EventHandler(this.BExportarPDF_Click);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label13.Location = new System.Drawing.Point(3, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(166, 28);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "Exportar Reporte";
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
             // Reportes
             // 
@@ -677,11 +708,6 @@
             this.PNLScroll.ResumeLayout(false);
             this.PNLScroll.PerformLayout();
             this.TLPContent.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.GBPeriodo.ResumeLayout(false);
-            this.TLPPeriodo.ResumeLayout(false);
-            this.TLPPeriodo.PerformLayout();
             this.PVentas.ResumeLayout(false);
             this.PVentas.PerformLayout();
             this.TPLVentas.ResumeLayout(false);
@@ -698,6 +724,11 @@
             this.GVVendedores.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVVendedores)).EndInit();
             this.TPLBotonesGraficos.ResumeLayout(false);
+            this.GBPeriodo.ResumeLayout(false);
+            this.TLPPeriodo.ResumeLayout(false);
+            this.TLPPeriodo.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -747,12 +778,14 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn DGVProductoCVentas;
         private System.Windows.Forms.DataGridViewTextBoxColumn DGVProductoCTicketPromedio;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button BExportarCVC;
+        private System.Windows.Forms.Button BExportarExcel;
         private System.Windows.Forms.Button BExportarPDF;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button BVerGraficosProductos;
         private System.Windows.Forms.TableLayoutPanel TPLBotonesGraficos;
         private System.Windows.Forms.Button BVerGraficosVendedores;
         private System.Windows.Forms.Button BLimpiar;
+        private System.Windows.Forms.Button BMasVendidosExtendido;
+        private System.Windows.Forms.Button BRendimientosExtendido;
     }
 }
