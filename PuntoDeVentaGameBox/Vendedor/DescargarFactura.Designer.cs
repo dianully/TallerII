@@ -43,12 +43,8 @@
             this.LProducto = new System.Windows.Forms.Label();
             this.cbRol = new System.Windows.Forms.ComboBox();
             this.bNuevoCliente = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.bSalir = new System.Windows.Forms.Button();
             this.dgvFacturasVendedor = new System.Windows.Forms.DataGridView();
-            this.fecha = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MetodoDePago = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.montoPagado = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Cliente = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -234,29 +230,25 @@
             this.bNuevoCliente.Text = "Buscar";
             this.bNuevoCliente.UseVisualStyleBackColor = false;
             // 
-            // button1
+            // bSalir
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button1.Location = new System.Drawing.Point(596, 155);
-            this.button1.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(164, 39);
-            this.button1.TabIndex = 41;
-            this.button1.Text = "Salir";
-            this.button1.UseVisualStyleBackColor = false;
+            this.bSalir.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bSalir.FlatAppearance.BorderSize = 0;
+            this.bSalir.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bSalir.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.bSalir.Location = new System.Drawing.Point(596, 155);
+            this.bSalir.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.bSalir.Name = "bSalir";
+            this.bSalir.Size = new System.Drawing.Size(164, 39);
+            this.bSalir.TabIndex = 41;
+            this.bSalir.Text = "Salir";
+            this.bSalir.UseVisualStyleBackColor = false;
+            this.bSalir.Click += new System.EventHandler(this.bSalir_Click);
             // 
             // dgvFacturasVendedor
             // 
             this.dgvFacturasVendedor.AllowUserToAddRows = false;
             this.dgvFacturasVendedor.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvFacturasVendedor.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.fecha,
-            this.MetodoDePago,
-            this.montoPagado,
-            this.Cliente});
             this.dgvFacturasVendedor.Location = new System.Drawing.Point(24, 210);
             this.dgvFacturasVendedor.Margin = new System.Windows.Forms.Padding(4);
             this.dgvFacturasVendedor.Name = "dgvFacturasVendedor";
@@ -265,34 +257,6 @@
             this.dgvFacturasVendedor.Size = new System.Drawing.Size(1133, 312);
             this.dgvFacturasVendedor.TabIndex = 42;
             // 
-            // fecha
-            // 
-            this.fecha.HeaderText = "Fecha";
-            this.fecha.MinimumWidth = 6;
-            this.fecha.Name = "fecha";
-            this.fecha.Width = 125;
-            // 
-            // MetodoDePago
-            // 
-            this.MetodoDePago.HeaderText = "Metodo De Pago";
-            this.MetodoDePago.MinimumWidth = 6;
-            this.MetodoDePago.Name = "MetodoDePago";
-            this.MetodoDePago.Width = 150;
-            // 
-            // montoPagado
-            // 
-            this.montoPagado.HeaderText = "Monto";
-            this.montoPagado.MinimumWidth = 6;
-            this.montoPagado.Name = "montoPagado";
-            this.montoPagado.Width = 125;
-            // 
-            // Cliente
-            // 
-            this.Cliente.HeaderText = "Cliente";
-            this.Cliente.MinimumWidth = 6;
-            this.Cliente.Name = "Cliente";
-            this.Cliente.Width = 125;
-            // 
             // DescargarFactura
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -300,7 +264,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.ClientSize = new System.Drawing.Size(1182, 544);
             this.Controls.Add(this.dgvFacturasVendedor);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.bSalir);
             this.Controls.Add(this.bNuevoCliente);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -338,11 +302,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label LProducto;
         private System.Windows.Forms.Button bNuevoCliente;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button bSalir;
         private System.Windows.Forms.DataGridView dgvFacturasVendedor;
-        private System.Windows.Forms.DataGridViewTextBoxColumn fecha;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MetodoDePago;
-        private System.Windows.Forms.DataGridViewTextBoxColumn montoPagado;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Cliente;
     }
 }
