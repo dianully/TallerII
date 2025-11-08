@@ -40,9 +40,8 @@ namespace PuntoDeVentaGameBox.Vendedor
             f.fecha_compra AS fecha,
             f.metodo_pago AS MetodoDePago,
             f.total AS total,
-            f.monto_pagado AS montoPagado,
-            c.nombre AS cliente
-            
+            c.nombre AS cliente,
+            f.monto_pagado AS monto_pagado
         FROM factura f
         JOIN cliente c ON f.id_cliente = c.id_cliente
         WHERE f.id_usuario = @idUsuario
@@ -80,12 +79,12 @@ namespace PuntoDeVentaGameBox.Vendedor
                 // Obtener el ID de la factura desde la base de datos usando fecha y monto como referencia
                 DateTime fecha = Convert.ToDateTime(fila.Cells["fecha"].Value);
                 decimal monto = Convert.ToDecimal(fila.Cells["total"].Value);
-
-                DescargarFacturaComoPDF(fecha, monto);
+                decimal montoPagado = Convert.ToDecimal(fila.Cells["monto_pagado"].Value);
+                DescargarFacturaComoPDF(fecha, monto, montoPagado);
             }
         }
 
-        private void DescargarFacturaComoPDF(DateTime fechaCompra, decimal total)
+        private void DescargarFacturaComoPDF(DateTime fechaCompra, decimal total, decimal montoPagado)
         {
             try
             {
@@ -102,7 +101,7 @@ namespace PuntoDeVentaGameBox.Vendedor
 
                     SqlCommand cmdFactura = new SqlCommand(queryFactura, connection);
                     cmdFactura.Parameters.AddWithValue("@fecha", fechaCompra);
-                    cmdFactura.Parameters.AddWithValue("@monto", montoPagado);
+                    cmdFactura.Parameters.AddWithValue("@monto", total);
 
                     SqlDataReader readerFactura = cmdFactura.ExecuteReader();
 
@@ -112,8 +111,9 @@ namespace PuntoDeVentaGameBox.Vendedor
                         return;
                     }
                     int idFactura = Convert.ToInt32(readerFactura["id_factura"]);
-                    decimal total = Convert.ToDecimal(readerFactura["total"]);
+                    decimal totalb = Convert.ToDecimal(readerFactura["total"]);
                     string metodoPago = readerFactura["metodo_pago"].ToString();
+                    montoPagado = Convert.ToDecimal(readerFactura["monto_pagado"]);
                     object idClienteObj = readerFactura["id_cliente"];
                     // 💡 CAMBIO CRÍTICO: Obtén idUsuario ANTES de cerrar el lector
                     int idUsuarioFactura = Convert.ToInt32(readerFactura["id_usuario"]);
@@ -322,7 +322,7 @@ namespace PuntoDeVentaGameBox.Vendedor
 
                     if (metodoPago.ToLower() == "efectivo")
                     {
-                        Paragraph ptotal = new Paragraph($"Monto Pagado: {MontoPagado:C2}", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12));
+                        Paragraph ptotal = new Paragraph($"Monto Pagado: {montoPagado:C2}", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12));
                         ptotal.Alignment = Element.ALIGN_RIGHT;
                         doc.Add(ptotal);
                     }
