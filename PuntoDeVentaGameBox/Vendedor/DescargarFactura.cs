@@ -1,5 +1,6 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.draw;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -38,8 +39,10 @@ namespace PuntoDeVentaGameBox.Vendedor
         SELECT 
             f.fecha_compra AS fecha,
             f.metodo_pago AS MetodoDePago,
-            f.total AS montoPagado,
+            f.total AS total,
+            f.monto_pagado AS montoPagado,
             c.nombre AS cliente
+            
         FROM factura f
         JOIN cliente c ON f.id_cliente = c.id_cliente
         WHERE f.id_usuario = @idUsuario
@@ -76,13 +79,13 @@ namespace PuntoDeVentaGameBox.Vendedor
 
                 // Obtener el ID de la factura desde la base de datos usando fecha y monto como referencia
                 DateTime fecha = Convert.ToDateTime(fila.Cells["fecha"].Value);
-                decimal monto = Convert.ToDecimal(fila.Cells["montoPagado"].Value);
+                decimal monto = Convert.ToDecimal(fila.Cells["total"].Value);
 
                 DescargarFacturaComoPDF(fecha, monto);
             }
         }
 
-        private void DescargarFacturaComoPDF(DateTime fechaCompra, decimal montoPagado)
+        private void DescargarFacturaComoPDF(DateTime fechaCompra, decimal total)
         {
             try
             {
@@ -108,12 +111,30 @@ namespace PuntoDeVentaGameBox.Vendedor
                         MessageBox.Show("No se encontró la factura seleccionada.", "Sin Factura", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
-
                     int idFactura = Convert.ToInt32(readerFactura["id_factura"]);
                     decimal total = Convert.ToDecimal(readerFactura["total"]);
                     string metodoPago = readerFactura["metodo_pago"].ToString();
                     object idClienteObj = readerFactura["id_cliente"];
+                    // 💡 CAMBIO CRÍTICO: Obtén idUsuario ANTES de cerrar el lector
+                    int idUsuarioFactura = Convert.ToInt32(readerFactura["id_usuario"]);
+
+                    // Ya tenemos todos los datos de la factura, cerramos el lector
                     readerFactura.Close();
+
+                    string nombreVendedor = "Vendedor desconocido";
+
+                    string queryVendedor = "SELECT nombre, apellido FROM usuario WHERE id_usuario = @IdUsuario";
+                    SqlCommand cmdVendedor = new SqlCommand(queryVendedor, connection);
+                    // 💡 Usa la variable local guardada
+                    cmdVendedor.Parameters.AddWithValue("@IdUsuario", idUsuarioFactura);
+
+                    SqlDataReader readerVendedor = cmdVendedor.ExecuteReader();
+                    if (readerVendedor.Read())
+                    {
+                        nombreVendedor = $"{readerVendedor["nombre"]} {readerVendedor["apellido"]}";
+                    }
+                    readerVendedor.Close();
+
 
                     // Obtener detalles
                     string queryDetalles = @"
@@ -140,10 +161,16 @@ namespace PuntoDeVentaGameBox.Vendedor
 
                     // Cliente
                     string nombreCliente = "Cliente General";
+                    string dni = "", email = "", telefono = "", genero = "";
+
                     if (idClienteObj != DBNull.Value)
                     {
                         int idCliente = Convert.ToInt32(idClienteObj);
-                        string queryCliente = "SELECT nombre, apellido FROM cliente WHERE id_cliente = @IdCliente";
+                        string queryCliente = @"
+        SELECT nombre, apellido, dni, email, telefono, genero 
+        FROM cliente 
+        WHERE id_cliente = @IdCliente";
+
                         SqlCommand cmdCliente = new SqlCommand(queryCliente, connection);
                         cmdCliente.Parameters.AddWithValue("@IdCliente", idCliente);
                         SqlDataReader readerCliente = cmdCliente.ExecuteReader();
@@ -151,9 +178,14 @@ namespace PuntoDeVentaGameBox.Vendedor
                         if (readerCliente.Read())
                         {
                             nombreCliente = $"{readerCliente["nombre"]} {readerCliente["apellido"]}";
+                            dni = readerCliente["dni"]?.ToString() ?? "";
+                            email = readerCliente["email"]?.ToString() ?? "";
+                            telefono = readerCliente["telefono"]?.ToString() ?? "";
+                            genero = readerCliente["genero"]?.ToString() ?? "";
                         }
                         readerCliente.Close();
                     }
+
 
                     // PDF
                     SaveFileDialog saveDialog = new SaveFileDialog();
@@ -167,27 +199,140 @@ namespace PuntoDeVentaGameBox.Vendedor
                     }
 
                     string rutaCompleta = saveDialog.FileName;
-
-                    Document doc = new Document();
+                    Document doc = new Document(PageSize.A4, 50, 50, 50, 50);
                     PdfWriter.GetInstance(doc, new FileStream(rutaCompleta, FileMode.Create));
                     doc.Open();
 
-                    doc.Add(new Paragraph("Factura GameBox", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18)));
-                    doc.Add(new Paragraph($"Fecha: {fechaCompra.ToShortDateString()}"));
-                    doc.Add(new Paragraph($"Cliente: {nombreCliente}"));
-                    doc.Add(new Paragraph($"Método de Pago: {metodoPago}"));
-                    doc.Add(new Paragraph(" "));
-                    doc.Add(new Paragraph("Detalles de la compra:", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14)));
+                    // --- SECCIÓN DE ENCABEZADO PRINCIPAL (REEMPLAZAR) ---
 
+                    // 1. Crear una tabla de 2 columnas para el Encabezado
+                    PdfPTable tituloFactura = new PdfPTable(2);
+                    tituloFactura.WidthPercentage = 100;
+
+                    // Ajustamos los anchos: GAME-BOX (80%) ocupa mucho más espacio que la info de la factura (20%)
+                    tituloFactura.SetWidths(new float[] { 80f, 20f });
+                    tituloFactura.DefaultCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+
+                    // 2. Celda 1 (Izquierda): Título "GAME-BOX"
+                    PdfPCell cellTitulo = new PdfPCell(new Phrase("GAME-BOX", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 30))); // Tamaño 30 para hacerlo más grande
+                    cellTitulo.Border = iTextSharp.text.Rectangle.NO_BORDER;
+                    // Alinear el texto GAME-BOX a la parte inferior de su celda (para acercarlo a la línea)
+                    cellTitulo.VerticalAlignment = Element.ALIGN_BOTTOM;
+                    tituloFactura.AddCell(cellTitulo);
+
+                    // 3. Celda 2 (Derecha): Número y Fecha compactos
+                    PdfPCell cellInfo = new PdfPCell();
+                    cellInfo.Border = iTextSharp.text.Rectangle.NO_BORDER;
+                    // Usamos ALIGN_TOP para que el contenido de la factura empiece en la parte superior de su celda (alineado con la parte superior de GAME-BOX)
+                    cellInfo.VerticalAlignment = Element.ALIGN_TOP;
+                    cellInfo.HorizontalAlignment = Element.ALIGN_RIGHT; // Alinea todo el contenido de esta celda a la derecha
+
+                    // Párrafo para el número de factura y la fecha en dos líneas compactas
+                    Paragraph pInfo = new Paragraph();
+                    pInfo.Alignment = Element.ALIGN_RIGHT;
+                    pInfo.Add(new Chunk($"Factura N.º: {idFactura}\n", FontFactory.GetFont(FontFactory.HELVETICA, 10))); // Tamaño 10
+                                                                                                                         // Combinamos fecha y hora en una sola línea para evitar saltos
+                    pInfo.Add(new Chunk($"Fecha de Emisión: {fechaCompra:dd/MM/yyyy HH:mm}", FontFactory.GetFont(FontFactory.HELVETICA, 10)));
+
+                    cellInfo.AddElement(pInfo);
+
+                    // Agregar la celda de información de la factura a la tabla
+                    tituloFactura.AddCell(cellInfo);
+
+                    // 4. Agregar la tabla principal al documento
+                    doc.Add(tituloFactura);
+                    // Crear una línea para simular la división
+                    doc.Add(new LineSeparator());
+
+                    // 1. Crear una tabla de 2 columnas para el encabezado de datos
+                    PdfPTable datosEncabezado = new PdfPTable(2);
+                    datosEncabezado.WidthPercentage = 100;
+                    // Ajustar el ancho de las columnas (opcional, 50/50 por defecto)
+                    // datosEncabezado.SetWidths(new float[] { 50f, 50f }); 
+
+                    // --- Configuración de la Columna Izquierda (Datos del Cliente) ---
+                    PdfPCell cellCliente = new PdfPCell();
+                    cellCliente.Border = iTextSharp.text.Rectangle.NO_BORDER; // Asegura que no tenga bordes
+                    cellCliente.AddElement(new Paragraph("Datos del Cliente:", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14)));
+                    cellCliente.AddElement(new Paragraph($"Nombre y Apellido: {nombreCliente}"));
+                    cellCliente.AddElement(new Paragraph($"DNI: {dni}"));
+                    cellCliente.AddElement(new Paragraph($"Email: {email}"));
+                    cellCliente.AddElement(new Paragraph($"Teléfono: {telefono}"));
+                    cellCliente.AddElement(new Paragraph($"Género: {genero}"));
+
+                    // --- Configuración de la Columna Derecha (Datos Emisora) ---
+                    PdfPCell cellEmisora = new PdfPCell();
+                    cellEmisora.Border = iTextSharp.text.Rectangle.NO_BORDER; // Asegura que no tenga bordes
+                    cellEmisora.AddElement(new Paragraph("Datos Emisora:", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14)));
+                    cellEmisora.AddElement(new Paragraph("Dirección: Moreno 1503, Corrientes Capital"));
+                    cellEmisora.AddElement(new Paragraph("Correo: gameboxofficial@gmail.com"));
+                    cellEmisora.AddElement(new Paragraph("Teléfono: +54 379 4621207"));
+                    cellEmisora.AddElement(new Paragraph($"Vendedor: {nombreVendedor}"));
+
+                    // 2. Agregar las celdas a la tabla
+                    datosEncabezado.AddCell(cellCliente);
+                    datosEncabezado.AddCell(cellEmisora);
+
+                    // 3. Agregar la tabla al documento
+                    doc.Add(datosEncabezado);
+                    doc.Add(new Paragraph(" ")); // Espacio entre el encabezado de datos y la tabla de productos
+
+                    // Tabla de productos
+                    PdfPTable tabla = new PdfPTable(5);
+                    tabla.WidthPercentage = 100;
+                    tabla.SetWidths(new float[] { 10, 40, 20, 15, 15 });
+
+                    tabla.AddCell("Nro");
+                    tabla.AddCell("Nombre");
+                    tabla.AddCell("Precio Unit.");
+                    tabla.AddCell("Cantidad");
+                    tabla.AddCell("Total");
+
+                    int nro = 1;
+                    decimal sumaTotal = 0;
                     foreach (var linea in lineasDetalle)
-                        doc.Add(new Paragraph(linea));
+                    {
+                        // Parsear la línea
+                        var partes = linea.Split(new[] { " - " }, StringSplitOptions.None);
+                        string nombre = partes[0];
+                        string cantidadStr = partes[1].Split(':')[1].Trim();
+                        string precioStr = partes[2].Split(':')[1].Trim().Replace("$", "");
+                        string subtotalStr = partes[3].Split(':')[1].Trim().Replace("$", "");
 
+                        int cantidad = int.Parse(cantidadStr);
+                        decimal precio = decimal.Parse(precioStr);
+                        decimal subtotal = decimal.Parse(subtotalStr);
+
+                        tabla.AddCell(nro.ToString());
+                        tabla.AddCell(nombre);
+                        tabla.AddCell($"{precio:C2}");
+                        tabla.AddCell(cantidad.ToString());
+                        tabla.AddCell($"{subtotal:C2}");
+
+                        sumaTotal += subtotal;
+                        nro++;
+                    }
+                    doc.Add(tabla);
                     doc.Add(new Paragraph(" "));
-                    doc.Add(new Paragraph($"Total: {total:C2}"));
-                    doc.Add(new Paragraph($"Monto Pagado: {montoPagado:C2}"));
-                    doc.Add(new Paragraph($"Cambio: {(montoPagado - total):C2}"));
+
+                    // Totales
+                    Paragraph pTotal = new Paragraph($"Total: {total:C2}", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12));
+                    pTotal.Alignment = Element.ALIGN_RIGHT;
+                    doc.Add(pTotal);
+
+                    if (metodoPago.ToLower() == "efectivo")
+                    {
+                        Paragraph ptotal = new Paragraph($"Monto Pagado: {MontoPagado:C2}", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12));
+                        ptotal.Alignment = Element.ALIGN_RIGHT;
+                        doc.Add(ptotal);
+                    }
+
+                    Paragraph pMetodoPago = new Paragraph($"Método de Pago: {metodoPago}", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12));
+                    pMetodoPago.Alignment = Element.ALIGN_RIGHT;
+                    doc.Add(pMetodoPago);
 
                     doc.Close();
+
 
                     MessageBox.Show($"Factura PDF generada exitosamente en:\n{rutaCompleta}", "PDF Creado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
