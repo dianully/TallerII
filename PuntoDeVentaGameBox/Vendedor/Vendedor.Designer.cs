@@ -44,22 +44,24 @@
             this.lCantidad = new System.Windows.Forms.Label();
             this.bDescargarFactura = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.tbNombreProducto = new System.Windows.Forms.TextBox();
             this.bElegirProducto = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.panelCliente = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tbGenero = new System.Windows.Forms.TextBox();
+            this.tbDNI = new System.Windows.Forms.TextBox();
+            this.tbNombreCliente = new System.Windows.Forms.TextBox();
             this.lNombreCliente = new System.Windows.Forms.Label();
             this.bNuevoCliente = new System.Windows.Forms.Button();
-            this.tbNombreCliente = new System.Windows.Forms.TextBox();
-            this.tbSexo = new System.Windows.Forms.TextBox();
-            this.tbDNI = new System.Windows.Forms.TextBox();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label13 = new System.Windows.Forms.Label();
             this.tbMontoPagado = new System.Windows.Forms.TextBox();
-            this.tbCambio = new System.Windows.Forms.TextBox();
             this.cbMetodoDePago = new System.Windows.Forms.ComboBox();
-            this.tbNombreProducto = new System.Windows.Forms.TextBox();
+            this.tbCambio = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListaDeCompra)).BeginInit();
             this.panel4.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -86,6 +88,7 @@
             this.tbCantidad.Name = "tbCantidad";
             this.tbCantidad.Size = new System.Drawing.Size(154, 22);
             this.tbCantidad.TabIndex = 17;
+            this.tbCantidad.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSoloNumeros_KeyPress);
             // 
             // bBuscarCliente
             // 
@@ -269,6 +272,16 @@
             this.panel2.Size = new System.Drawing.Size(515, 175);
             this.panel2.TabIndex = 44;
             // 
+            // tbNombreProducto
+            // 
+            this.tbNombreProducto.Location = new System.Drawing.Point(313, 59);
+            this.tbNombreProducto.Name = "tbNombreProducto";
+            this.tbNombreProducto.ReadOnly = true;
+            this.tbNombreProducto.Size = new System.Drawing.Size(154, 22);
+            this.tbNombreProducto.TabIndex = 48;
+            this.tbNombreProducto.TabStop = false;
+            this.tbNombreProducto.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtBloqueado_MouseDown);
+            // 
             // bElegirProducto
             // 
             this.bElegirProducto.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
@@ -318,17 +331,73 @@
             // 
             // panelCliente
             // 
+            this.panelCliente.Controls.Add(this.label6);
+            this.panelCliente.Controls.Add(this.label2);
+            this.panelCliente.Controls.Add(this.tbGenero);
+            this.panelCliente.Controls.Add(this.tbDNI);
+            this.panelCliente.Controls.Add(this.tbNombreCliente);
             this.panelCliente.Controls.Add(this.lNombreCliente);
             this.panelCliente.Controls.Add(this.bNuevoCliente);
-            this.panelCliente.Controls.Add(this.tbNombreCliente);
-            this.panelCliente.Controls.Add(this.tbSexo);
-            this.panelCliente.Controls.Add(this.tbDNI);
             this.panelCliente.Controls.Add(this.bBuscarCliente);
             this.panelCliente.Controls.Add(this.panel6);
             this.panelCliente.Location = new System.Drawing.Point(568, 62);
             this.panelCliente.Name = "panelCliente";
             this.panelCliente.Size = new System.Drawing.Size(527, 175);
             this.panelCliente.TabIndex = 45;
+            // 
+            // label6
+            // 
+            this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.SystemColors.Control;
+            this.label6.Location = new System.Drawing.Point(251, 132);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(90, 25);
+            this.label6.TabIndex = 51;
+            this.label6.Text = "Genero:";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.Control;
+            this.label2.Location = new System.Drawing.Point(48, 133);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(55, 25);
+            this.label2.TabIndex = 50;
+            this.label2.Text = "DNI:";
+            // 
+            // tbGenero
+            // 
+            this.tbGenero.Location = new System.Drawing.Point(358, 136);
+            this.tbGenero.Name = "tbGenero";
+            this.tbGenero.ReadOnly = true;
+            this.tbGenero.Size = new System.Drawing.Size(94, 22);
+            this.tbGenero.TabIndex = 49;
+            this.tbGenero.TabStop = false;
+            this.tbGenero.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtBloqueado_MouseDown);
+            // 
+            // tbDNI
+            // 
+            this.tbDNI.Location = new System.Drawing.Point(121, 136);
+            this.tbDNI.Name = "tbDNI";
+            this.tbDNI.ReadOnly = true;
+            this.tbDNI.Size = new System.Drawing.Size(94, 22);
+            this.tbDNI.TabIndex = 48;
+            this.tbDNI.TabStop = false;
+            this.tbDNI.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtBloqueado_MouseDown);
+            // 
+            // tbNombreCliente
+            // 
+            this.tbNombreCliente.Location = new System.Drawing.Point(267, 101);
+            this.tbNombreCliente.Name = "tbNombreCliente";
+            this.tbNombreCliente.ReadOnly = true;
+            this.tbNombreCliente.Size = new System.Drawing.Size(187, 22);
+            this.tbNombreCliente.TabIndex = 48;
+            this.tbNombreCliente.TabStop = false;
+            this.tbNombreCliente.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtBloqueado_MouseDown);
             // 
             // lNombreCliente
             // 
@@ -357,35 +426,6 @@
             this.bNuevoCliente.UseVisualStyleBackColor = false;
             this.bNuevoCliente.Click += new System.EventHandler(this.bNuevoCliente_Click);
             // 
-            // tbNombreCliente
-            // 
-            this.tbNombreCliente.Enabled = false;
-            this.tbNombreCliente.Location = new System.Drawing.Point(267, 102);
-            this.tbNombreCliente.Name = "tbNombreCliente";
-            this.tbNombreCliente.ReadOnly = true;
-            this.tbNombreCliente.Size = new System.Drawing.Size(187, 22);
-            this.tbNombreCliente.TabIndex = 33;
-            // 
-            // tbSexo
-            // 
-            this.tbSexo.Enabled = false;
-            this.tbSexo.Location = new System.Drawing.Point(267, 136);
-            this.tbSexo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tbSexo.Name = "tbSexo";
-            this.tbSexo.ReadOnly = true;
-            this.tbSexo.Size = new System.Drawing.Size(187, 22);
-            this.tbSexo.TabIndex = 31;
-            // 
-            // tbDNI
-            // 
-            this.tbDNI.Enabled = false;
-            this.tbDNI.Location = new System.Drawing.Point(42, 136);
-            this.tbDNI.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tbDNI.Name = "tbDNI";
-            this.tbDNI.ReadOnly = true;
-            this.tbDNI.Size = new System.Drawing.Size(176, 22);
-            this.tbDNI.TabIndex = 30;
-            // 
             // panel6
             // 
             this.panel6.Controls.Add(this.label13);
@@ -408,23 +448,14 @@
             // 
             // tbMontoPagado
             // 
-            this.tbMontoPagado.Location = new System.Drawing.Point(539, 626);
+            this.tbMontoPagado.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbMontoPagado.Location = new System.Drawing.Point(530, 626);
             this.tbMontoPagado.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbMontoPagado.Multiline = true;
             this.tbMontoPagado.Name = "tbMontoPagado";
             this.tbMontoPagado.Size = new System.Drawing.Size(192, 33);
             this.tbMontoPagado.TabIndex = 35;
-            // 
-            // tbCambio
-            // 
-            this.tbCambio.Enabled = false;
-            this.tbCambio.Location = new System.Drawing.Point(539, 666);
-            this.tbCambio.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tbCambio.Multiline = true;
-            this.tbCambio.Name = "tbCambio";
-            this.tbCambio.ReadOnly = true;
-            this.tbCambio.Size = new System.Drawing.Size(192, 33);
-            this.tbCambio.TabIndex = 46;
+            this.tbMontoPagado.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSoloNumeros_KeyPress);
             // 
             // cbMetodoDePago
             // 
@@ -437,12 +468,15 @@
             this.cbMetodoDePago.Size = new System.Drawing.Size(161, 24);
             this.cbMetodoDePago.TabIndex = 47;
             // 
-            // tbNombreProducto
+            // tbCambio
             // 
-            this.tbNombreProducto.Location = new System.Drawing.Point(313, 59);
-            this.tbNombreProducto.Name = "tbNombreProducto";
-            this.tbNombreProducto.Size = new System.Drawing.Size(154, 22);
-            this.tbNombreProducto.TabIndex = 48;
+            this.tbCambio.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbCambio.Location = new System.Drawing.Point(530, 676);
+            this.tbCambio.Multiline = true;
+            this.tbCambio.Name = "tbCambio";
+            this.tbCambio.Size = new System.Drawing.Size(192, 33);
+            this.tbCambio.TabIndex = 48;
+            this.tbCambio.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtBloqueado_MouseDown);
             // 
             // Vendedor
             // 
@@ -450,8 +484,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.ClientSize = new System.Drawing.Size(1182, 721);
-            this.Controls.Add(this.cbMetodoDePago);
             this.Controls.Add(this.tbCambio);
+            this.Controls.Add(this.cbMetodoDePago);
             this.Controls.Add(this.tbMontoPagado);
             this.Controls.Add(this.panelCliente);
             this.Controls.Add(this.panel2);
@@ -508,16 +542,18 @@
         private System.Windows.Forms.Panel panelCliente;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox tbSexo;
-        private System.Windows.Forms.TextBox tbDNI;
-        private System.Windows.Forms.TextBox tbNombreCliente;
         private System.Windows.Forms.TextBox tbMontoPagado;
-        private System.Windows.Forms.TextBox tbCambio;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button bElegirProducto;
         private System.Windows.Forms.ComboBox cbMetodoDePago;
         private System.Windows.Forms.Button bNuevoCliente;
         private System.Windows.Forms.Label lNombreCliente;
         private System.Windows.Forms.TextBox tbNombreProducto;
+        private System.Windows.Forms.TextBox tbNombreCliente;
+        private System.Windows.Forms.TextBox tbDNI;
+        private System.Windows.Forms.TextBox tbGenero;
+        private System.Windows.Forms.TextBox tbCambio;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label6;
     }
 }

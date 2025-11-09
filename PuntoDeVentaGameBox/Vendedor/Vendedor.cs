@@ -40,7 +40,20 @@ namespace PuntoDeVentaGameBox.Vendedor
 
         }
 
+        private void txtBloqueado_MouseDown(object sender, MouseEventArgs e)
+        {
+           
+            this.ActiveControl = null;
+        }
 
+        private void txtSoloNumeros_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
         private void bCerrar_Click(object sender, EventArgs e)
         {
             SesionUsuario.LimpiarSesion();
@@ -156,6 +169,11 @@ namespace PuntoDeVentaGameBox.Vendedor
         public void SetDniCliente(string dni)
         {
             tbDNI.Text = dni;
+        }
+
+        public void SetGeneroCliente(string genero)
+        {
+            tbGenero.Text = genero;
         }
 
         private void bDescargarFactura_Click(object sender, EventArgs e)
@@ -462,6 +480,8 @@ namespace PuntoDeVentaGameBox.Vendedor
             AgregarCliente pagina = new AgregarCliente();
             pagina.ShowDialog();
         }
+
+     
     }
 }
 

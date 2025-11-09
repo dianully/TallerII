@@ -54,6 +54,13 @@ namespace PuntoDeVentaGameBox.Vendedor
                 dgvBuscarProducto.Columns["precio_venta"].HeaderText = "Precio";
                 dgvBuscarProducto.Columns["cantidad_stock"].HeaderText = "Stock";
                 dgvBuscarProducto.Columns["id_categoria"].HeaderText = "Categoría";
+
+                dgvBuscarProducto.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                foreach (DataGridViewColumn col in dgvBuscarProducto.Columns)
+                {
+                    col.ReadOnly = true;
+                }
             }
         }
         private void dgvBuscarProducto_CellClick(object sender, DataGridViewCellEventArgs e)
