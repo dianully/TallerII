@@ -16,5 +16,10 @@ namespace PuntoDeVentaGameBox.Vendedor
         {
             InitializeComponent();
         }
+
+        private void DescargarFactura_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

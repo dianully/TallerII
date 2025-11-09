@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.IO;
+using System.Net;
 
 namespace PuntoDeVentaGameBox.Gerente
 {
@@ -98,30 +99,21 @@ namespace PuntoDeVentaGameBox.Gerente
             DGVProductos.AutoGenerateColumns = false; // desactiva autogeneracion de columnas
             DGVProductos.Columns.Clear(); // limpia columnas existentes
 
-            // id
-            var colId = new DataGridViewTextBoxColumn
-            {
-                Name = "ID",
-                HeaderText = "ID",
-                DataPropertyName = "id_producto",
-                ReadOnly = true,
-                FillWeight = 8,
-                MinimumWidth = 55
-            };
-            DGVProductos.Columns.Add(colId); // agrega columna id
-
-            // imagen miniatura desde url_imagen
+            // imagen miniatura (se setea en CellFormatting desde bytes/url)
             var colImg = new DataGridViewImageColumn
             {
                 Name = "Imagen",
                 HeaderText = "Imagen",
-                DataPropertyName = "url_imagen", // se transforma a Image en CellFormatting
+                DataPropertyName = "imagen", // << apuntamos al binario
                 ImageLayout = DataGridViewImageCellLayout.Zoom,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.None, // ancho fijo chico
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
                 Width = 56
             };
-            colImg.DefaultCellStyle.NullValue = null; // evita castear null a imagen
-            DGVProductos.Columns.Add(colImg); // agrega columna imagen
+            colImg.DefaultCellStyle.NullValue = null;
+            DGVProductos.Columns.Add(colImg);
+
+
+          
 
             // nombre del juego
             var colNombre = new DataGridViewTextBoxColumn
@@ -135,17 +127,7 @@ namespace PuntoDeVentaGameBox.Gerente
             };
             DGVProductos.Columns.Add(colNombre); // agrega columna nombre
 
-            // genero con nombre de la categoria
-            var colGenero = new DataGridViewTextBoxColumn
-            {
-                Name = "Genero",
-                HeaderText = "Genero",
-                DataPropertyName = "genero", // viene del join a categoria
-                ReadOnly = true,
-                FillWeight = 18,
-                MinimumWidth = 120
-            };
-            DGVProductos.Columns.Add(colGenero); // agrega columna genero
+            
 
             // precio
             var colPrecio = new DataGridViewTextBoxColumn
@@ -232,19 +214,23 @@ namespace PuntoDeVentaGameBox.Gerente
                     string sql = @"
                         SELECT
                             p.id_producto,
-                            p.url_imagen,
+                            p.imagen,           -- << NUEVO: binario
+                            p.url_imagen,       --      (seguimos trayendo la url por compatibilidad)
                             p.nombre,
-                            c.nombre AS genero,
                             p.precio_venta,
                             p.cantidad_stock,
                             p.activo
                         FROM dbo.producto p
-                        LEFT JOIN dbo.categoria c ON c.id_categoria = p.id_categoria
                         WHERE 1=1
                           AND (@nom IS NULL OR p.nombre LIKE @like)
                           AND (@id IS NULL OR p.id_producto = @id)
-                          AND (@cat IS NULL OR p.id_categoria = @cat)
+                          AND (@cat IS NULL OR EXISTS (
+                                SELECT 1
+                                FROM dbo.producto_categoria pc
+                                WHERE pc.id_producto = p.id_producto AND pc.id_categoria = @cat
+                          ))
                     ";
+
 
                     // si el usuario selecciona "INACTIVOS", mostramos solo los inactivos
                     if (string.Equals(ordenCode, "INACTIVOS", StringComparison.OrdinalIgnoreCase))
@@ -394,48 +380,123 @@ namespace PuntoDeVentaGameBox.Gerente
             }
         }
 
+        private static Image ImageFromBytes(byte[] data)
+        {
+            if (data == null || data.Length == 0) return null;
+            try
+            {
+                using (var ms = new MemoryStream(data))
+                using (var tmp = Image.FromStream(ms))
+                {
+                    return new Bitmap(tmp);
+                }
+            }
+            catch { return null; }
+        }
+
+        // Descarga bytes desde una URL (la misma lógica robusta que usamos en Editar)
+        private static byte[] DescargarUrlBytes(string url)
+        {
+            try
+            {
+                ServicePointManager.SecurityProtocol =
+                    SecurityProtocolType.Tls12 | (SecurityProtocolType)12288; // 12288 ~ Tls13 si está
+
+                var req = (HttpWebRequest)WebRequest.Create(url);
+                req.AllowAutoRedirect = true;
+                req.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36";
+                req.Accept = "image/avif,image/webp,image/apng,image/*,*/*;q=0.8";
+                req.Referer = "https://unsplash.com/";
+
+                using (var resp = (HttpWebResponse)req.GetResponse())
+                using (var respStream = resp.GetResponseStream())
+                using (var ms = new MemoryStream())
+                {
+                    respStream.CopyTo(ms);
+                    var data = ms.ToArray();
+
+                    var ct = resp.ContentType?.ToLowerInvariant() ?? "";
+                    if (!ct.StartsWith("image/"))
+                    {
+                        // si no dice image/* igual probamos
+                        try
+                        {
+                            using (var ims = new MemoryStream(data))
+                            using (var img = Image.FromStream(ims)) { }
+                        }
+                        catch { return null; }
+                    }
+                    return data;
+                }
+            }
+            catch { return null; }
+        }
+
+
         private void DGVProductos_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            // convierte ruta en imagen solo para la columna imagen
-            if (e.RowIndex >= 0 && DGVProductos.Columns[e.ColumnIndex].Name == "Imagen")
-            {
-                try
-                {
-                    var drv = DGVProductos.Rows[e.RowIndex].DataBoundItem as DataRowView; // toma fila
-                    var ruta = drv?["url_imagen"]?.ToString(); // obtiene la ruta
-                    if (string.IsNullOrWhiteSpace(ruta))
-                    {
-                        e.Value = PlaceholderImagen(); // muestra placeholder si no hay ruta
-                        e.FormattingApplied = true; // marca formato aplicado
-                        return;
-                    }
+            if (e.RowIndex < 0) return;
 
+            // Solo trabajamos para la columna "Imagen"
+            if (DGVProductos.Columns[e.ColumnIndex].Name != "Imagen") return;
+
+            try
+            {
+                var drv = DGVProductos.Rows[e.RowIndex].DataBoundItem as DataRowView;
+                if (drv == null)
+                {
+                    e.Value = PlaceholderImagen();
+                    e.FormattingApplied = true;
+                    return;
+                }
+
+                // 1) Intentar con BINARIO (p.imagen)
+                byte[] bin = null;
+                if (drv.Row.Table.Columns.Contains("imagen") && drv["imagen"] != DBNull.Value)
+                    bin = (byte[])drv["imagen"];
+
+                var img = ImageFromBytes(bin);
+                if (img != null)
+                {
+                    e.Value = img;
+                    e.FormattingApplied = true;
+                    return;
+                }
+
+                // 2) Si no hay binario, intentamos mostrar desde ruta local (compatibilidad)
+                string ruta = drv.Row.Table.Columns.Contains("url_imagen") ? drv["url_imagen"]?.ToString() : null;
+
+                if (!string.IsNullOrWhiteSpace(ruta))
+                {
+                    // Evitar descargar desde internet en la grilla (sería costoso).
+                    // Solo si es ruta local, mostramos; si es http/https -> placeholder.
                     if (ruta.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
                         ruta.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
                     {
-                        e.Value = PlaceholderImagen(); // usa placeholder para urls remotas
-                        e.FormattingApplied = true; // marca formato aplicado
+                        e.Value = PlaceholderImagen();
+                        e.FormattingApplied = true;
                         return;
                     }
 
                     if (File.Exists(ruta))
                     {
-                        e.Value = CargarImagenSinBloquear(ruta); // carga imagen desde archivo
-                        e.FormattingApplied = true; // marca formato aplicado
-                    }
-                    else
-                    {
-                        e.Value = PlaceholderImagen(); // si no existe mostramos placeholder
-                        e.FormattingApplied = true; // marca formato aplicado
+                        e.Value = CargarImagenSinBloquear(ruta);
+                        e.FormattingApplied = true;
+                        return;
                     }
                 }
-                catch
-                {
-                    e.Value = PlaceholderImagen(); // evita que se caiga si falla la carga
-                    e.FormattingApplied = true; // marca formato aplicado
-                }
+
+                // 3) Fallback: placeholder
+                e.Value = PlaceholderImagen();
+                e.FormattingApplied = true;
+            }
+            catch
+            {
+                e.Value = PlaceholderImagen();
+                e.FormattingApplied = true;
             }
         }
+
 
         private void DGVProductos_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {

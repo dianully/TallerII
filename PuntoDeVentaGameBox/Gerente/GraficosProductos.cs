@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -8,197 +8,221 @@ namespace PuntoDeVentaGameBox.Gerente
 {
     public partial class GraficosProductos : Form
     {
-        // ⚙️ Ajusta tu connection string aquí o léela de App.config
-        private readonly string _connString =
-            "Server=localhost;Database=game_box;Trusted_Connection=True;TrustServerCertificate=True";
+        private readonly string _connString;
+        private readonly DateTime? _desde;
+        private readonly DateTime? _hasta;
+        private readonly CultureInfo _ars = new CultureInfo("es-AR");
 
-        private DateTime _desde;
-        private DateTime _hasta;
-
-        public GraficosProductos()
+        // ===== CONSTRUCTOR =====
+        public GraficosProductos(string connString, DateTime? desde, DateTime? hasta)
         {
             InitializeComponent();
-            _desde = DateTime.Today.AddDays(-30);
-            _hasta = DateTime.Today.AddDays(1).AddTicks(-1);
+            _connString = connString;
+            _desde = desde;
+            _hasta = hasta;
 
-            Wire();
-        }
-
-        public GraficosProductos(DateTime desde, DateTime hasta)
-        {
-            InitializeComponent();
-            _desde = desde.Date;
-            _hasta = hasta.Date.AddDays(1).AddTicks(-1);
-
-            Wire();
-        }
-
-        private void Wire()
-        {
+            // 👇 Corregimos el error del diseñador (Load_1)
+            this.Load -= GraficosProductos_Load_1;
             this.Load -= GraficosProductos_Load;
             this.Load += GraficosProductos_Load;
-
-            if (BVolverAtras != null)
-            {
-                BVolverAtras.Click -= (_, __) => { };
-                BVolverAtras.Click += (s, e) => this.Close();
-            }
         }
 
+        // ===== HANDLER PRINCIPAL =====
         private void GraficosProductos_Load(object sender, EventArgs e)
         {
-            // Configuración base de charts
-            SetupChart(chartTopProductos, SeriesChartType.Bar,
-                "Productos más vendidos (Unidades)", "Producto", "Unidades");
-            SetupChart(chartEvolucionVentas, SeriesChartType.Area,
-                "Evolución de ventas (Unidades)", "Fecha/Período", "Unidades");
-            SetupChart(chartDistribucionGenero, SeriesChartType.Doughnut,
-                "Distribución de Ventas por Género", "", "Unidades");
-
-            CargarDatos();
+            CargarChartTopProductos();
+            CargarChartEvolucionVentas();
+            CargarChartDistribucionCategoria();
         }
 
-        // ======== Carga de datos ========
-
-        private void CargarDatos()
+        // 👇 Alias para mantener compatibilidad si el .Designer aún apunta a _Load_1
+        private void GraficosProductos_Load_1(object sender, EventArgs e)
         {
-            try
+            GraficosProductos_Load(sender, e);
+        }
+
+        // ===== MÉTODOS AUXILIARES DE RANGO =====
+        private string RangoWhere(string campoFecha)
+        {
+            return (_desde.HasValue && _hasta.HasValue)
+                ? $" AND {campoFecha} BETWEEN @desde AND @hasta"
+                : string.Empty;
+        }
+
+        private void AgregarParametrosRango(SqlCommand cmd)
+        {
+            if (_desde.HasValue && _hasta.HasValue)
             {
-                // 1) Top N productos (unidades)
-                var sqlTop = @"
-SELECT TOP (@TopN) p.nombre AS Producto, SUM(fd.cantidad) AS Unidades
-FROM dbo.factura f
-JOIN dbo.factura_detalle fd ON fd.id_factura_cabecera = f.id_factura
-JOIN dbo.producto p ON p.id_producto = fd.id_producto
+                cmd.Parameters.AddWithValue("@desde", _desde.Value);
+                cmd.Parameters.AddWithValue("@hasta", _hasta.Value);
+            }
+        }
+
+        // ===== GRÁFICO 1: Top Productos =====
+        private void CargarChartTopProductos()
+        {
+            string sql = $@"
+SELECT TOP 5 
+    p.nombre AS Producto, 
+    SUM(fd.cantidad) AS CantidadVendida
+FROM dbo.factura_detalle fd
+JOIN dbo.factura f   ON fd.id_factura_cabecera = f.id_factura
+JOIN dbo.producto p  ON fd.id_producto = p.id_producto
 WHERE (f.activo = 1 OR f.activo IS NULL)
-  AND f.fecha_compra BETWEEN @desde AND @hasta
+{RangoWhere("f.fecha_compra")}
 GROUP BY p.nombre
-ORDER BY Unidades DESC;";
+ORDER BY CantidadVendida DESC;";
 
-                var dtTop = GetDataTable(sqlTop,
-                    new SqlParameter("@TopN", SqlDbType.Int) { Value = 10 },
-                    new SqlParameter("@desde", SqlDbType.DateTime) { Value = _desde },
-                    new SqlParameter("@hasta", SqlDbType.DateTime) { Value = _hasta });
-
-                BindChart(chartTopProductos, dtTop, "Producto", "Unidades");
-
-                // 2) Evolución de ventas por día (unidades)
-                var sqlEvo = @"
-SELECT CONVERT(date, f.fecha_compra) AS Dia, SUM(fd.cantidad) AS Unidades
-FROM dbo.factura f
-JOIN dbo.factura_detalle fd ON fd.id_factura_cabecera = f.id_factura
-WHERE (f.activo = 1 OR f.activo IS NULL)
-  AND f.fecha_compra BETWEEN @desde AND @hasta
-GROUP BY CONVERT(date, f.fecha_compra)
-ORDER BY Dia;";
-
-                var dtEvo = GetDataTable(sqlEvo,
-                    new SqlParameter("@desde", SqlDbType.DateTime) { Value = _desde },
-                    new SqlParameter("@hasta", SqlDbType.DateTime) { Value = _hasta });
-
-                // Para series de tiempo
-                var sEvo = chartEvolucionVentas.Series[0];
-                sEvo.Points.Clear();
-                sEvo.XValueType = ChartValueType.Date;
-                foreach (DataRow r in dtEvo.Rows)
-                {
-                    DateTime x = Convert.ToDateTime(r["Dia"]);
-                    double y = Convert.ToDouble(r["Unidades"]);
-                    sEvo.Points.AddXY(x, y);
-                }
-                chartEvolucionVentas.ChartAreas[0].AxisX.LabelStyle.Format = "dd/MM";
-
-                // 3) Distribución por género (doughnut)
-                var sqlGen = @"
-SELECT c.nombre AS Genero, SUM(fd.cantidad) AS Unidades
-FROM dbo.factura f
-JOIN dbo.factura_detalle fd ON fd.id_factura_cabecera = f.id_factura
-JOIN dbo.producto p ON p.id_producto = fd.id_producto
-LEFT JOIN dbo.categoria c ON c.id_categoria = p.id_categoria
-WHERE (f.activo = 1 OR f.activo IS NULL)
-  AND f.fecha_compra BETWEEN @desde AND @hasta
-GROUP BY c.nombre
-ORDER BY Unidades DESC;";
-
-                var dtGen = GetDataTable(sqlGen,
-                    new SqlParameter("@desde", SqlDbType.DateTime) { Value = _desde },
-                    new SqlParameter("@hasta", SqlDbType.DateTime) { Value = _hasta });
-
-                var sGen = chartDistribucionGenero.Series[0];
-                sGen.Points.Clear();
-                sGen.IsValueShownAsLabel = true;
-                sGen.LegendText = "#VALX (#PERCENT)";
-                sGen.Label = "#PERCENT";
-                foreach (DataRow r in dtGen.Rows)
-                {
-                    string x = Convert.ToString(r["Genero"] ?? "Sin género");
-                    double y = Convert.ToDouble(r["Unidades"] == DBNull.Value ? 0 : r["Unidades"]);
-                    sGen.Points.AddXY(x, y);
-                }
-            }
-            catch (Exception ex)
+            chartTopProductos.Series.Clear();
+            var serie = new Series("Top Productos")
             {
-                MessageBox.Show($"Error al cargar gráficos de productos:\n{ex.Message}",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+                ChartType = SeriesChartType.Column,
+                IsValueShownAsLabel = true,
+                LabelFormat = "N0"
+            };
 
-        // ======== Utilitarios ========
-
-        private void SetupChart(Chart ch, SeriesChartType type, string title, string xTitle, string yTitle)
-        {
-            ch.Series.Clear(); ch.ChartAreas.Clear(); ch.Titles.Clear(); ch.Legends.Clear();
-
-            var area = new ChartArea("Area1");
-            area.AxisX.Title = xTitle;
-            area.AxisY.Title = yTitle;
-            area.AxisX.IntervalAutoMode = IntervalAutoMode.VariableCount;
-            ch.ChartAreas.Add(area);
-
-            var s = new Series("S1") { ChartType = type, IsValueShownAsLabel = true, ChartArea = "Area1" };
-            s.ToolTip = "#VALX: #VALY";
-            ch.Series.Add(s);
-
-            ch.Titles.Add(title);
-            ch.Legends.Add(new Legend { Docking = Docking.Top, LegendStyle = LegendStyle.Row });
-            ch.Palette = ChartColorPalette.SeaGreen; // tonos agradables sobre fondo oscuro
-        }
-
-        private void BindChart(Chart ch, DataTable dt, string x, string y)
-        {
-            var s = ch.Series[0];
-            s.Points.Clear();
-            foreach (DataRow r in dt.Rows)
-            {
-                var xv = Convert.ToString(r[x] ?? "");
-                var yv = Convert.ToDouble(r[y] == DBNull.Value ? 0 : r[y]);
-                s.Points.AddXY(xv, yv);
-            }
-        }
-
-        private DataTable GetDataTable(string sql, params SqlParameter[] ps)
-        {
             using (var cn = new SqlConnection(_connString))
             using (var cmd = new SqlCommand(sql, cn))
-            using (var da = new SqlDataAdapter(cmd))
             {
-                if (ps != null) cmd.Parameters.AddRange(ps);
-                var dt = new DataTable();
+                AgregarParametrosRango(cmd);
                 cn.Open();
-                da.Fill(dt);
-                return dt;
+                using (var rd = cmd.ExecuteReader())
+                {
+                    while (rd.Read())
+                    {
+                        string producto = rd.GetString(0);
+                        int cantidad = rd.IsDBNull(1) ? 0 : Convert.ToInt32(rd.GetValue(1));
+                        int idx = serie.Points.AddXY(producto, cantidad);
+                        serie.Points[idx].Label = cantidad.ToString("N0");
+                    }
+                }
             }
+
+            chartTopProductos.Series.Add(serie);
+            var area = chartTopProductos.ChartAreas[0];
+            area.AxisX.MajorGrid.Enabled = false;
+            area.AxisY.MajorGrid.Enabled = false;
+            chartTopProductos.Legends.Clear();
         }
 
-        // ==== stubs opcionales del diseñador ====
-        private void chartTopProductos_Click(object sender, EventArgs e) { }
-        private void chartEvolucionVentas_Click(object sender, EventArgs e) { }
-        private void chartDistribucionGenero_Click(object sender, EventArgs e) { }
-        private void PGraficos_Paint(object sender, PaintEventArgs e) { }
-
-        private void PGraficos_Paint_1(object sender, PaintEventArgs e)
+        // ===== GRÁFICO 2: Evolución de Ventas =====
+        private void CargarChartEvolucionVentas()
         {
+            string sql;
+            bool usarParametros = false;
 
+            if (_desde.HasValue && _hasta.HasValue)
+            {
+                sql = @"
+SELECT 
+    CAST(f.fecha_compra AS DATE) AS Fecha,
+    COUNT(*) AS VentasDelDia
+FROM dbo.factura f
+WHERE (f.activo = 1 OR f.activo IS NULL)
+  AND f.fecha_compra BETWEEN @desde AND @hasta
+GROUP BY CAST(f.fecha_compra AS DATE)
+ORDER BY Fecha;";
+                usarParametros = true;
+            }
+            else
+            {
+                sql = @"
+SELECT 
+    CAST(f.fecha_compra AS DATE) AS Fecha,
+    COUNT(*) AS VentasDelDia
+FROM dbo.factura f
+WHERE (f.activo = 1 OR f.activo IS NULL)
+  AND f.fecha_compra >= DATEADD(MONTH, -1, CAST(GETDATE() AS DATE))
+GROUP BY CAST(f.fecha_compra AS DATE)
+ORDER BY Fecha;";
+            }
+
+            chartEvolucionVentas.Series.Clear();
+            var serie = new Series("Evolución")
+            {
+                ChartType = SeriesChartType.Line,
+                IsValueShownAsLabel = true,
+                LabelFormat = "N0"
+            };
+
+            using (var cn = new SqlConnection(_connString))
+            using (var cmd = new SqlCommand(sql, cn))
+            {
+                if (usarParametros) AgregarParametrosRango(cmd);
+                cn.Open();
+                using (var rd = cmd.ExecuteReader())
+                {
+                    int acumulado = 0;
+                    while (rd.Read())
+                    {
+                        DateTime fecha = rd.GetDateTime(0);
+                        int ventasDia = rd.IsDBNull(1) ? 0 : rd.GetInt32(1);
+                        acumulado += ventasDia;
+                        int idx = serie.Points.AddXY(fecha.ToString("dd/MM"), acumulado);
+                        serie.Points[idx].Label = acumulado.ToString("N0");
+                    }
+                }
+            }
+
+            chartEvolucionVentas.Series.Add(serie);
+            var area = chartEvolucionVentas.ChartAreas[0];
+            area.AxisX.MajorGrid.Enabled = false;
+            area.AxisY.MajorGrid.Enabled = false;
+            chartEvolucionVentas.Legends.Clear();
         }
+
+        // ===== GRÁFICO 3: Distribución por Categoría =====
+        private void CargarChartDistribucionCategoria()
+        {
+            string sql = $@"
+SELECT 
+    c.nombre AS Categoria,
+    COUNT(*) AS CantidadVentas
+FROM dbo.factura_detalle fd
+JOIN dbo.factura  f ON fd.id_factura_cabecera = f.id_factura
+JOIN dbo.producto p ON fd.id_producto = p.id_producto
+JOIN dbo.categoria c ON p.id_categoria = c.id_categoria
+WHERE (f.activo = 1 OR f.activo IS NULL)
+{RangoWhere("f.fecha_compra")}
+GROUP BY c.nombre
+ORDER BY CantidadVentas DESC;";
+
+            chartDistribucionGenero.Series.Clear();
+            var serie = new Series("Distribución")
+            {
+                ChartType = SeriesChartType.Pie,
+                IsValueShownAsLabel = true,
+            };
+
+            using (var cn = new SqlConnection(_connString))
+            using (var cmd = new SqlCommand(sql, cn))
+            {
+                AgregarParametrosRango(cmd);
+                cn.Open();
+                using (var rd = cmd.ExecuteReader())
+                {
+                    while (rd.Read())
+                    {
+                        string categoria = rd.GetString(0);
+                        int cantidad = rd.IsDBNull(1) ? 0 : Convert.ToInt32(rd.GetValue(1));
+                        serie.Points.AddXY(categoria, cantidad);
+                    }
+                }
+            }
+
+            chartDistribucionGenero.Series.Add(serie);
+
+            var area = chartDistribucionGenero.ChartAreas[0];
+            area.AxisX.MajorGrid.Enabled = false;
+            area.AxisY.MajorGrid.Enabled = false;
+
+            chartDistribucionGenero.Legends.Clear();
+            var leyenda = new Legend { Docking = Docking.Left };
+            chartDistribucionGenero.Legends.Add(leyenda);
+            serie.Legend = leyenda.Name;
+        }
+
+        // ==== Stubs del diseñador ====
+        private void PGraficos_Paint_1(object sender, PaintEventArgs e) { }
     }
 }

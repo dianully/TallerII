@@ -189,8 +189,9 @@
             // 
             this.TBGenero.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TBGenero.Location = new System.Drawing.Point(20, 397);
+            this.TBGenero.Multiline = true;
             this.TBGenero.Name = "TBGenero";
-            this.TBGenero.Size = new System.Drawing.Size(259, 30);
+            this.TBGenero.Size = new System.Drawing.Size(259, 62);
             this.TBGenero.TabIndex = 56;
             // 
             // TBProveedor
@@ -235,9 +236,9 @@
             this.LGenero.ForeColor = System.Drawing.SystemColors.ControlText;
             this.LGenero.Location = new System.Drawing.Point(19, 374);
             this.LGenero.Name = "LGenero";
-            this.LGenero.Size = new System.Drawing.Size(70, 23);
+            this.LGenero.Size = new System.Drawing.Size(77, 23);
             this.LGenero.TabIndex = 44;
-            this.LGenero.Text = "Genero:";
+            this.LGenero.Text = "Generos:";
             // 
             // LProveedor
             // 
@@ -290,7 +291,7 @@
             this.LDescripcion.AutoSize = true;
             this.LDescripcion.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LDescripcion.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.LDescripcion.Location = new System.Drawing.Point(19, 428);
+            this.LDescripcion.Location = new System.Drawing.Point(19, 462);
             this.LDescripcion.Name = "LDescripcion";
             this.LDescripcion.Size = new System.Drawing.Size(102, 23);
             this.LDescripcion.TabIndex = 37;
@@ -333,10 +334,10 @@
             // 
             // TBDescripcionProducto
             // 
-            this.TBDescripcionProducto.Location = new System.Drawing.Point(20, 464);
+            this.TBDescripcionProducto.Location = new System.Drawing.Point(20, 492);
             this.TBDescripcionProducto.Multiline = true;
             this.TBDescripcionProducto.Name = "TBDescripcionProducto";
-            this.TBDescripcionProducto.Size = new System.Drawing.Size(263, 143);
+            this.TBDescripcionProducto.Size = new System.Drawing.Size(263, 115);
             this.TBDescripcionProducto.TabIndex = 1;
             // 
             // Form1
