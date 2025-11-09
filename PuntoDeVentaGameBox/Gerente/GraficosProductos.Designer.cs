@@ -145,7 +145,6 @@
             this.Controls.Add(this.PGraficos);
             this.Name = "GraficosProductos";
             this.Text = "GraficosProductos";
-            this.Load += new System.EventHandler(this.GraficosProductos_Load_1);
             this.PGraficos.ResumeLayout(false);
             this.PGraficos.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartDistribucionGenero)).EndInit();

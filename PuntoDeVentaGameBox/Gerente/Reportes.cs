@@ -126,31 +126,15 @@ namespace PuntoDeVentaGameBox.Gerente
 
         private void BVerGraficosProductos_Click(object sender, EventArgs e)
         {
-            DateTime? d = null, h = null;
-            if (_usarFiltroFechas)
-            {
-                var r = ObtenerRangoFechas();
-                d = r.desde; h = r.hasta;
-            }
-
-            using (var frm = new GraficosProductos(_connString, d, h))
+            using (var frm = new GraficosProductos())
                 frm.ShowDialog(this);
         }
 
         private void BVerGraficosVendedores_Click(object sender, EventArgs e)
         {
-            DateTime? d = null, h = null;
-            if (_usarFiltroFechas)
-            {
-                var r = ObtenerRangoFechas();
-                d = r.desde; h = r.hasta;
-            }
-
-            using (var frm = new GraficosVendedores(_connString, d, h))
+            using (var frm = new GraficosVendedores())
                 frm.ShowDialog(this);
         }
-
-
 
         private void BMasVendidosExtendido_Click(object sender, EventArgs e)
         {
@@ -304,32 +288,41 @@ ORDER BY [Total Dinero en Ventas] DESC;";
             {
                 Title = "Guardar reporte como PDF",
                 Filter = "PDF (*.pdf)|*.pdf",
-                FileName = $"Reporte_Ventas_{DateTime.Now:yyyyMMdd_HHmm}.pdf",
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                FileName = $"Reporte_Ventas_{DateTime.Now:yyyyMMdd_HHmm}.pdf"
             })
             {
                 if (sfd.ShowDialog() != DialogResult.OK) return;
 
                 string filePath = sfd.FileName;
 
-                // Período SIEMPRE desde los DTP (sin depender de Checked)
-                string periodoTexto =
-                    $"{(_dtpDesde != null ? _dtpDesde.Value : DateTime.Today):dd/MM/yyyy} - " +
-                    $"{(_dtpHasta != null ? _dtpHasta.Value : DateTime.Today):dd/MM/yyyy}";
-
                 // Documento PDF A4 con márgenes
                 Document doc = new Document(PageSize.A4, 30, 30, 40, 30);
                 PdfWriter.GetInstance(doc, new FileStream(filePath, FileMode.Create));
                 doc.Open();
 
+                // Fuentes para título y subtítulo
                 var fontTitulo = new iTextSharp.text.Font(
-                    iTextSharp.text.Font.FontFamily.HELVETICA, 16f, iTextSharp.text.Font.BOLD);
-                var fontSubtitulo = new iTextSharp.text.Font(
-                    iTextSharp.text.Font.FontFamily.HELVETICA, 12f, iTextSharp.text.Font.BOLD);
+                    iTextSharp.text.Font.FontFamily.HELVETICA,
+                    16f,
+                    iTextSharp.text.Font.BOLD
+                );
 
+                var fontSubtitulo = new iTextSharp.text.Font(
+                    iTextSharp.text.Font.FontFamily.HELVETICA,
+                    12f,
+                    iTextSharp.text.Font.BOLD
+                );
+
+                // Encabezado general
                 Paragraph titulo = new Paragraph("REPORTE DE VENTAS", fontTitulo)
-                { Alignment = Element.ALIGN_CENTER };
+                {
+                    Alignment = Element.ALIGN_CENTER
+                };
                 doc.Add(titulo);
+
+                string periodoTexto = _usarFiltroFechas
+                    ? $"{_dtpDesde.Value:dd/MM/yyyy} - {_dtpHasta.Value:dd/MM/yyyy}"
+                    : "Todos";
 
                 doc.Add(new Paragraph($"Generado el: {DateTime.Now:G}"));
                 doc.Add(new Paragraph($"Período: {periodoTexto}\n"));
@@ -338,36 +331,55 @@ ORDER BY [Total Dinero en Ventas] DESC;";
                 doc.Add(new Paragraph("\nProductos Más Vendidos\n", fontSubtitulo));
 
                 PdfPTable tablaProductos = new PdfPTable(DGVTopProductos.Columns.Count)
-                { WidthPercentage = 100 };
+                {
+                    WidthPercentage = 100
+                };
 
+                // Headers
                 foreach (DataGridViewColumn col in DGVTopProductos.Columns)
+                {
                     tablaProductos.AddCell(new Phrase(col.HeaderText));
+                }
 
+                // Rows
                 foreach (DataGridViewRow row in DGVTopProductos.Rows)
                 {
                     if (row.IsNewRow) continue;
                     foreach (DataGridViewCell cell in row.Cells)
+                    {
                         tablaProductos.AddCell(cell.Value?.ToString() ?? "");
+                    }
                 }
+
                 doc.Add(tablaProductos);
 
                 // --- Sección Rendimiento por Vendedor ---
                 doc.Add(new Paragraph("\nRendimiento por Vendedor\n", fontSubtitulo));
 
                 PdfPTable tablaVendedores = new PdfPTable(DGVVendedores.Columns.Count)
-                { WidthPercentage = 100 };
+                {
+                    WidthPercentage = 100
+                };
 
+                // Headers
                 foreach (DataGridViewColumn col in DGVVendedores.Columns)
+                {
                     tablaVendedores.AddCell(new Phrase(col.HeaderText));
+                }
 
+                // Rows
                 foreach (DataGridViewRow row in DGVVendedores.Rows)
                 {
                     if (row.IsNewRow) continue;
                     foreach (DataGridViewCell cell in row.Cells)
+                    {
                         tablaVendedores.AddCell(cell.Value?.ToString() ?? "");
+                    }
                 }
+
                 doc.Add(tablaVendedores);
 
+                // Cerrar PDF
                 doc.Close();
 
                 MessageBox.Show(
@@ -379,9 +391,6 @@ ORDER BY [Total Dinero en Ventas] DESC;";
             }
         }
 
-
-
-
         // ================== EXPORTAR EXCEL ==================
 
         private void BExportarExcel_Click(object sender, EventArgs e)
@@ -390,8 +399,7 @@ ORDER BY [Total Dinero en Ventas] DESC;";
             {
                 Title = "Guardar reporte como Excel",
                 Filter = "Excel Workbook (*.xlsx)|*.xlsx",
-                FileName = $"Reporte_Ventas_{DateTime.Now:yyyyMMdd_HHmm}.xlsx",
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                FileName = $"Reporte_Ventas_{DateTime.Now:yyyyMMdd_HHmm}.xlsx"
             })
             {
                 if (sfd.ShowDialog() != DialogResult.OK) return;
@@ -403,10 +411,9 @@ ORDER BY [Total Dinero en Ventas] DESC;";
 
                 using (var package = new ExcelPackage())
                 {
-                    // Período SIEMPRE desde los DTP (sin depender de Checked)
-                    string periodoTexto =
-                        $"{(_dtpDesde != null ? _dtpDesde.Value : DateTime.Today):dd/MM/yyyy} - " +
-                        $"{(_dtpHasta != null ? _dtpHasta.Value : DateTime.Today):dd/MM/yyyy}";
+                    string periodoTexto = _usarFiltroFechas
+                        ? $"{_dtpDesde.Value:dd/MM/yyyy} - {_dtpHasta.Value:dd/MM/yyyy}"
+                        : "Todos";
 
                     // Hoja 1 - Productos
                     var ws1 = package.Workbook.Worksheets.Add("Productos Más Vendidos");
@@ -425,8 +432,8 @@ ORDER BY [Total Dinero en Ventas] DESC;";
                     ws2.Cells["A5"].LoadFromDataTable(_ultimoVendedores, true);
 
                     // AutoFit columnas
-                    if (ws1.Dimension != null) ws1.Cells[ws1.Dimension.Address].AutoFitColumns();
-                    if (ws2.Dimension != null) ws2.Cells[ws2.Dimension.Address].AutoFitColumns();
+                    ws1.Cells[ws1.Dimension.Address].AutoFitColumns();
+                    ws2.Cells[ws2.Dimension.Address].AutoFitColumns();
 
                     // Guardar archivo
                     package.SaveAs(new FileInfo(filePath));
@@ -441,25 +448,7 @@ ORDER BY [Total Dinero en Ventas] DESC;";
             }
         }
 
-
-
-
         // ================== HELPERS ==================
-        // Devuelve el texto de período según el estado actual de los DTPs,
-        // independientemente de si está activado el filtro interno.
-        private string PeriodoSeleccionado()
-        {
-            if (_dtpDesde == null || _dtpHasta == null) return "Todos";
-
-            bool desdeChecked = true, hastaChecked = true;
-            try { desdeChecked = _dtpDesde.Checked; } catch { }
-            try { hastaChecked = _dtpHasta.Checked; } catch { }
-
-            if (!desdeChecked && !hastaChecked) return "Todos";
-            if (desdeChecked && !hastaChecked) return $"desde {_dtpDesde.Value:dd/MM/yyyy}";
-            if (!desdeChecked && hastaChecked) return $"hasta {_dtpHasta.Value:dd/MM/yyyy}";
-            return $"{_dtpDesde.Value:dd/MM/yyyy} - {_dtpHasta.Value:dd/MM/yyyy}";
-        }
 
         private (DateTime desde, DateTime hasta) ObtenerRangoFechas()
         {

@@ -65,15 +65,16 @@
             this.LListTitle = new System.Windows.Forms.Label();
             this.PGrid = new System.Windows.Forms.Panel();
             this.DGVProductos = new System.Windows.Forms.DataGridView();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.ColId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColImagen = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColGenero = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColPrecio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColStock = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColEditar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ColEliminar = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.TLRoot.SuspendLayout();
             this.PBanner.SuspendLayout();
             this.TLKPI.SuspendLayout();
@@ -555,6 +556,7 @@
             this.ColId,
             this.ColImagen,
             this.ColNombre,
+            this.ColGenero,
             this.ColPrecio,
             this.ColStock,
             this.ColEditar,
@@ -602,6 +604,15 @@
             this.ColNombre.MinimumWidth = 6;
             this.ColNombre.Name = "ColNombre";
             this.ColNombre.ReadOnly = true;
+            // 
+            // ColGenero
+            // 
+            this.ColGenero.DataPropertyName = "Genero";
+            this.ColGenero.FillWeight = 7.905888F;
+            this.ColGenero.HeaderText = "Género";
+            this.ColGenero.MinimumWidth = 6;
+            this.ColGenero.Name = "ColGenero";
+            this.ColGenero.ReadOnly = true;
             // 
             // ColPrecio
             // 
@@ -719,6 +730,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColId;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColImagen;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColNombre;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColGenero;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColPrecio;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColStock;
         private System.Windows.Forms.DataGridViewButtonColumn ColEditar;

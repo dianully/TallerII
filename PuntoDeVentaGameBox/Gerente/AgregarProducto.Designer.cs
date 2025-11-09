@@ -38,9 +38,6 @@
             this.BSalir = new System.Windows.Forms.Button();
             this.BRegistrarProducto = new System.Windows.Forms.Button();
             this.PDatosProductos = new System.Windows.Forms.Panel();
-            this.CBProveedorProducto = new System.Windows.Forms.ComboBox();
-            this.DTPFechaAlta = new System.Windows.Forms.DateTimePicker();
-            this.CBGeneroProducto = new System.Windows.Forms.ComboBox();
             this.LGernero = new System.Windows.Forms.Label();
             this.LProveedor = new System.Windows.Forms.Label();
             this.LFechaAlta = new System.Windows.Forms.Label();
@@ -52,6 +49,9 @@
             this.TBPrecioVentaProducto = new System.Windows.Forms.TextBox();
             this.TBCantidadProducto = new System.Windows.Forms.TextBox();
             this.TBDescripcionProducto = new System.Windows.Forms.TextBox();
+            this.CBGeneroProducto = new System.Windows.Forms.ComboBox();
+            this.DTPFechaAlta = new System.Windows.Forms.DateTimePicker();
+            this.CBProveedorProducto = new System.Windows.Forms.ComboBox();
             this.panel3.SuspendLayout();
             this.PImagen.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PBImagenProducto)).BeginInit();
@@ -192,31 +192,6 @@
             this.PDatosProductos.TabIndex = 0;
             this.PDatosProductos.Paint += new System.Windows.Forms.PaintEventHandler(this.PDatosProductos_Paint);
             // 
-            // CBProveedorProducto
-            // 
-            this.CBProveedorProducto.FormattingEnabled = true;
-            this.CBProveedorProducto.Location = new System.Drawing.Point(25, 282);
-            this.CBProveedorProducto.Name = "CBProveedorProducto";
-            this.CBProveedorProducto.Size = new System.Drawing.Size(261, 24);
-            this.CBProveedorProducto.TabIndex = 51;
-            this.CBProveedorProducto.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-            // 
-            // DTPFechaAlta
-            // 
-            this.DTPFechaAlta.Location = new System.Drawing.Point(23, 216);
-            this.DTPFechaAlta.Name = "DTPFechaAlta";
-            this.DTPFechaAlta.Size = new System.Drawing.Size(263, 22);
-            this.DTPFechaAlta.TabIndex = 50;
-            this.DTPFechaAlta.ValueChanged += new System.EventHandler(this.dateTimePicker2_ValueChanged);
-            // 
-            // CBGeneroProducto
-            // 
-            this.CBGeneroProducto.FormattingEnabled = true;
-            this.CBGeneroProducto.Location = new System.Drawing.Point(23, 343);
-            this.CBGeneroProducto.Name = "CBGeneroProducto";
-            this.CBGeneroProducto.Size = new System.Drawing.Size(263, 24);
-            this.CBGeneroProducto.TabIndex = 49;
-            // 
             // LGernero
             // 
             this.LGernero.AutoSize = true;
@@ -225,9 +200,9 @@
             this.LGernero.ForeColor = System.Drawing.SystemColors.ControlText;
             this.LGernero.Location = new System.Drawing.Point(21, 317);
             this.LGernero.Name = "LGernero";
-            this.LGernero.Size = new System.Drawing.Size(77, 23);
+            this.LGernero.Size = new System.Drawing.Size(70, 23);
             this.LGernero.TabIndex = 44;
-            this.LGernero.Text = "Generos:";
+            this.LGernero.Text = "Genero:";
             this.LGernero.Click += new System.EventHandler(this.label9_Click);
             // 
             // LProveedor
@@ -330,6 +305,31 @@
             this.TBDescripcionProducto.Name = "TBDescripcionProducto";
             this.TBDescripcionProducto.Size = new System.Drawing.Size(263, 143);
             this.TBDescripcionProducto.TabIndex = 1;
+            // 
+            // CBGeneroProducto
+            // 
+            this.CBGeneroProducto.FormattingEnabled = true;
+            this.CBGeneroProducto.Location = new System.Drawing.Point(23, 343);
+            this.CBGeneroProducto.Name = "CBGeneroProducto";
+            this.CBGeneroProducto.Size = new System.Drawing.Size(263, 24);
+            this.CBGeneroProducto.TabIndex = 49;
+            // 
+            // DTPFechaAlta
+            // 
+            this.DTPFechaAlta.Location = new System.Drawing.Point(23, 216);
+            this.DTPFechaAlta.Name = "DTPFechaAlta";
+            this.DTPFechaAlta.Size = new System.Drawing.Size(263, 22);
+            this.DTPFechaAlta.TabIndex = 50;
+            this.DTPFechaAlta.ValueChanged += new System.EventHandler(this.dateTimePicker2_ValueChanged);
+            // 
+            // CBProveedorProducto
+            // 
+            this.CBProveedorProducto.FormattingEnabled = true;
+            this.CBProveedorProducto.Location = new System.Drawing.Point(25, 282);
+            this.CBProveedorProducto.Name = "CBProveedorProducto";
+            this.CBProveedorProducto.Size = new System.Drawing.Size(261, 24);
+            this.CBProveedorProducto.TabIndex = 51;
+            this.CBProveedorProducto.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // AgregarProducto
             // 

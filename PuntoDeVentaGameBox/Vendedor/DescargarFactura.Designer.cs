@@ -306,7 +306,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "DescargarFactura";
             this.Text = "DescargarFactura";
-            this.Load += new System.EventHandler(this.DescargarFactura_Load);
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel4.ResumeLayout(false);

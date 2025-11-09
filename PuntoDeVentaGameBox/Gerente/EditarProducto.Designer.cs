@@ -38,7 +38,6 @@
             this.BSalir = new System.Windows.Forms.Button();
             this.BGuardarCambios = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.TBFechaAlta = new System.Windows.Forms.TextBox();
             this.DTPFechaEdicionProducto = new System.Windows.Forms.DateTimePicker();
             this.LFechaEdicion = new System.Windows.Forms.Label();
             this.CBProveedorProducto = new System.Windows.Forms.ComboBox();
@@ -55,6 +54,7 @@
             this.TBCantidadProducto = new System.Windows.Forms.TextBox();
             this.TBDescripcionProducto = new System.Windows.Forms.TextBox();
             this.PEditar = new System.Windows.Forms.Panel();
+            this.TBFechaAlta = new System.Windows.Forms.TextBox();
             this.PFormEdicion.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PBImagenProducto)).BeginInit();
@@ -193,13 +193,6 @@
             this.panel2.Size = new System.Drawing.Size(310, 618);
             this.panel2.TabIndex = 0;
             // 
-            // TBFechaAlta
-            // 
-            this.TBFechaAlta.Location = new System.Drawing.Point(23, 217);
-            this.TBFechaAlta.Name = "TBFechaAlta";
-            this.TBFechaAlta.Size = new System.Drawing.Size(263, 22);
-            this.TBFechaAlta.TabIndex = 54;
-            // 
             // DTPFechaEdicionProducto
             // 
             this.DTPFechaEdicionProducto.Location = new System.Drawing.Point(24, 279);
@@ -241,9 +234,9 @@
             this.LGenero.ForeColor = System.Drawing.SystemColors.ControlText;
             this.LGenero.Location = new System.Drawing.Point(19, 368);
             this.LGenero.Name = "LGenero";
-            this.LGenero.Size = new System.Drawing.Size(77, 23);
+            this.LGenero.Size = new System.Drawing.Size(70, 23);
             this.LGenero.TabIndex = 44;
-            this.LGenero.Text = "Generos:";
+            this.LGenero.Text = "Genero:";
             // 
             // LProveedor
             // 
@@ -352,6 +345,13 @@
             this.PEditar.Size = new System.Drawing.Size(707, 651);
             this.PEditar.TabIndex = 7;
             this.PEditar.Paint += new System.Windows.Forms.PaintEventHandler(this.pLimpiarParametros_Paint);
+            // 
+            // TBFechaAlta
+            // 
+            this.TBFechaAlta.Location = new System.Drawing.Point(23, 217);
+            this.TBFechaAlta.Name = "TBFechaAlta";
+            this.TBFechaAlta.Size = new System.Drawing.Size(263, 22);
+            this.TBFechaAlta.TabIndex = 54;
             // 
             // EditarProducto
             // 

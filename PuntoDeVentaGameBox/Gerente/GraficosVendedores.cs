@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
-using System.Globalization;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -8,174 +8,185 @@ namespace PuntoDeVentaGameBox.Gerente
 {
     public partial class GraficosVendedores : Form
     {
-        private readonly string _connString;
-        private readonly DateTime? _desde;
-        private readonly DateTime? _hasta;
-        private readonly CultureInfo _ars = new CultureInfo("es-AR");
+        private readonly string _connString =
+            "Server=localhost;Database=game_box;Trusted_Connection=True;TrustServerCertificate=True";
 
-        public GraficosVendedores(string connString, DateTime? desde, DateTime? hasta)
+        private DateTime _desde;
+        private DateTime _hasta;
+
+        public GraficosVendedores()
         {
             InitializeComponent();
-            _connString = connString;
-            _desde = desde;
-            _hasta = hasta;
+            _desde = DateTime.Today.AddDays(-30);
+            _hasta = DateTime.Today.AddDays(1).AddTicks(-1);
+            Wire();
+        }
 
+        public GraficosVendedores(DateTime desde, DateTime hasta)
+        {
+            InitializeComponent();
+            _desde = desde.Date;
+            _hasta = hasta.Date.AddDays(1).AddTicks(-1);
+            Wire();
+        }
+
+        private void Wire()
+        {
             this.Load -= GraficosVendedores_Load;
             this.Load += GraficosVendedores_Load;
+            // Dejamos que el diseñador maneje el Click del botón VolverAtras
         }
 
         private void GraficosVendedores_Load(object sender, EventArgs e)
         {
-            CargarChartRendimiento();
-            CargarChartTransacciones();
-            CargarChartTicketPromedio();
+            SetupChart(chartRendimientoVendedor, SeriesChartType.Column,
+                "Rendimiento por Vendedor (Monto)", "Vendedor", "Monto");
+            chartRendimientoVendedor.Series[0].LabelFormat = "C0";
 
-            // Diseño común
-            chartRendimientoVendedor.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
-            chartTransaccionesVendedor.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
-            chartTicketPromedio.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
+            SetupChart(chartTransaccionesVendedor, SeriesChartType.Bar,
+                "Transacciones por Vendedor", "Vendedor", "Transacciones");
 
-            chartRendimientoVendedor.Legends.Clear();
-            chartTransaccionesVendedor.Legends.Clear();
-            chartTicketPromedio.Legends.Clear();
+            SetupChart(chartTicketPromedio, SeriesChartType.Bar,
+                "Ticket Promedio por Vendedor", "Vendedor", "Ticket Promedio");
+            chartTicketPromedio.Series[0].LabelFormat = "C0";
+
+            CargarDatos();
         }
 
-        private string RangoWhere(string campoFecha)
-            => (_desde.HasValue && _hasta.HasValue) ? $" AND {campoFecha} BETWEEN @desde AND @hasta" : string.Empty;
-
-        private void AgregarParametrosRango(SqlCommand cmd)
+        private void CargarDatos()
         {
-            if (_desde.HasValue && _hasta.HasValue)
+            try
             {
-                cmd.Parameters.AddWithValue("@desde", _desde.Value);
-                cmd.Parameters.AddWithValue("@hasta", _hasta.Value);
+                // 🔁 Intentamos con tabla USUARIO; si no existe, caemos a VENDEDOR
+                string vendedorTable = DetectarTablaVendedor();
+
+                // 1) Monto total por vendedor
+                var sqlMonto = $@"
+SELECT v.nombre AS Vendedor, SUM(f.total) AS Monto
+FROM dbo.factura f
+JOIN dbo.{vendedorTable} v ON v.id_usuario = f.id_usuario
+WHERE (f.activo = 1 OR f.activo IS NULL)
+  AND f.fecha_compra BETWEEN @desde AND @hasta
+GROUP BY v.nombre
+ORDER BY Monto DESC;";
+
+                var dtMonto = GetDataTable(sqlMonto,
+                    new SqlParameter("@desde", SqlDbType.DateTime) { Value = _desde },
+                    new SqlParameter("@hasta", SqlDbType.DateTime) { Value = _hasta });
+                BindChart(chartRendimientoVendedor, dtMonto, "Vendedor", "Monto");
+
+                // 2) Transacciones por vendedor
+                var sqlTrans = $@"
+SELECT v.nombre AS Vendedor, COUNT(*) AS Transacciones
+FROM dbo.factura f
+JOIN dbo.{vendedorTable} v ON v.id_usuario = f.id_usuario
+WHERE (f.activo = 1 OR f.activo IS NULL)
+  AND f.fecha_compra BETWEEN @desde AND @hasta
+GROUP BY v.nombre
+ORDER BY Transacciones DESC;";
+                var dtTrans = GetDataTable(sqlTrans,
+                    new SqlParameter("@desde", SqlDbType.DateTime) { Value = _desde },
+                    new SqlParameter("@hasta", SqlDbType.DateTime) { Value = _hasta });
+                BindChart(chartTransaccionesVendedor, dtTrans, "Vendedor", "Transacciones");
+
+                // 3) Ticket promedio por vendedor
+                var sqlTicket = $@"
+SELECT v.nombre AS Vendedor, AVG(f.total) AS TicketPromedio
+FROM dbo.factura f
+JOIN dbo.{vendedorTable} v ON v.id_usuario = f.id_usuario
+WHERE (f.activo = 1 OR f.activo IS NULL)
+  AND f.fecha_compra BETWEEN @desde AND @hasta
+GROUP BY v.nombre
+ORDER BY TicketPromedio DESC;";
+                var dtTicket = GetDataTable(sqlTicket,
+                    new SqlParameter("@desde", SqlDbType.DateTime) { Value = _desde },
+                    new SqlParameter("@hasta", SqlDbType.DateTime) { Value = _hasta });
+                BindChart(chartTicketPromedio, dtTicket, "Vendedor", "TicketPromedio");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar gráficos de vendedores:\n{ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void CargarChartRendimiento()
+        // Detecta si existe dbo.usuario; si no, intenta dbo.vendedor
+        private string DetectarTablaVendedor()
         {
-            string sql = $@"
-SELECT TOP 5 
-    u.nombre + ' ' + u.apellido AS vendedor,
-    SUM(f.total) AS total_ganado
-FROM dbo.factura f
-JOIN dbo.usuario u ON u.id_usuario = f.id_usuario
-WHERE (f.activo = 1 OR f.activo IS NULL)
-{RangoWhere("f.fecha_compra")}
-GROUP BY u.nombre, u.apellido
-ORDER BY total_ganado DESC;";
-
-            chartRendimientoVendedor.Series.Clear();
-            var serie = new Series("Rendimiento")
+            try
             {
-                ChartType = SeriesChartType.Column,
-                IsValueShownAsLabel = true,
-                LabelFormat = "C2"
-            };
+                var dt = GetDataTable("SELECT TOP 1 id_usuario, nombre FROM dbo.usuario;");
+                if (dt.Columns.Contains("id_usuario")) return "usuario";
+            }
+            catch { /* ignorar */ }
 
+            return "vendedor"; // fallback
+        }
+
+        // ======== Utilitarios ========
+
+        private void SetupChart(Chart ch, SeriesChartType type, string title, string xTitle, string yTitle)
+        {
+            ch.Series.Clear();
+            ch.ChartAreas.Clear();
+            ch.Titles.Clear();
+            ch.Legends.Clear();
+
+            var area = new ChartArea("Area1");
+            area.AxisX.Title = xTitle;
+            area.AxisY.Title = yTitle;
+            area.AxisX.IntervalAutoMode = IntervalAutoMode.VariableCount;
+            ch.ChartAreas.Add(area);
+
+            var s = new Series("S1")
+            {
+                ChartType = type,
+                IsValueShownAsLabel = true,
+                ChartArea = "Area1"
+            };
+            s.ToolTip = "#VALX: #VALY";
+            ch.Series.Add(s);
+
+            ch.Titles.Add(title);
+            ch.Legends.Add(new Legend { Docking = Docking.Top, LegendStyle = LegendStyle.Row });
+            ch.Palette = ChartColorPalette.BrightPastel;
+        }
+
+        private void BindChart(Chart ch, DataTable dt, string x, string y)
+        {
+            var s = ch.Series[0];
+            s.Points.Clear();
+            foreach (DataRow r in dt.Rows)
+            {
+                var xv = Convert.ToString(r[x] ?? "");
+                var yv = Convert.ToDouble(r[y] == DBNull.Value ? 0 : r[y]);
+                s.Points.AddXY(xv, yv);
+            }
+        }
+
+        private DataTable GetDataTable(string sql, params SqlParameter[] ps)
+        {
             using (var cn = new SqlConnection(_connString))
             using (var cmd = new SqlCommand(sql, cn))
+            using (var da = new SqlDataAdapter(cmd))
             {
-                AgregarParametrosRango(cmd);
+                if (ps != null) cmd.Parameters.AddRange(ps);
+                var dt = new DataTable();
                 cn.Open();
-                using (var rd = cmd.ExecuteReader())
-                {
-                    while (rd.Read())
-                    {
-                        string nombre = rd.GetString(0);
-                        decimal total = rd.IsDBNull(1) ? 0m : rd.GetDecimal(1);
-                        int idx = serie.Points.AddXY(nombre, total);
-                        serie.Points[idx].Label = total.ToString("C2", _ars);
-                    }
-                }
+                da.Fill(dt);
+                return dt;
             }
-
-            chartRendimientoVendedor.Series.Add(serie);
         }
 
-        private void CargarChartTransacciones()
+        // ==== Handlers y stubs para eventos de diseñador ====
+        private void BVolverAtras_Click(object sender, EventArgs e)
         {
-            string sql = $@"
-SELECT TOP 5 
-    u.nombre + ' ' + u.apellido AS vendedor,
-    COUNT(f.id_factura) AS cantidad_transacciones
-FROM dbo.factura f
-JOIN dbo.usuario u ON u.id_usuario = f.id_usuario
-WHERE (f.activo = 1 OR f.activo IS NULL)
-{RangoWhere("f.fecha_compra")}
-GROUP BY u.nombre, u.apellido
-ORDER BY cantidad_transacciones DESC;";
-
-            chartTransaccionesVendedor.Series.Clear();
-            var serie = new Series("Transacciones")
-            {
-                ChartType = SeriesChartType.Column,
-                IsValueShownAsLabel = true,
-                LabelFormat = "N0"
-            };
-
-            using (var cn = new SqlConnection(_connString))
-            using (var cmd = new SqlCommand(sql, cn))
-            {
-                AgregarParametrosRango(cmd);
-                cn.Open();
-                using (var rd = cmd.ExecuteReader())
-                {
-                    while (rd.Read())
-                    {
-                        string nombre = rd.GetString(0);
-                        int cant = rd.IsDBNull(1) ? 0 : rd.GetInt32(1);
-                        int idx = serie.Points.AddXY(nombre, cant);
-                        serie.Points[idx].Label = cant.ToString("N0");
-                    }
-                }
-            }
-
-            chartTransaccionesVendedor.Series.Add(serie);
+            this.Close();
         }
 
-        private void CargarChartTicketPromedio()
-        {
-            string sql = $@"
-SELECT TOP 5 
-    u.nombre + ' ' + u.apellido AS vendedor,
-    AVG(CAST(f.total AS decimal(18,2))) AS ticket_promedio
-FROM dbo.factura f
-JOIN dbo.usuario u ON u.id_usuario = f.id_usuario
-WHERE (f.activo = 1 OR f.activo IS NULL)
-{RangoWhere("f.fecha_compra")}
-GROUP BY u.nombre, u.apellido
-ORDER BY ticket_promedio DESC;";
-
-            chartTicketPromedio.Series.Clear();
-            var serie = new Series("Ticket Promedio")
-            {
-                ChartType = SeriesChartType.Column,
-                IsValueShownAsLabel = true,
-                LabelFormat = "C2"
-            };
-
-            using (var cn = new SqlConnection(_connString))
-            using (var cmd = new SqlCommand(sql, cn))
-            {
-                AgregarParametrosRango(cmd);
-                cn.Open();
-                using (var rd = cmd.ExecuteReader())
-                {
-                    while (rd.Read())
-                    {
-                        string nombre = rd.GetString(0);
-                        decimal prom = rd.IsDBNull(1) ? 0m : rd.GetDecimal(1);
-                        int idx = serie.Points.AddXY(nombre, prom);
-                        serie.Points[idx].Label = prom.ToString("C2", _ars);
-                    }
-                }
-            }
-
-            chartTicketPromedio.Series.Add(serie);
-        }
-
-        private void BVolverAtras_Click(object sender, EventArgs e) => this.Close();
+        private void chartRendimientoVendedor_Click(object sender, EventArgs e) { }
+        private void chartTransaccionesVendedor_Click(object sender, EventArgs e) { }
+        private void chartTicketPromedio_Click(object sender, EventArgs e) { }
         private void PGraficos_Paint(object sender, PaintEventArgs e) { }
     }
 }
