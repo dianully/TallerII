@@ -120,6 +120,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.dgvBuscarProducto);
             this.Controls.Add(this.panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "BuscarProducto";
             this.Text = "BuscarProducto";
             this.Load += new System.EventHandler(this.BuscarProducto_Load);

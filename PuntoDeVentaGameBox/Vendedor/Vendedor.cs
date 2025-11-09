@@ -93,7 +93,55 @@ namespace PuntoDeVentaGameBox.Vendedor
 
             dgvListaDeCompra.CellContentClick += dgvListaDeCompra_CellContentClick;
             lCantidad.Text = "$0.00";
+
+            if (dgvListaDeCompra.Columns.Count == 0)
+            {
+                dgvListaDeCompra.Columns.Add("Nombre", "Nombre");
+                dgvListaDeCompra.Columns.Add("PrecioUnitario", "Precio Unitario");
+                dgvListaDeCompra.Columns.Add("Cantidad", "Cantidad");
+                dgvListaDeCompra.Columns.Add("Total", "Total");
+
+                // Columna de botón "Quitar"
+                DataGridViewButtonColumn btnQuitar = new DataGridViewButtonColumn();
+                btnQuitar.Name = "Quitar";
+                btnQuitar.HeaderText = "Acción";
+                btnQuitar.Text = "Quitar";
+                btnQuitar.UseColumnTextForButtonValue = true;
+                dgvListaDeCompra.Columns.Add(btnQuitar);
+
+                dgvListaDeCompra.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                foreach (DataGridViewColumn col in dgvListaDeCompra.Columns)
+                {
+                    col.ReadOnly = true;
+                }
+                dgvListaDeCompra.Columns["Cantidad"].ReadOnly = false;
+
+                dgvListaDeCompra.CellValueChanged += dgvListaDeCompra_CellValueChanged;
+            }
         }
+
+        private void dgvListaDeCompra_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && dgvListaDeCompra.Columns[e.ColumnIndex].Name == "Cantidad")
+            {
+                var fila = dgvListaDeCompra.Rows[e.RowIndex];
+                var celdaCantidad = fila.Cells["Cantidad"].Value;
+                var celdaPrecio = fila.Cells["PrecioUnitario"].Value;
+
+                if (celdaCantidad != null && celdaPrecio != null)
+                {
+                    if (int.TryParse(celdaCantidad.ToString(), out int cantidad) &&
+                        decimal.TryParse(celdaPrecio.ToString().Replace("$", "").Trim(), out decimal precioUnitario))
+                    {
+                        decimal nuevoTotal = cantidad * precioUnitario;
+                        fila.Cells["Total"].Value = nuevoTotal.ToString("C");
+                        ActualizarTotal();
+                    }
+                }
+            }
+        }
+
 
         public void SetNombreProducto(string nombre)
         {
@@ -152,24 +200,6 @@ namespace PuntoDeVentaGameBox.Vendedor
                 {
                     decimal precioUnitario = Convert.ToDecimal(resultado);
                     decimal total = precioUnitario * cantidad;
-
-                    // Si el DataGridView no tiene columnas, las definimos
-                    if (dgvListaDeCompra.Columns.Count == 0)
-                    {
-                        dgvListaDeCompra.Columns.Add("Nombre", "Nombre");
-                        dgvListaDeCompra.Columns.Add("PrecioUnitario", "Precio Unitario");
-                        dgvListaDeCompra.Columns.Add("Cantidad", "Cantidad");
-                        dgvListaDeCompra.Columns.Add("Total", "Total");
-
-                        // Columna de botón "Quitar"
-                        DataGridViewButtonColumn btnQuitar = new DataGridViewButtonColumn();
-                        btnQuitar.Name = "Quitar";
-                        btnQuitar.HeaderText = "Acción";
-                        btnQuitar.Text = "Quitar";
-                        btnQuitar.UseColumnTextForButtonValue = true;
-                        dgvListaDeCompra.Columns.Add(btnQuitar);
-                    }
-
 
                     dgvListaDeCompra.Rows.Add(nombreProducto, precioUnitario.ToString("C"), cantidad, total.ToString("C"));
 
@@ -395,20 +425,6 @@ namespace PuntoDeVentaGameBox.Vendedor
             return total;
         }
 
-        private int ObtenerIdClientePorNombre(string nombre)
-        {
-            using (SqlConnection conexion = new SqlConnection(conecctionString))
-            {
-                string consulta = "SELECT id_cliente FROM cliente WHERE nombre = @nombre";
-                using (SqlCommand cmd = new SqlCommand(consulta, conexion))
-                {
-                    cmd.Parameters.AddWithValue("@nombre", nombre);
-                    conexion.Open();
-                    object resultado = cmd.ExecuteScalar();
-                    return resultado != null ? Convert.ToInt32(resultado) : -1;
-                }
-            }
-        }
 
         private int ObtenerIdClientePorDNI(string dni)
         {

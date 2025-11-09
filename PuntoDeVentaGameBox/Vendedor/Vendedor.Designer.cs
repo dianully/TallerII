@@ -46,7 +46,6 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.bElegirProducto = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.tbNombreProducto = new System.Windows.Forms.TextBox();
             this.panel5 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.panelCliente = new System.Windows.Forms.Panel();
@@ -60,6 +59,7 @@
             this.tbMontoPagado = new System.Windows.Forms.TextBox();
             this.tbCambio = new System.Windows.Forms.TextBox();
             this.cbMetodoDePago = new System.Windows.Forms.ComboBox();
+            this.tbNombreProducto = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListaDeCompra)).BeginInit();
             this.panel4.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -108,7 +108,7 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.SystemColors.Control;
-            this.label5.Location = new System.Drawing.Point(202, 92);
+            this.label5.Location = new System.Drawing.Point(176, 92);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(106, 25);
             this.label5.TabIndex = 25;
@@ -120,7 +120,7 @@
             this.bCargarProducto.FlatAppearance.BorderSize = 0;
             this.bCargarProducto.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bCargarProducto.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.bCargarProducto.Location = new System.Drawing.Point(175, 126);
+            this.bCargarProducto.Location = new System.Drawing.Point(133, 126);
             this.bCargarProducto.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.bCargarProducto.Name = "bCargarProducto";
             this.bCargarProducto.Size = new System.Drawing.Size(179, 39);
@@ -173,10 +173,12 @@
             // 
             // dgvListaDeCompra
             // 
+            this.dgvListaDeCompra.AllowUserToAddRows = false;
             this.dgvListaDeCompra.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvListaDeCompra.Location = new System.Drawing.Point(47, 251);
             this.dgvListaDeCompra.Margin = new System.Windows.Forms.Padding(4);
             this.dgvListaDeCompra.Name = "dgvListaDeCompra";
+            this.dgvListaDeCompra.RowHeadersVisible = false;
             this.dgvListaDeCompra.RowHeadersWidth = 51;
             this.dgvListaDeCompra.Size = new System.Drawing.Size(1048, 359);
             this.dgvListaDeCompra.TabIndex = 23;
@@ -207,7 +209,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label3.Location = new System.Drawing.Point(0, 9);
+            this.label3.Location = new System.Drawing.Point(283, 9);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(279, 38);
             this.label3.TabIndex = 3;
@@ -219,7 +221,7 @@
             this.lVendedor.AutoSize = true;
             this.lVendedor.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lVendedor.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lVendedor.Location = new System.Drawing.Point(932, 9);
+            this.lVendedor.Location = new System.Drawing.Point(568, 9);
             this.lVendedor.Name = "lVendedor";
             this.lVendedor.Size = new System.Drawing.Size(163, 38);
             this.lVendedor.TabIndex = 1;
@@ -255,9 +257,9 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.tbNombreProducto);
             this.panel2.Controls.Add(this.bElegirProducto);
             this.panel2.Controls.Add(this.label4);
-            this.panel2.Controls.Add(this.tbNombreProducto);
             this.panel2.Controls.Add(this.panel5);
             this.panel2.Controls.Add(this.label5);
             this.panel2.Controls.Add(this.bCargarProducto);
@@ -273,7 +275,7 @@
             this.bElegirProducto.FlatAppearance.BorderSize = 0;
             this.bElegirProducto.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bElegirProducto.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.bElegirProducto.Location = new System.Drawing.Point(68, 54);
+            this.bElegirProducto.Location = new System.Drawing.Point(15, 55);
             this.bElegirProducto.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.bElegirProducto.Name = "bElegirProducto";
             this.bElegirProducto.Size = new System.Drawing.Size(128, 67);
@@ -288,21 +290,11 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.Control;
-            this.label4.Location = new System.Drawing.Point(213, 55);
+            this.label4.Location = new System.Drawing.Point(187, 55);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(94, 25);
             this.label4.TabIndex = 37;
             this.label4.Text = "Nombre:";
-            // 
-            // tbNombreProducto
-            // 
-            this.tbNombreProducto.Enabled = false;
-            this.tbNombreProducto.Location = new System.Drawing.Point(313, 55);
-            this.tbNombreProducto.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tbNombreProducto.Name = "tbNombreProducto";
-            this.tbNombreProducto.ReadOnly = true;
-            this.tbNombreProducto.Size = new System.Drawing.Size(176, 22);
-            this.tbNombreProducto.TabIndex = 36;
             // 
             // panel5
             // 
@@ -344,7 +336,7 @@
             this.lNombreCliente.AutoSize = true;
             this.lNombreCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lNombreCliente.ForeColor = System.Drawing.SystemColors.Control;
-            this.lNombreCliente.Location = new System.Drawing.Point(60, 99);
+            this.lNombreCliente.Location = new System.Drawing.Point(37, 97);
             this.lNombreCliente.Name = "lNombreCliente";
             this.lNombreCliente.Size = new System.Drawing.Size(192, 25);
             this.lNombreCliente.TabIndex = 39;
@@ -387,7 +379,7 @@
             // tbDNI
             // 
             this.tbDNI.Enabled = false;
-            this.tbDNI.Location = new System.Drawing.Point(65, 136);
+            this.tbDNI.Location = new System.Drawing.Point(42, 136);
             this.tbDNI.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbDNI.Name = "tbDNI";
             this.tbDNI.ReadOnly = true;
@@ -444,6 +436,13 @@
             this.cbMetodoDePago.Name = "cbMetodoDePago";
             this.cbMetodoDePago.Size = new System.Drawing.Size(161, 24);
             this.cbMetodoDePago.TabIndex = 47;
+            // 
+            // tbNombreProducto
+            // 
+            this.tbNombreProducto.Location = new System.Drawing.Point(313, 59);
+            this.tbNombreProducto.Name = "tbNombreProducto";
+            this.tbNombreProducto.Size = new System.Drawing.Size(154, 22);
+            this.tbNombreProducto.TabIndex = 48;
             // 
             // Vendedor
             // 
@@ -515,10 +514,10 @@
         private System.Windows.Forms.TextBox tbMontoPagado;
         private System.Windows.Forms.TextBox tbCambio;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox tbNombreProducto;
         private System.Windows.Forms.Button bElegirProducto;
         private System.Windows.Forms.ComboBox cbMetodoDePago;
         private System.Windows.Forms.Button bNuevoCliente;
         private System.Windows.Forms.Label lNombreCliente;
+        private System.Windows.Forms.TextBox tbNombreProducto;
     }
 }
