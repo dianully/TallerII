@@ -1,148 +1,116 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace PuntoDeVentaGameBox.Gerente
 {
     public partial class AgregarProducto : Form
     {
-        // usa cadena fija sin appconfig
-        private readonly string _connString = "Server=localhost;Database=game_box;Trusted_Connection=True;TrustServerCertificate=True"; // cadena de conexion fija
-        private readonly int? _idEditar; // guarda id si es modo edicion
+        // cadena fija
+        private readonly string _connString = "Server=localhost;Database=game_box;Trusted_Connection=True;TrustServerCertificate=True";
+        private readonly int? _idEditar;
+
+        // ruta local de imagen (sin textbox)
+        private string _rutaImagen = null;
+
+        // helper interno para dropdown con checks
+        private MultiCategoriaHelper _mc;
 
         public AgregarProducto()
         {
             InitializeComponent();
-            _idEditar = null; // modo alta
-            BRegistrarProducto.Text = "Registrar Producto"; // texto de alta
-            WireEventos(); // vincula eventos
-            CargarCategorias(); // llena combo de generos
-            CargarProveedores(); // llena combo de proveedores
-            PrepararControles(); // estados iniciales de controles
+            _idEditar = null;
+            BRegistrarProducto.Text = "Registrar Producto";
+            WireEventos();
+            PrepararControles();
+            _mc = new MultiCategoriaHelper(_connString, CBGeneroProducto);
+            _mc.CargarDesdeBd();
+            CargarProveedores();
         }
 
         public AgregarProducto(int idProducto)
         {
             InitializeComponent();
-            _idEditar = idProducto; // modo edicion
-            BRegistrarProducto.Text = "Guardar Cambios"; // texto de edicion
-            WireEventos(); // vincula eventos
-            CargarCategorias(); // llena combo de generos
-            CargarProveedores(); // llena combo de proveedores
-            PrepararControles(); // estados iniciales
-            CargarProducto(idProducto); // carga datos del producto
+            _idEditar = idProducto;
+            BRegistrarProducto.Text = "Guardar Cambios";
+            WireEventos();
+            PrepararControles();
+            _mc = new MultiCategoriaHelper(_connString, CBGeneroProducto);
+            _mc.CargarDesdeBd();
+            CargarProveedores();
+            CargarProducto(idProducto);
         }
 
-        private SqlConnection NuevaConexion() => new SqlConnection(_connString); // crea conexion sql
+        private SqlConnection NuevaConexion() => new SqlConnection(_connString);
 
         private void WireEventos()
         {
-            // limpia handlers viejos del disenador
-            BRegistrarProducto.Click -= BAbrirImagen_Click;  // evita que registrar abra el explorador
-            BRegistrarProducto.Click -= bBuscar_Click;       // desengancha handler viejo si estaba
-            BAbrirImagen.Click -= bBuscar_Click;             // evita doble wiring en abrir imagen
+            BAbrirImagen.Click -= BAbrirImagen_Click;
+            BAbrirImagen.Click += BAbrirImagen_Click;
 
-            // engancha handlers correctos
-            BAbrirImagen.Click -= BAbrirImagen_Click;   // evita doble suscripcion
-            BAbrirImagen.Click += BAbrirImagen_Click;   // abre explorador para imagen
+            BRegistrarProducto.Click -= BRegistrarProducto_Click;
+            BRegistrarProducto.Click += BRegistrarProducto_Click;
 
-            BRegistrarProducto.Click -= BRegistrarProducto_Click; // evita doble suscripcion
-            BRegistrarProducto.Click += BRegistrarProducto_Click; // guarda alta o edicion
+            if (BSalir != null) { BSalir.Click -= BSalir_Click; BSalir.Click += BSalir_Click; }
 
-            if (BSalir != null)
-            {
-                BSalir.Click -= BSalir_Click; // evita doble suscripcion
-                BSalir.Click += BSalir_Click; // cierra solo este formulario
-            }
+            TBPrecioVentaProducto.KeyPress -= TBPrecioVentaProducto_KeyPressSoloNumeroDecimal;
+            TBPrecioVentaProducto.KeyPress += TBPrecioVentaProducto_KeyPressSoloNumeroDecimal;
 
-            // restricciones de entrada en precio y cantidad
-            TBPrecioVentaProducto.KeyPress -= TBPrecioVentaProducto_KeyPressSoloNumeroDecimal; // evita doble wiring
-            TBPrecioVentaProducto.KeyPress += TBPrecioVentaProducto_KeyPressSoloNumeroDecimal; // restringe a numero decimal
-
-            TBCantidadProducto.KeyPress -= TBCantidadProducto_KeyPressSoloEntero; // evita doble wiring
-            TBCantidadProducto.KeyPress += TBCantidadProducto_KeyPressSoloEntero; // restringe a entero
+            TBCantidadProducto.KeyPress -= TBCantidadProducto_KeyPressSoloEntero;
+            TBCantidadProducto.KeyPress += TBCantidadProducto_KeyPressSoloEntero;
         }
 
         private void PrepararControles()
         {
-            // configura controles base
-            if (DTPFechaAlta != null) DTPFechaAlta.Value = DateTime.Today; // setea fecha por defecto
+            if (DTPFechaAlta != null) DTPFechaAlta.Value = DateTime.Today;
 
             if (CBGeneroProducto != null)
             {
-                CBGeneroProducto.DropDownStyle = ComboBoxStyle.DropDownList; // obliga a elegir de la lista
-                CBGeneroProducto.MaxDropDownItems = 4; // muestra maximo 4 sin scroll
-                CBGeneroProducto.SelectedIndex = -1; // sin seleccion
+                CBGeneroProducto.DropDownStyle = ComboBoxStyle.DropDownList;
+                CBGeneroProducto.SelectedIndex = -1;
             }
-
             if (CBProveedorProducto != null)
             {
-                CBProveedorProducto.DropDownStyle = ComboBoxStyle.DropDownList; // obliga a elegir de la lista
-                CBProveedorProducto.MaxDropDownItems = 4; // muestra maximo 4 sin scroll
-                CBProveedorProducto.SelectedIndex = -1; // sin seleccion
-            }
-        }
-
-        private void CargarCategorias()
-        {
-            // carga generos desde la tabla categoria
-            try
-            {
-                using (var cn = NuevaConexion())
-                using (var da = new SqlDataAdapter("SELECT id_categoria, nombre FROM dbo.categoria ORDER BY nombre", cn))
-                {
-                    var dt = new DataTable(); // tabla en memoria
-                    da.Fill(dt); // llena tabla
-                    CBGeneroProducto.DisplayMember = "nombre"; // muestra nombre
-                    CBGeneroProducto.ValueMember = "id_categoria"; // valor es id
-                    CBGeneroProducto.DataSource = dt; // asigna datasource
-                    CBGeneroProducto.SelectedIndex = -1; // sin seleccion
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"error al cargar generos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); // muestra error
+                CBProveedorProducto.DropDownStyle = ComboBoxStyle.DropDownList;
+                CBProveedorProducto.SelectedIndex = -1;
             }
         }
 
         private void CargarProveedores()
         {
-            // carga proveedores activos si existe la columna activo, sino carga todos
             try
             {
                 using (var cn = NuevaConexion())
-                using (var da = new SqlDataAdapter("SELECT id_proveedor, nombre FROM dbo.proveedor WHERE activo = 1 ORDER BY nombre", cn))
+                using (var da = new SqlDataAdapter("select id_proveedor, nombre from dbo.proveedor where activo = 1 order by nombre", cn))
                 {
-                    var dt = new DataTable(); // tabla para proveedores
-                    try
-                    {
-                        da.Fill(dt); // intenta con filtro activo
-                    }
+                    var dt = new DataTable();
+                    try { da.Fill(dt); }
                     catch (SqlException)
                     {
-                        da.SelectCommand.CommandText = "SELECT id_proveedor, nombre FROM dbo.proveedor ORDER BY nombre"; // fallback sin activo
-                        dt.Clear(); // limpia
-                        da.Fill(dt); // vuelve a llenar
+                        da.SelectCommand.CommandText = "select id_proveedor, nombre from dbo.proveedor order by nombre";
+                        dt.Clear(); da.Fill(dt);
                     }
-
-                    CBProveedorProducto.DisplayMember = "nombre"; // muestra nombre
-                    CBProveedorProducto.ValueMember = "id_proveedor"; // valor es id
-                    CBProveedorProducto.DataSource = dt; // asigna datasource
-                    CBProveedorProducto.SelectedIndex = -1; // arranca sin seleccion
+                    CBProveedorProducto.DisplayMember = "nombre";
+                    CBProveedorProducto.ValueMember = "id_proveedor";
+                    CBProveedorProducto.DataSource = dt;
+                    CBProveedorProducto.SelectedIndex = -1;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"error al cargar proveedores: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); // muestra error
+                MessageBox.Show($"error al cargar proveedores: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void BAbrirImagen_Click(object sender, EventArgs e)
         {
-            // abre explorador y previsualiza imagen
+            // abre explorador y copia imagen a carpeta Fotos si es necesario
             using (var ofd = new OpenFileDialog
             {
                 Filter = "Imagenes|*.jpg;*.jpeg;*.png;*.gif;*.bmp",
@@ -151,257 +119,443 @@ namespace PuntoDeVentaGameBox.Gerente
             {
                 if (ofd.ShowDialog(this) == DialogResult.OK)
                 {
-                    TBDireccionImagen.Text = ofd.FileName; // setea ruta
-                    PBImagenProducto.ImageLocation = ofd.FileName; // muestra imagen
+                    string origen = ofd.FileName; // ruta original
+                    string nombreArchivo = Path.GetFileName(origen); // solo nombre
+
+                    // ruta destino en carpeta Fotos
+                    string carpetaFotos = Path.Combine(Application.StartupPath, @"..\Fotos");
+                    string destino = Path.GetFullPath(Path.Combine(carpetaFotos, nombreArchivo));
+
+                    try
+                    {
+                        // crea carpeta si no existe
+                        if (!Directory.Exists(carpetaFotos))
+                            Directory.CreateDirectory(carpetaFotos);
+
+                        // copia si no existe ya
+                        if (!File.Exists(destino))
+                            File.Copy(origen, destino);
+
+                        // actualiza textbox y preview con ruta final
+                        PBImagenProducto.ImageLocation = destino;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"error al copiar imagen: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
 
+
         private void CargarProducto(int id)
         {
-            // carga datos del producto para edicion
             try
             {
-                using (var cn = NuevaConexion()) // abre conexion
+                using (var cn = NuevaConexion())
                 using (var cmd = cn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT nombre, descripcion, precio_venta, cantidad_stock, url_imagen,
-                               fecha_alta, id_proveedor, id_categoria
-                        FROM dbo.producto
-                        WHERE id_producto = @id"; // consulta por id
-                    cmd.Parameters.AddWithValue("@id", id); // setea id
-                    cn.Open(); // abre conexion
-                    using (var rd = cmd.ExecuteReader()) // ejecuta reader
+                        select nombre, descripcion, precio_venta, cantidad_stock, url_imagen,
+                               fecha_alta, id_proveedor
+                        from dbo.producto
+                        where id_producto = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cn.Open();
+                    using (var rd = cmd.ExecuteReader())
                     {
                         if (rd.Read())
                         {
-                            TBNombreProducto.Text = rd["nombre"]?.ToString(); // llena nombre
-                            TBDescripcionProducto.Text = rd["descripcion"]?.ToString(); // llena descripcion
-                            TBPrecioVentaProducto.Text = Convert.ToDecimal(rd["precio_venta"]).ToString("0.##"); // llena precio
-                            TBCantidadProducto.Text = rd["cantidad_stock"]?.ToString(); // llena stock
-                            TBDireccionImagen.Text = rd["url_imagen"]?.ToString(); // llena ruta imagen
-
-                            if (rd["fecha_alta"] != DBNull.Value)
-                                DTPFechaAlta.Value = Convert.ToDateTime(rd["fecha_alta"]); // setea fecha alta
-                            else
-                                DTPFechaAlta.Value = DateTime.Today; // por defecto
-
-                            if (rd["id_categoria"] != DBNull.Value)
-                                CBGeneroProducto.SelectedValue = Convert.ToInt32(rd["id_categoria"]); // selecciona categoria
-                            else
-                                CBGeneroProducto.SelectedIndex = -1; // sin seleccion
-
-                            if (rd["id_proveedor"] != DBNull.Value)
-                                CBProveedorProducto.SelectedValue = Convert.ToInt32(rd["id_proveedor"]); // selecciona proveedor
-                            else
-                                CBProveedorProducto.SelectedIndex = -1; // sin seleccion
-
-                            var ruta = TBDireccionImagen.Text; // toma ruta
-                            PBImagenProducto.ImageLocation = File.Exists(ruta) ? ruta : null; // muestra imagen si existe
+                            TBNombreProducto.Text = rd["nombre"]?.ToString();
+                            TBDescripcionProducto.Text = rd["descripcion"]?.ToString();
+                            TBPrecioVentaProducto.Text = Convert.ToDecimal(rd["precio_venta"]).ToString("0.##");
+                            TBCantidadProducto.Text = rd["cantidad_stock"]?.ToString();
+                            _rutaImagen = rd["url_imagen"] as string;
+                            if (rd["fecha_alta"] != DBNull.Value) DTPFechaAlta.Value = Convert.ToDateTime(rd["fecha_alta"]);
+                            if (rd["id_proveedor"] != DBNull.Value) CBProveedorProducto.SelectedValue = Convert.ToInt32(rd["id_proveedor"]);
+                            PBImagenProducto.ImageLocation = File.Exists(_rutaImagen ?? "") ? _rutaImagen : null;
                         }
                     }
+                }
+                // marcas iniciales de categorias
+                using (var cn = NuevaConexion())
+                using (var da = new SqlDataAdapter(@"select id_categoria from dbo.producto_categoria where id_producto = @id", cn))
+                {
+                    da.SelectCommand.Parameters.AddWithValue("@id", id);
+                    var dt = new DataTable(); da.Fill(dt);
+                    var ids = new List<int>();
+                    foreach (DataRow r in dt.Rows) ids.Add(Convert.ToInt32(r["id_categoria"]));
+                    _mc.SetSeleccionInicial(ids);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"error al cargar producto: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); // muestra error
+                MessageBox.Show($"error al cargar producto: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void BRegistrarProducto_Click(object sender, EventArgs e)
         {
-            // decide entre alta o edicion segun _idEditar
-            if (!ValidarFormulario(out var precio, out var stock, out var prov, out var cat)) return; // valida formulario
+            if (!ValidarFormulario(out var precio, out var stock, out var provId)) return;
 
             if (_idEditar == null)
-                InsertarProducto(precio, stock, prov, cat); // alta
+                InsertarProducto(precio, stock, provId);
             else
-                ActualizarProducto(_idEditar.Value, precio, stock, prov, cat); // edicion
+                ActualizarProducto(_idEditar.Value, precio, stock, provId);
         }
 
-        // ==================== validaciones y restricciones ====================
-
+        // ===== validaciones =====
         private void TBCantidadProducto_KeyPressSoloEntero(object sender, KeyPressEventArgs e)
-        {
-            // permite solo numeros y teclas de control
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-                e.Handled = true; // bloquea caracter no numerico
-        }
+        { if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar)) e.Handled = true; }
 
         private void TBPrecioVentaProducto_KeyPressSoloNumeroDecimal(object sender, KeyPressEventArgs e)
         {
-            // permite digitos, coma, punto y teclas de control
-            if (char.IsControl(e.KeyChar)) return; // deja backspace etc
-            if (char.IsDigit(e.KeyChar)) return; // deja digitos
-
-            // permite un unico separador decimal . o ,
-            if ((e.KeyChar == ',' || e.KeyChar == '.') &&
-                (sender as TextBox).Text.IndexOfAny(new[] { ',', '.' }) == -1)
-                return; // permite primer separador
-
-            e.Handled = true; // bloquea lo demas
+            if (char.IsControl(e.KeyChar) || char.IsDigit(e.KeyChar)) return;
+            if ((e.KeyChar == ',' || e.KeyChar == '.') && (sender as TextBox).Text.IndexOfAny(new[] { ',', '.' }) == -1) return;
+            e.Handled = true;
         }
 
         private bool TryParsePrecio(string txt, out decimal value)
         {
-            // intenta parsear precio respetando coma o punto
             txt = (txt ?? "").Trim();
-            // primero intenta con cultura actual
             if (decimal.TryParse(txt, NumberStyles.Number, CultureInfo.CurrentCulture, out value)) return true;
-            // reemplaza punto por coma y vuelve a intentar
             var alt = txt.Replace(".", ",");
             if (decimal.TryParse(alt, NumberStyles.Number, new CultureInfo("es-AR"), out value)) return true;
-            // intenta invariante por si acaso
             return decimal.TryParse(txt, NumberStyles.Number, CultureInfo.InvariantCulture, out value);
         }
 
-        private bool ValidarFormulario(out decimal precio, out int stock, out int? prov, out int? cat)
+        private bool ValidarFormulario(out decimal precio, out int stock, out int? prov)
         {
-            // valida datos obligatorios y parsea numericos
-            precio = 0m; stock = 0; prov = null; cat = null; // inicializa
+            precio = 0m; stock = 0; prov = null;
 
             if (string.IsNullOrWhiteSpace(TBNombreProducto.Text))
-            {
-                MessageBox.Show("nombre es obligatorio", "Validacion", MessageBoxButtons.OK, MessageBoxIcon.Warning); // valida nombre
-                return false;
-            }
+            { MessageBox.Show("nombre es obligatorio", "Validacion", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
 
-            // usa parser tolerante a coma o punto y valida >= 0
             if (!TryParsePrecio(TBPrecioVentaProducto.Text, out precio) || precio < 0)
-            {
-                MessageBox.Show("precio invalido", "Validacion", MessageBoxButtons.OK, MessageBoxIcon.Warning); // valida precio
-                return false;
-            }
+            { MessageBox.Show("precio invalido", "Validacion", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
 
-            // cantidad entero y >= 0
             if (!int.TryParse(TBCantidadProducto.Text, out stock) || stock < 0)
+            { MessageBox.Show("stock debe ser entero y mayor o igual a 0", "Validacion", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
+
+            if (CBProveedorProducto.SelectedValue != null && int.TryParse(CBProveedorProducto.SelectedValue.ToString(), out var p))
+                prov = p;
+
+            if (_mc.ObtenerSeleccion().Count == 0)
             {
-                MessageBox.Show("stock debe ser entero y mayor o igual a 0", "Validacion", MessageBoxButtons.OK, MessageBoxIcon.Warning); // valida stock
-                return false;
+                var r = MessageBox.Show("no se seleccionaron generos, continuar igual?", "Aviso", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (r == DialogResult.No) return false;
             }
-
-            // toma proveedor del combo si esta seleccionado
-            if (CBProveedorProducto.SelectedValue != null && int.TryParse(CBProveedorProducto.SelectedValue.ToString(), out var provId))
-                prov = provId; // setea id de proveedor
-
-            // toma categoria del combo si esta seleccionada
-            if (CBGeneroProducto.SelectedValue != null && int.TryParse(CBGeneroProducto.SelectedValue.ToString(), out var catId))
-                cat = catId; // setea id de categoria
-
-            return true; // validaciones correctas
+            return true;
         }
 
-        private void InsertarProducto(decimal precio, int stock, int? prov, int? cat)
+        // ===== persistencia =====
+        private void InsertarProducto(decimal precio, int stock, int? prov)
         {
-            // inserta nuevo producto
             try
             {
-                using (var cn = NuevaConexion()) // abre conexion
-                using (var cmd = cn.CreateCommand())
+                using (var cn = NuevaConexion())
                 {
-                    cn.Open(); // abre conexion
+                    cn.Open();
+                    using (var tx = cn.BeginTransaction())
+                    using (var cmd = cn.CreateCommand())
+                    {
+                        cmd.Transaction = tx;
 
-                    cmd.CommandText = @"
-                        INSERT INTO dbo.producto
-                            (nombre, descripcion, precio_venta, cantidad_stock, url_imagen, fecha_alta, fecha_edicion, id_proveedor, id_categoria, activo)
-                        VALUES
-                            (@nombre, @descripcion, @precio, @stock, @img, @falta, NULL, @prov, @cat, 1)"; // insert parametrizado
+                        cmd.CommandText = @"
+                            insert into dbo.producto
+                                (nombre, descripcion, precio_venta, cantidad_stock, url_imagen, fecha_alta, fecha_edicion, id_proveedor, activo)
+                            values
+                                (@nombre, @descripcion, @precio, @stock, @img, @falta, null, @prov, 1);
+                            select cast(SCOPE_IDENTITY() as int);";
 
-                    cmd.Parameters.AddWithValue("@nombre", TBNombreProducto.Text.Trim()); // setea nombre
-                    cmd.Parameters.AddWithValue("@descripcion", (object)(TBDescripcionProducto.Text ?? "").Trim()); // setea descripcion
-                    cmd.Parameters.AddWithValue("@precio", precio); // setea precio
-                    cmd.Parameters.AddWithValue("@stock", stock); // setea stock
-                    cmd.Parameters.AddWithValue("@img", string.IsNullOrWhiteSpace(TBDireccionImagen.Text) ? (object)DBNull.Value : TBDireccionImagen.Text.Trim()); // setea imagen
+                        cmd.Parameters.AddWithValue("@nombre", TBNombreProducto.Text.Trim());
+                        cmd.Parameters.AddWithValue("@descripcion", (object)(TBDescripcionProducto.Text ?? "").Trim());
+                        cmd.Parameters.AddWithValue("@precio", precio);
+                        cmd.Parameters.AddWithValue("@stock", stock);
+                        cmd.Parameters.AddWithValue("@img", string.IsNullOrWhiteSpace(_rutaImagen) ? (object)DBNull.Value : _rutaImagen);
+                        var pFecha = cmd.Parameters.Add("@falta", SqlDbType.Date); pFecha.Value = DTPFechaAlta.Value.Date;
+                        cmd.Parameters.AddWithValue("@prov", (object)prov ?? DBNull.Value);
 
-                    var pFecha = cmd.Parameters.Add("@falta", SqlDbType.Date); // crea parametro date
-                    pFecha.Value = DTPFechaAlta.Value.Date; // setea solo la fecha
+                        var nuevoId = (int)cmd.ExecuteScalar();
 
-                    cmd.Parameters.AddWithValue("@prov", (object)prov ?? DBNull.Value); // setea proveedor seleccionado
-                    cmd.Parameters.AddWithValue("@cat", (object)cat ?? DBNull.Value); // setea categoria
+                        // inserta categorias elegidas
+                        cmd.Parameters.Clear();
+                        cmd.CommandText = "insert into dbo.producto_categoria(id_producto, id_categoria) values (@p,@c);";
+                        cmd.Parameters.Add("@p", SqlDbType.Int).Value = nuevoId;
+                        var pCat = cmd.Parameters.Add("@c", SqlDbType.Int);
 
-                    cmd.ExecuteNonQuery(); // ejecuta insert
+                        foreach (var idCat in _mc.ObtenerSeleccion())
+                        { pCat.Value = idCat; cmd.ExecuteNonQuery(); }
+
+                        tx.Commit();
+                    }
                 }
-
-                MessageBox.Show("producto creado", "Ok", MessageBoxButtons.OK, MessageBoxIcon.Information); // muestra exito
-                this.DialogResult = DialogResult.OK; // devuelve ok al inventario
-                this.Close(); // cierra formulario
+                MessageBox.Show("producto creado", "Ok", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"error al crear producto: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); // muestra error
+                MessageBox.Show($"error al crear producto: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void ActualizarProducto(int id, decimal precio, int stock, int? prov, int? cat)
+        private void ActualizarProducto(int id, decimal precio, int stock, int? prov)
         {
-            // actualiza un producto existente
             try
             {
-                using (var cn = NuevaConexion()) // abre conexion
-                using (var cmd = cn.CreateCommand())
+                using (var cn = NuevaConexion())
                 {
-                    cn.Open(); // abre conexion
+                    cn.Open();
+                    using (var tx = cn.BeginTransaction())
+                    using (var cmd = cn.CreateCommand())
+                    {
+                        cmd.Transaction = tx;
 
-                    cmd.CommandText = @"
-                        UPDATE dbo.producto
-                        SET nombre = @nombre,
-                            descripcion = @descripcion,
-                            precio_venta = @precio,
-                            cantidad_stock = @stock,
-                            url_imagen = @img,
-                            fecha_edicion = GETDATE(),
-                            id_proveedor = @prov,
-                            id_categoria = @cat
-                        WHERE id_producto = @id"; // update parametrizado
+                        cmd.CommandText = @"
+                            update dbo.producto
+                            set nombre = @nombre,
+                                descripcion = @descripcion,
+                                precio_venta = @precio,
+                                cantidad_stock = @stock,
+                                url_imagen = @img,
+                                fecha_edicion = GETDATE(),
+                                id_proveedor = @prov
+                            where id_producto = @id;";
+                        cmd.Parameters.AddWithValue("@nombre", TBNombreProducto.Text.Trim());
+                        cmd.Parameters.AddWithValue("@descripcion", (object)(TBDescripcionProducto.Text ?? "").Trim());
+                        cmd.Parameters.AddWithValue("@precio", precio);
+                        cmd.Parameters.AddWithValue("@stock", stock);
+                        cmd.Parameters.AddWithValue("@img", string.IsNullOrWhiteSpace(_rutaImagen) ? (object)DBNull.Value : _rutaImagen);
+                        cmd.Parameters.AddWithValue("@prov", (object)prov ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@id", id);
+                        cmd.ExecuteNonQuery();
 
-                    cmd.Parameters.AddWithValue("@nombre", TBNombreProducto.Text.Trim()); // setea nombre
-                    cmd.Parameters.AddWithValue("@descripcion", (object)(TBDescripcionProducto.Text ?? "").Trim()); // setea descripcion
-                    cmd.Parameters.AddWithValue("@precio", precio); // setea precio
-                    cmd.Parameters.AddWithValue("@stock", stock); // setea stock
-                    cmd.Parameters.AddWithValue("@img", string.IsNullOrWhiteSpace(TBDireccionImagen.Text) ? (object)DBNull.Value : TBDireccionImagen.Text.Trim()); // setea imagen
-                    cmd.Parameters.AddWithValue("@prov", (object)prov ?? DBNull.Value); // setea proveedor seleccionado
-                    cmd.Parameters.AddWithValue("@cat", (object)cat ?? DBNull.Value); // setea categoria
-                    cmd.Parameters.AddWithValue("@id", id); // setea id
+                        // reemplaza categorias
+                        cmd.Parameters.Clear();
+                        cmd.CommandText = "delete from dbo.producto_categoria where id_producto = @p;";
+                        cmd.Parameters.Add("@p", SqlDbType.Int).Value = id;
+                        cmd.ExecuteNonQuery();
 
-                    cmd.ExecuteNonQuery(); // ejecuta update
+                        cmd.Parameters.Clear();
+                        cmd.CommandText = "insert into dbo.producto_categoria(id_producto, id_categoria) values (@p,@c);";
+                        cmd.Parameters.Add("@p", SqlDbType.Int).Value = id;
+                        var pCat = cmd.Parameters.Add("@c", SqlDbType.Int);
+                        foreach (var idCat in _mc.ObtenerSeleccion())
+                        { pCat.Value = idCat; cmd.ExecuteNonQuery(); }
+
+                        tx.Commit();
+                    }
                 }
-
-                MessageBox.Show("producto actualizado", "Ok", MessageBoxButtons.OK, MessageBoxIcon.Information); // muestra exito
-                this.DialogResult = DialogResult.OK; // devuelve ok al inventario
-                this.Close(); // cierra formulario
+                MessageBox.Show("producto actualizado", "Ok", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"error al actualizar producto: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); // muestra error
+                MessageBox.Show($"error al actualizar producto: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void BSalir_Click(object sender, EventArgs e)
+        private void BSalir_Click(object sender, EventArgs e) => this.Close();
+
+        // ===== helper interno (ui dropdown con checks) =====
+        // convierte un combobox en un selector multiple usando checkedlistbox en un dropdown
+        // ===== helper interno MULTICATEGORÍA (sin BeginInvoke) =====
+        // ===== Helper multi-categoría (scroll real, sin desbordes, selección inmediata) =====
+        // ===== Helper multi-categoría (scroll real, sin desbordes, selección inmediata) =====
+        // ===== Helper multi-categoría (idéntico al de Inventario, con scroll real y selección inmediata) =====
+        // ===== Helper multi-categoría (idéntico a Inventario, FIX: sin cerrar en Leave) =====
+        // ===== Helper multi-categoría (idéntico a Inventario, scroll real y selección inmediata) =====
+        private sealed class MultiCategoriaHelper
         {
-            // cierra solo este formulario
-            this.Close(); // cierra la ventana actual
+            private sealed class CatItem
+            {
+                public int Id { get; }
+                public string Nombre { get; }
+                public CatItem(int id, string nombre) { Id = id; Nombre = nombre; }
+                public override string ToString() => Nombre;
+            }
+
+            private readonly string _connString;
+            private readonly ComboBox _combo;
+            private readonly HashSet<int> _seleccion = new HashSet<int>();
+            private readonly List<CatItem> _items = new List<CatItem>();
+
+            private readonly ToolStripDropDown _drop = new ToolStripDropDown();
+            private readonly CheckedListBox _clb = new CheckedListBox();
+            private readonly ToolStripControlHost _host;
+
+            private const float FONT_PT = 11.0f;
+            private const int ITEM_H = 22;
+            private const int MAX_HEIGHT = 180;
+            private const int MIN_HEIGHT = 120;
+            private const int MARGIN = 8;
+
+            private bool _silencio = false;
+
+            public MultiCategoriaHelper(string connString, ComboBox combo)
+            {
+                _connString = connString;
+                _combo = combo;
+
+                _combo.DropDownStyle = ComboBoxStyle.DropDownList;
+                _combo.Items.Clear();
+                _combo.SelectedIndex = -1;
+                _combo.Text = "Seleccionar géneros…";
+                _combo.Cursor = Cursors.Hand;
+
+                // CheckedListBox con scroll real (no se estira)
+                _clb.CheckOnClick = true;
+                _clb.BorderStyle = BorderStyle.None;
+                _clb.IntegralHeight = false;
+                _clb.Font = new Font(_combo.Font.FontFamily, FONT_PT, FontStyle.Regular);
+                _clb.ItemHeight = Math.Max(_clb.ItemHeight, ITEM_H);
+                _clb.HorizontalScrollbar = true;
+
+                _clb.ItemCheck += (s, e) =>
+                {
+                    if (_silencio) return;
+                    var it = (CatItem)_clb.Items[e.Index];
+                    if (e.NewValue == CheckState.Checked) _seleccion.Add(it.Id);
+                    else _seleccion.Remove(it.Id);
+                    ActualizarTextoCombo();
+                };
+                _clb.PreviewKeyDown += (s, e) => { if (e.KeyCode == Keys.Escape) _drop.Close(); };
+
+                _host = new ToolStripControlHost(_clb)
+                { Padding = Padding.Empty, Margin = Padding.Empty, AutoSize = false };
+
+                _drop.Padding = Padding.Empty;
+                _drop.Items.Add(_host);
+                _drop.AutoClose = true; // clic afuera => cerrar
+
+                // Abrir con un tap (y sin cerrar en Leave para no auto-cancelar)
+                _combo.MouseUp += (s, e) => { if (!_drop.Visible) OpenDropFitted(); };
+                _combo.Click += (s, e) => { if (!_drop.Visible) OpenDropFitted(); };
+
+                _combo.SizeChanged += (s, e) => { if (_drop.Visible) _drop.Close(); };
+                _combo.LocationChanged += (s, e) => { if (_drop.Visible) _drop.Close(); };
+                _combo.ParentChanged += (s, e) =>
+                {
+                    if (_combo.Parent != null)
+                        _combo.Parent.VisibleChanged += (s2, e2) => { if (_drop.Visible) _drop.Close(); };
+                };
+                var form = _combo.FindForm();
+                if (form != null)
+                    form.Deactivate += (s, e) => { if (_drop.Visible) _drop.Close(); };
+            }
+
+            private void OpenDropFitted()
+            {
+                var form = _combo.FindForm();
+                if (form == null) return;
+
+                Rectangle formScreen = form.RectangleToScreen(form.ClientRectangle);
+                Point comboScreen = _combo.PointToScreen(new Point(0, 0));
+
+                int spaceBelow = formScreen.Bottom - (comboScreen.Y + _combo.Height) - MARGIN;
+                int spaceAbove = (comboScreen.Y - formScreen.Top) - MARGIN;
+
+                int width = Math.Max(_combo.ClientSize.Width, 200);
+                int desired;
+                bool openUp;
+
+                if (spaceBelow >= MIN_HEIGHT) { desired = Math.Min(MAX_HEIGHT, spaceBelow); openUp = false; }
+                else if (spaceAbove >= MIN_HEIGHT) { desired = Math.Min(MAX_HEIGHT, spaceAbove); openUp = true; }
+                else
+                {
+                    if (spaceAbove > spaceBelow) { desired = Math.Max(MIN_HEIGHT, Math.Max(0, spaceAbove)); openUp = true; }
+                    else { desired = Math.Max(MIN_HEIGHT, Math.Max(0, spaceBelow)); openUp = false; }
+                }
+
+                _host.Size = new Size(width, desired);
+                _clb.Size = _host.Size;
+
+                var offset = openUp ? new Point(0, -desired - 2) : new Point(0, _combo.Height - 1);
+                _drop.Show(_combo, offset);
+                _clb.Focus();
+            }
+
+            public void CargarDesdeBd()
+            {
+                _items.Clear();
+                _clb.Items.Clear();
+
+                using (var cn = new SqlConnection(_connString))
+                using (var da = new SqlDataAdapter("SELECT id_categoria, nombre FROM dbo.categoria ORDER BY nombre", cn))
+                {
+                    var dt = new DataTable();
+                    da.Fill(dt);
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        var it = new CatItem(Convert.ToInt32(r["id_categoria"]), Convert.ToString(r["nombre"]));
+                        _items.Add(it);
+                        _clb.Items.Add(it, _seleccion.Contains(it.Id));
+                    }
+                }
+                ActualizarTextoCombo();
+            }
+
+            public void SetSeleccionInicial(IEnumerable<int> ids)
+            {
+                _seleccion.Clear();
+                foreach (var id in ids) _seleccion.Add(id);
+
+                _silencio = true;
+                for (int i = 0; i < _clb.Items.Count; i++)
+                {
+                    var it = (CatItem)_clb.Items[i];
+                    _clb.SetItemChecked(i, _seleccion.Contains(it.Id));
+                }
+                _silencio = false;
+
+                ActualizarTextoCombo();
+            }
+
+            public IReadOnlyCollection<int> ObtenerSeleccion() => _seleccion;
+
+            private void ActualizarTextoCombo()
+            {
+                if (_seleccion.Count == 0) { _combo.Text = "Seleccionar géneros…"; return; }
+
+                var nombres = new List<string>();
+                foreach (var it in _items) if (_seleccion.Contains(it.Id)) nombres.Add(it.Nombre);
+                nombres.Sort(StringComparer.CurrentCultureIgnoreCase);
+
+                _combo.Text = (nombres.Count <= 2)
+                    ? string.Join(", ", nombres)
+                    : string.Join(", ", nombres.Take(2)) + $" +{nombres.Count - 2}";
+            }
         }
 
-        // ====== stubs para eventos del disenador que pueden seguir conectados ======
 
+
+
+
+
+
+        // stubs viejos
         private void dateTimePicker2_ValueChanged(object sender, EventArgs e) { }
         private void panel3_Paint(object sender, PaintEventArgs e) { }
         private void PBImagenProducto_Click(object sender, EventArgs e) { }
-        private void TBDireccionImagen_TextChanged(object sender, EventArgs e) { }
-        private void button2_Click(object sender, EventArgs e) { }
-        private void PDatosProductos_Paint(object sender, PaintEventArgs e) { }
         private void label9_Click(object sender, EventArgs e) { }
         private void LFechaAlta_Click(object sender, EventArgs e) { }
         private void LDescripcion_Click(object sender, EventArgs e) { }
         private void TBNombreProducto_TextChanged(object sender, EventArgs e) { }
         private void TBPrecioVentaProducto_TextChanged(object sender, EventArgs e) { }
-        private void bBuscar_Click(object sender, EventArgs e) { BAbrirImagen_Click(sender, e); }
         private void AgregarProducto_Load(object sender, EventArgs e) { }
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) { }
+
+        // stubs viejos del diseñador, para que no rompa
+        private void button2_Click(object sender, EventArgs e) { /* sin uso */ }
+
+        private void bBuscar_Click(object sender, EventArgs e)
         {
-            // evento viejo del disenador sin uso
+            // reusa el boton correcto de abrir imagen
+            BAbrirImagen_Click(sender, e);
         }
 
+        private void PDatosProductos_Paint(object sender, PaintEventArgs e) { /* sin uso */ }
     }
 }
