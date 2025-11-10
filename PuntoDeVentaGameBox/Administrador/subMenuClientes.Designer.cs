@@ -65,7 +65,7 @@
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button1.Location = new System.Drawing.Point(507, 155);
+            this.button1.Location = new System.Drawing.Point(479, 155);
             this.button1.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(197, 39);
@@ -80,10 +80,10 @@
             this.bClientesDadoDeBaja.FlatAppearance.BorderSize = 0;
             this.bClientesDadoDeBaja.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bClientesDadoDeBaja.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.bClientesDadoDeBaja.Location = new System.Drawing.Point(709, 155);
+            this.bClientesDadoDeBaja.Location = new System.Drawing.Point(681, 155);
             this.bClientesDadoDeBaja.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.bClientesDadoDeBaja.Name = "bClientesDadoDeBaja";
-            this.bClientesDadoDeBaja.Size = new System.Drawing.Size(250, 39);
+            this.bClientesDadoDeBaja.Size = new System.Drawing.Size(270, 39);
             this.bClientesDadoDeBaja.TabIndex = 48;
             this.bClientesDadoDeBaja.Text = "Buscar Clientes Dados de Baja";
             this.bClientesDadoDeBaja.UseVisualStyleBackColor = false;
@@ -182,6 +182,7 @@
             this.tbTelefono.Name = "tbTelefono";
             this.tbTelefono.Size = new System.Drawing.Size(181, 22);
             this.tbTelefono.TabIndex = 35;
+            this.tbTelefono.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSoloNumeros_KeyPress);
             // 
             // label3
             // 
@@ -212,6 +213,7 @@
             this.tbBusquedaDNI.Name = "tbBusquedaDNI";
             this.tbBusquedaDNI.Size = new System.Drawing.Size(181, 22);
             this.tbBusquedaDNI.TabIndex = 35;
+            this.tbBusquedaDNI.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSoloNumeros_KeyPress);
             // 
             // LSub
             // 
@@ -265,7 +267,7 @@
             this.button3.FlatAppearance.BorderSize = 0;
             this.button3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button3.Location = new System.Drawing.Point(361, 155);
+            this.button3.Location = new System.Drawing.Point(333, 155);
             this.button3.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(141, 39);
@@ -280,7 +282,7 @@
             this.bBuscar.FlatAppearance.BorderSize = 0;
             this.bBuscar.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bBuscar.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.bBuscar.Location = new System.Drawing.Point(214, 155);
+            this.bBuscar.Location = new System.Drawing.Point(186, 155);
             this.bBuscar.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.bBuscar.Name = "bBuscar";
             this.bBuscar.Size = new System.Drawing.Size(141, 39);

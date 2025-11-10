@@ -98,6 +98,7 @@
             this.buttonClientes.TabIndex = 4;
             this.buttonClientes.Text = "Clientes";
             this.buttonClientes.UseVisualStyleBackColor = false;
+            this.buttonClientes.Click += new System.EventHandler(this.buttonClientes_Click);
             // 
             // button2
             // 

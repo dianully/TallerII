@@ -10,9 +10,7 @@ namespace PuntoDeVentaGameBox.Clases
 {
     public class Cliente
     {
-        // ====================================================================
-        // 1. PROPIEDADES (Modelo de Datos)
-        // ====================================================================
+
 
         public int IdCliente { get; set; }
         public string Nombre { get; set; }

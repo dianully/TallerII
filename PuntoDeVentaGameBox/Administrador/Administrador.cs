@@ -137,6 +137,11 @@ namespace PuntoDeVentaGameBox.Administrador
         {
 
         }
+
+        private void buttonClientes_Click(object sender, EventArgs e)
+        {
+            AbrirFormInPanel(new subMenuClientes());
+        }
     }
 }
 

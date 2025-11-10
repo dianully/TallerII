@@ -1,4 +1,5 @@
-﻿using PuntoDeVentaGameBox.Administrador;
+﻿using iTextSharp.text.xml;
+using PuntoDeVentaGameBox.Administrador;
 using PuntoDeVentaGameBox.Gerente;
 using PuntoDeVentaGameBox.Vendedor;
 using System;
@@ -316,6 +317,16 @@ namespace PuntoDeVentaGameBox.Administrador
         private void tEditarDni_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            tEditarContraseña.Clear();
+            tEditarApellido.Clear();
+            tEditarDni.Clear();
+            tEditarEmail.Clear();
+            tEditarTelefono.Clear();    
+            tEditarNombre.Clear();
         }
     }
 }

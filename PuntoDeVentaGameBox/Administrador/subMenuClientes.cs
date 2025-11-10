@@ -164,6 +164,11 @@ FROM
                 }
             }
 
+            if (dgvClientes.Columns[e.ColumnIndex].Name == "Editar")
+            {
+                    
+            }
+
             if (dgvClientes.Columns[e.ColumnIndex].Name == "Reingresar")
             {
                 int idCliente = Convert.ToInt32(dgvClientes.Rows[e.RowIndex].Cells["id_cliente"].Value);
@@ -368,6 +373,15 @@ FROM
                 MessageBox.Show("Error al buscar datos: " + ex.Message, "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
+        }
+
+        private void txtSoloNumeros_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
         }
     }
 }
