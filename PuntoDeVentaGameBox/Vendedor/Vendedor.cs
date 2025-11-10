@@ -136,18 +136,79 @@ namespace PuntoDeVentaGameBox.Vendedor
 
         private void dgvListaDeCompra_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && dgvListaDeCompra.Columns[e.ColumnIndex].Name == "Cantidad")
+            // Solo actuamos si el cambio es en una fila válida y en la columna "Cantidad"
+            if (e.RowIndex >= 0 && dgvListaDeCompra.Columns[e.ColumnIndex]?.Name == "Cantidad")
             {
                 var fila = dgvListaDeCompra.Rows[e.RowIndex];
                 var celdaCantidad = fila.Cells["Cantidad"].Value;
+                string nombreProducto = fila.Cells["Nombre"]?.Value?.ToString();
+
+                // 1. Validar que la nueva cantidad sea un número válido y mayor a cero
+                if (!int.TryParse(celdaCantidad?.ToString(), out int nuevaCantidad) || nuevaCantidad <= 0)
+                {
+                    MessageBox.Show("La cantidad debe ser un número entero mayor a cero.", "Error de Entrada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    fila.Cells["Cantidad"].Value = 1;
+                    nuevaCantidad = 1;
+                }
+
+                // =======================================================
+                // LÓGICA DE VERIFICACIÓN DE STOCK (SIN FUNCIÓN AUXILIAR)
+                // =======================================================
+                int stockActual = -1; // Inicializamos a un valor de error
+
+                if (!string.IsNullOrEmpty(nombreProducto))
+                {
+                    string consultaStock = "SELECT cantidad_stock FROM producto WHERE nombre = @nombre COLLATE Latin1_General_CI_AI";
+
+                    using (SqlConnection conexion = new SqlConnection(conecctionString))
+                    using (SqlCommand comando = new SqlCommand(consultaStock, conexion))
+                    {
+                        comando.Parameters.AddWithValue("@nombre", nombreProducto);
+                        try
+                        {
+                            conexion.Open();
+                            object resultado = comando.ExecuteScalar();
+
+                            if (resultado != null && resultado != DBNull.Value)
+                            {
+                                stockActual = Convert.ToInt32(resultado);
+                            }
+                            else
+                            {
+                                stockActual = 0; // Producto encontrado pero stock es nulo o 0
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            // Manejo de errores de base de datos
+                            MessageBox.Show("Error al obtener stock: " + ex.Message, "Error de BD", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return; // Detener el proceso por error crítico
+                        }
+                    }
+                }
+
+                // 2. Comprobar el Stock
+                if (stockActual != -1) // Si la consulta se ejecutó sin errores críticos
+                {
+                    if (nuevaCantidad > stockActual)
+                    {
+                        MessageBox.Show($"La cantidad solicitada ({nuevaCantidad}) supera el stock disponible ({stockActual}).", "Stock Insuficiente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        // RESTAURAR AL MÁXIMO STOCK PERMITIDO
+                        fila.Cells["Cantidad"].Value = stockActual;
+                        nuevaCantidad = stockActual; // Usamos el stock máximo para el cálculo
+                    }
+                }
+               
+
+
                 var celdaPrecio = fila.Cells["PrecioUnitario"].Value;
 
-                if (celdaCantidad != null && celdaPrecio != null)
+                if (celdaPrecio != null)
                 {
-                    if (int.TryParse(celdaCantidad.ToString(), out int cantidad) &&
-                        decimal.TryParse(celdaPrecio.ToString().Replace("$", "").Trim(), out decimal precioUnitario))
+                    if (decimal.TryParse(celdaPrecio.ToString().Replace("$", "").Trim(), out decimal precioUnitario))
                     {
-                        decimal nuevoTotal = cantidad * precioUnitario;
+                        decimal nuevoTotal = nuevaCantidad * precioUnitario;
                         fila.Cells["Total"].Value = nuevoTotal.ToString("C");
                         ActualizarTotal();
                     }
@@ -198,13 +259,26 @@ namespace PuntoDeVentaGameBox.Vendedor
                 return;
             }
 
-            if (!int.TryParse(tbCantidad.Text.Trim(), out int cantidad) || cantidad <= 0)
+            if (!int.TryParse(tbCantidad.Text.Trim(), out int cantidadSolicitada) || cantidadSolicitada <= 0)
             {
                 MessageBox.Show("Ingrese una cantidad válida mayor a cero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            string consulta = "SELECT precio_venta FROM producto WHERE nombre = @nombre COLLATE Latin1_General_CI_AI";
+            foreach (DataGridViewRow fila in dgvListaDeCompra.Rows)
+            {
+                if (fila.IsNewRow) continue;
+
+                // Asumiendo que la columna de nombre es la primera o se llama "Nombre"
+                if (fila.Cells["Nombre"]?.Value?.ToString().Equals(nombreProducto, StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    MessageBox.Show($"El producto '{nombreProducto}' ya se encuentra en la lista de compra. Para modificar la cantidad, edite la celda directamente.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return; // No permite agregarlo si ya existe
+                }
+            }
+
+            // 💡 MODIFICACIÓN: La consulta ahora pide el precio de venta Y la cantidad de stock
+            string consulta = "SELECT precio_venta, cantidad_stock FROM producto WHERE nombre = @nombre COLLATE Latin1_General_CI_AI";
 
             using (SqlConnection conexion = new SqlConnection(conecctionString))
             using (SqlCommand comando = new SqlCommand(consulta, conexion))
@@ -212,24 +286,36 @@ namespace PuntoDeVentaGameBox.Vendedor
                 comando.Parameters.AddWithValue("@nombre", nombreProducto);
                 conexion.Open();
 
-                object resultado = comando.ExecuteScalar();
-
-                if (resultado != null)
+                // Usamos ExecuteReader para obtener ambas columnas (precio y stock)
+                using (SqlDataReader reader = comando.ExecuteReader())
                 {
-                    decimal precioUnitario = Convert.ToDecimal(resultado);
-                    decimal total = precioUnitario * cantidad;
+                    if (reader.Read()) // Si se encontró el producto
+                    {
+                        decimal precioUnitario = reader.GetDecimal(reader.GetOrdinal("precio_venta"));
+                        int stockActual = reader.GetInt32(reader.GetOrdinal("cantidad_stock"));
 
-                    dgvListaDeCompra.Rows.Add(nombreProducto, precioUnitario.ToString("C"), cantidad, total.ToString("C"));
+                        // 💡 NUEVA LÓGICA DE VALIDACIÓN DE STOCK
+                        if (cantidadSolicitada > stockActual)
+                        {
+                            MessageBox.Show($"Stock insuficiente para el producto '{nombreProducto}'. Stock disponible: {stockActual}.", "Error de Stock", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return; // Detiene la adición si no hay stock suficiente
+                        }
 
-                    // Limpiar campos
-                    tbNombreProducto.Clear();
-                    tbCantidad.Clear();
-                }
-                else
-                {
-                    MessageBox.Show("No se encontró el producto en la base de datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+                        // Si el stock es suficiente, procedemos a agregar la fila
+                        decimal total = precioUnitario * cantidadSolicitada;
+
+                        dgvListaDeCompra.Rows.Add(nombreProducto, precioUnitario.ToString("C"), cantidadSolicitada, total.ToString("C"));
+
+                        // Limpiar campos
+                        tbNombreProducto.Clear();
+                        tbCantidad.Clear();
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se encontró el producto en la base de datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                } // El reader se cierra automáticamente aquí
+            } // La conexión se cierra automáticamente aquí
 
             ActualizarTotal();
         }
@@ -262,6 +348,39 @@ namespace PuntoDeVentaGameBox.Vendedor
             }
         }
 
+        private void tbMontoPagado_TextChanged(object sender, EventArgs e)
+        {
+            // 1. Verificar si el método de pago es 'Efectivo'
+            if (cbMetodoDePago.SelectedItem == null || cbMetodoDePago.SelectedItem.ToString() != "Efectivo")
+            {
+                tbCambio.Text = ""; // Limpiar si no es efectivo
+                return;
+            }
+
+            // 2. Obtener el Total de la Factura
+            decimal totalFactura = CalcularTotal();
+            decimal montoPagado;
+
+            // 3. Intentar convertir lo escrito a un número decimal
+            // Usamos .Replace('$', '') para limpiar cualquier formato que se haya puesto por error
+            string textoMonto = tbMontoPagado.Text.Trim().Replace("$", "");
+
+            if (decimal.TryParse(textoMonto, out montoPagado))
+            {
+                // 4. Calcular el cambio y mostrarlo
+                decimal cambio = montoPagado - totalFactura;
+
+                // Muestra el cambio. Se usa "C2" para formato de moneda con 2 decimales.
+                // Si el monto pagado es menor, el cambio será negativo, indicando que falta dinero.
+                tbCambio.Text = cambio.ToString("C2");
+            }
+            else
+            {
+                // Si el texto no es un número válido (ej: solo un punto, o letras), limpiar el campo de cambio.
+                tbCambio.Text = "";
+            }
+        }
+
         private void bBuscarCliente_Click(object sender, EventArgs e)
         {
             BuscarCliente pagina = new BuscarCliente();
@@ -277,10 +396,19 @@ namespace PuntoDeVentaGameBox.Vendedor
             }
 
             string dniCliente = tbDNI.Text.Trim();
-            if (string.IsNullOrEmpty(dniCliente))
+            int idCliente = 0; // 💡 Por defecto, la factura se asocia al ID 0 (Cliente Genérico)
+
+            if (!string.IsNullOrEmpty(dniCliente))
             {
-                MessageBox.Show("Debe ingresar el dni del cliente.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                // Si el usuario ingresó un DNI, intentamos encontrarlo
+                idCliente = ObtenerIdClientePorDNI(dniCliente);
+
+                if (idCliente == -1) // Asumiendo que ObtenerIdClientePorDNI retorna -1 si no lo encuentra
+                {
+                    MessageBox.Show("El DNI ingresado no corresponde a un cliente registrado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return; // Detiene la ejecución si se ingresó un DNI inválido
+                }
+                // Si el DNI se encuentra, idCliente ya contiene el ID real del cliente.
             }
 
             if (cbMetodoDePago.SelectedItem == null)
@@ -290,19 +418,37 @@ namespace PuntoDeVentaGameBox.Vendedor
             }
 
             string metodoPago = cbMetodoDePago.SelectedItem.ToString();
+            decimal totalFac = CalcularTotal();
             decimal montoPagado = 0;
 
             if (metodoPago == "Efectivo")
             {
+                // 1. Efectivo: Obtiene el monto del TextBox y valida
                 if (!decimal.TryParse(tbMontoPagado.Text.Trim(), out montoPagado) || montoPagado <= 0)
                 {
                     MessageBox.Show("Debe ingresar un monto válido para el pago en efectivo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+
+                // 2. Validación de pago insuficiente
+                if (montoPagado < totalFac)
+                {
+                    MessageBox.Show("El monto pagado es insuficiente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Nota: El cálculo del cambio en tiempo real (Punto 1) ya se encarga de tbCambio
             }
             else
             {
-                montoPagado = CalcularTotal(); // Para tarjeta, asumimos que paga el total
+                // 1. Tarjeta/Otro: Obtener el total del Label lCantidad
+                // (Asumimos que lCantidad.Text contiene el valor final de la compra)
+                totalFac = ExtraerValorDecimal(lCantidad.Text);
+
+                // 2. Establecer monto_pagado a 0, según la especificación
+                montoPagado = 0;
+
+                // Para tarjeta/otros, no hay cambio a calcular ni validación de insuficiencia.
             }
 
             decimal totalFactura = CalcularTotal();
@@ -310,13 +456,6 @@ namespace PuntoDeVentaGameBox.Vendedor
             if (metodoPago == "Efectivo" && montoPagado < totalFactura)
             {
                 MessageBox.Show("El monto pagado es insuficiente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            int idCliente = ObtenerIdClientePorDNI(dniCliente); // Método que podés definir
-            if (idCliente == -1)
-            {
-                MessageBox.Show("Cliente no encontrado en la base de datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -356,9 +495,9 @@ namespace PuntoDeVentaGameBox.Vendedor
                 }
 
 
-                string insertFactura = @"INSERT INTO factura (fecha_compra, total, monto_pagado, metodo_pago, id_cliente, id_usuario)
-                                 VALUES (@fecha, @total, @monto, @metodo, @idCliente, @idUsuario);
-                                 SELECT SCOPE_IDENTITY();";
+                string insertFactura = @"INSERT INTO factura (fecha_compra, total, monto_pagado, metodo_pago, id_cliente, id_usuario, activo)
+                         VALUES (@fecha, @total, @monto, @metodo, @idCliente, @idUsuario, @activo);
+                         SELECT SCOPE_IDENTITY();";
 
                 using (SqlCommand cmd = new SqlCommand(insertFactura, conexion))
                 {
@@ -368,6 +507,7 @@ namespace PuntoDeVentaGameBox.Vendedor
                     cmd.Parameters.AddWithValue("@metodo", metodoPago);
                     cmd.Parameters.AddWithValue("@idCliente", idCliente);
                     cmd.Parameters.AddWithValue("@idUsuario", SesionUsuario.IdUsuario);
+                    cmd.Parameters.AddWithValue("@activo", 1); 
 
                     int idFactura = Convert.ToInt32(cmd.ExecuteScalar());
 
@@ -422,8 +562,50 @@ namespace PuntoDeVentaGameBox.Vendedor
                     MessageBox.Show("Venta registrada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     dgvListaDeCompra.Rows.Clear();
                     ActualizarTotal();
+
+                    tbCambio.Clear();
+
+                    // Opcional: limpiar también los campos de DNI y Monto Pagado
+                    tbDNI.Clear();
+                    tbNombreCliente.Clear();
+                    tbGenero.Clear(); 
+                    tbMontoPagado.Clear();
+
+                    // Opcional: Restaurar el ComboBox
+                    cbMetodoDePago.SelectedItem = null;
                 }
             }
+        }
+        private void cbMetodoDePago_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Aseguramos que haya un ítem seleccionado
+            if (cbMetodoDePago.SelectedItem == null)
+            {
+                tbMontoPagado.ReadOnly = true;
+                tbMontoPagado.TabStop = false;
+                tbMontoPagado.Clear();
+                tbCambio.Clear();
+                return;
+            }
+
+            string metodo = cbMetodoDePago.SelectedItem.ToString();
+
+            if (metodo == "Efectivo")
+            {
+                // 1. Efectivo: Habilita la escritura y selección
+                tbMontoPagado.ReadOnly = false;
+                tbMontoPagado.TabStop = true;
+            }
+            else
+            {
+                // 2. Tarjeta/Otro: Bloquea la escritura y selección (como solicitaste)
+                tbMontoPagado.ReadOnly = true;
+                tbMontoPagado.TabStop = false;
+            }
+
+            // Siempre limpia los campos al cambiar de método de pago
+            tbMontoPagado.Clear();
+            tbCambio.Clear();
         }
 
         private decimal CalcularTotal()
@@ -474,6 +656,19 @@ namespace PuntoDeVentaGameBox.Vendedor
                 }
             }
         }
+        private decimal ExtraerValorDecimal(string texto)
+        {
+            // 1. Limpia el texto (quita el '$' y espacios)
+            string limpio = texto.Trim().Replace("$", "");
+
+            // 2. Intenta parsear el valor usando la cultura actual para manejar comas/puntos decimales
+            // Esto es importante para que funcione correctamente con tu formato regional.
+            if (decimal.TryParse(limpio, System.Globalization.NumberStyles.Currency, System.Globalization.CultureInfo.CurrentCulture, out decimal valor))
+            {
+                return valor;
+            }
+            return 0;
+        }
 
         private void bNuevoCliente_Click(object sender, EventArgs e)
         {
@@ -481,7 +676,12 @@ namespace PuntoDeVentaGameBox.Vendedor
             pagina.ShowDialog();
         }
 
-     
+        private void bReestablecer_Click(object sender, EventArgs e)
+        {
+            tbDNI.Clear();  
+            tbNombreCliente.Clear();    
+            tbGenero.Clear();
+        }
     }
 }
 

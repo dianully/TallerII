@@ -19,7 +19,8 @@ namespace PuntoDeVentaGameBox
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Vendedor.Vendedor());
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            Application.Run(new Login());
         }
     }
 }

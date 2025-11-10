@@ -62,6 +62,7 @@
             this.tbMontoPagado = new System.Windows.Forms.TextBox();
             this.cbMetodoDePago = new System.Windows.Forms.ComboBox();
             this.tbCambio = new System.Windows.Forms.TextBox();
+            this.bReestablecer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListaDeCompra)).BeginInit();
             this.panel4.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -96,10 +97,10 @@
             this.bBuscarCliente.FlatAppearance.BorderSize = 0;
             this.bBuscarCliente.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bBuscarCliente.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.bBuscarCliente.Location = new System.Drawing.Point(65, 54);
+            this.bBuscarCliente.Location = new System.Drawing.Point(172, 53);
             this.bBuscarCliente.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.bBuscarCliente.Name = "bBuscarCliente";
-            this.bBuscarCliente.Size = new System.Drawing.Size(164, 39);
+            this.bBuscarCliente.Size = new System.Drawing.Size(169, 39);
             this.bBuscarCliente.TabIndex = 27;
             this.bBuscarCliente.Text = "Buscar Cliente";
             this.bBuscarCliente.UseVisualStyleBackColor = false;
@@ -331,6 +332,7 @@
             // 
             // panelCliente
             // 
+            this.panelCliente.Controls.Add(this.bReestablecer);
             this.panelCliente.Controls.Add(this.label6);
             this.panelCliente.Controls.Add(this.label2);
             this.panelCliente.Controls.Add(this.tbGenero);
@@ -417,10 +419,10 @@
             this.bNuevoCliente.FlatAppearance.BorderSize = 0;
             this.bNuevoCliente.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bNuevoCliente.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.bNuevoCliente.Location = new System.Drawing.Point(280, 54);
+            this.bNuevoCliente.Location = new System.Drawing.Point(0, 53);
             this.bNuevoCliente.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.bNuevoCliente.Name = "bNuevoCliente";
-            this.bNuevoCliente.Size = new System.Drawing.Size(164, 39);
+            this.bNuevoCliente.Size = new System.Drawing.Size(153, 39);
             this.bNuevoCliente.TabIndex = 34;
             this.bNuevoCliente.Text = "Nuevo Cliente";
             this.bNuevoCliente.UseVisualStyleBackColor = false;
@@ -455,6 +457,7 @@
             this.tbMontoPagado.Name = "tbMontoPagado";
             this.tbMontoPagado.Size = new System.Drawing.Size(192, 33);
             this.tbMontoPagado.TabIndex = 35;
+            this.tbMontoPagado.TextChanged += new System.EventHandler(this.tbMontoPagado_TextChanged);
             this.tbMontoPagado.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSoloNumeros_KeyPress);
             // 
             // cbMetodoDePago
@@ -467,6 +470,7 @@
             this.cbMetodoDePago.Name = "cbMetodoDePago";
             this.cbMetodoDePago.Size = new System.Drawing.Size(161, 24);
             this.cbMetodoDePago.TabIndex = 47;
+            this.cbMetodoDePago.SelectedIndexChanged += new System.EventHandler(this.cbMetodoDePago_SelectedIndexChanged);
             // 
             // tbCambio
             // 
@@ -477,6 +481,21 @@
             this.tbCambio.Size = new System.Drawing.Size(192, 33);
             this.tbCambio.TabIndex = 48;
             this.tbCambio.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtBloqueado_MouseDown);
+            // 
+            // bReestablecer
+            // 
+            this.bReestablecer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bReestablecer.FlatAppearance.BorderSize = 0;
+            this.bReestablecer.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bReestablecer.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.bReestablecer.Location = new System.Drawing.Point(359, 53);
+            this.bReestablecer.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.bReestablecer.Name = "bReestablecer";
+            this.bReestablecer.Size = new System.Drawing.Size(151, 39);
+            this.bReestablecer.TabIndex = 52;
+            this.bReestablecer.Text = "Reestablecer";
+            this.bReestablecer.UseVisualStyleBackColor = false;
+            this.bReestablecer.Click += new System.EventHandler(this.bReestablecer_Click);
             // 
             // Vendedor
             // 
@@ -555,5 +574,6 @@
         private System.Windows.Forms.TextBox tbCambio;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button bReestablecer;
     }
 }
