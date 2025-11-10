@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace PuntoDeVentaGameBox.Gerente
@@ -250,6 +251,10 @@ namespace PuntoDeVentaGameBox.Gerente
 
         // ===== helper interno (igual al de AgregarProducto) =====
         // ===== helper interno MULTICATEGORÍA (sin BeginInvoke) =====
+        // ===== Helper multi-categoría (scroll real, sin desbordes, selección inmediata) =====
+        // ===== Helper multi-categoría (scroll real, sin desbordes, selección inmediata) =====
+        // ===== Helper multi-categoría (idéntico al de Inventario, con scroll real y selección inmediata) =====
+        // ===== Helper multi-categoría (idéntico a Inventario, scroll real y selección inmediata) =====
         private sealed class MultiCategoriaHelper
         {
             private sealed class CatItem
@@ -264,10 +269,17 @@ namespace PuntoDeVentaGameBox.Gerente
             private readonly ComboBox _combo;
             private readonly HashSet<int> _seleccion = new HashSet<int>();
             private readonly List<CatItem> _items = new List<CatItem>();
+
             private readonly ToolStripDropDown _drop = new ToolStripDropDown();
             private readonly CheckedListBox _clb = new CheckedListBox();
+            private readonly ToolStripControlHost _host;
 
-            // flag para no ejecutar el handler mientras seteamos checks por código
+            private const float FONT_PT = 11.0f;
+            private const int ITEM_H = 22;
+            private const int MAX_HEIGHT = 180;
+            private const int MIN_HEIGHT = 120;
+            private const int MARGIN = 8;
+
             private bool _silencio = false;
 
             public MultiCategoriaHelper(string connString, ComboBox combo)
@@ -278,41 +290,79 @@ namespace PuntoDeVentaGameBox.Gerente
                 _combo.DropDownStyle = ComboBoxStyle.DropDownList;
                 _combo.Items.Clear();
                 _combo.SelectedIndex = -1;
-                _combo.Text = "sin generos";
+                _combo.Text = "Seleccionar géneros…";
                 _combo.Cursor = Cursors.Hand;
 
-                _clb.BorderStyle = BorderStyle.None;
+                // CheckedListBox con scroll real (no se estira)
                 _clb.CheckOnClick = true;
-                _clb.IntegralHeight = true;
-                _clb.Width = Math.Max(220, _combo.Width);
-                _clb.Height = 200;
+                _clb.BorderStyle = BorderStyle.None;
+                _clb.IntegralHeight = false;
+                _clb.Font = new Font(_combo.Font.FontFamily, FONT_PT, FontStyle.Regular);
+                _clb.ItemHeight = Math.Max(_clb.ItemHeight, ITEM_H);
+                _clb.HorizontalScrollbar = true;
 
-                var host = new ToolStripControlHost(_clb)
+                _clb.ItemCheck += (s, e) =>
+                {
+                    if (_silencio) return;
+                    var it = (CatItem)_clb.Items[e.Index];
+                    if (e.NewValue == CheckState.Checked) _seleccion.Add(it.Id);
+                    else _seleccion.Remove(it.Id);
+                    ActualizarTextoCombo();
+                };
+                _clb.PreviewKeyDown += (s, e) => { if (e.KeyCode == Keys.Escape) _drop.Close(); };
+
+                _host = new ToolStripControlHost(_clb)
                 { Padding = Padding.Empty, Margin = Padding.Empty, AutoSize = false };
 
                 _drop.Padding = Padding.Empty;
-                _drop.Items.Add(host);
+                _drop.Items.Add(_host);
+                _drop.AutoClose = true; // clic afuera => cerrar
 
-                // abrir dropdown “flotante”
-                _combo.MouseDown += (s, e) =>
+                // Abrir con un tap (y sin cerrar en Leave para no auto-cancelar)
+                _combo.MouseUp += (s, e) => { if (!_drop.Visible) OpenDropFitted(); };
+                _combo.Click += (s, e) => { if (!_drop.Visible) OpenDropFitted(); };
+
+                _combo.SizeChanged += (s, e) => { if (_drop.Visible) _drop.Close(); };
+                _combo.LocationChanged += (s, e) => { if (_drop.Visible) _drop.Close(); };
+                _combo.ParentChanged += (s, e) =>
                 {
-                    _drop.Show(_combo, new Point(0, _combo.Height));
+                    if (_combo.Parent != null)
+                        _combo.Parent.VisibleChanged += (s2, e2) => { if (_drop.Visible) _drop.Close(); };
                 };
+                var form = _combo.FindForm();
+                if (form != null)
+                    form.Deactivate += (s, e) => { if (_drop.Visible) _drop.Close(); };
+            }
 
-                // IMPORTANTE: sin BeginInvoke; usamos e.NewValue y actualizamos directo
-                _clb.ItemCheck += (s, e) =>
+            private void OpenDropFitted()
+            {
+                var form = _combo.FindForm();
+                if (form == null) return;
+
+                Rectangle formScreen = form.RectangleToScreen(form.ClientRectangle);
+                Point comboScreen = _combo.PointToScreen(new Point(0, 0));
+
+                int spaceBelow = formScreen.Bottom - (comboScreen.Y + _combo.Height) - MARGIN;
+                int spaceAbove = (comboScreen.Y - formScreen.Top) - MARGIN;
+
+                int width = Math.Max(_combo.ClientSize.Width, 200);
+                int desired;
+                bool openUp;
+
+                if (spaceBelow >= MIN_HEIGHT) { desired = Math.Min(MAX_HEIGHT, spaceBelow); openUp = false; }
+                else if (spaceAbove >= MIN_HEIGHT) { desired = Math.Min(MAX_HEIGHT, spaceAbove); openUp = true; }
+                else
                 {
-                    if (_silencio) return; // no reaccionar durante cargas masivas
+                    if (spaceAbove > spaceBelow) { desired = Math.Max(MIN_HEIGHT, Math.Max(0, spaceAbove)); openUp = true; }
+                    else { desired = Math.Max(MIN_HEIGHT, Math.Max(0, spaceBelow)); openUp = false; }
+                }
 
-                    var item = (CatItem)_clb.Items[e.Index];
+                _host.Size = new Size(width, desired);
+                _clb.Size = _host.Size;
 
-                    if (e.NewValue == CheckState.Checked)
-                        _seleccion.Add(item.Id);
-                    else
-                        _seleccion.Remove(item.Id);
-
-                    actualizarTextoCombo();
-                };
+                var offset = openUp ? new Point(0, -desired - 2) : new Point(0, _combo.Height - 1);
+                _drop.Show(_combo, offset);
+                _clb.Focus();
             }
 
             public void CargarDesdeBd()
@@ -321,22 +371,18 @@ namespace PuntoDeVentaGameBox.Gerente
                 _clb.Items.Clear();
 
                 using (var cn = new SqlConnection(_connString))
-                using (var da = new SqlDataAdapter(
-                    "select id_categoria, nombre from dbo.categoria order by nombre", cn))
+                using (var da = new SqlDataAdapter("SELECT id_categoria, nombre FROM dbo.categoria ORDER BY nombre", cn))
                 {
                     var dt = new DataTable();
                     da.Fill(dt);
-
                     foreach (DataRow r in dt.Rows)
                     {
-                        var it = new CatItem(Convert.ToInt32(r["id_categoria"]),
-                                             Convert.ToString(r["nombre"]));
+                        var it = new CatItem(Convert.ToInt32(r["id_categoria"]), Convert.ToString(r["nombre"]));
                         _items.Add(it);
                         _clb.Items.Add(it, _seleccion.Contains(it.Id));
                     }
                 }
-
-                actualizarTextoCombo();
+                ActualizarTextoCombo();
             }
 
             public void SetSeleccionInicial(IEnumerable<int> ids)
@@ -344,7 +390,7 @@ namespace PuntoDeVentaGameBox.Gerente
                 _seleccion.Clear();
                 foreach (var id in ids) _seleccion.Add(id);
 
-                _silencio = true; // evita invocar el handler en cada SetItemChecked
+                _silencio = true;
                 for (int i = 0; i < _clb.Items.Count; i++)
                 {
                     var it = (CatItem)_clb.Items[i];
@@ -352,26 +398,28 @@ namespace PuntoDeVentaGameBox.Gerente
                 }
                 _silencio = false;
 
-                actualizarTextoCombo();
+                ActualizarTextoCombo();
             }
 
             public IReadOnlyCollection<int> ObtenerSeleccion() => _seleccion;
 
-            private void actualizarTextoCombo()
+            private void ActualizarTextoCombo()
             {
-                if (_seleccion.Count == 0) { _combo.Text = "sin generos"; return; }
+                if (_seleccion.Count == 0) { _combo.Text = "Seleccionar géneros…"; return; }
 
                 var nombres = new List<string>();
-                foreach (var it in _items)
-                    if (_seleccion.Contains(it.Id)) nombres.Add(it.Nombre);
-
+                foreach (var it in _items) if (_seleccion.Contains(it.Id)) nombres.Add(it.Nombre);
                 nombres.Sort(StringComparer.CurrentCultureIgnoreCase);
 
-                _combo.Text = nombres.Count <= 2
+                _combo.Text = (nombres.Count <= 2)
                     ? string.Join(", ", nombres)
-                    : string.Join(", ", nombres.GetRange(0, 2)) + $" +{nombres.Count - 2}";
+                    : string.Join(", ", nombres.Take(2)) + $" +{nombres.Count - 2}";
             }
         }
+
+
+
+
 
 
         // stubs
