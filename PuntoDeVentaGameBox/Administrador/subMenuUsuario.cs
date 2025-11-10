@@ -139,50 +139,89 @@ namespace PuntoDeVentaGameBox.Administrador
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
-            {
-                string rolUsuario = dataGridView1.Rows[e.RowIndex].Cells["Rol"].Value.ToString();
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
 
+            if (e.ColumnIndex >= dataGridView1.Columns.Count || e.RowIndex >= dataGridView1.Rows.Count)
+                return;
+
+            string nombreColumna = dataGridView1.Columns[e.ColumnIndex].Name;
+            DataGridViewRow fila = dataGridView1.Rows[e.RowIndex];
+
+            // Validar rol si existe
+            if (dataGridView1.Columns.Contains("Rol"))
+            {
+                string rolUsuario = fila.Cells["Rol"].Value?.ToString();
                 if (rolUsuario == "Gerente")
                 {
                     MessageBox.Show("No se puede editar o eliminar a un usuario con el rol de Gerente.", "Permiso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
+            }
 
-                if (e.ColumnIndex == dataGridView1.Columns["Eliminar"].Index && e.RowIndex >= 0)
+            if (nombreColumna == "Reingresar")
+            {
+                int idUsuario = Convert.ToInt32(fila.Cells["id_usuario"].Value);
+                DialogResult confirmacion = MessageBox.Show("¿Deseas reactivar este usuario?", "Confirmar reingreso", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (confirmacion == DialogResult.Yes)
                 {
-                    string dniUsuario = dataGridView1.Rows[e.RowIndex].Cells["DNI"].Value.ToString();
-                    DialogResult confirmacion = MessageBox.Show(
-                        "¿Está seguro de que desea desactivar a este usuario?",
-                        "Confirmar Desactivación",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Warning
-                    );
-                    if (confirmacion == DialogResult.Yes)
+                    try
                     {
-                        EliminarUsuario(dniUsuario);
+                        using (SqlConnection connection = new SqlConnection(conecctionString))
+                        {
+                            string query = "UPDATE usuario SET activo = 1 WHERE id_usuario = @id";
+                            using (SqlCommand command = new SqlCommand(query, connection))
+                            {
+                                command.Parameters.AddWithValue("@id", idUsuario);
+                                connection.Open();
+                                command.ExecuteNonQuery();
+                            }
+                        }
+
+                        MessageBox.Show("Usuario reactivado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        bUsuariosDadosDeBaja_Click(null, null); // Refrescar vista
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al reactivar al usuario: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
+            }
 
-                if (e.ColumnIndex == dataGridView1.Columns["Editar"].Index && e.RowIndex >= 0)
+            if (nombreColumna == "Eliminar")
+            {
+                string dniUsuario = fila.Cells["DNI"].Value.ToString();
+                DialogResult confirmacion = MessageBox.Show(
+                    "¿Está seguro de que desea desactivar a este usuario?",
+                    "Confirmar Desactivación",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                );
+                if (confirmacion == DialogResult.Yes)
                 {
-                    DataGridViewRow fila = dataGridView1.Rows[e.RowIndex];
-                    int idUsuario = Convert.ToInt32(fila.Cells["id_usuario"].Value);
-                    string nombre = fila.Cells["Nombre"].Value.ToString();
-                    string apellido = fila.Cells["Apellido"].Value.ToString();
-                    string dni = fila.Cells["DNI"].Value.ToString();
-                    string email = fila.Cells["Correo"].Value.ToString();
-                    string telefono = fila.Cells["Telefono"].Value.ToString();
-                    string contraseña = fila.Cells["contraseña"].Value.ToString();
-                    string rol = fila.Cells["Rol"].Value.ToString();
-                    int idRolSeleccionado = Convert.ToInt32(fila.Cells["IdRol"].Value);
-
-                    EdicionUsuario formEditar = new EdicionUsuario(idUsuario, nombre, apellido, dni, email, telefono, contraseña, rol, idRolSeleccionado);
-                    formEditar.ShowDialog();
-                    CargarDatos();
+                    EliminarUsuario(dniUsuario);
                 }
             }
+
+            if (nombreColumna == "Editar")
+            {
+                int idUsuario = Convert.ToInt32(fila.Cells["id_usuario"].Value);
+                string nombre = fila.Cells["Nombre"].Value.ToString();
+                string apellido = fila.Cells["Apellido"].Value.ToString();
+                string dni = fila.Cells["DNI"].Value.ToString();
+                string email = fila.Cells["Correo"].Value.ToString();
+                string telefono = fila.Cells["Telefono"].Value.ToString();
+                string contraseña = fila.Cells["contraseña"].Value.ToString();
+                string rol = fila.Cells["Rol"].Value.ToString();
+                int idRolSeleccionado = Convert.ToInt32(fila.Cells["IdRol"].Value);
+
+                EdicionUsuario formEditar = new EdicionUsuario(idUsuario, nombre, apellido, dni, email, telefono, contraseña, rol, idRolSeleccionado);
+                formEditar.ShowDialog();
+                CargarDatos();
+            }
         }
+
 
         private void EliminarUsuario(string dniUsuario)
         {
@@ -233,17 +272,17 @@ namespace PuntoDeVentaGameBox.Administrador
 
             if (!string.IsNullOrEmpty(tbBusquedaDNI.Text))
             {
-                conditions.Add("u.dni = @dni");
+                conditions.Add("u.dni LIKE '%' + @dni + '%'");
             }
 
             if (!string.IsNullOrEmpty(tbCorreo.Text))
             {
-                conditions.Add("u.email = @email");
+                conditions.Add("u.email LIKE '%' + @email + '%'");
             }
 
             if (!string.IsNullOrEmpty(tbTelefono.Text))
             {
-                conditions.Add("u.telefono = @telefono");
+                conditions.Add("u.telefono LIKE '%' + @telefono + '%'");
             }
 
             if (cbRol.SelectedItem != null && cbRol.Text != "Todos")
@@ -312,10 +351,104 @@ namespace PuntoDeVentaGameBox.Administrador
             nuevoFormulario.ShowDialog();
         }
 
-        private void label4_Click(object sender, EventArgs e)
+        private void bUsuariosDadosDeBaja_Click(object sender, EventArgs e)
         {
+            string query = @"
+    SELECT
+        u.id_usuario,
+        u.nombre AS 'Nombre',
+        u.apellido AS 'Apellido',
+        u.dni AS 'DNI',
+        u.email AS 'Correo',
+        u.telefono AS 'Telefono',
+        r.nombre AS 'Rol'
+    FROM
+        usuario AS u
+    INNER JOIN
+        rol AS r ON u.id_rol = r.id_rol";
 
+            List<string> conditions = new List<string>();
+            conditions.Add("u.activo = 0");
+
+            if (!string.IsNullOrEmpty(tbBusquedaDNI.Text))
+                conditions.Add("u.dni LIKE '%' + @dni + '%'");
+
+            if (!string.IsNullOrEmpty(tbCorreo.Text))
+                conditions.Add("u.email LIKE '%' + @email + '%'");
+
+            if (!string.IsNullOrEmpty(tbTelefono.Text))
+                conditions.Add("u.telefono LIKE '%' + @telefono + '%'");
+
+            if (cbRol.SelectedItem != null && cbRol.Text != "Todos")
+                conditions.Add("r.nombre = @rol");
+
+            if (conditions.Count > 0)
+                query += " WHERE " + string.Join(" AND ", conditions);
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conecctionString))
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        if (!string.IsNullOrEmpty(tbBusquedaDNI.Text))
+                            command.Parameters.AddWithValue("@dni", tbBusquedaDNI.Text);
+
+                        if (!string.IsNullOrEmpty(tbCorreo.Text))
+                            command.Parameters.AddWithValue("@email", tbCorreo.Text);
+
+                        if (!string.IsNullOrEmpty(tbTelefono.Text))
+                            command.Parameters.AddWithValue("@telefono", tbTelefono.Text);
+
+                        if (cbRol.SelectedItem != null && cbRol.Text != "Todos")
+                            command.Parameters.AddWithValue("@rol", cbRol.Text);
+
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        RefrescarTablaUsuariosDadosDeBaja(adapter);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al buscar usuarios dados de baja: " + ex.Message, "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
+        private void RefrescarTablaUsuariosDadosDeBaja(SqlDataAdapter adapter)
+        {
+            dataGridView1.Columns.Clear();
+
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+            dataGridView1.DataSource = table;
+
+            // Botón Reingresar
+            DataGridViewButtonColumn btnReingresar = new DataGridViewButtonColumn();
+            btnReingresar.Name = "Reingresar";
+            btnReingresar.HeaderText = "";
+            btnReingresar.Text = "Reingresar";
+            btnReingresar.UseColumnTextForButtonValue = true;
+            btnReingresar.FlatStyle = FlatStyle.Popup;
+            dataGridView1.Columns.Add(btnReingresar);
+
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            // Pintar filas en rojo
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                row.DefaultCellStyle.BackColor = Color.LightCoral;
+                row.DefaultCellStyle.ForeColor = Color.White;
+            }
+        }
+        private void dgvUsuarios_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
+
+            
+        }
+
+
 
         private void LSub_Click(object sender, EventArgs e)
         {
