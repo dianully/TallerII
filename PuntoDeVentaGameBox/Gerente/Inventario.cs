@@ -910,7 +910,7 @@ namespace PuntoDeVentaGameBox.Gerente
                 _drop.Show(_combo, offset);
                 _clb.Focus();
             }
-
+            //a
             public void CargarDesdeBd()
             {
                 _items.Clear();
