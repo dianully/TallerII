@@ -1,17 +1,18 @@
-﻿using System;
+﻿using PuntoDeVentaGameBox.Administrador;
+using PuntoDeVentaGameBox.Gerente;
+using PuntoDeVentaGameBox.Vendedor;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using PuntoDeVentaGameBox.Vendedor;
-using PuntoDeVentaGameBox.Administrador;
-using PuntoDeVentaGameBox.Gerente;
 
 namespace PuntoDeVentaGameBox.Administrador
 {
@@ -120,6 +121,10 @@ namespace PuntoDeVentaGameBox.Administrador
                 return;
             }
 
+            string contraseñaIngresada = tContraseña.Text;
+            string hash = HashearContraseña(contraseñaIngresada);
+
+
             // Consulta SQL para insertar un nuevo usuario
             string query = @"
             INSERT INTO usuario (
@@ -155,7 +160,7 @@ namespace PuntoDeVentaGameBox.Administrador
                         command.Parameters.AddWithValue("@dni", tDni.Text);
                         command.Parameters.AddWithValue("@email", tEmail.Text);
                         command.Parameters.AddWithValue("@telefono", tTelefono.Text);
-                        command.Parameters.AddWithValue("@contraseña", tContraseña.Text);
+                        command.Parameters.AddWithValue("@contraseña", hash);
 
                         connection.Open();
 
@@ -177,6 +182,21 @@ namespace PuntoDeVentaGameBox.Administrador
             catch (Exception ex)
             {
                 MessageBox.Show("Error al registrar el usuario: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private string HashearContraseña(string contraseña)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(contraseña);
+                byte[] hashBytes = sha256.ComputeHash(bytes);
+
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in hashBytes)
+                    sb.Append(b.ToString("x2"));
+
+                return sb.ToString();
             }
         }
 
