@@ -31,10 +31,10 @@
             this.LSub = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.bCopiaSeguridad = new System.Windows.Forms.Button();
+            this.bElegirRuta = new System.Windows.Forms.Button();
             this.lFechaCopia = new System.Windows.Forms.Label();
             this.tbRutaDeGuardado = new System.Windows.Forms.TextBox();
-            this.bElegirRuta = new System.Windows.Forms.Button();
-            this.bCopiaSeguridad = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -72,6 +72,36 @@
             this.panel2.Size = new System.Drawing.Size(344, 202);
             this.panel2.TabIndex = 44;
             // 
+            // bCopiaSeguridad
+            // 
+            this.bCopiaSeguridad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bCopiaSeguridad.FlatAppearance.BorderSize = 0;
+            this.bCopiaSeguridad.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bCopiaSeguridad.ForeColor = System.Drawing.SystemColors.Control;
+            this.bCopiaSeguridad.Location = new System.Drawing.Point(52, 144);
+            this.bCopiaSeguridad.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.bCopiaSeguridad.Name = "bCopiaSeguridad";
+            this.bCopiaSeguridad.Size = new System.Drawing.Size(235, 58);
+            this.bCopiaSeguridad.TabIndex = 47;
+            this.bCopiaSeguridad.Text = "Realizar Copia de Seguridad";
+            this.bCopiaSeguridad.UseVisualStyleBackColor = false;
+            this.bCopiaSeguridad.Click += new System.EventHandler(this.bCopiaDeSeguridad_Click);
+            // 
+            // bElegirRuta
+            // 
+            this.bElegirRuta.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bElegirRuta.FlatAppearance.BorderSize = 0;
+            this.bElegirRuta.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bElegirRuta.ForeColor = System.Drawing.SystemColors.Control;
+            this.bElegirRuta.Location = new System.Drawing.Point(190, 92);
+            this.bElegirRuta.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.bElegirRuta.Name = "bElegirRuta";
+            this.bElegirRuta.Size = new System.Drawing.Size(138, 39);
+            this.bElegirRuta.TabIndex = 46;
+            this.bElegirRuta.Text = "Elegir Ruta";
+            this.bElegirRuta.UseVisualStyleBackColor = false;
+            this.bElegirRuta.Click += new System.EventHandler(this.bElegirRuta_Click);
+            // 
             // lFechaCopia
             // 
             this.lFechaCopia.AutoSize = true;
@@ -89,36 +119,6 @@
             this.tbRutaDeGuardado.Name = "tbRutaDeGuardado";
             this.tbRutaDeGuardado.Size = new System.Drawing.Size(158, 22);
             this.tbRutaDeGuardado.TabIndex = 43;
-            // 
-            // bElegirRuta
-            // 
-            this.bElegirRuta.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.bElegirRuta.FlatAppearance.BorderSize = 0;
-            this.bElegirRuta.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bElegirRuta.ForeColor = System.Drawing.SystemColors.Control;
-            this.bElegirRuta.Location = new System.Drawing.Point(190, 92);
-            this.bElegirRuta.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
-            this.bElegirRuta.Name = "bElegirRuta";
-            this.bElegirRuta.Size = new System.Drawing.Size(138, 39);
-            this.bElegirRuta.TabIndex = 46;
-            this.bElegirRuta.Text = "Elegir Ruta";
-            this.bElegirRuta.UseVisualStyleBackColor = false;
-            this.bElegirRuta.Click += new System.EventHandler(this.bElegirRuta_Click);
-            // 
-            // bCopiaSeguridad
-            // 
-            this.bCopiaSeguridad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.bCopiaSeguridad.FlatAppearance.BorderSize = 0;
-            this.bCopiaSeguridad.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bCopiaSeguridad.ForeColor = System.Drawing.SystemColors.Control;
-            this.bCopiaSeguridad.Location = new System.Drawing.Point(52, 144);
-            this.bCopiaSeguridad.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
-            this.bCopiaSeguridad.Name = "bCopiaSeguridad";
-            this.bCopiaSeguridad.Size = new System.Drawing.Size(235, 39);
-            this.bCopiaSeguridad.TabIndex = 47;
-            this.bCopiaSeguridad.Text = "Realizar Copia de Seguridad";
-            this.bCopiaSeguridad.UseVisualStyleBackColor = false;
-            this.bCopiaSeguridad.Click += new System.EventHandler(this.bCopiaDeSeguridad_Click);
             // 
             // subMenuCopiaDeSeguridad
             // 

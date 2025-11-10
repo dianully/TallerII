@@ -20,7 +20,7 @@ namespace PuntoDeVentaGameBox
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-            Application.Run(new BuscarProducto());
+            Application.Run(new subMenuCopiaDeSeguridad());
         }
     }
 }
