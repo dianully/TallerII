@@ -15,6 +15,10 @@ namespace PuntoDeVentaGameBox.Gerente
         // cadena fija
         private readonly string _connString = "Server=localhost;Database=game_box;Trusted_Connection=True;TrustServerCertificate=True";
         private readonly int? _idEditar;
+        // === IMÁGENES (carpeta del repo) ===
+        private static readonly string REPO_IMG_REL = @"ImagenesProductos";
+        private static readonly string REPO_IMG_DIR =
+            Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..", REPO_IMG_REL));
 
         // ruta local de imagen (sin textbox)
         private string _rutaImagen = null;
@@ -51,20 +55,36 @@ namespace PuntoDeVentaGameBox.Gerente
 
         private void WireEventos()
         {
+            // --- Imagen ---
             BAbrirImagen.Click -= BAbrirImagen_Click;
             BAbrirImagen.Click += BAbrirImagen_Click;
 
-            BRegistrarProducto.Click -= BRegistrarProducto_Click;
-            BRegistrarProducto.Click += BRegistrarProducto_Click;
+            // --- Registrar ---
+            // IMPORTANTE: el Designer probablemente dejó esto:
+            // this.BRegistrarProducto.Click += new System.EventHandler(this.bBuscar_Click);
+            // Lo desenganchamos por las dudas:
+            BRegistrarProducto.Click -= bBuscar_Click;   // <- quita el handler que abre el explorador
+            BRegistrarProducto.Click -= BRegistrarProducto_Click; // limpia duplicados si los hubiera
+            BRegistrarProducto.Click += BRegistrarProducto_Click; // handler correcto
 
-            if (BSalir != null) { BSalir.Click -= BSalir_Click; BSalir.Click += BSalir_Click; }
+            // --- Salir ---
+            if (BSalir != null)
+            {
+                BSalir.Click -= BSalir_Click;
+                BSalir.Click += BSalir_Click;
+            }
 
+            // --- Validaciones de entrada ---
             TBPrecioVentaProducto.KeyPress -= TBPrecioVentaProducto_KeyPressSoloNumeroDecimal;
             TBPrecioVentaProducto.KeyPress += TBPrecioVentaProducto_KeyPressSoloNumeroDecimal;
 
             TBCantidadProducto.KeyPress -= TBCantidadProducto_KeyPressSoloEntero;
             TBCantidadProducto.KeyPress += TBCantidadProducto_KeyPressSoloEntero;
+
+            // (Opcional) Enter confirma con Registrar
+            this.AcceptButton = BRegistrarProducto;
         }
+
 
         private void PrepararControles()
         {
@@ -110,15 +130,43 @@ namespace PuntoDeVentaGameBox.Gerente
 
         private void BAbrirImagen_Click(object sender, EventArgs e)
         {
-            using (var ofd = new OpenFileDialog { Filter = "Imagenes|*.jpg;*.jpeg;*.png;*.gif;*.bmp", Title = "Seleccionar imagen" })
+            try
             {
-                if (ofd.ShowDialog(this) == DialogResult.OK)
+                // se asegura de que exista la carpeta del repo
+                if (!Directory.Exists(REPO_IMG_DIR))
+                    Directory.CreateDirectory(REPO_IMG_DIR);
+
+                using (var ofd = new OpenFileDialog
                 {
-                    _rutaImagen = ofd.FileName;
-                    PBImagenProducto.ImageLocation = _rutaImagen;
+                    Filter = "Imágenes|*.jpg;*.jpeg;*.png;*.gif;*.bmp",
+                    Title = "Seleccionar imagen del producto",
+                    InitialDirectory = REPO_IMG_DIR
+                })
+                {
+                    if (ofd.ShowDialog(this) == DialogResult.OK)
+                    {
+                        var origen = ofd.FileName;
+                        var nombreArchivo = Path.GetFileName(origen);
+                        var destino = Path.Combine(REPO_IMG_DIR, nombreArchivo);
+
+                        // si eligió fuera del repo, se copia a la carpeta del proyecto
+                        if (!origen.Equals(destino, StringComparison.OrdinalIgnoreCase))
+                        {
+                            File.Copy(origen, destino, true);
+                        }
+
+                        _rutaImagen = destino;
+                        PBImagenProducto.ImageLocation = _rutaImagen;
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al seleccionar imagen: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
 
         private void CargarProducto(int id)
         {
@@ -168,13 +216,15 @@ namespace PuntoDeVentaGameBox.Gerente
 
         private void BRegistrarProducto_Click(object sender, EventArgs e)
         {
-            if (!ValidarFormulario(out var precio, out var stock, out var provId)) return;
+            if (!ValidarFormulario(out var precio, out var stock, out var provId))
+                return;
 
             if (_idEditar == null)
                 InsertarProducto(precio, stock, provId);
             else
                 ActualizarProducto(_idEditar.Value, precio, stock, provId);
         }
+
 
         // ===== validaciones =====
         private void TBCantidadProducto_KeyPressSoloEntero(object sender, KeyPressEventArgs e)
