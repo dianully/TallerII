@@ -35,6 +35,9 @@ namespace PuntoDeVentaGameBox.Administrador
             // 🔒 Limitar el campo de búsqueda por Teléfono a 10 caracteres
             tbTelefono.MaxLength = 10;
 
+            dgvClientes.CellClick += dgvClientes_CellClick;
+
+
         }
 
         private void CargarDatos()
@@ -42,17 +45,17 @@ namespace PuntoDeVentaGameBox.Administrador
             using (SqlConnection connection = new SqlConnection(conecctionString))
             {
                 string query = @"
-            SELECT
-               u.id_cliente,
-               u.nombre AS 'Nombre',
-               u.apellido AS 'Apellido',
-               u.dni AS 'DNI',
-               u.email AS 'Correo',
-               u.genero AS 'Sexo',
-               u.telefono AS 'Telefono'
-            FROM
-               cliente AS u
-            WHERE u.activo = 1;";
+SELECT
+   u.id_cliente,
+   u.nombre AS 'Nombre',
+   u.apellido AS 'Apellido',
+   u.dni AS 'DNI',
+   u.email AS 'Correo',
+   u.genero AS 'Sexo',
+   u.telefono AS 'Telefono'
+FROM
+     cliente AS u
+        WHERE u.activo = 1;";
                 SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                 RefrescarTabla(adapter);
             }
@@ -91,6 +94,110 @@ namespace PuntoDeVentaGameBox.Administrador
             dgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
+        private void RefrescarTablaDadoDeBaja(SqlDataAdapter adapter)
+        {
+            dgvClientes.Columns.Clear();
+
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+            dgvClientes.DataSource = table;
+
+            if (dgvClientes.Columns.Contains("id_usuario"))
+            {
+                dgvClientes.Columns["id_usuario"].Visible = false;
+            }
+
+            // Botón Reingresar
+            DataGridViewButtonColumn btnReingresar = new DataGridViewButtonColumn();
+            btnReingresar.Name = "Reingresar";
+            btnReingresar.HeaderText = "";
+            btnReingresar.Text = "Reingresar";
+            btnReingresar.UseColumnTextForButtonValue = true;
+            btnReingresar.FlatStyle = FlatStyle.Popup;
+            dgvClientes.Columns.Add(btnReingresar);
+
+            dgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            foreach (DataGridViewRow row in dgvClientes.Rows)
+            {
+                row.DefaultCellStyle.BackColor = Color.LightCoral; // Rojo suave
+                row.DefaultCellStyle.ForeColor = Color.White;       // Texto blanco para contraste
+            }
+        }
+
+        private void dgvClientes_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Validar que no se hizo clic en el encabezado
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
+
+            // Verificar si se hizo clic en la columna "Eliminar"
+            if (dgvClientes.Columns[e.ColumnIndex].Name == "Eliminar")
+            {
+                // Obtener el ID del cliente
+                int idCliente = Convert.ToInt32(dgvClientes.Rows[e.RowIndex].Cells["id_cliente"].Value);
+
+                DialogResult confirmacion = MessageBox.Show("¿Estás seguro de que deseas dar de baja este cliente?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (confirmacion == DialogResult.Yes)
+                {
+                    try
+                    {
+                        using (SqlConnection connection = new SqlConnection(conecctionString))
+                        {
+                            string query = "UPDATE cliente SET activo = 0 WHERE id_cliente = @id";
+                            using (SqlCommand command = new SqlCommand(query, connection))
+                            {
+                                command.Parameters.AddWithValue("@id", idCliente);
+                                connection.Open();
+                                command.ExecuteNonQuery();
+                            }
+                        }
+
+                        MessageBox.Show("Cliente dado de baja correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        CargarDatos(); // Refrescar la tabla
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al dar de baja al cliente: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+
+            if (dgvClientes.Columns[e.ColumnIndex].Name == "Reingresar")
+            {
+                int idCliente = Convert.ToInt32(dgvClientes.Rows[e.RowIndex].Cells["id_cliente"].Value);
+
+                DialogResult confirmacion = MessageBox.Show("¿Deseas reactivar este cliente?", "Confirmar reingreso", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (confirmacion == DialogResult.Yes)
+                {
+                    try
+                    {
+                        using (SqlConnection connection = new SqlConnection(conecctionString))
+                        {
+                            string query = "UPDATE cliente SET activo = 1 WHERE id_cliente = @id";
+                            using (SqlCommand command = new SqlCommand(query, connection))
+                            {
+                                command.Parameters.AddWithValue("@id", idCliente);
+                                connection.Open();
+                                command.ExecuteNonQuery();
+                            }
+                        }
+
+                        MessageBox.Show("Cliente reactivado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        bClientesDadoDeBaja_Click(null, null); // Refrescar la vista de dados de baja
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al reactivar al cliente: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+    
+        }
+
+
         private void BBuscar_Click(object sender, EventArgs e)
         {
             string query = @"
@@ -103,26 +210,24 @@ namespace PuntoDeVentaGameBox.Administrador
                u.genero AS 'Sexo',
                u.telefono AS 'Telefono'
             FROM
-               cliente AS u
-            WHERE u.activo = 1;";
+               cliente AS u";
 
             List<string> conditions = new List<string>();
-
             conditions.Add("u.activo = 1");
 
             if (!string.IsNullOrEmpty(tbBusquedaDNI.Text))
             {
-                conditions.Add("u.dni = @dni");
+                conditions.Add("u.dni LIKE '%' + @dni + '%'");
             }
 
             if (!string.IsNullOrEmpty(tbCorreo.Text))
             {
-                conditions.Add("u.email = @email");
+                conditions.Add("u.email LIKE '%' + @email + '%'");
             }
 
             if (!string.IsNullOrEmpty(tbTelefono.Text))
             {
-                conditions.Add("u.telefono = @telefono");
+                conditions.Add("u.telefono LIKE '%' + @telefono + '%'");
             }
 
             if (!string.IsNullOrEmpty(cbGenero.Text))
@@ -158,7 +263,7 @@ namespace PuntoDeVentaGameBox.Administrador
 
                         if (cbGenero.SelectedItem != null)
                         {
-                            command.Parameters.AddWithValue("@sexo", cbGenero.Text);
+                            command.Parameters.AddWithValue("@genero", cbGenero.Text);
                         }
 
                         SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -184,11 +289,85 @@ namespace PuntoDeVentaGameBox.Administrador
         {
             CargarDatos();
         }
-        
-        private void bAgregarUsuario_Click(object sender, EventArgs e)
+
+        private void bClientesDadoDeBaja_Click(object sender, EventArgs e)
         {
-            AgregarCliente nuevoFormulario = new AgregarCliente();
-            nuevoFormulario.ShowDialog();
+            string query = @"
+            SELECT
+               u.id_cliente,
+               u.nombre AS 'Nombre',
+               u.apellido AS 'Apellido',
+               u.dni AS 'DNI',
+               u.email AS 'Correo',
+               u.genero AS 'Sexo',
+               u.telefono AS 'Telefono'
+            FROM
+               cliente AS u";
+
+            List<string> conditions = new List<string>();
+            conditions.Add("u.activo = 0 AND id_cliente > 0");
+
+            if (!string.IsNullOrEmpty(tbBusquedaDNI.Text))
+            {
+                conditions.Add("u.dni LIKE '%' + @dni + '%'");
+            }
+
+            if (!string.IsNullOrEmpty(tbCorreo.Text))
+            {
+                conditions.Add("u.email LIKE '%' + @email + '%'");
+            }
+
+            if (!string.IsNullOrEmpty(tbTelefono.Text))
+            {
+                conditions.Add("u.telefono LIKE '%' + @telefono + '%'");
+            }
+
+            if (!string.IsNullOrEmpty(cbGenero.Text))
+            {
+                conditions.Add("u.genero = @genero");
+            }
+
+            if (conditions.Count > 0)
+            {
+                query += " WHERE " + string.Join(" AND ", conditions);
+            }
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conecctionString))
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        if (!string.IsNullOrEmpty(tbBusquedaDNI.Text))
+                        {
+                            command.Parameters.AddWithValue("@dni", tbBusquedaDNI.Text);
+                        }
+
+                        if (!string.IsNullOrEmpty(tbCorreo.Text))
+                        {
+                            command.Parameters.AddWithValue("@email", tbCorreo.Text);
+                        }
+
+                        if (!string.IsNullOrEmpty(tbTelefono.Text))
+                        {
+                            command.Parameters.AddWithValue("@telefono", tbTelefono.Text);
+                        }
+
+                        if (cbGenero.SelectedItem != null)
+                        {
+                            command.Parameters.AddWithValue("@genero", cbGenero.Text);
+                        }
+
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        RefrescarTablaDadoDeBaja(adapter);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al buscar datos: " + ex.Message, "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
     }
 }

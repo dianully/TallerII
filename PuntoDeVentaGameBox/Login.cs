@@ -1,9 +1,11 @@
-﻿using System;
-using System.Data.SqlClient;
-using System.Windows.Forms;
-using PuntoDeVentaGameBox.Vendedor;
-using PuntoDeVentaGameBox.Administrador;
+﻿using PuntoDeVentaGameBox.Administrador;
 using PuntoDeVentaGameBox.Gerente;
+using PuntoDeVentaGameBox.Vendedor;
+using System;
+using System.Data.SqlClient;
+using System.Security.Cryptography;
+using System.Text;
+using System.Windows.Forms;
 
 namespace PuntoDeVentaGameBox
 {
@@ -24,6 +26,9 @@ namespace PuntoDeVentaGameBox
                 return;
             }
 
+            string contraseñaIngresada = TxContraseña.Text;
+            string hash = HashearContraseña(contraseñaIngresada);
+
             // Consulta SQL para buscar al usuario y obtener sus datos, incluyendo el campo 'activo'
             string query = @"
                 SELECT id_usuario, nombre, apellido, dni, email, telefono, contraseña, id_rol, activo
@@ -37,7 +42,7 @@ namespace PuntoDeVentaGameBox
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@dni", TxUsuario.Text);
-                        command.Parameters.AddWithValue("@contraseña", TxContraseña.Text);
+                        command.Parameters.AddWithValue("@contraseña", hash);
 
                         connection.Open();
 
@@ -99,6 +104,22 @@ namespace PuntoDeVentaGameBox
                 MessageBox.Show("Error al conectar con la base de datos: " + ex.Message, "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private string HashearContraseña(string contraseña)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(contraseña);
+                byte[] hashBytes = sha256.ComputeHash(bytes);
+
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in hashBytes)
+                    sb.Append(b.ToString("x2"));
+
+                return sb.ToString();
+            }
+        }
+
 
         private void Login_Load(object sender, EventArgs e)
         {

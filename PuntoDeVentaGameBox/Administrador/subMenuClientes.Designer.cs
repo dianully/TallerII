@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.bClientesDadoDeBaja = new System.Windows.Forms.Button();
             this.dgvClientes = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -61,12 +61,11 @@
             // button1
             // 
             this.button1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button1.Location = new System.Drawing.Point(516, 155);
+            this.button1.Location = new System.Drawing.Point(507, 155);
             this.button1.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(197, 39);
@@ -75,20 +74,20 @@
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.MostrarTodo_Click);
             // 
-            // button4
+            // bClientesDadoDeBaja
             // 
-            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.button4.FlatAppearance.BorderSize = 0;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button4.Location = new System.Drawing.Point(720, 155);
-            this.button4.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(208, 39);
-            this.button4.TabIndex = 48;
-            this.button4.Text = "Agregar Nuevo Cliente";
-            this.button4.UseVisualStyleBackColor = false;
+            this.bClientesDadoDeBaja.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bClientesDadoDeBaja.FlatAppearance.BorderSize = 0;
+            this.bClientesDadoDeBaja.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bClientesDadoDeBaja.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.bClientesDadoDeBaja.Location = new System.Drawing.Point(709, 155);
+            this.bClientesDadoDeBaja.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.bClientesDadoDeBaja.Name = "bClientesDadoDeBaja";
+            this.bClientesDadoDeBaja.Size = new System.Drawing.Size(250, 39);
+            this.bClientesDadoDeBaja.TabIndex = 48;
+            this.bClientesDadoDeBaja.Text = "Buscar Clientes Dados de Baja";
+            this.bClientesDadoDeBaja.UseVisualStyleBackColor = false;
+            this.bClientesDadoDeBaja.Click += new System.EventHandler(this.bClientesDadoDeBaja_Click);
             // 
             // dgvClientes
             // 
@@ -106,6 +105,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
+            this.groupBox1.ForeColor = System.Drawing.SystemColors.Control;
             this.groupBox1.Location = new System.Drawing.Point(13, 13);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
@@ -157,7 +157,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label4.ForeColor = System.Drawing.SystemColors.Control;
             this.label4.Location = new System.Drawing.Point(45, 14);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(177, 23);
@@ -187,7 +187,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label3.ForeColor = System.Drawing.SystemColors.Control;
             this.label3.Location = new System.Drawing.Point(60, 14);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(190, 23);
@@ -217,7 +217,7 @@
             // 
             this.LSub.AutoSize = true;
             this.LSub.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LSub.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.LSub.ForeColor = System.Drawing.SystemColors.Control;
             this.LSub.Location = new System.Drawing.Point(63, 14);
             this.LSub.Name = "LSub";
             this.LSub.Size = new System.Drawing.Size(155, 23);
@@ -240,9 +240,8 @@
             this.cbGenero.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbGenero.FormattingEnabled = true;
             this.cbGenero.Items.AddRange(new object[] {
-            "Gerente",
-            "Administrador",
-            "Vendedor"});
+            "Masculino",
+            "Femenino"});
             this.cbGenero.Location = new System.Drawing.Point(47, 41);
             this.cbGenero.Margin = new System.Windows.Forms.Padding(4);
             this.cbGenero.Name = "cbGenero";
@@ -253,21 +252,20 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label2.Location = new System.Drawing.Point(43, 14);
+            this.label2.ForeColor = System.Drawing.SystemColors.Control;
+            this.label2.Location = new System.Drawing.Point(34, 14);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(188, 23);
+            this.label2.Size = new System.Drawing.Size(207, 23);
             this.label2.TabIndex = 35;
-            this.label2.Text = "Buscar En Base al Sexo:";
+            this.label2.Text = "Buscar En Base al Genero:";
             // 
             // button3
             // 
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.button3.FlatAppearance.BorderSize = 0;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button3.Location = new System.Drawing.Point(357, 155);
+            this.button3.Location = new System.Drawing.Point(361, 155);
             this.button3.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(141, 39);
@@ -278,12 +276,11 @@
             // 
             // bBuscar
             // 
-            this.bBuscar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bBuscar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.bBuscar.FlatAppearance.BorderSize = 0;
-            this.bBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bBuscar.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bBuscar.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.bBuscar.Location = new System.Drawing.Point(198, 155);
+            this.bBuscar.Location = new System.Drawing.Point(214, 155);
             this.bBuscar.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.bBuscar.Name = "bBuscar";
             this.bBuscar.Size = new System.Drawing.Size(141, 39);
@@ -318,9 +315,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.ClientSize = new System.Drawing.Size(1182, 544);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.bClientesDadoDeBaja);
             this.Controls.Add(this.dgvClientes);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button3);
@@ -350,7 +348,7 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button bClientesDadoDeBaja;
         private System.Windows.Forms.DataGridView dgvClientes;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;

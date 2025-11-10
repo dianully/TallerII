@@ -89,9 +89,8 @@
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.button1.Location = new System.Drawing.Point(39, 121);
@@ -104,9 +103,8 @@
             // 
             // bSalir
             // 
-            this.bSalir.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bSalir.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.bSalir.FlatAppearance.BorderSize = 0;
-            this.bSalir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bSalir.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bSalir.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.bSalir.Location = new System.Drawing.Point(39, 164);
@@ -120,9 +118,8 @@
             // 
             // bGuardarCambios
             // 
-            this.bGuardarCambios.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bGuardarCambios.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.bGuardarCambios.FlatAppearance.BorderSize = 0;
-            this.bGuardarCambios.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bGuardarCambios.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bGuardarCambios.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.bGuardarCambios.Location = new System.Drawing.Point(39, 78);
