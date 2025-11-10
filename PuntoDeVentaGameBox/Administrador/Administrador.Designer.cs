@@ -32,11 +32,11 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.buttonClientes = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.BSalir = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.lAdministrador = new System.Windows.Forms.Label();
-            this.buttonClientes = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -69,7 +69,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label2.Location = new System.Drawing.Point(0, 9);
+            this.label2.Location = new System.Drawing.Point(272, 11);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(343, 38);
             this.label2.TabIndex = 3;
@@ -87,12 +87,25 @@
             this.panel2.Size = new System.Drawing.Size(1182, 119);
             this.panel2.TabIndex = 2;
             // 
+            // buttonClientes
+            // 
+            this.buttonClientes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.buttonClientes.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonClientes.ForeColor = System.Drawing.Color.LightGray;
+            this.buttonClientes.Location = new System.Drawing.Point(304, 3);
+            this.buttonClientes.Name = "buttonClientes";
+            this.buttonClientes.Size = new System.Drawing.Size(283, 110);
+            this.buttonClientes.TabIndex = 4;
+            this.buttonClientes.Text = "Clientes";
+            this.buttonClientes.UseVisualStyleBackColor = false;
+            this.buttonClientes.Click += new System.EventHandler(this.buttonClientes_Click);
+            // 
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.button2.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.LightGray;
-            this.button2.Location = new System.Drawing.Point(304, 3);
+            this.button2.Location = new System.Drawing.Point(593, 3);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(283, 110);
             this.button2.TabIndex = 1;
@@ -131,24 +144,12 @@
             this.lAdministrador.AutoSize = true;
             this.lAdministrador.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lAdministrador.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lAdministrador.Location = new System.Drawing.Point(930, 9);
+            this.lAdministrador.Location = new System.Drawing.Point(614, 13);
             this.lAdministrador.Name = "lAdministrador";
             this.lAdministrador.Size = new System.Drawing.Size(227, 38);
             this.lAdministrador.TabIndex = 1;
             this.lAdministrador.Text = "(Administrador)";
             this.lAdministrador.Click += new System.EventHandler(this.lAdministrador_Click_1);
-            // 
-            // buttonClientes
-            // 
-            this.buttonClientes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.buttonClientes.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonClientes.ForeColor = System.Drawing.Color.LightGray;
-            this.buttonClientes.Location = new System.Drawing.Point(593, 3);
-            this.buttonClientes.Name = "buttonClientes";
-            this.buttonClientes.Size = new System.Drawing.Size(283, 110);
-            this.buttonClientes.TabIndex = 4;
-            this.buttonClientes.Text = "Clientes";
-            this.buttonClientes.UseVisualStyleBackColor = false;
             // 
             // Administrador
             // 

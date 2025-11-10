@@ -27,6 +27,16 @@ namespace PuntoDeVentaGameBox.Administrador
             this.Close();
         }
 
+        private void txtSoloNumeros_KeyPress(object sender, KeyPressEventArgs e)
+        {
+           
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+
+                e.Handled = true;
+            }
+        }
+
         private void bRegistrarCliente_Click(object sender, EventArgs e)
         {
             string nombre = tNombre.Text.Trim();
@@ -36,7 +46,8 @@ namespace PuntoDeVentaGameBox.Administrador
             string telefono = tTelefono.Text.Trim();
             string genero = cbGenero.SelectedItem?.ToString();
 
-            if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(apellido) || string.IsNullOrEmpty(dniTexto) || string.IsNullOrEmpty(genero))
+            if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(apellido) || string.IsNullOrEmpty(dniTexto) ||
+                string.IsNullOrEmpty(genero) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(telefono))
             {
                 MessageBox.Show("Debe completar todos los campos obligatorios.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -48,6 +59,19 @@ namespace PuntoDeVentaGameBox.Administrador
                 return;
             }
 
+            if (!email.Contains("@") || !email.EndsWith(".com"))
+            {
+                MessageBox.Show("El correo debe contener '@' y terminar en '.com'.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!long.TryParse(telefono, out _))
+            {
+                MessageBox.Show("El número de teléfono debe contener solo números.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+    
             string connectionString = "server=localhost;Database=game_box;Trusted_Connection=True";
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
@@ -72,7 +96,6 @@ namespace PuntoDeVentaGameBox.Administrador
                     {
                         MessageBox.Show("Cliente registrado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                        // 🔁 Enviar datos al formulario Vendedor
                         foreach (Form form in Application.OpenForms)
                         {
                             if (form is Vendedor.Vendedor vendedorForm)
@@ -83,7 +106,7 @@ namespace PuntoDeVentaGameBox.Administrador
                             }
                         }
 
-                        this.Close(); // Cierra el formulario AgregarCliente
+                        this.Close();
                     }
                     else
                     {
@@ -93,5 +116,25 @@ namespace PuntoDeVentaGameBox.Administrador
             }
         }
 
+        public string CapitalizarCadaPalabra(string texto)
+        {
+            if (string.IsNullOrWhiteSpace(texto))
+                return string.Empty;
+
+            string[] palabras = texto.Trim().ToLower().Split(' ');
+            for (int i = 0; i < palabras.Length; i++)
+            {
+                if (palabras[i].Length > 0)
+                    palabras[i] = char.ToUpper(palabras[i][0]) + palabras[i].Substring(1);
+            }
+
+            return string.Join(" ", palabras);
+        }
+
+        private void tNombre_Leave(object sender, EventArgs e)
+        {
+            tNombre.Text = CapitalizarCadaPalabra(tNombre.Text);
+            tApellido.Text = CapitalizarCadaPalabra(tApellido.Text);   
+        }
     }
 }

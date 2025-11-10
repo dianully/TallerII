@@ -1,16 +1,18 @@
-﻿using System;
+﻿using iTextSharp.text.xml;
+using PuntoDeVentaGameBox.Administrador;
+using PuntoDeVentaGameBox.Gerente;
+using PuntoDeVentaGameBox.Vendedor;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.SqlClient;
-using PuntoDeVentaGameBox.Vendedor;
-using PuntoDeVentaGameBox.Administrador;
-using PuntoDeVentaGameBox.Gerente;
 
 namespace PuntoDeVentaGameBox.Administrador
 {
@@ -133,6 +135,22 @@ namespace PuntoDeVentaGameBox.Administrador
             ActualizarUsuario();
         }
 
+        private string HashearContraseña(string contraseña)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(contraseña);
+                byte[] hashBytes = sha256.ComputeHash(bytes);
+
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in hashBytes)
+                    sb.Append(b.ToString("x2"));
+
+                return sb.ToString();
+            }
+        }
+
+
         private void ActualizarUsuario()
         {
             // Validaciones
@@ -171,12 +189,15 @@ namespace PuntoDeVentaGameBox.Administrador
                 return;
             }
 
-            // ✅ bloquear correos duplicados
             if (EmailYaExiste(tEditarEmail.Text, this.idUsuario))
             {
                 MessageBox.Show("Este correo electronico ya está registrado. Por favor inserte otro.", "Correo Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
+            string contraseñaIngresada = tEditarContraseña.Text;
+            string hash = HashearContraseña(contraseñaIngresada);
+
 
             string query = "UPDATE usuario SET nombre = @nombre, apellido = @apellido, dni = @dni, email = @email, telefono = @telefono, contraseña = @contraseña, id_rol = @idRol WHERE id_usuario = @idUsuario";
 
@@ -191,7 +212,7 @@ namespace PuntoDeVentaGameBox.Administrador
                         command.Parameters.AddWithValue("@dni", tEditarDni.Text);
                         command.Parameters.AddWithValue("@email", tEditarEmail.Text);
                         command.Parameters.AddWithValue("@telefono", tEditarTelefono.Text);
-                        command.Parameters.AddWithValue("@contraseña", tEditarContraseña.Text);
+                        command.Parameters.AddWithValue("@contraseña", hash);
 
                         int idRolParaActualizar;
                         if (cbRol.SelectedIndex == -1 || cbRol.SelectedValue == null)
@@ -296,6 +317,16 @@ namespace PuntoDeVentaGameBox.Administrador
         private void tEditarDni_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            tEditarContraseña.Clear();
+            tEditarApellido.Clear();
+            tEditarDni.Clear();
+            tEditarEmail.Clear();
+            tEditarTelefono.Clear();    
+            tEditarNombre.Clear();
         }
     }
 }

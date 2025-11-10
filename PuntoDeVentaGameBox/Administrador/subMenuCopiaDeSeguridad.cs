@@ -57,13 +57,14 @@ namespace PuntoDeVentaGameBox.Administrador
             }
 
             string nombreBD = "game_box";
-            string archivoBackup = $"{ruta}\\{nombreBD}_backup.bak";
+            string fechaHora = DateTime.Now.ToString("yyyyMMdd_HHmmss"); // Formato seguro para nombres de archivo
+            string archivoBackup = $"{ruta}\\{nombreBD}_Backup_{fechaHora}.bak";
 
             string query = $@"
-                BACKUP DATABASE [{nombreBD}]
-                TO DISK = N'{archivoBackup}'
-                WITH FORMAT, INIT, NAME = N'CopiaCompleta', SKIP, NOREWIND, NOUNLOAD, STATS = 10;
-            ";
+        BACKUP DATABASE [{nombreBD}]
+        TO DISK = N'{archivoBackup}'
+        WITH FORMAT, INIT, NAME = N'CopiaCompleta', SKIP, NOREWIND, NOUNLOAD, STATS = 10;
+    ";
 
             try
             {
@@ -87,5 +88,6 @@ namespace PuntoDeVentaGameBox.Administrador
                 MessageBox.Show("❌ Error al realizar la copia: " + ex.Message);
             }
         }
+
     }
 }

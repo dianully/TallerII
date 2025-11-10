@@ -1,6 +1,6 @@
 ﻿namespace PuntoDeVentaGameBox.Administrador
 {
-    partial class EdicionUsuario
+    partial class EditarClientes
     {
         /// <summary>
         /// Required designer variable.
@@ -28,53 +28,38 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
             this.pLimpiarParametros = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.bSalir = new System.Windows.Forms.Button();
             this.bGuardarCambios = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.cbRol = new System.Windows.Forms.ComboBox();
+            this.cbGenero = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.tEditarNombre = new System.Windows.Forms.TextBox();
             this.tEditarApellido = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tEditarDni = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.tEditarContraseña = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.tEditarEmail = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tEditarTelefono = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
             this.pLimpiarParametros.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.panel1.Controls.Add(this.pLimpiarParametros);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 450);
-            this.panel1.TabIndex = 1;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // pLimpiarParametros
             // 
             this.pLimpiarParametros.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.pLimpiarParametros.Controls.Add(this.panel5);
             this.pLimpiarParametros.Controls.Add(this.panel4);
-            this.pLimpiarParametros.Location = new System.Drawing.Point(59, 48);
+            this.pLimpiarParametros.Location = new System.Drawing.Point(54, 43);
             this.pLimpiarParametros.Name = "pLimpiarParametros";
             this.pLimpiarParametros.Size = new System.Drawing.Size(692, 364);
-            this.pLimpiarParametros.TabIndex = 6;
+            this.pLimpiarParametros.TabIndex = 7;
             // 
             // panel5
             // 
@@ -115,7 +100,6 @@
             this.bSalir.TabIndex = 44;
             this.bSalir.Text = "Salir";
             this.bSalir.UseVisualStyleBackColor = false;
-            this.bSalir.Click += new System.EventHandler(this.bSalir_Click);
             // 
             // bGuardarCambios
             // 
@@ -130,20 +114,18 @@
             this.bGuardarCambios.TabIndex = 43;
             this.bGuardarCambios.Text = "Guardar Cambios";
             this.bGuardarCambios.UseVisualStyleBackColor = false;
-            this.bGuardarCambios.Click += new System.EventHandler(this.bEditarUsuario_Click);
+       
             // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.SystemColors.Control;
-            this.panel4.Controls.Add(this.cbRol);
+            this.panel4.Controls.Add(this.cbGenero);
             this.panel4.Controls.Add(this.label7);
-            this.panel4.Controls.Add(this.label6);
             this.panel4.Controls.Add(this.tEditarNombre);
             this.panel4.Controls.Add(this.tEditarApellido);
             this.panel4.Controls.Add(this.label5);
             this.panel4.Controls.Add(this.tEditarDni);
             this.panel4.Controls.Add(this.label4);
-            this.panel4.Controls.Add(this.tEditarContraseña);
             this.panel4.Controls.Add(this.label3);
             this.panel4.Controls.Add(this.tEditarEmail);
             this.panel4.Controls.Add(this.label1);
@@ -154,18 +136,18 @@
             this.panel4.Size = new System.Drawing.Size(312, 272);
             this.panel4.TabIndex = 0;
             // 
-            // cbRol
+            // cbGenero
             // 
-            this.cbRol.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.cbRol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbRol.FormattingEnabled = true;
-            this.cbRol.Items.AddRange(new object[] {
+            this.cbGenero.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.cbGenero.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbGenero.FormattingEnabled = true;
+            this.cbGenero.Items.AddRange(new object[] {
             "Administrador",
             "Vendedor"});
-            this.cbRol.Location = new System.Drawing.Point(126, 219);
-            this.cbRol.Name = "cbRol";
-            this.cbRol.Size = new System.Drawing.Size(158, 24);
-            this.cbRol.TabIndex = 43;
+            this.cbGenero.Location = new System.Drawing.Point(126, 193);
+            this.cbGenero.Name = "cbGenero";
+            this.cbGenero.Size = new System.Drawing.Size(158, 24);
+            this.cbGenero.TabIndex = 43;
             // 
             // label7
             // 
@@ -173,22 +155,11 @@
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label7.Location = new System.Drawing.Point(26, 217);
+            this.label7.Location = new System.Drawing.Point(26, 191);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(39, 23);
+            this.label7.Size = new System.Drawing.Size(70, 23);
             this.label7.TabIndex = 42;
-            this.label7.Text = "Rol:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label6.Location = new System.Drawing.Point(19, 187);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(101, 23);
-            this.label6.TabIndex = 41;
-            this.label6.Text = "Contraseña:";
+            this.label7.Text = "Genero:";
             // 
             // tEditarNombre
             // 
@@ -222,7 +193,6 @@
             this.tEditarDni.Name = "tEditarDni";
             this.tEditarDni.Size = new System.Drawing.Size(158, 22);
             this.tEditarDni.TabIndex = 2;
-            this.tEditarDni.TextChanged += new System.EventHandler(this.tEditarDni_TextChanged);
             // 
             // label4
             // 
@@ -234,13 +204,6 @@
             this.label4.Size = new System.Drawing.Size(66, 23);
             this.label4.TabIndex = 39;
             this.label4.Text = "Correo:";
-            // 
-            // tEditarContraseña
-            // 
-            this.tEditarContraseña.Location = new System.Drawing.Point(126, 187);
-            this.tEditarContraseña.Name = "tEditarContraseña";
-            this.tEditarContraseña.Size = new System.Drawing.Size(158, 22);
-            this.tEditarContraseña.TabIndex = 5;
             // 
             // label3
             // 
@@ -290,17 +253,18 @@
             this.label2.TabIndex = 36;
             this.label2.Text = "Nombre:";
             // 
-            // EdicionUsuario
+            // EditarCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pLimpiarParametros);
+            this.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "EdicionUsuario";
+            this.Name = "EditarCliente";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "EdicionUsuario";
-            this.panel1.ResumeLayout(false);
+            this.Text = "EditarCliente";
             this.pLimpiarParametros.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
@@ -311,26 +275,23 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox tEditarContraseña;
-        private System.Windows.Forms.TextBox tEditarTelefono;
-        private System.Windows.Forms.TextBox tEditarEmail;
-        private System.Windows.Forms.TextBox tEditarDni;
-        private System.Windows.Forms.TextBox tEditarApellido;
-        private System.Windows.Forms.TextBox tEditarNombre;
         private System.Windows.Forms.Panel pLimpiarParametros;
         private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button bSalir;
         private System.Windows.Forms.Button bGuardarCambios;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox cbGenero;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox tEditarNombre;
+        private System.Windows.Forms.TextBox tEditarApellido;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox tEditarDni;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox tEditarEmail;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tEditarTelefono;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ComboBox cbRol;
-        private System.Windows.Forms.Button button1;
     }
 }

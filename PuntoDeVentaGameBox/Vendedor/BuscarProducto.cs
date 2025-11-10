@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.IO;
 
 namespace PuntoDeVentaGameBox.Vendedor
 {
@@ -26,7 +27,7 @@ namespace PuntoDeVentaGameBox.Vendedor
 
         private void CargarProductos(string filtroNombre = "")
         {
-            string consulta = "SELECT nombre, precio_venta, cantidad_stock, id_categoria " +
+            string consulta = "SELECT nombre, precio_venta, cantidad_stock " +
                               "FROM producto " +
                               "WHERE nombre LIKE @filtroNombre COLLATE Latin1_General_CI_AI"; // Ignora mayúsculas y acentos
 
@@ -53,7 +54,13 @@ namespace PuntoDeVentaGameBox.Vendedor
                 dgvBuscarProducto.Columns["nombre"].HeaderText = "Nombre";
                 dgvBuscarProducto.Columns["precio_venta"].HeaderText = "Precio";
                 dgvBuscarProducto.Columns["cantidad_stock"].HeaderText = "Stock";
-                dgvBuscarProducto.Columns["id_categoria"].HeaderText = "Categoría";
+
+                dgvBuscarProducto.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                foreach (DataGridViewColumn col in dgvBuscarProducto.Columns)
+                {
+                    col.ReadOnly = true;
+                }
             }
         }
         private void dgvBuscarProducto_CellClick(object sender, DataGridViewCellEventArgs e)

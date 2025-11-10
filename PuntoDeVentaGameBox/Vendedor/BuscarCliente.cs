@@ -24,11 +24,20 @@ namespace PuntoDeVentaGameBox.Vendedor
 
         string conecctionString = "server=localhost;Database=game_box;Trusted_Connection=True";
 
+        private void txtSoloNumeros_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
         private void CargarClientes(string filtroNombre = "")
         {
+            
             string consulta = "SELECT nombre, apellido, dni, telefono,email, genero " +
                               "FROM cliente " +
-                              "WHERE dni LIKE @filtroDni COLLATE Latin1_General_CI_AI"; // Ignora mayúsculas y acentos
+                              "WHERE dni LIKE @filtroDni COLLATE Latin1_General_CI_AI" + " AND activo = 1" ; // Ignora mayúsculas y acentos
 
             using (SqlConnection conexion = new SqlConnection(conecctionString))
             using (SqlCommand comando = new SqlCommand(consulta, conexion))
@@ -50,6 +59,12 @@ namespace PuntoDeVentaGameBox.Vendedor
                 dgvClientes.Columns["email"].HeaderText = "Email";
                 dgvClientes.Columns["genero"].HeaderText = "Genero";
 
+                dgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                foreach (DataGridViewColumn col in dgvClientes.Columns)
+                {
+                    col.ReadOnly = true;
+                }
             }
         }
         private void dgvBuscarCliente_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -60,13 +75,14 @@ namespace PuntoDeVentaGameBox.Vendedor
                 string apellido = dgvClientes.Rows[e.RowIndex].Cells["apellido"].Value.ToString();
                 string nombreCompleto = $"{nombre} {apellido}";
                 string dni = dgvClientes.Rows[e.RowIndex].Cells["dni"].Value.ToString();
-
+                string genero = dgvClientes.Rows[e.RowIndex].Cells["genero"].Value.ToString();
                 foreach (Form form in Application.OpenForms)
                 {
                     if (form is Vendedor vendedorForm)
                     {
                         vendedorForm.SetCliente(nombreCompleto);
                         vendedorForm.SetDniCliente(dni);
+                        vendedorForm.SetGeneroCliente(genero);
 
                         if (vendedorForm.WindowState == FormWindowState.Minimized)
                         {
