@@ -1,6 +1,6 @@
 ﻿namespace PuntoDeVentaGameBox.Gerente
 {
-    partial class Form1
+    partial class VerProducto
     {
         /// <summary>
         /// Required designer variable.
@@ -32,8 +32,6 @@
             this.PFormEdicion = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.PBImagenProducto = new System.Windows.Forms.PictureBox();
-            this.TBDireccionImagen = new System.Windows.Forms.TextBox();
-            this.LURLImagen = new System.Windows.Forms.Label();
             this.PAccion = new System.Windows.Forms.Panel();
             this.BSalir = new System.Windows.Forms.Button();
             this.BEditar = new System.Windows.Forms.Button();
@@ -70,6 +68,7 @@
             this.PEditar.Name = "PEditar";
             this.PEditar.Size = new System.Drawing.Size(744, 667);
             this.PEditar.TabIndex = 8;
+            this.PEditar.Paint += new System.Windows.Forms.PaintEventHandler(this.PEditar_Paint);
             // 
             // PFormEdicion
             // 
@@ -86,8 +85,6 @@
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
             this.panel1.Controls.Add(this.PBImagenProducto);
-            this.panel1.Controls.Add(this.TBDireccionImagen);
-            this.panel1.Controls.Add(this.LURLImagen);
             this.panel1.Location = new System.Drawing.Point(337, 3);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(350, 312);
@@ -95,31 +92,11 @@
             // 
             // PBImagenProducto
             // 
-            this.PBImagenProducto.Location = new System.Drawing.Point(41, 96);
+            this.PBImagenProducto.Location = new System.Drawing.Point(41, 37);
             this.PBImagenProducto.Name = "PBImagenProducto";
-            this.PBImagenProducto.Size = new System.Drawing.Size(274, 183);
+            this.PBImagenProducto.Size = new System.Drawing.Size(274, 242);
             this.PBImagenProducto.TabIndex = 39;
             this.PBImagenProducto.TabStop = false;
-            // 
-            // TBDireccionImagen
-            // 
-            this.TBDireccionImagen.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TBDireccionImagen.Location = new System.Drawing.Point(117, 37);
-            this.TBDireccionImagen.Name = "TBDireccionImagen";
-            this.TBDireccionImagen.Size = new System.Drawing.Size(199, 30);
-            this.TBDireccionImagen.TabIndex = 2;
-            // 
-            // LURLImagen
-            // 
-            this.LURLImagen.AutoSize = true;
-            this.LURLImagen.BackColor = System.Drawing.SystemColors.Control;
-            this.LURLImagen.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LURLImagen.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.LURLImagen.Location = new System.Drawing.Point(3, 37);
-            this.LURLImagen.Name = "LURLImagen";
-            this.LURLImagen.Size = new System.Drawing.Size(108, 23);
-            this.LURLImagen.TabIndex = 38;
-            this.LURLImagen.Text = "URL Imagen:";
             // 
             // PAccion
             // 
@@ -189,8 +166,9 @@
             // 
             this.TBGenero.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TBGenero.Location = new System.Drawing.Point(20, 397);
+            this.TBGenero.Multiline = true;
             this.TBGenero.Name = "TBGenero";
-            this.TBGenero.Size = new System.Drawing.Size(259, 30);
+            this.TBGenero.Size = new System.Drawing.Size(259, 62);
             this.TBGenero.TabIndex = 56;
             // 
             // TBProveedor
@@ -290,7 +268,7 @@
             this.LDescripcion.AutoSize = true;
             this.LDescripcion.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LDescripcion.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.LDescripcion.Location = new System.Drawing.Point(19, 428);
+            this.LDescripcion.Location = new System.Drawing.Point(19, 469);
             this.LDescripcion.Name = "LDescripcion";
             this.LDescripcion.Size = new System.Drawing.Size(102, 23);
             this.LDescripcion.TabIndex = 37;
@@ -333,10 +311,10 @@
             // 
             // TBDescripcionProducto
             // 
-            this.TBDescripcionProducto.Location = new System.Drawing.Point(20, 464);
+            this.TBDescripcionProducto.Location = new System.Drawing.Point(20, 495);
             this.TBDescripcionProducto.Multiline = true;
             this.TBDescripcionProducto.Name = "TBDescripcionProducto";
-            this.TBDescripcionProducto.Size = new System.Drawing.Size(263, 143);
+            this.TBDescripcionProducto.Size = new System.Drawing.Size(263, 112);
             this.TBDescripcionProducto.TabIndex = 1;
             // 
             // Form1
@@ -351,7 +329,6 @@
             this.PEditar.ResumeLayout(false);
             this.PFormEdicion.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PBImagenProducto)).EndInit();
             this.PAccion.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
@@ -366,8 +343,6 @@
         private System.Windows.Forms.Panel PFormEdicion;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox PBImagenProducto;
-        private System.Windows.Forms.TextBox TBDireccionImagen;
-        private System.Windows.Forms.Label LURLImagen;
         private System.Windows.Forms.Panel PAccion;
         private System.Windows.Forms.Button BSalir;
         private System.Windows.Forms.Button BEditar;

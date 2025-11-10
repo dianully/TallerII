@@ -5,98 +5,101 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.IO;
+using System.Collections.Generic;
 
 namespace PuntoDeVentaGameBox.Gerente
 {
     public partial class InventarioForm : Form
     {
         // usa cadena fija sin appconfig
-        private readonly string _connString = "Server=localhost;Database=game_box;Trusted_Connection=True;TrustServerCertificate=True"; // cadena de conexion fija
+        private readonly string _connString = "Server=localhost;Database=game_box;Trusted_Connection=True;TrustServerCertificate=True";
 
         // umbral para considerar stock bajo
-        private const int UMBRAL_STOCK_BAJO = 25; // define umbral de stock bajo
+        private const int UMBRAL_STOCK_BAJO = 25;
 
         // cache de placeholder para imagen faltante
-        private static Image _placeholderImagen; // cache de imagen de relleno
+        private static Image _placeholderImagen;
 
         // popup de sugerencias reutilizable
-        private Panel _suggestPanel;       // panel flotante de sugerencias
-        private ListBox _suggestList;      // lista de sugerencias
-        private TextBox _suggestTarget;    // textbox objetivo activo
+        private Panel _suggestPanel;
+        private ListBox _suggestList;
+        private TextBox _suggestTarget;
+
+        // helper del combo multi-categoría (filtro)
+        private MultiCategoriaFiltroHelper _mf;
 
         // clase para opciones de orden
         private class SortOption
         {
-            public string Code { get; set; } // codigo interno
-            public string Display { get; set; } // texto a mostrar
-            public override string ToString() => Display; // devuelve display
+            public string Code { get; set; }
+            public string Display { get; set; }
+            public override string ToString() => Display;
         }
 
         public InventarioForm()
         {
             InitializeComponent();
 
-            // asegura handler unico de clicks en celdas
-            DGVProductos.CellContentClick -= DGV_CellContentClick; // evita doble suscripcion
-            DGVProductos.CellContentClick += DGV_CellContentClick; // maneja botones ver/editar/accion
+            // handers de la grilla
+            DGVProductos.CellContentClick -= DGV_CellContentClick;
+            DGVProductos.CellContentClick += DGV_CellContentClick;
 
-            // convierte url_imagen en miniatura y maneja errores de formato
-            DGVProductos.CellFormatting -= DGVProductos_CellFormatting; // evita doble suscripcion
-            DGVProductos.CellFormatting += DGVProductos_CellFormatting; // renderiza imagen en la grilla
-            DGVProductos.DataError -= DGVProductos_DataError; // evita doble suscripcion
-            DGVProductos.DataError += DGVProductos_DataError; // suprime popups de error de formato
+            DGVProductos.CellFormatting -= DGVProductos_CellFormatting;
+            DGVProductos.CellFormatting += DGVProductos_CellFormatting;
+            DGVProductos.DataError -= DGVProductos_DataError;
+            DGVProductos.DataError += DGVProductos_DataError;
 
-            // al terminar el binding: seteo de colores y texto de boton Accion
             DGVProductos.DataBindingComplete -= DGVProductos_DataBindingComplete;
             DGVProductos.DataBindingComplete += DGVProductos_DataBindingComplete;
 
             // estilo del dgv
-            DGVProductos.DefaultCellStyle.ForeColor = Color.Black; // asegura texto negro
-            DGVProductos.RowsDefaultCellStyle.ForeColor = Color.Black; // asegura texto negro
-            DGVProductos.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black; // asegura texto negro
+            DGVProductos.DefaultCellStyle.ForeColor = Color.Black;
+            DGVProductos.RowsDefaultCellStyle.ForeColor = Color.Black;
+            DGVProductos.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black;
 
-            // wire del boton nuevo
-            BNuevoProducto.Click -= BNuevoproducto_Click; // evita doble suscripcion
-            BNuevoProducto.Click += BNuevoproducto_Click; // abre formulario de 
+            // botones
+            BNuevoProducto.Click -= BNuevoproducto_Click;
+            BNuevoProducto.Click += BNuevoproducto_Click;
 
-            BVerSoloStockBajo.Click -= BVerSoloStockBajo_Click; // evita doble suscripcion
-            BVerSoloStockBajo.Click += BVerSoloStockBajo_Click; // filtra por stock bajo rapido
+            BVerSoloStockBajo.Click -= BVerSoloStockBajo_Click;
+            BVerSoloStockBajo.Click += BVerSoloStockBajo_Click;
 
-            // wires de filtros
-            TBNombre.TextChanged -= TBNombre_TextChanged; // evita doble suscripcion
-            TBNombre.TextChanged += TBNombre_TextChanged; // muestra sugerencias por nombre
-            TBID.TextChanged -= TBID_TextChanged; // evita doble suscripcion
-            TBID.TextChanged += TBID_TextChanged; // muestra sugerencias por id
-            TBID.KeyPress -= TBID_KeyPress; // evita doble suscripcion
-            TBID.KeyPress += TBID_KeyPress; // restringe a numeros
-            BAplicarFiltrosProductos.Click -= BAplicarFiltrosProductos_Click; // evita doble suscripcion
-            BAplicarFiltrosProductos.Click += BAplicarFiltrosProductos_Click; // aplica filtros
-            BLimpiarFiltrosProductos.Click -= BLimpiarFiltrosProductos_Click; // evita doble suscripcion
-            BLimpiarFiltrosProductos.Click += BLimpiarFiltrosProductos_Click; // limpia filtros
+            // filtros y sugerencias
+            TBNombre.TextChanged -= TBNombre_TextChanged;
+            TBNombre.TextChanged += TBNombre_TextChanged;
 
-            // cierra popup si se hace click fuera
-            this.Click -= InventarioForm_Click; // evita doble suscripcion
-            this.Click += InventarioForm_Click; // oculta popup al clickear fuera
+            TBID.TextChanged -= TBID_TextChanged;
+            TBID.TextChanged += TBID_TextChanged;
+
+            TBID.KeyPress -= TBID_KeyPress;
+            TBID.KeyPress += TBID_KeyPress;
+
+            BAplicarFiltrosProductos.Click -= BAplicarFiltrosProductos_Click;
+            BAplicarFiltrosProductos.Click += BAplicarFiltrosProductos_Click;
+
+            BLimpiarFiltrosProductos.Click -= BLimpiarFiltrosProductos_Click;
+            BLimpiarFiltrosProductos.Click += BLimpiarFiltrosProductos_Click;
+
+            this.Click -= InventarioForm_Click;
+            this.Click += InventarioForm_Click;
         }
 
         private void InventarioForm_Load(object sender, EventArgs e)
         {
-            // prepara columnas exactas y carga datos desde la base
-            PrepararColumnas(); // define columnas manuales y orden
-            CargarGeneros();    // llena el combo de generos
-            CargarOrden();      // llena el combo de orden
-            CargarProductos();  // trae productos (activos e inactivos) con nombre de categoria
+            PrepararColumnas();
+            CargarGeneros();    // ahora multi-select
+            CargarOrden();
+            CargarProductos();  // carga inicial
         }
 
-        private SqlConnection NuevaConexion() => new SqlConnection(_connString); // crea conexion sql
+        private SqlConnection NuevaConexion() => new SqlConnection(_connString);
 
         // ==================== columnas y carga ====================
 
         private void PrepararColumnas()
         {
-            // definimos columnas manuales para evitar duplicados y controlar tamaños
-            DGVProductos.AutoGenerateColumns = false; // desactiva autogeneracion de columnas
-            DGVProductos.Columns.Clear(); // limpia columnas existentes
+            DGVProductos.AutoGenerateColumns = false;
+            DGVProductos.Columns.Clear();
 
             // id
             var colId = new DataGridViewTextBoxColumn
@@ -108,44 +111,34 @@ namespace PuntoDeVentaGameBox.Gerente
                 FillWeight = 8,
                 MinimumWidth = 55
             };
-            DGVProductos.Columns.Add(colId); // agrega columna id
+            DGVProductos.Columns.Add(colId);
 
-            // imagen miniatura desde url_imagen
+            // imagen
             var colImg = new DataGridViewImageColumn
             {
                 Name = "Imagen",
                 HeaderText = "Imagen",
-                DataPropertyName = "url_imagen", // se transforma a Image en CellFormatting
+                DataPropertyName = "url_imagen",
                 ImageLayout = DataGridViewImageCellLayout.Zoom,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.None, // ancho fijo chico
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
                 Width = 56
             };
-            colImg.DefaultCellStyle.NullValue = null; // evita castear null a imagen
-            DGVProductos.Columns.Add(colImg); // agrega columna imagen
+            colImg.DefaultCellStyle.NullValue = null;
+            DGVProductos.Columns.Add(colImg);
 
-            // nombre del juego
+            // nombre
             var colNombre = new DataGridViewTextBoxColumn
             {
                 Name = "Nombre",
                 HeaderText = "Nombre",
                 DataPropertyName = "nombre",
                 ReadOnly = true,
-                FillWeight = 48,
+                FillWeight = 56,
                 MinimumWidth = 260
             };
-            DGVProductos.Columns.Add(colNombre); // agrega columna nombre
+            DGVProductos.Columns.Add(colNombre);
 
-            // genero con nombre de la categoria
-            var colGenero = new DataGridViewTextBoxColumn
-            {
-                Name = "Genero",
-                HeaderText = "Genero",
-                DataPropertyName = "genero", // viene del join a categoria
-                ReadOnly = true,
-                FillWeight = 18,
-                MinimumWidth = 120
-            };
-            DGVProductos.Columns.Add(colGenero); // agrega columna genero
+            // *** Se elimina la columna Género ***
 
             // precio
             var colPrecio = new DataGridViewTextBoxColumn
@@ -154,12 +147,12 @@ namespace PuntoDeVentaGameBox.Gerente
                 HeaderText = "Precio",
                 DataPropertyName = "precio_venta",
                 ReadOnly = true,
-                FillWeight = 14,
+                FillWeight = 16,
                 MinimumWidth = 90
             };
-            colPrecio.DefaultCellStyle.Format = "N2"; // muestra dos decimales
-            colPrecio.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; // alinea a la derecha
-            DGVProductos.Columns.Add(colPrecio); // agrega columna precio
+            colPrecio.DefaultCellStyle.Format = "N2";
+            colPrecio.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            DGVProductos.Columns.Add(colPrecio);
 
             // stock
             var colStock = new DataGridViewTextBoxColumn
@@ -171,8 +164,8 @@ namespace PuntoDeVentaGameBox.Gerente
                 FillWeight = 12,
                 MinimumWidth = 70
             };
-            colStock.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter; // centra el numero
-            DGVProductos.Columns.Add(colStock); // agrega columna stock
+            colStock.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            DGVProductos.Columns.Add(colStock);
 
             // botón ver
             DGVProductos.Columns.Add(new DataGridViewButtonColumn
@@ -182,7 +175,7 @@ namespace PuntoDeVentaGameBox.Gerente
                 Text = "Ver",
                 UseColumnTextForButtonValue = true,
                 FlatStyle = FlatStyle.Popup,
-                FillWeight = 8,
+                FillWeight = 4,
                 MinimumWidth = 70
             });
 
@@ -194,65 +187,75 @@ namespace PuntoDeVentaGameBox.Gerente
                 Text = "Editar",
                 UseColumnTextForButtonValue = true,
                 FlatStyle = FlatStyle.Popup,
-                FillWeight = 8,
+                FillWeight = 4,
                 MinimumWidth = 80
-            }); // agrega boton editar
+            });
 
             // boton ACCION (dinámico: Eliminar / Reactivar)
             var colAccion = new DataGridViewButtonColumn
             {
                 Name = "Accion",
                 HeaderText = "Acción",
-                UseColumnTextForButtonValue = false, // texto por fila
+                UseColumnTextForButtonValue = false,
                 FlatStyle = FlatStyle.Popup,
-                FillWeight = 8,
+                FillWeight = 4,
                 MinimumWidth = 90
             };
             DGVProductos.Columns.Add(colAccion);
 
-            // formato general del grid
-            DGVProductos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // reparte el espacio segun fillweight
-            DGVProductos.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None; // altura fija de filas
-            DGVProductos.RowTemplate.Height = 56; // miniatura chica
-            DGVProductos.ReadOnly = false; // habilita botones
-            DGVProductos.SelectionMode = DataGridViewSelectionMode.FullRowSelect; // seleccion por fila completa
-            DGVProductos.MultiSelect = false; // seleccion unica
+            // formato general
+            DGVProductos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DGVProductos.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            DGVProductos.RowTemplate.Height = 56;
+            DGVProductos.ReadOnly = false;
+            DGVProductos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            DGVProductos.MultiSelect = false;
         }
 
-        private void CargarProductos(string filtroNombre = null, int? filtroId = null, int? filtroCategoria = null, string ordenCode = null)
+        private void CargarProductos(
+            string filtroNombre = null,
+            int? filtroId = null,
+            IReadOnlyCollection<int> filtroCategorias = null,
+            string ordenCode = null)
         {
-            // trae productos (activos + inactivos por defecto) y aplica filtros
             try
             {
                 using (var cn = NuevaConexion())
                 using (var da = new SqlDataAdapter())
                 using (var cmd = cn.CreateCommand())
                 {
-                    // arma where base (sin forzar activo = 1)
+                    string catsCsv = (filtroCategorias != null && filtroCategorias.Count > 0)
+                        ? string.Join(",", filtroCategorias)
+                        : null;
+
                     string sql = @"
                         SELECT
                             p.id_producto,
                             p.url_imagen,
                             p.nombre,
-                            c.nombre AS genero,
                             p.precio_venta,
                             p.cantidad_stock,
                             p.activo
                         FROM dbo.producto p
-                        LEFT JOIN dbo.categoria c ON c.id_categoria = p.id_categoria
-                        WHERE 1=1
+                        WHERE 1 = 1
                           AND (@nom IS NULL OR p.nombre LIKE @like)
-                          AND (@id IS NULL OR p.id_producto = @id)
-                          AND (@cat IS NULL OR p.id_categoria = @cat)
+                          AND (@id  IS NULL OR p.id_producto = @id)
+                          AND (
+                                @cats IS NULL
+                                OR EXISTS (
+                                    SELECT 1
+                                    FROM dbo.producto_categoria pc
+                                    WHERE pc.id_producto = p.id_producto
+                                      AND CAST(pc.id_categoria AS varchar(10))
+                                          IN (SELECT value FROM string_split(@cats, ','))
+                                )
+                          )
                     ";
 
-                    // si el usuario selecciona "INACTIVOS", mostramos solo los inactivos
+                    // filtros de visibilidad / orden
                     if (string.Equals(ordenCode, "INACTIVOS", StringComparison.OrdinalIgnoreCase))
-                    {
                         sql += " AND p.activo = 0";
-                    }
 
-                    // aplica ordenes
                     switch (ordenCode)
                     {
                         case "AZ":
@@ -261,86 +264,60 @@ namespace PuntoDeVentaGameBox.Gerente
                         case "ZA":
                             sql += " ORDER BY p.nombre DESC";
                             break;
-                        case "STOCK_LOW":   // solo <= umbral, orden asc por stock
+                        case "STOCK_LOW":
                             sql += " AND p.cantidad_stock <= @umbral ORDER BY p.cantidad_stock ASC, p.id_producto DESC";
                             break;
-                        case "STOCK_HIGH":  // solo > umbral, orden desc por stock
+                        case "STOCK_HIGH":
                             sql += " AND p.cantidad_stock > @umbral ORDER BY p.cantidad_stock DESC, p.id_producto DESC";
                             break;
                         case "INACTIVOS":
-                            // ya filtramos arriba; orden por id desc
                             sql += " ORDER BY p.id_producto DESC";
                             break;
                         default:
-                            // ORDEN POR DEFECTO: grupo por color + id desc
-                            // grupo: 0 = blanco (activo y stock > umbral)
-                            //        1 = poco stock (activo y 0 < stock <= umbral)
-                            //        2 = sin stock (activo y stock = 0)
-                            //        3 = inactivos
                             sql += @"
-                                ORDER BY
-                                    CASE
-                                        WHEN p.activo = 0 THEN 3
-                                        WHEN p.cantidad_stock = 0 THEN 2
-                                        WHEN p.cantidad_stock > 0 AND p.cantidad_stock <= @umbral THEN 1
-                                        ELSE 0
-                                    END ASC,
-                                    p.id_producto DESC";
+                            ORDER BY
+                                CASE
+                                    WHEN p.activo = 0 THEN 3
+                                    WHEN p.cantidad_stock = 0 THEN 2
+                                    WHEN p.cantidad_stock > 0 AND p.cantidad_stock <= @umbral THEN 1
+                                    ELSE 0
+                                END ASC,
+                                p.id_producto DESC";
                             break;
                     }
 
-                    cmd.CommandText = sql; // setea texto sql
+                    cmd.CommandText = sql;
 
-                    // parametros base
-                    cmd.Parameters.AddWithValue("@nom", (object)filtroNombre ?? DBNull.Value); // parametro nombre
-                    cmd.Parameters.AddWithValue("@like", filtroNombre == null ? (object)DBNull.Value : $"%{filtroNombre}%"); // parametro like
-                    cmd.Parameters.AddWithValue("@id", (object)filtroId ?? DBNull.Value); // parametro id
-                    cmd.Parameters.AddWithValue("@cat", (object)filtroCategoria ?? DBNull.Value); // parametro categoria
-
-                    // parametro umbral (lo usamos en default y en stock low/high)
+                    cmd.Parameters.AddWithValue("@nom", (object)filtroNombre ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@like", filtroNombre == null ? (object)DBNull.Value : $"%{filtroNombre}%");
+                    cmd.Parameters.AddWithValue("@id", (object)filtroId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@cats", (object)catsCsv ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@umbral", UMBRAL_STOCK_BAJO);
 
-                    da.SelectCommand = cmd; // asigna select al adapter
-                    var dt = new DataTable(); // crea tabla en memoria
-                    da.Fill(dt); // ejecuta select
+                    da.SelectCommand = cmd;
+                    var dt = new DataTable();
+                    da.Fill(dt);
 
-                    DGVProductos.DataSource = dt; // vincula al dgv
+                    DGVProductos.DataSource = dt;
                 }
 
-                ActualizarResumenInventario(); // mantiene KPIs de activos
+                ActualizarResumenInventario();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"error al cargar productos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); // muestra error
+                MessageBox.Show($"error al cargar productos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void CargarGeneros()
         {
-            // llena el combobox de generos desde la tabla categoria
-            try
-            {
-                using (var cn = NuevaConexion())
-                using (var da = new SqlDataAdapter("SELECT id_categoria, nombre FROM dbo.categoria ORDER BY nombre", cn))
-                {
-                    var dt = new DataTable(); // tabla de categorias
-                    da.Fill(dt); // llena tabla
-                    CBGenero.DisplayMember = "nombre"; // muestra nombre
-                    CBGenero.ValueMember = "id_categoria"; // valor es id
-                    CBGenero.DataSource = dt; // setea datasource
-                    CBGenero.SelectedIndex = -1; // arranca sin seleccion
-                    CBGenero.MaxDropDownItems = 4; // limita a cuatro visibles
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"error al cargar generos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); // muestra error
-            }
+            // Convierte CBGenero a multi-selección con checks a la derecha
+            _mf = new MultiCategoriaFiltroHelper(_connString, CBGenero);
+            _mf.CargarDesdeBd();
         }
 
         private void CargarOrden()
         {
-            // llena el combobox de orden (quitamos PRICE_LOW / PRICE_HIGH)
             var data = new[]
             {
                 new SortOption{ Code = "AZ",         Display = "A - Z" },
@@ -349,105 +326,100 @@ namespace PuntoDeVentaGameBox.Gerente
                 new SortOption{ Code = "STOCK_HIGH", Display = "mayor stock (> 25)" },
                 new SortOption{ Code = "INACTIVOS",  Display = "Inactivos" }
             };
-            CBOrden.DataSource = data; // setea datasource
-            CBOrden.DisplayMember = "Display"; // muestra texto
-            CBOrden.ValueMember = "Code"; // valor es codigo
-            CBOrden.SelectedIndex = -1; // arranca sin seleccion
-            CBOrden.MaxDropDownItems = data.Length; // muestra todas
+            CBOrden.DataSource = data;
+            CBOrden.DisplayMember = "Display";
+            CBOrden.ValueMember = "Code";
+            CBOrden.SelectedIndex = -1;
+            CBOrden.MaxDropDownItems = data.Length;
         }
 
         // ==================== imagenes ====================
 
         private static Image PlaceholderImagen()
         {
-            // crea un bitmap simple gris con una x para usar como placeholder
-            if (_placeholderImagen != null) return _placeholderImagen; // devuelve cache si existe
-            var bmp = new Bitmap(64, 64); // crea bitmap en memoria
+            if (_placeholderImagen != null) return _placeholderImagen;
+            var bmp = new Bitmap(64, 64);
             using (var g = Graphics.FromImage(bmp))
             {
-                g.Clear(Color.LightGray); // fondo gris claro
+                g.Clear(Color.LightGray);
                 using (var p = new Pen(Color.DarkGray, 3))
                 {
-                    g.DrawRectangle(p, 1, 1, 62, 62); // dibuja borde
-                    g.DrawLine(p, 14, 14, 50, 50); // dibuja linea diagonal
-                    g.DrawLine(p, 50, 14, 14, 50); // dibuja otra diagonal
+                    g.DrawRectangle(p, 1, 1, 62, 62);
+                    g.DrawLine(p, 14, 14, 50, 50);
+                    g.DrawLine(p, 50, 14, 14, 50);
                 }
             }
-            _placeholderImagen = bmp; // guarda en cache
-            return _placeholderImagen; // devuelve placeholder
+            _placeholderImagen = bmp;
+            return _placeholderImagen;
         }
 
         private static Image CargarImagenSinBloquear(string ruta)
         {
-            // carga imagen desde archivo sin bloquear el archivo
             try
             {
                 using (var fs = new FileStream(ruta, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 using (var imgTemp = Image.FromStream(fs))
                 {
-                    return new Bitmap(imgTemp); // devuelve copia que no bloquea
+                    return new Bitmap(imgTemp);
                 }
             }
             catch
             {
-                return PlaceholderImagen(); // si falla devuelve placeholder
+                return PlaceholderImagen();
             }
         }
 
         private void DGVProductos_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            // convierte ruta en imagen solo para la columna imagen
             if (e.RowIndex >= 0 && DGVProductos.Columns[e.ColumnIndex].Name == "Imagen")
             {
                 try
                 {
-                    var drv = DGVProductos.Rows[e.RowIndex].DataBoundItem as DataRowView; // toma fila
-                    var ruta = drv?["url_imagen"]?.ToString(); // obtiene la ruta
+                    var drv = DGVProductos.Rows[e.RowIndex].DataBoundItem as DataRowView;
+                    var ruta = drv?["url_imagen"]?.ToString();
                     if (string.IsNullOrWhiteSpace(ruta))
                     {
-                        e.Value = PlaceholderImagen(); // muestra placeholder si no hay ruta
-                        e.FormattingApplied = true; // marca formato aplicado
+                        e.Value = PlaceholderImagen();
+                        e.FormattingApplied = true;
                         return;
                     }
 
                     if (ruta.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
                         ruta.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
                     {
-                        e.Value = PlaceholderImagen(); // usa placeholder para urls remotas
-                        e.FormattingApplied = true; // marca formato aplicado
+                        e.Value = PlaceholderImagen();
+                        e.FormattingApplied = true;
                         return;
                     }
 
                     if (File.Exists(ruta))
                     {
-                        e.Value = CargarImagenSinBloquear(ruta); // carga imagen desde archivo
-                        e.FormattingApplied = true; // marca formato aplicado
+                        e.Value = CargarImagenSinBloquear(ruta);
+                        e.FormattingApplied = true;
                     }
                     else
                     {
-                        e.Value = PlaceholderImagen(); // si no existe mostramos placeholder
-                        e.FormattingApplied = true; // marca formato aplicado
+                        e.Value = PlaceholderImagen();
+                        e.FormattingApplied = true;
                     }
                 }
                 catch
                 {
-                    e.Value = PlaceholderImagen(); // evita que se caiga si falla la carga
-                    e.FormattingApplied = true; // marca formato aplicado
+                    e.Value = PlaceholderImagen();
+                    e.FormattingApplied = true;
                 }
             }
         }
 
         private void DGVProductos_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-            // suprime dialogo por errores de formato y pone placeholder en imagen
-            e.ThrowException = false; // evita popup del datagridview
+            e.ThrowException = false;
             if (e.RowIndex >= 0 && DGVProductos.Columns[e.ColumnIndex].Name == "Imagen")
             {
-                DGVProductos.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = PlaceholderImagen(); // asigna placeholder
+                DGVProductos.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = PlaceholderImagen();
             }
         }
 
-        // ===== formateo de filas y texto de botón Accion al completar binding =====
         private void DGVProductos_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             try
@@ -464,36 +436,24 @@ namespace PuntoDeVentaGameBox.Gerente
                             ? Convert.ToInt32(drv["cantidad_stock"])
                             : 0;
 
-                        // Colorear fila según estado
                         if (activo == 0)
-                        {
-                            row.DefaultCellStyle.BackColor = Color.LightYellow; // inactivo
-                        }
+                            row.DefaultCellStyle.BackColor = Color.LightYellow;
                         else if (stock == 0)
-                        {
-                            row.DefaultCellStyle.BackColor = Color.LightCoral; // sin stock
-                        }
+                            row.DefaultCellStyle.BackColor = Color.LightCoral;
                         else if (stock > 0 && stock <= UMBRAL_STOCK_BAJO)
-                        {
-                            row.DefaultCellStyle.BackColor = Color.MistyRose; // poco stock
-                        }
+                            row.DefaultCellStyle.BackColor = Color.MistyRose;
                         else
-                        {
-                            row.DefaultCellStyle.BackColor = Color.White; // default
-                        }
+                            row.DefaultCellStyle.BackColor = Color.White;
 
-                        // Texto del botón Accion según estado
                         var accionCell = row.Cells["Accion"] as DataGridViewButtonCell;
                         if (accionCell != null)
-                        {
                             accionCell.Value = (activo == 1) ? "Eliminar" : "Reactivar";
-                        }
                     }
                 }
             }
             catch
             {
-                // silencio formateo
+                // silencio
             }
         }
 
@@ -501,56 +461,49 @@ namespace PuntoDeVentaGameBox.Gerente
 
         private void DGV_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return; // valida indices
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
-            var col = DGVProductos.Columns[e.ColumnIndex]; // obtiene columna clickeada
+            var col = DGVProductos.Columns[e.ColumnIndex];
             bool esVer = col.Name.Equals("Ver", StringComparison.OrdinalIgnoreCase);
             bool esEditar = col.Name.Equals("Editar", StringComparison.OrdinalIgnoreCase);
             bool esAccion = col.Name.Equals("Accion", StringComparison.OrdinalIgnoreCase);
-            if (!esVer && !esEditar && !esAccion) return; // ignora si no es boton
+            if (!esVer && !esEditar && !esAccion) return;
 
-            // intenta obtener id de forma robusta
-            int id = 0; object raw = null; // inicializa
-            if (DGVProductos.Columns.Contains("ID")) raw = DGVProductos.Rows[e.RowIndex].Cells["ID"].Value; // lee celda id
+            int id = 0; object raw = null;
+            if (DGVProductos.Columns.Contains("ID")) raw = DGVProductos.Rows[e.RowIndex].Cells["ID"].Value;
             if ((raw == null || raw == DBNull.Value) && DGVProductos.Rows[e.RowIndex].DataBoundItem is DataRowView drv && drv.Row.Table.Columns.Contains("id_producto"))
-                raw = drv["id_producto"]; // fallback al datarow
+                raw = drv["id_producto"];
             if ((raw == null || raw == DBNull.Value) && DGVProductos.Rows[e.RowIndex].Cells.Count > 0)
-                raw = DGVProductos.Rows[e.RowIndex].Cells[0].Value; // ultimo fallback
+                raw = DGVProductos.Rows[e.RowIndex].Cells[0].Value;
             if (raw == null || !int.TryParse(raw.ToString(), out id))
             {
-                MessageBox.Show("no se pudo obtener el id del producto", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning); // muestra aviso
+                MessageBox.Show("no se pudo obtener el id del producto", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // estado actual (para saber si eliminar o reactivar)
             int activoRow = 1;
             if (DGVProductos.Rows[e.RowIndex].DataBoundItem is DataRowView drv2 && drv2.Row.Table.Columns.Contains("activo") && drv2["activo"] != DBNull.Value)
                 activoRow = Convert.ToInt32(drv2["activo"]);
 
             if (esVer)
             {
-                using (var frm = new Form1(id)) // abre detalles de producto
-                {
-                    frm.ShowDialog(this); // modal
-                }
+                using (var frm = new VerProducto(id)) { frm.ShowDialog(this); }
                 return;
             }
 
             if (esEditar)
             {
-                using (var frm = new EditarProducto(id)) // abre editar con id
+                using (var frm = new EditarProducto(id))
                 {
-                    var dr = frm.ShowDialog(this); // muestra modal
-                    if (dr == DialogResult.OK) CargarProductos(); // recarga
+                    var dr = frm.ShowDialog(this);
+                    if (dr == DialogResult.OK) CargarProductos();
                 }
                 return;
             }
 
             if (esAccion)
             {
-                // si está activo => Eliminar (activo=0). Si está inactivo => Reactivar (activo=1)
                 bool vaAInactivar = (activoRow == 1);
-                string verbo = vaAInactivar ? "eliminar" : "reactivar";
                 string confirmMsg = vaAInactivar
                     ? $"confirmar eliminacion (baja lógica) del producto id {id}?"
                     : $"confirmar reactivacion del producto id {id}?";
@@ -577,7 +530,7 @@ namespace PuntoDeVentaGameBox.Gerente
                     MessageBox.Show(vaAInactivar ? "producto eliminado (inactivado)" : "producto reactivado",
                         "Ok", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    CargarProductos(); // recarga grilla
+                    CargarProductos();
                 }
                 catch (Exception ex)
                 {
@@ -589,118 +542,93 @@ namespace PuntoDeVentaGameBox.Gerente
 
         private void BNuevoproducto_Click(object sender, EventArgs e)
         {
-            // abre formulario de alta
-            using (var frm = new AgregarProducto()) // modo alta
+            using (var frm = new AgregarProducto())
             {
-                var dr = frm.ShowDialog(this); // abre modal
-                if (dr == DialogResult.OK) CargarProductos(); // recarga si creo producto
+                var dr = frm.ShowDialog(this);
+                if (dr == DialogResult.OK) CargarProductos();
             }
         }
 
-        // ==================== filtros: sugerencias y aplicacion ====================
+        // ==================== sugerencias ====================
 
         private void EnsureSuggestControls()
         {
-            // crea panel y listbox una sola vez
-            if (_suggestPanel != null) return; // ya existen
-            _suggestPanel = new Panel
-            {
-                BorderStyle = BorderStyle.FixedSingle,
-                Visible = false
-            }; // crea panel contenedor
-            _suggestList = new ListBox
-            {
-                IntegralHeight = false, // permite altura exacta
-                Dock = DockStyle.Fill
-            }; // crea listbox
-            _suggestList.Click += SuggestList_Click; // seleccion con click
-            _suggestList.KeyDown += SuggestList_KeyDown; // seleccion con enter
-            _suggestPanel.Controls.Add(_suggestList); // agrega listbox al panel
-            this.Controls.Add(_suggestPanel); // agrega panel al form
+            if (_suggestPanel != null) return;
+            _suggestPanel = new Panel { BorderStyle = BorderStyle.FixedSingle, Visible = false };
+            _suggestList = new ListBox { IntegralHeight = false, Dock = DockStyle.Fill };
+            _suggestList.Click += SuggestList_Click;
+            _suggestList.KeyDown += SuggestList_KeyDown;
+            _suggestPanel.Controls.Add(_suggestList);
+            this.Controls.Add(_suggestPanel);
         }
 
         private void ShowSuggestions(TextBox target, DataTable data, string displayColumn)
         {
-            // muestra popup debajo del textbox con hasta 4 visibles
-            EnsureSuggestControls(); // se asegura de tener panel y listbox
-            _suggestTarget = target; // guarda objetivo
+            EnsureSuggestControls();
+            _suggestTarget = target;
 
-            _suggestList.BeginUpdate(); // inicia actualizacion
-            _suggestList.Items.Clear(); // limpia items
-            foreach (DataRow r in data.Rows) _suggestList.Items.Add(Convert.ToString(r[displayColumn])); // carga items
-            _suggestList.EndUpdate(); // termina actualizacion
+            _suggestList.BeginUpdate();
+            _suggestList.Items.Clear();
+            foreach (DataRow r in data.Rows) _suggestList.Items.Add(Convert.ToString(r[displayColumn]));
+            _suggestList.EndUpdate();
 
             if (_suggestList.Items.Count == 0)
             {
-                _suggestPanel.Visible = false; // oculta si no hay items
+                _suggestPanel.Visible = false;
                 return;
             }
 
-            // calcula ubicacion debajo del textbox
-            var screen = target.PointToScreen(new Point(0, target.Height)); // punto inferior izquierdo en screen
-            var local = this.PointToClient(screen); // lo pasa a coords del form
-            _suggestPanel.Location = local; // setea ubicacion
-            _suggestPanel.Width = target.Width; // iguala ancho al textbox
+            var screen = target.PointToScreen(new Point(0, target.Height));
+            var local = this.PointToClient(screen);
+            _suggestPanel.Location = local;
+            _suggestPanel.Width = target.Width;
 
-            // altura para 4 filas como maximo
-            int itemHeight = _suggestList.ItemHeight; // alto por item
-            int visible = Math.Min(4, _suggestList.Items.Count); // visibles maximo 4
-            _suggestPanel.Height = visible * itemHeight + 6; // ajusta altura con margen
+            int itemHeight = _suggestList.ItemHeight;
+            int visible = Math.Min(4, _suggestList.Items.Count);
+            _suggestPanel.Height = visible * itemHeight + 6;
 
-            _suggestPanel.BringToFront(); // trae al frente
-            _suggestPanel.Visible = true; // muestra panel
-            _suggestList.SelectedIndex = -1; // sin seleccion inicial
+            _suggestPanel.BringToFront();
+            _suggestPanel.Visible = true;
+            _suggestList.SelectedIndex = -1;
         }
 
         private void HideSuggestions()
         {
-            // oculta popup de sugerencias
-            if (_suggestPanel != null) _suggestPanel.Visible = false; // oculta panel
+            if (_suggestPanel != null) _suggestPanel.Visible = false;
         }
 
         private void SuggestList_Click(object sender, EventArgs e)
         {
-            // coloca el item seleccionado en el textbox
             if (_suggestTarget != null && _suggestList.SelectedItem != null)
             {
-                _suggestTarget.Text = _suggestList.SelectedItem.ToString(); // setea texto
-                _suggestTarget.SelectionStart = _suggestTarget.Text.Length; // mueve caret al final
-                HideSuggestions(); // oculta popup
+                _suggestTarget.Text = _suggestList.SelectedItem.ToString();
+                _suggestTarget.SelectionStart = _suggestTarget.Text.Length;
+                HideSuggestions();
             }
         }
 
         private void SuggestList_KeyDown(object sender, KeyEventArgs e)
         {
-            // permite elegir con enter y cerrar con escape
             if (e.KeyCode == Keys.Enter)
             {
-                SuggestList_Click(sender, EventArgs.Empty); // confirma seleccion
-                e.Handled = true; // consume evento
+                SuggestList_Click(sender, EventArgs.Empty);
+                e.Handled = true;
             }
             else if (e.KeyCode == Keys.Escape)
             {
-                HideSuggestions(); // oculta popup
-                e.Handled = true; // consume evento
+                HideSuggestions();
+                e.Handled = true;
             }
         }
 
-        private void InventarioForm_Click(object sender, EventArgs e)
-        {
-            // oculta popup al clickear fuera
-            HideSuggestions(); // oculta popup
-        }
+        private void InventarioForm_Click(object sender, EventArgs e) => HideSuggestions();
 
         private void TBNombre_TextChanged(object sender, EventArgs e)
         {
-            // muestra sugerencias por nombre cuando se escribe al menos un caracter
             try
             {
                 string pref = TBNombre.Text?.Trim();
-                if (string.IsNullOrEmpty(pref))
-                {
-                    HideSuggestions(); // oculta si no hay prefijo
-                    return;
-                }
+                if (string.IsNullOrEmpty(pref)) { HideSuggestions(); return; }
 
                 using (var cn = NuevaConexion())
                 using (var da = new SqlDataAdapter(@"
@@ -709,29 +637,21 @@ namespace PuntoDeVentaGameBox.Gerente
                         WHERE nombre LIKE @p + '%'
                         ORDER BY nombre", cn))
                 {
-                    da.SelectCommand.Parameters.AddWithValue("@p", pref); // setea prefijo
-                    var dt = new DataTable(); // crea tabla
-                    da.Fill(dt); // llena tabla
-                    ShowSuggestions(TBNombre, dt, "nombre"); // muestra popup
+                    da.SelectCommand.Parameters.AddWithValue("@p", pref);
+                    var dt = new DataTable();
+                    da.Fill(dt);
+                    ShowSuggestions(TBNombre, dt, "nombre");
                 }
             }
-            catch
-            {
-                // silencia errores de sugerencia
-            }
+            catch { }
         }
 
         private void TBID_TextChanged(object sender, EventArgs e)
         {
-            // muestra sugerencias por id cuando hay al menos un digito
             try
             {
                 string pref = TBID.Text?.Trim();
-                if (string.IsNullOrEmpty(pref))
-                {
-                    HideSuggestions(); // oculta si no hay prefijo
-                    return;
-                }
+                if (string.IsNullOrEmpty(pref)) { HideSuggestions(); return; }
 
                 using (var cn = NuevaConexion())
                 using (var da = new SqlDataAdapter(@"
@@ -740,78 +660,66 @@ namespace PuntoDeVentaGameBox.Gerente
                         WHERE CAST(id_producto AS varchar(20)) LIKE @p + '%'
                         ORDER BY id_producto", cn))
                 {
-                    da.SelectCommand.Parameters.AddWithValue("@p", pref); // setea prefijo
-                    var dt = new DataTable(); // crea tabla
-                    da.Fill(dt); // llena tabla
-                    ShowSuggestions(TBID, dt, "id_producto"); // muestra popup
+                    da.SelectCommand.Parameters.AddWithValue("@p", pref);
+                    var dt = new DataTable();
+                    da.Fill(dt);
+                    ShowSuggestions(TBID, dt, "id_producto");
                 }
             }
-            catch
-            {
-                // silencia errores de sugerencia
-            }
+            catch { }
         }
 
         private void TBID_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // restringe a numeros y teclas de control
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-                e.Handled = true; // bloquea caracter no numerico
+                e.Handled = true;
         }
+
+        // ==================== filtros (aplicar / limpiar / stock bajo) ====================
 
         private void BAplicarFiltrosProductos_Click(object sender, EventArgs e)
         {
-            // aplica filtros usando los valores ingresados
-            string fNombre = string.IsNullOrWhiteSpace(TBNombre.Text) ? null : TBNombre.Text.Trim(); // toma nombre
-            int? fId = null; // id nullable
-            if (int.TryParse(TBID.Text?.Trim(), out int idVal)) fId = idVal; // convierte id si corresponde
+            string fNombre = string.IsNullOrWhiteSpace(TBNombre.Text) ? null : TBNombre.Text.Trim();
 
-            int? fCat = null; // categoria nullable
-            if (CBGenero.SelectedValue != null && int.TryParse(CBGenero.SelectedValue.ToString(), out int catVal))
-                fCat = catVal; // convierte categoria si corresponde
+            int? fId = null;
+            if (int.TryParse(TBID.Text?.Trim(), out int idVal)) fId = idVal;
 
-            string ordenCode = (CBOrden.SelectedItem as SortOption)?.Code; // toma codigo de orden
+            var cats = _mf?.ObtenerSeleccion(); // múltiples categorías
+            string ordenCode = (CBOrden.SelectedItem as SortOption)?.Code;
 
-            CargarProductos(fNombre, fId, fCat, ordenCode); // recarga con filtros
-            HideSuggestions(); // oculta popup
+            CargarProductos(fNombre, fId, cats, ordenCode);
+            HideSuggestions();
         }
 
         private void BLimpiarFiltrosProductos_Click(object sender, EventArgs e)
         {
-            // limpia todos los filtros y recarga
-            TBNombre.Clear(); // limpia nombre
-            TBID.Clear(); // limpia id
-            CBGenero.SelectedIndex = -1; // limpia genero
-            CBOrden.SelectedIndex = -1; // limpia orden
-            HideSuggestions(); // oculta popup
-            CargarProductos(); // recarga sin filtros (default)
+            TBNombre.Clear();
+            TBID.Clear();
+            CBOrden.SelectedIndex = -1;
+            HideSuggestions();
+            CargarProductos();
         }
 
         private void BVerSoloStockBajo_Click(object sender, EventArgs e)
         {
-            // arma filtros actuales para respetar lo que ya eligio el usuario
-            string fNombre = string.IsNullOrWhiteSpace(TBNombre.Text) ? null : TBNombre.Text.Trim(); // toma nombre si hay
-            int? fId = null; // id nullable
-            if (int.TryParse(TBID.Text?.Trim(), out int idVal)) fId = idVal; // convierte id si corresponde
+            string fNombre = string.IsNullOrWhiteSpace(TBNombre.Text) ? null : TBNombre.Text.Trim();
 
-            int? fCat = null; // categoria nullable
-            if (CBGenero.SelectedValue != null && int.TryParse(CBGenero.SelectedValue.ToString(), out int catVal))
-                fCat = catVal; // toma categoria si hay
+            int? fId = null;
+            if (int.TryParse(TBID.Text?.Trim(), out int idVal)) fId = idVal;
 
-            // refleja en el combo de orden que se eligio stock bajo
+            var cats = _mf?.ObtenerSeleccion();
+
             if (CBOrden.DataSource != null)
-                CBOrden.SelectedValue = "STOCK_LOW"; // marca opcion en combo
+                CBOrden.SelectedValue = "STOCK_LOW";
 
-            // carga solo productos con stock menor o igual al umbral y los ordena ascendente por stock
-            CargarProductos(fNombre, fId, fCat, "STOCK_LOW"); // aplica filtro de stock bajo
-            HideSuggestions(); // oculta popup de sugerencias si estaba abierto
+            CargarProductos(fNombre, fId, cats, "STOCK_LOW");
+            HideSuggestions();
         }
 
         // ==================== resumen tablero ====================
 
         private void ActualizarResumenInventario()
         {
-            // calcula KPIs SOLO de activos (igual que antes)
             try
             {
                 using (var cn = NuevaConexion())
@@ -824,40 +732,37 @@ namespace PuntoDeVentaGameBox.Gerente
                             SUM(CASE WHEN p.cantidad_stock <= @u THEN 1 ELSE 0 END) AS stock_bajo
                         FROM dbo.producto p
                         WHERE p.activo = 1";
-                    cmd.Parameters.AddWithValue("@u", UMBRAL_STOCK_BAJO); // pasa umbral
-                    cn.Open(); // abre conexion
+                    cmd.Parameters.AddWithValue("@u", UMBRAL_STOCK_BAJO);
+                    cn.Open();
 
                     using (var rd = cmd.ExecuteReader())
                     {
                         if (rd.Read())
                         {
-                            int productosTotales = Convert.ToInt32(rd["productos_totales"]); // total productos
-                            int stockTotal = Convert.ToInt32(rd["stock_total"]); // total unidades
-                            int conStockBajo = Convert.ToInt32(rd["stock_bajo"]); // productos con stock bajo
+                            int productosTotales = Convert.ToInt32(rd["productos_totales"]);
+                            int stockTotal = Convert.ToInt32(rd["stock_total"]);
+                            int conStockBajo = Convert.ToInt32(rd["stock_bajo"]);
 
-                            KpiTotal.Text = productosTotales.ToString(); // actualiza kpi total
-                            KpiStock.Text = stockTotal.ToString();       // actualiza kpi stock
-                            KpiBajo.Text = conStockBajo.ToString();     // actualiza kpi bajo
+                            KpiTotal.Text = productosTotales.ToString();
+                            KpiStock.Text = stockTotal.ToString();
+                            KpiBajo.Text = conStockBajo.ToString();
 
-                            // reemplaza los ... por el numero real en el banner
                             var txt = LAvisoStockBajo.Text ?? "";
                             if (txt.Contains("..."))
-                                LAvisoStockBajo.Text = txt.Replace("...", conStockBajo.ToString()); // reemplaza puntitos
+                                LAvisoStockBajo.Text = txt.Replace("...", conStockBajo.ToString());
                             else
-                                LAvisoStockBajo.Text = $"Tienes {conStockBajo} productos con stock bajo. Es recomendable reabastecer estos productos"; // setea texto por defecto
+                                LAvisoStockBajo.Text = $"Tienes {conStockBajo} productos con stock bajo. Es recomendable reabastecer estos productos";
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"error al actualizar resumen: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); // muestra error
+                MessageBox.Show($"error al actualizar resumen: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // ====== stubs autogenerados por el disenador ======
-        // estos metodos existen solo para que compile porque hay eventos conectados en el .designer
-
+        // ====== stubs autogenerados por el diseñador ======
         private void TLRoot_Paint(object sender, PaintEventArgs e) { }
         private void LProductostotales_Click(object sender, EventArgs e) { }
         private void LUnidadeseninventario_Click(object sender, EventArgs e) { }
@@ -868,5 +773,136 @@ namespace PuntoDeVentaGameBox.Gerente
         private void TBID_KeyPress_old(object sender, KeyPressEventArgs e) { }
         private void label1_Click(object sender, EventArgs e) { }
         private void BAplicarFiltrosProducto_Click(object sender, EventArgs e) { }
+
+        // ==================== Helper interno multi-categoría (checks a la derecha) ====================
+
+        private sealed class MultiCategoriaFiltroHelper
+        {
+            private sealed class CatItem
+            {
+                public int Id { get; }
+                public string Nombre { get; }
+                public CatItem(int id, string nombre) { Id = id; Nombre = nombre; }
+                public override string ToString() => Nombre;
+            }
+
+            private readonly string _connString;
+            private readonly ComboBox _combo;
+            private readonly HashSet<int> _seleccion = new HashSet<int>();
+            private readonly List<CatItem> _items = new List<CatItem>();
+
+            private readonly ToolStripDropDown _drop = new ToolStripDropDown();
+            private readonly CheckedListBox _clb = new CheckedListBox();
+
+            public MultiCategoriaFiltroHelper(string connString, ComboBox combo)
+            {
+                _connString = connString;
+                _combo = combo;
+
+                _combo.DropDownStyle = ComboBoxStyle.DropDownList;
+                _combo.Items.Clear();
+                _combo.SelectedIndex = -1;
+                _combo.Text = "Desplegar…";
+                _combo.Cursor = Cursors.Hand;
+
+                // Owner draw para dibujar el check a la DERECHA
+                _clb.DrawMode = DrawMode.OwnerDrawFixed;
+                _clb.BorderStyle = BorderStyle.None;
+                _clb.CheckOnClick = true;
+                _clb.IntegralHeight = true;
+                _clb.ItemHeight = Math.Max(_clb.ItemHeight, 18);
+                _clb.Width = Math.Max(220, _combo.Width);
+                _clb.Height = 200;
+
+                // SINCRONIZA la selección cuando el usuario tilda/destilda
+                _clb.ItemCheck += (s, e) =>
+                {
+                    if (e.Index < 0) return;
+                    var it = (CatItem)_clb.Items[e.Index];
+
+                    if (e.NewValue == CheckState.Checked)
+                        _seleccion.Add(it.Id);
+                    else
+                        _seleccion.Remove(it.Id);
+
+                    ActualizarTextoCombo();
+                };
+
+                _clb.DrawItem += (s, e) =>
+                {
+                    e.DrawBackground();
+                    if (e.Index >= 0)
+                    {
+                        var g = e.Graphics;
+                        var it = (CatItem)_clb.Items[e.Index];
+                        bool isChecked = _clb.GetItemChecked(e.Index);
+
+                        // Texto a la izquierda
+                        var textBounds = new Rectangle(e.Bounds.X + 6, e.Bounds.Y + 1, e.Bounds.Width - 28, e.Bounds.Height - 2);
+                        TextRenderer.DrawText(g, it.Nombre, e.Font, textBounds, SystemColors.ControlText,
+                            TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+
+                        // Checkbox a la DERECHA
+                        var cb = CheckBoxRenderer.GetGlyphSize(g, System.Windows.Forms.VisualStyles.CheckBoxState.UncheckedNormal);
+                        var cbX = e.Bounds.Right - cb.Width - 8;
+                        var cbY = e.Bounds.Y + (e.Bounds.Height - cb.Height) / 2;
+                        var state = isChecked
+                            ? System.Windows.Forms.VisualStyles.CheckBoxState.CheckedNormal
+                            : System.Windows.Forms.VisualStyles.CheckBoxState.UncheckedNormal;
+                        CheckBoxRenderer.DrawCheckBox(g, new Point(cbX, cbY), state);
+                    }
+                    e.DrawFocusRectangle();
+                };
+
+                // Dejamos que CheckOnClick haga su trabajo en todo el ítem.
+                // (Handler vacío para no interferir con el toggle por defecto)
+                _clb.MouseDown += (s, e) => { /* intencionalmente vacío */ };
+
+
+                var host = new ToolStripControlHost(_clb)
+                { Padding = Padding.Empty, Margin = Padding.Empty, AutoSize = false, Size = new Size(_clb.Width, _clb.Height) };
+                _drop.Padding = Padding.Empty;
+                _drop.Items.Add(host);
+
+                _combo.MouseDown += (s, e) =>
+                {
+                    host.Size = new Size(Math.Max(_combo.Width, 220), _clb.Height);
+                    _drop.Show(_combo, new Point(0, _combo.Height));
+                };
+            }
+
+            public void CargarDesdeBd()
+            {
+                _items.Clear();
+                _clb.Items.Clear();
+
+                using (var cn = new SqlConnection(_connString))
+                using (var da = new SqlDataAdapter("select id_categoria, nombre from dbo.categoria order by nombre", cn))
+                {
+                    var dt = new DataTable();
+                    da.Fill(dt);
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        var it = new CatItem(Convert.ToInt32(r["id_categoria"]), Convert.ToString(r["nombre"]));
+                        _items.Add(it);
+                        _clb.Items.Add(it, _seleccion.Contains(it.Id));
+                    }
+                }
+                ActualizarTextoCombo();
+            }
+
+            public IReadOnlyCollection<int> ObtenerSeleccion() => _seleccion;
+
+            private void ActualizarTextoCombo()
+            {
+                if (_seleccion.Count == 0) { _combo.Text = "Desplegar…"; return; }
+                var nombres = new List<string>();
+                foreach (var it in _items) if (_seleccion.Contains(it.Id)) nombres.Add(it.Nombre);
+                nombres.Sort(StringComparer.CurrentCultureIgnoreCase);
+                _combo.Text = (nombres.Count <= 2)
+                    ? string.Join(", ", nombres)
+                    : string.Join(", ", nombres.GetRange(0, 2)) + $" +{nombres.Count - 2}";
+            }
+        }
     }
 }

@@ -32,12 +32,11 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.BAbrirImagen = new System.Windows.Forms.Button();
             this.PBImagenProducto = new System.Windows.Forms.PictureBox();
-            this.TBDireccionImagen = new System.Windows.Forms.TextBox();
-            this.LURLImagen = new System.Windows.Forms.Label();
             this.PAccion = new System.Windows.Forms.Panel();
             this.BSalir = new System.Windows.Forms.Button();
             this.BGuardarCambios = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.TBFechaAlta = new System.Windows.Forms.TextBox();
             this.DTPFechaEdicionProducto = new System.Windows.Forms.DateTimePicker();
             this.LFechaEdicion = new System.Windows.Forms.Label();
             this.CBProveedorProducto = new System.Windows.Forms.ComboBox();
@@ -54,7 +53,6 @@
             this.TBCantidadProducto = new System.Windows.Forms.TextBox();
             this.TBDescripcionProducto = new System.Windows.Forms.TextBox();
             this.PEditar = new System.Windows.Forms.Panel();
-            this.TBFechaAlta = new System.Windows.Forms.TextBox();
             this.PFormEdicion.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PBImagenProducto)).BeginInit();
@@ -80,8 +78,6 @@
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
             this.panel1.Controls.Add(this.BAbrirImagen);
             this.panel1.Controls.Add(this.PBImagenProducto);
-            this.panel1.Controls.Add(this.TBDireccionImagen);
-            this.panel1.Controls.Add(this.LURLImagen);
             this.panel1.Location = new System.Drawing.Point(337, 3);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(350, 312);
@@ -94,7 +90,7 @@
             this.BAbrirImagen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BAbrirImagen.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BAbrirImagen.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.BAbrirImagen.Location = new System.Drawing.Point(7, 11);
+            this.BAbrirImagen.Location = new System.Drawing.Point(41, 20);
             this.BAbrirImagen.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
             this.BAbrirImagen.Name = "BAbrirImagen";
             this.BAbrirImagen.Size = new System.Drawing.Size(111, 39);
@@ -104,30 +100,11 @@
             // 
             // PBImagenProducto
             // 
-            this.PBImagenProducto.Location = new System.Drawing.Point(41, 96);
+            this.PBImagenProducto.Location = new System.Drawing.Point(41, 70);
             this.PBImagenProducto.Name = "PBImagenProducto";
-            this.PBImagenProducto.Size = new System.Drawing.Size(274, 183);
+            this.PBImagenProducto.Size = new System.Drawing.Size(274, 209);
             this.PBImagenProducto.TabIndex = 39;
             this.PBImagenProducto.TabStop = false;
-            // 
-            // TBDireccionImagen
-            // 
-            this.TBDireccionImagen.Location = new System.Drawing.Point(116, 56);
-            this.TBDireccionImagen.Name = "TBDireccionImagen";
-            this.TBDireccionImagen.Size = new System.Drawing.Size(199, 22);
-            this.TBDireccionImagen.TabIndex = 2;
-            // 
-            // LURLImagen
-            // 
-            this.LURLImagen.AutoSize = true;
-            this.LURLImagen.BackColor = System.Drawing.SystemColors.Control;
-            this.LURLImagen.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LURLImagen.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.LURLImagen.Location = new System.Drawing.Point(3, 54);
-            this.LURLImagen.Name = "LURLImagen";
-            this.LURLImagen.Size = new System.Drawing.Size(108, 23);
-            this.LURLImagen.TabIndex = 38;
-            this.LURLImagen.Text = "URL Imagen:";
             // 
             // PAccion
             // 
@@ -192,6 +169,13 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(310, 618);
             this.panel2.TabIndex = 0;
+            // 
+            // TBFechaAlta
+            // 
+            this.TBFechaAlta.Location = new System.Drawing.Point(23, 217);
+            this.TBFechaAlta.Name = "TBFechaAlta";
+            this.TBFechaAlta.Size = new System.Drawing.Size(263, 22);
+            this.TBFechaAlta.TabIndex = 54;
             // 
             // DTPFechaEdicionProducto
             // 
@@ -346,13 +330,6 @@
             this.PEditar.TabIndex = 7;
             this.PEditar.Paint += new System.Windows.Forms.PaintEventHandler(this.pLimpiarParametros_Paint);
             // 
-            // TBFechaAlta
-            // 
-            this.TBFechaAlta.Location = new System.Drawing.Point(23, 217);
-            this.TBFechaAlta.Name = "TBFechaAlta";
-            this.TBFechaAlta.Size = new System.Drawing.Size(263, 22);
-            this.TBFechaAlta.TabIndex = 54;
-            // 
             // EditarProducto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -367,7 +344,6 @@
             this.Load += new System.EventHandler(this.EditarProducto_Load);
             this.PFormEdicion.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PBImagenProducto)).EndInit();
             this.PAccion.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
@@ -384,8 +360,6 @@
         private System.Windows.Forms.Button BAbrirImagen;
         private System.Windows.Forms.Button BGuardarCambios;
         private System.Windows.Forms.PictureBox PBImagenProducto;
-        private System.Windows.Forms.TextBox TBDireccionImagen;
-        private System.Windows.Forms.Label LURLImagen;
         private System.Windows.Forms.Panel PAccion;
         private System.Windows.Forms.Button BSalir;
         private System.Windows.Forms.Panel panel2;

@@ -7,42 +7,37 @@ using System.Drawing;
 
 namespace PuntoDeVentaGameBox.Gerente
 {
-    public partial class Form1 : Form
+    public partial class VerProducto : Form
     {
         private readonly string _connString =
             "Server=localhost;Database=game_box;Trusted_Connection=True;TrustServerCertificate=True";
 
         private readonly int _idProducto;
 
-        public Form1(int idProducto)
+        public VerProducto(int idProducto)
         {
             InitializeComponent();
             _idProducto = idProducto;
 
-            // wire de botones
-            if (BEditar != null)
-            {
-                BEditar.Click -= BEditar_Click;
-                BEditar.Click += BEditar_Click;
-            }
-            if (BSalir != null)
-            {
-                BSalir.Click -= BSalir_Click;
-                BSalir.Click += BSalir_Click;
-            }
+            if (BEditar != null) { BEditar.Click -= BEditar_Click; BEditar.Click += BEditar_Click; }
+            if (BSalir != null) { BSalir.Click -= BSalir_Click; BSalir.Click += BSalir_Click; }
 
-            // 🚫 Bloquear edición de todos los TextBox (recursivo)
+            // bloquea edicion en todos los textbox
             SetTextBoxesReadOnlyRecursive(this, true);
         }
 
+        private void VerProducto_Load(object sender, EventArgs e) => CargarProducto(_idProducto);
+
+        // --- compatibilidad con el evento antiguo del diseñador ---
         private void Form1_Load(object sender, EventArgs e)
         {
-            CargarProducto(_idProducto);
+            VerProducto_Load(sender, e); // redirige al evento actual
         }
+
 
         private SqlConnection NuevaConexion() => new SqlConnection(_connString);
 
-        // ---- BLOQUEO TOTAL DE EDICIÓN (recursivo) ----
+        // bloquea edicion de forma recursiva
         private void SetTextBoxesReadOnlyRecursive(Control root, bool state)
         {
             foreach (Control c in root.Controls)
@@ -50,31 +45,21 @@ namespace PuntoDeVentaGameBox.Gerente
                 if (c is TextBox tb)
                 {
                     tb.ReadOnly = state;
-                    tb.ShortcutsEnabled = !state ? true : false; // evita pegar Ctrl+V
-                    tb.TabStop = false;                          // no entra con TAB
-                    tb.BackColor = SystemColors.ControlLight;    // tono "solo lectura"
-
-                    // Captura de teclas para anular cualquier intento de escribir
+                    tb.ShortcutsEnabled = !state ? true : false;
+                    tb.TabStop = false;
+                    tb.BackColor = SystemColors.ControlLight;
                     tb.KeyPress -= TextBox_BlockInput_KeyPress;
                     if (state) tb.KeyPress += TextBox_BlockInput_KeyPress;
-
-                    // También bloqueamos el menú contextual (pegar con mouse)
-                    tb.ContextMenu = new ContextMenu(); // menú vacío
+                    tb.ContextMenu = new ContextMenu();
                 }
-
-                if (c.HasChildren)
-                    SetTextBoxesReadOnlyRecursive(c, state);
+                if (c.HasChildren) SetTextBoxesReadOnlyRecursive(c, state);
             }
         }
 
         private void TextBox_BlockInput_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Permite solo teclas de control de navegación (no imprimibles)
-            // Bloquea cualquier carácter "escribible"
-            if (!char.IsControl(e.KeyChar))
-                e.Handled = true;
+            if (!char.IsControl(e.KeyChar)) e.Handled = true;
         }
-        // -----------------------------------------------
 
         private void CargarProducto(int id)
         {
@@ -83,8 +68,9 @@ namespace PuntoDeVentaGameBox.Gerente
                 using (var cn = NuevaConexion())
                 using (var cmd = cn.CreateCommand())
                 {
+                    // arma generos con string_agg directo en la consulta
                     cmd.CommandText = @"
-                        SELECT
+                        select
                             p.nombre,
                             p.descripcion,
                             p.precio_venta,
@@ -92,12 +78,16 @@ namespace PuntoDeVentaGameBox.Gerente
                             p.url_imagen,
                             p.fecha_alta,
                             p.fecha_edicion,
-                            pr.nombre AS proveedor,
-                            c.nombre  AS genero
-                        FROM dbo.producto p
-                        LEFT JOIN dbo.proveedor pr ON pr.id_proveedor = p.id_proveedor
-                        LEFT JOIN dbo.categoria  c ON c.id_categoria  = p.id_categoria
-                        WHERE p.id_producto = @id";
+                            pr.nombre as proveedor,
+                            (
+                                select string_agg(c.nombre, ', ') within group(order by c.nombre)
+                                from dbo.producto_categoria pc
+                                join dbo.categoria c on c.id_categoria = pc.id_categoria
+                                where pc.id_producto = p.id_producto
+                            ) as generos
+                        from dbo.producto p
+                        left join dbo.proveedor pr on pr.id_proveedor = p.id_proveedor
+                        where p.id_producto = @id";
                     cmd.Parameters.AddWithValue("@id", id);
 
                     cn.Open();
@@ -105,33 +95,30 @@ namespace PuntoDeVentaGameBox.Gerente
                     {
                         if (!rd.Read())
                         {
-                            MessageBox.Show("Producto no encontrado", "Aviso",
+                            MessageBox.Show("producto no encontrado", "Aviso",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
                             return;
                         }
 
-                        // Campos de texto
                         TBNombreProducto.Text = rd["nombre"]?.ToString();
                         TBDescripcionProducto.Text = rd["descripcion"]?.ToString();
                         TBPrecioVentaProducto.Text = rd["precio_venta"] == DBNull.Value ? "" :
                                                      Convert.ToDecimal(rd["precio_venta"]).ToString("0.##");
                         TBCantidadProducto.Text = rd["cantidad_stock"]?.ToString();
                         TBProveedor.Text = rd["proveedor"]?.ToString();
-                        TBGenero.Text = rd["genero"]?.ToString();
 
-                        // Fecha de alta (siempre cargada)
+                        // trae todas las categorias separadas por comas
+                        TBGenero.Text = rd["generos"] == DBNull.Value ? "" : rd["generos"].ToString();
+
                         TBFechaAlta.Text = rd["fecha_alta"] == DBNull.Value
                             ? ""
                             : Convert.ToDateTime(rd["fecha_alta"]).ToString("yyyy-MM-dd");
 
-                        // Última actualización (fecha_edicion)
                         TBUltimaActualizacion.Text = rd["fecha_edicion"] == DBNull.Value
                             ? ""
                             : Convert.ToDateTime(rd["fecha_edicion"]).ToString("yyyy-MM-dd");
 
-                        // Imagen
                         var ruta = rd["url_imagen"]?.ToString();
-                        TBDireccionImagen.Text = ruta;
                         PBImagenProducto.ImageLocation =
                             (!string.IsNullOrWhiteSpace(ruta) && File.Exists(ruta)) ? ruta : null;
                     }
@@ -139,7 +126,7 @@ namespace PuntoDeVentaGameBox.Gerente
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar producto: {ex.Message}", "Error",
+                MessageBox.Show($"error al cargar producto: {ex.Message}", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -151,37 +138,28 @@ namespace PuntoDeVentaGameBox.Gerente
                 var dr = frm.ShowDialog(this);
                 if (dr == DialogResult.OK)
                 {
-                    // 1) Refrescar la vista de detalles (Form1)
                     CargarProducto(_idProducto);
 
-                    // 2) Intentar refrescar el DGV del Inventario si Form1 fue abierto desde allí
+                    // intenta refrescar el listado si este form fue abierto desde alli
                     try
                     {
-                        var inv = this.Owner as Form; // puede ser InventarioForm
+                        var inv = this.Owner as Form;
                         if (inv != null)
                         {
                             var mi = inv.GetType().GetMethod(
                                 "CargarProductos",
                                 BindingFlags.Instance | BindingFlags.NonPublic
                             );
-                            if (mi != null)
-                            {
-                                object[] args = new object[] { null, null, null, null };
-                                mi.Invoke(inv, args);
-                            }
+                            if (mi != null) mi.Invoke(inv, new object[] { null, null, null, null });
                         }
                     }
-                    catch
-                    {
-                        // Silenciamos: si no estaba abierto desde InventarioForm, no pasa nada.
-                    }
+                    catch { }
                 }
             }
         }
 
-        private void BSalir_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        private void BSalir_Click(object sender, EventArgs e) => this.Close();
+
+        private void PEditar_Paint(object sender, PaintEventArgs e) { }
     }
 }
