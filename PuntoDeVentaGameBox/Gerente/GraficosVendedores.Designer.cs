@@ -28,24 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea9 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend9 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.PGraficos = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.chartTicketPromedio = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartTransaccionesVendedor = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartRendimientoVendedor = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.LTitulo = new System.Windows.Forms.Label();
             this.BVolverAtras = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.PGraficos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartTicketPromedio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartTransaccionesVendedor)).BeginInit();
@@ -66,54 +66,87 @@
             this.PGraficos.Location = new System.Drawing.Point(-1, -1);
             this.PGraficos.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PGraficos.Name = "PGraficos";
-            this.PGraficos.Size = new System.Drawing.Size(1055, 639);
+            this.PGraficos.Size = new System.Drawing.Size(1049, 639);
             this.PGraficos.TabIndex = 9;
             this.PGraficos.Paint += new System.Windows.Forms.PaintEventHandler(this.PGraficos_Paint);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.SystemColors.Control;
+            this.label3.Location = new System.Drawing.Point(297, 354);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(424, 35);
+            this.label3.TabIndex = 51;
+            this.label3.Text = "Promedio De Tickets Por Vendedor";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.Control;
+            this.label2.Location = new System.Drawing.Point(538, 87);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(509, 35);
+            this.label2.TabIndex = 50;
+            this.label2.Text = "Vendedores con Mayor Numero de Ventas";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.Control;
+            this.label1.Location = new System.Drawing.Point(42, 87);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(436, 35);
+            this.label1.TabIndex = 49;
+            this.label1.Text = "Vendedores con Mejor Rendimiento";
+            // 
             // chartTicketPromedio
             // 
-            chartArea7.Name = "ChartArea1";
-            this.chartTicketPromedio.ChartAreas.Add(chartArea7);
-            legend7.Name = "Legend1";
-            this.chartTicketPromedio.Legends.Add(legend7);
+            chartArea1.Name = "ChartArea1";
+            this.chartTicketPromedio.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chartTicketPromedio.Legends.Add(legend1);
             this.chartTicketPromedio.Location = new System.Drawing.Point(265, 405);
             this.chartTicketPromedio.Name = "chartTicketPromedio";
-            series7.ChartArea = "ChartArea1";
-            series7.Legend = "Legend1";
-            series7.Name = "Series1";
-            this.chartTicketPromedio.Series.Add(series7);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chartTicketPromedio.Series.Add(series1);
             this.chartTicketPromedio.Size = new System.Drawing.Size(500, 195);
             this.chartTicketPromedio.TabIndex = 48;
             this.chartTicketPromedio.Text = "chart3";
             // 
             // chartTransaccionesVendedor
             // 
-            chartArea8.Name = "ChartArea1";
-            this.chartTransaccionesVendedor.ChartAreas.Add(chartArea8);
-            legend8.Name = "Legend1";
-            this.chartTransaccionesVendedor.Legends.Add(legend8);
+            chartArea2.Name = "ChartArea1";
+            this.chartTransaccionesVendedor.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chartTransaccionesVendedor.Legends.Add(legend2);
             this.chartTransaccionesVendedor.Location = new System.Drawing.Point(533, 135);
             this.chartTransaccionesVendedor.Name = "chartTransaccionesVendedor";
-            series8.ChartArea = "ChartArea1";
-            series8.Legend = "Legend1";
-            series8.Name = "Series1";
-            this.chartTransaccionesVendedor.Series.Add(series8);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chartTransaccionesVendedor.Series.Add(series2);
             this.chartTransaccionesVendedor.Size = new System.Drawing.Size(500, 194);
             this.chartTransaccionesVendedor.TabIndex = 47;
             this.chartTransaccionesVendedor.Text = "chart2";
             // 
             // chartRendimientoVendedor
             // 
-            chartArea9.Name = "ChartArea1";
-            this.chartRendimientoVendedor.ChartAreas.Add(chartArea9);
-            legend9.Name = "Legend1";
-            this.chartRendimientoVendedor.Legends.Add(legend9);
+            chartArea3.Name = "ChartArea1";
+            this.chartRendimientoVendedor.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chartRendimientoVendedor.Legends.Add(legend3);
             this.chartRendimientoVendedor.Location = new System.Drawing.Point(13, 135);
             this.chartRendimientoVendedor.Name = "chartRendimientoVendedor";
-            series9.ChartArea = "ChartArea1";
-            series9.Legend = "Legend1";
-            series9.Name = "Series1";
-            this.chartRendimientoVendedor.Series.Add(series9);
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.chartRendimientoVendedor.Series.Add(series3);
             this.chartRendimientoVendedor.Size = new System.Drawing.Size(500, 194);
             this.chartRendimientoVendedor.TabIndex = 46;
             this.chartRendimientoVendedor.Text = "chart1";
@@ -143,39 +176,6 @@
             this.BVolverAtras.Text = "Volver Atras";
             this.BVolverAtras.UseVisualStyleBackColor = false;
             this.BVolverAtras.Click += new System.EventHandler(this.BVolverAtras_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.Control;
-            this.label1.Location = new System.Drawing.Point(42, 87);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(436, 35);
-            this.label1.TabIndex = 49;
-            this.label1.Text = "Vendedores con Mejor Rendimiento";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.Control;
-            this.label2.Location = new System.Drawing.Point(538, 87);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(509, 35);
-            this.label2.TabIndex = 50;
-            this.label2.Text = "Vendedores con Mayor Numero de Ventas";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.SystemColors.Control;
-            this.label3.Location = new System.Drawing.Point(297, 354);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(424, 35);
-            this.label3.TabIndex = 51;
-            this.label3.Text = "Promedio De Tickets Por Vendedor";
             // 
             // GraficosVendedores
             // 

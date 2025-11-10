@@ -18,23 +18,111 @@ namespace PuntoDeVentaGameBox.Gerente
         public GraficosProductos(string connString, DateTime? desde, DateTime? hasta)
         {
             InitializeComponent();
+
+            // Quitar bordes/botones del sistema
+            AplicarEstiloSinBordes();
+
             _connString = connString;
             _desde = desde;
             _hasta = hasta;
 
-            // Aseguramos un único handler (y compatibilidad con el Designer)
+            // Asegurar un único Load
             this.Load -= GraficosProductos_Load_1;
             this.Load -= GraficosProductos_Load;
             this.Load += GraficosProductos_Load;
+
+            // Asegurar que el botón cierre
+            AsegurarEventoVolver();
+
+            // Permitir cerrar con Esc
+            HabilitarCerrarConEsc();
         }
 
         // ===== CONSTRUCTOR (sin parámetros) — solo para el Designer =====
         public GraficosProductos()
         {
             InitializeComponent();
+
+            // Quitar bordes/botones del sistema
+            AplicarEstiloSinBordes();
+
             this.Load -= GraficosProductos_Load_1;
             this.Load -= GraficosProductos_Load;
             this.Load += GraficosProductos_Load;
+
+            // Asegurar que el botón cierre
+            AsegurarEventoVolver();
+
+            // Permitir cerrar con Esc
+            HabilitarCerrarConEsc();
+        }
+
+        // ======= Estilo sin bordes =======
+        private void AplicarEstiloSinBordes()
+        {
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.ControlBox = false;
+            this.MinimizeBox = false;
+            this.MaximizeBox = false;
+            this.Text = string.Empty;
+            this.Padding = new Padding(0);
+            this.Margin = new Padding(0);
+            this.DoubleBuffered = true;
+            this.AutoScaleMode = AutoScaleMode.None;
+        }
+
+        // ======= Esc cierra =======
+        private void HabilitarCerrarConEsc()
+        {
+            this.KeyPreview = true;
+            this.KeyDown -= GraficosProductos_KeyDown;
+            this.KeyDown += GraficosProductos_KeyDown;
+        }
+
+        private void GraficosProductos_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                CerrarSeguro();
+            }
+        }
+
+        // ======= Wiring botón Volver =======
+        private void AsegurarEventoVolver()
+        {
+            // Si el botón existe en el diseñador, su nombre suele ser BVolverAtras.
+            // Si tu nombre es otro, cambialo acá.
+            if (this.Controls.ContainsKey("BVolverAtras"))
+            {
+                var btn = this.Controls["BVolverAtras"] as Button;
+                if (btn != null)
+                {
+                    btn.Click -= BVolverAtras_Click;
+                    btn.Click += BVolverAtras_Click;
+                }
+            }
+            // Si el botón está dentro de un contenedor (por ejemplo TableLayoutPanel/Panel),
+            // buscamos recursivamente:
+            else
+            {
+                Button btn = BuscarControlRecursivo<Button>(this, "BVolverAtras");
+                if (btn != null)
+                {
+                    btn.Click -= BVolverAtras_Click;
+                    btn.Click += BVolverAtras_Click;
+                }
+            }
+        }
+
+        private T BuscarControlRecursivo<T>(Control root, string name) where T : Control
+        {
+            foreach (Control c in root.Controls)
+            {
+                if (c.Name == name && c is T) return (T)c;
+                var encontrado = BuscarControlRecursivo<T>(c, name);
+                if (encontrado != null) return encontrado;
+            }
+            return null;
         }
 
         // ===== HANDLER PRINCIPAL =====
@@ -195,11 +283,12 @@ ORDER BY Fecha;";
             string sql = $@"
 SELECT 
     c.nombre AS Categoria,
-    COUNT(*) AS CantidadVentas
+    SUM(fd.cantidad) AS CantidadVentas
 FROM dbo.factura_detalle fd
-JOIN dbo.factura  f ON fd.id_factura_cabecera = f.id_factura
-JOIN dbo.producto p ON fd.id_producto = p.id_producto
-JOIN dbo.categoria c ON p.id_categoria = c.id_categoria
+JOIN dbo.factura  f  ON fd.id_factura_cabecera = f.id_factura
+JOIN dbo.producto p  ON fd.id_producto = p.id_producto
+JOIN dbo.producto_categoria pc ON pc.id_producto = p.id_producto
+JOIN dbo.categoria c ON c.id_categoria = pc.id_categoria
 WHERE (f.activo = 1 OR f.activo IS NULL)
 {RangoWhere("f.fecha_compra")}
 GROUP BY c.nombre
@@ -243,7 +332,36 @@ ORDER BY CantidadVentas DESC;";
         // ===== BOTÓN VOLVER ATRÁS =====
         private void BVolverAtras_Click(object sender, EventArgs e)
         {
-            this.Close();
+            CerrarSeguro();
+        }
+
+        /// <summary>
+        /// Cierra el form si es TopLevel. Si está embebido en un Panel u otro contenedor,
+        /// lo quita del contenedor y lo dispone para liberar recursos.
+        /// </summary>
+        private void CerrarSeguro()
+        {
+            try
+            {
+                if (this.TopLevel)
+                {
+                    this.Close();
+                }
+                else
+                {
+                    var contenedor = this.Parent;
+                    if (contenedor != null)
+                    {
+                        contenedor.Controls.Remove(this);
+                    }
+                    this.Dispose();
+                }
+            }
+            catch
+            {
+                // Como fallback, intenta cerrar normal.
+                try { this.Close(); } catch { /* ignore */ }
+            }
         }
 
         // ==== stubs del diseñador ====

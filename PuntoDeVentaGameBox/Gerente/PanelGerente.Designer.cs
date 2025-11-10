@@ -131,10 +131,10 @@
             // PVistaGerente
             // 
             this.PVistaGerente.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.PVistaGerente.Location = new System.Drawing.Point(0, 252);
+            this.PVistaGerente.Location = new System.Drawing.Point(0, 175);
             this.PVistaGerente.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.PVistaGerente.Name = "PVistaGerente";
-            this.PVistaGerente.Size = new System.Drawing.Size(1242, 803);
+            this.PVistaGerente.Size = new System.Drawing.Size(1242, 880);
             this.PVistaGerente.TabIndex = 3;
             this.PVistaGerente.Paint += new System.Windows.Forms.PaintEventHandler(this.PVistaGerente_Paint);
             // 

@@ -11,6 +11,9 @@ namespace PuntoDeVentaGameBox.Gerente
 
         private readonly DataTable _datos;
 
+     
+
+
         public RendimientosVendedorExtendido(DataTable datos)
         {
             InitializeComponent();

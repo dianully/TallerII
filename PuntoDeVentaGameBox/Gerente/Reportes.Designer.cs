@@ -73,13 +73,12 @@
             this.DTPDesde = new System.Windows.Forms.DateTimePicker();
             this.DTPHasta = new System.Windows.Forms.DateTimePicker();
             this.BLimpiar = new System.Windows.Forms.Button();
-            this.LTipoPeriodo = new System.Windows.Forms.Label();
-            this.CBTipoPeriodo = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.BExportarExcel = new System.Windows.Forms.Button();
             this.BExportarPDF = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.BAplicarFiltros = new System.Windows.Forms.Button();
             this.TPLRoot.SuspendLayout();
             this.PNLScroll.SuspendLayout();
             this.TLPContent.SuspendLayout();
@@ -115,19 +114,17 @@
             // 
             // PNLScroll
             // 
-            this.PNLScroll.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.PNLScroll.AutoScroll = true;
             this.PNLScroll.Controls.Add(this.TLPContent);
-            this.PNLScroll.Location = new System.Drawing.Point(11, 4);
+            this.PNLScroll.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PNLScroll.Location = new System.Drawing.Point(3, 3);
             this.PNLScroll.Name = "PNLScroll";
             this.PNLScroll.Padding = new System.Windows.Forms.Padding(16);
-            this.PNLScroll.Size = new System.Drawing.Size(880, 723);
+            this.PNLScroll.Size = new System.Drawing.Size(896, 725);
             this.PNLScroll.TabIndex = 3;
             this.PNLScroll.Paint += new System.Windows.Forms.PaintEventHandler(this.PNLScroll_Paint);
             // 
             // TLPContent
             // 
-            this.TLPContent.AutoScroll = true;
             this.TLPContent.AutoSize = true;
             this.TLPContent.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.TLPContent.ColumnCount = 1;
@@ -545,7 +542,7 @@
             this.GBPeriodo.Margin = new System.Windows.Forms.Padding(8);
             this.GBPeriodo.Name = "GBPeriodo";
             this.GBPeriodo.Padding = new System.Windows.Forms.Padding(16);
-            this.GBPeriodo.Size = new System.Drawing.Size(838, 162);
+            this.GBPeriodo.Size = new System.Drawing.Size(838, 166);
             this.GBPeriodo.TabIndex = 0;
             this.GBPeriodo.TabStop = false;
             this.GBPeriodo.Text = "Periodo del Reporte";
@@ -555,13 +552,12 @@
             this.TLPPeriodo.ColumnCount = 2;
             this.TLPPeriodo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.TLPPeriodo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 419F));
+            this.TLPPeriodo.Controls.Add(this.BAplicarFiltros, 0, 0);
             this.TLPPeriodo.Controls.Add(this.LDesde, 0, 2);
             this.TLPPeriodo.Controls.Add(this.LHasta, 1, 2);
             this.TLPPeriodo.Controls.Add(this.DTPDesde, 0, 3);
             this.TLPPeriodo.Controls.Add(this.DTPHasta, 1, 3);
             this.TLPPeriodo.Controls.Add(this.BLimpiar, 1, 0);
-            this.TLPPeriodo.Controls.Add(this.LTipoPeriodo, 0, 0);
-            this.TLPPeriodo.Controls.Add(this.CBTipoPeriodo, 0, 1);
             this.TLPPeriodo.Location = new System.Drawing.Point(19, 26);
             this.TLPPeriodo.Name = "TLPPeriodo";
             this.TLPPeriodo.RowCount = 4;
@@ -619,29 +615,6 @@
             this.BLimpiar.Text = "Limpiar";
             this.BLimpiar.UseVisualStyleBackColor = true;
             // 
-            // LTipoPeriodo
-            // 
-            this.LTipoPeriodo.AutoSize = true;
-            this.LTipoPeriodo.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LTipoPeriodo.Location = new System.Drawing.Point(3, 0);
-            this.LTipoPeriodo.Name = "LTipoPeriodo";
-            this.LTipoPeriodo.Size = new System.Drawing.Size(130, 23);
-            this.LTipoPeriodo.TabIndex = 0;
-            this.LTipoPeriodo.Text = "Tipo de Periodo";
-            // 
-            // CBTipoPeriodo
-            // 
-            this.CBTipoPeriodo.FormattingEnabled = true;
-            this.CBTipoPeriodo.Items.AddRange(new object[] {
-            "Diario",
-            "Semanal",
-            "Mensual",
-            "Anual"});
-            this.CBTipoPeriodo.Location = new System.Drawing.Point(3, 39);
-            this.CBTipoPeriodo.Name = "CBTipoPeriodo";
-            this.CBTipoPeriodo.Size = new System.Drawing.Size(143, 31);
-            this.CBTipoPeriodo.TabIndex = 1;
-            // 
             // panel1
             // 
             this.panel1.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -690,6 +663,17 @@
             // backgroundWorker1
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            // 
+            // BAplicarFiltros
+            // 
+            this.BAplicarFiltros.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.BAplicarFiltros.Location = new System.Drawing.Point(3, 3);
+            this.BAplicarFiltros.Name = "BAplicarFiltros";
+            this.BAplicarFiltros.Size = new System.Drawing.Size(142, 30);
+            this.BAplicarFiltros.TabIndex = 6;
+            this.BAplicarFiltros.Text = "Aplicar FIltros";
+            this.BAplicarFiltros.UseVisualStyleBackColor = true;
+            this.BAplicarFiltros.Click += new System.EventHandler(this.BAplicarFiltros_Click);
             // 
             // Reportes
             // 
@@ -741,8 +725,6 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.GroupBox GBPeriodo;
         private System.Windows.Forms.TableLayoutPanel TLPPeriodo;
-        private System.Windows.Forms.Label LTipoPeriodo;
-        private System.Windows.Forms.ComboBox CBTipoPeriodo;
         private System.Windows.Forms.Label LHasta;
         private System.Windows.Forms.Label LDesde;
         private System.Windows.Forms.DateTimePicker DTPDesde;
@@ -787,5 +769,6 @@
         private System.Windows.Forms.Button BLimpiar;
         private System.Windows.Forms.Button BMasVendidosExtendido;
         private System.Windows.Forms.Button BRendimientosExtendido;
+        private System.Windows.Forms.Button BAplicarFiltros;
     }
 }

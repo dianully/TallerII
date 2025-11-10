@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using PuntoDeVentaGameBox.Vendedor;
 using PuntoDeVentaGameBox.Administrador;
@@ -19,101 +13,82 @@ namespace PuntoDeVentaGameBox.Gerente
         {
             InitializeComponent();
 
+            if (LNombreUsuario != null)
+                LNombreUsuario.Text = $"{SesionUsuario.Nombre} {SesionUsuario.Apellido}";
 
-            // Asigna el nombre y apellido desde la clase SesionUsuario al label
-            LNombreUsuario.Text = $"{SesionUsuario.Nombre} {SesionUsuario.Apellido}";
+            // ÚNICO scroll: el contenedor
+            PVistaGerente.AutoScroll = true;
+            PVistaGerente.HorizontalScroll.Enabled = false;
+            PVistaGerente.HorizontalScroll.Visible = false;
+            PVistaGerente.AutoScrollMargin = new Size(0, 8);
 
-            // La siguiente línea fue eliminada para evitar que el evento se registre dos veces
-            // this.lVendedor.Click += new System.EventHandler(this.lVendedor_Click_1);
+            this.DoubleBuffered = true;
+            PVistaGerente.GetType().GetProperty("DoubleBuffered",
+                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                ?.SetValue(PVistaGerente, true, null);
         }
-        private void AbrirFormInPanel(object Formhijo)
+
+        private void CargarEnPanel(Form hijo)
         {
-            // Verifica si el panel ya tiene un formulario y lo cierra
-            if (this.PVistaGerente.Controls.Count > 0)
-            {
-                // Remueve el formulario anterior
-                this.PVistaGerente.Controls.RemoveAt(0);
-            }
+            PVistaGerente.Resize -= PVistaGerente_ResizeSync;
 
-            // Convierte el objeto a un formulario para poder usar sus propiedades
-            Form fh = Formhijo as Form;
+            foreach (Control c in PVistaGerente.Controls) c.Dispose();
+            PVistaGerente.Controls.Clear();
 
-            // Le dice al formulario que no es una ventana independiente
-            fh.TopLevel = false;
+            hijo.TopLevel = false;
+            hijo.FormBorderStyle = FormBorderStyle.None;
+            hijo.AutoScroll = false;          // los hijos no scrollean
+            hijo.Dock = DockStyle.Fill;
 
-            // Lo hace invisible para el usuario antes de agregarlo
-            fh.FormBorderStyle = FormBorderStyle.None;
+            PVistaGerente.Controls.Add(hijo);
+            hijo.Show();
 
-            // Ancla el formulario para que llene todo el panel
-            fh.Dock = DockStyle.Fill;
-
-            // Agrega el formulario al panel
-            this.PVistaGerente.Controls.Add(fh);
-
-            // Muestra el formulario
-            fh.Show();
+            PVistaGerente.Resize += PVistaGerente_ResizeSync;
         }
 
-
-
-        private void PVistaGerente_Paint(object sender, PaintEventArgs e)
+        private void PVistaGerente_ResizeSync(object sender, EventArgs e)
         {
-
+            if (PVistaGerente.Controls.Count == 1 && PVistaGerente.Controls[0] is Form f)
+                f.Width = PVistaGerente.ClientSize.Width;
         }
 
-        private void PanelGerente_Load(object sender, EventArgs e)
-        {
-
-        }
+        private void PVistaGerente_Paint(object sender, PaintEventArgs e) { }
+        private void PanelGerente_Load(object sender, EventArgs e) { }
 
         private void BInventario_Click(object sender, EventArgs e)
         {
-            AbrirFormInPanel(new InventarioForm());
+            CargarEnPanel(new InventarioForm()); // cambia el nombre si tu form es otro
         }
 
         private void BReportes_Click(object sender, EventArgs e)
         {
-            AbrirFormInPanel(new Reportes());
+            CargarEnPanel(new Reportes());
         }
 
         private void BProveedores_Click(object sender, EventArgs e)
         {
-            AbrirFormInPanel(new Proveedores());
+            CargarEnPanel(new Proveedores());
         }
 
         private void BSalir_Click(object sender, EventArgs e)
         {
             SesionUsuario.LimpiarSesion();
-
-            // Oculta el formulario actual
             this.Hide();
-
-            // Crea una nueva instancia del formulario de Login y la muestra
-            Login loginForm = new Login();
-            loginForm.Show();
-
+            var login = new Login();
+            login.Show();
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
-
-            // Determina el nombre del rol basado en el IdRol
-            string nombreRol = "";
-            switch (SesionUsuario.IdRol)
+            string nombreRol;
+            switch (SesionUsuario.IdRol) // ✅ switch clásico (C# 7.3)
             {
-                case 2:
-                    nombreRol = "Administrador";
-                    break;
-                case 3:
-                    nombreRol = "Vendedor";
-                    break;
-                default:
-                    nombreRol = "Gerente";
-                    break;
+                case 2: nombreRol = "Administrador"; break;
+                case 3: nombreRol = "Vendedor"; break;
+                default: nombreRol = "Gerente"; break;
             }
 
-            // Abre el formulario de edición, pasando los datos del usuario actual desde la sesión
-            EdicionUsuario formEdicion = new EdicionUsuario(
+            var formEdicion = new EdicionUsuario(
                 SesionUsuario.IdUsuario,
                 SesionUsuario.Nombre,
                 SesionUsuario.Apellido,
@@ -122,14 +97,10 @@ namespace PuntoDeVentaGameBox.Gerente
                 SesionUsuario.Telefono,
                 SesionUsuario.Contraseña,
                 nombreRol,
-                SesionUsuario.IdRol   // 👈 nuevo parámetro
-
+                SesionUsuario.IdRol
             );
 
-            // Usamos ShowDialog() para que la ventana de edición sea modal.
             formEdicion.ShowDialog();
         }
     }
-
 }
-
