@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.TLRoot = new System.Windows.Forms.TableLayoutPanel();
             this.PBanner = new System.Windows.Forms.Panel();
             this.LAvisoStockBajo = new System.Windows.Forms.Label();
@@ -98,7 +98,7 @@
             this.TLRoot.Controls.Add(this.PFilters, 0, 2);
             this.TLRoot.Controls.Add(this.PListHeader, 0, 3);
             this.TLRoot.Controls.Add(this.PGrid, 0, 4);
-            this.TLRoot.Location = new System.Drawing.Point(26, 32);
+            this.TLRoot.Location = new System.Drawing.Point(9, 2);
             this.TLRoot.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TLRoot.Name = "TLRoot";
             this.TLRoot.RowCount = 5;
@@ -108,7 +108,7 @@
             this.TLRoot.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 71F));
             this.TLRoot.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.TLRoot.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.TLRoot.Size = new System.Drawing.Size(1175, 715);
+            this.TLRoot.Size = new System.Drawing.Size(1203, 758);
             this.TLRoot.TabIndex = 0;
             this.TLRoot.Paint += new System.Windows.Forms.PaintEventHandler(this.TLRoot_Paint);
             // 
@@ -163,7 +163,7 @@
             this.TLKPI.Controls.Add(this.CardKpi3, 2, 0);
             this.TLKPI.Controls.Add(this.CardKpi2, 1, 0);
             this.TLKPI.ForeColor = System.Drawing.SystemColors.Control;
-            this.TLKPI.Location = new System.Drawing.Point(13, 3);
+            this.TLKPI.Location = new System.Drawing.Point(27, 3);
             this.TLKPI.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TLKPI.Name = "TLKPI";
             this.TLKPI.RowCount = 1;
@@ -313,7 +313,7 @@
             this.PFilters.Margin = new System.Windows.Forms.Padding(11, 10, 11, 10);
             this.PFilters.Name = "PFilters";
             this.PFilters.Padding = new System.Windows.Forms.Padding(16);
-            this.PFilters.Size = new System.Drawing.Size(1153, 140);
+            this.PFilters.Size = new System.Drawing.Size(1181, 140);
             this.PFilters.TabIndex = 3;
             this.PFilters.Paint += new System.Windows.Forms.PaintEventHandler(this.PFilters_Paint);
             // 
@@ -498,7 +498,7 @@
             this.PListHeader.Margin = new System.Windows.Forms.Padding(11, 10, 11, 10);
             this.PListHeader.Name = "PListHeader";
             this.PListHeader.Padding = new System.Windows.Forms.Padding(12);
-            this.PListHeader.Size = new System.Drawing.Size(1153, 51);
+            this.PListHeader.Size = new System.Drawing.Size(1181, 51);
             this.PListHeader.TabIndex = 4;
             // 
             // BNuevoProducto
@@ -510,7 +510,7 @@
             this.BNuevoProducto.FlatAppearance.BorderSize = 0;
             this.BNuevoProducto.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BNuevoProducto.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.BNuevoProducto.Location = new System.Drawing.Point(887, 2);
+            this.BNuevoProducto.Location = new System.Drawing.Point(915, 2);
             this.BNuevoProducto.Margin = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.BNuevoProducto.Name = "BNuevoProducto";
             this.BNuevoProducto.Padding = new System.Windows.Forms.Padding(11, 6, 11, 6);
@@ -541,15 +541,15 @@
             this.PGrid.Margin = new System.Windows.Forms.Padding(11, 10, 11, 10);
             this.PGrid.Name = "PGrid";
             this.PGrid.Padding = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.PGrid.Size = new System.Drawing.Size(1153, 234);
+            this.PGrid.Size = new System.Drawing.Size(1181, 277);
             this.PGrid.TabIndex = 5;
             // 
             // DGVProductos
             // 
             this.DGVProductos.AllowUserToAddRows = false;
             this.DGVProductos.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.DGVProductos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.DGVProductos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.DGVProductos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.DGVProductos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVProductos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -571,15 +571,15 @@
             this.DGVProductos.RowHeadersWidth = 51;
             this.DGVProductos.RowTemplate.Height = 56;
             this.DGVProductos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DGVProductos.Size = new System.Drawing.Size(1135, 218);
+            this.DGVProductos.Size = new System.Drawing.Size(1163, 261);
             this.DGVProductos.TabIndex = 0;
             this.DGVProductos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_CellContentClick);
             // 
             // ColId
             // 
             this.ColId.DataPropertyName = "Id";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.ColId.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.ColId.DefaultCellStyle = dataGridViewCellStyle5;
             this.ColId.FillWeight = 3.788457F;
             this.ColId.HeaderText = "ID";
             this.ColId.MinimumWidth = 6;
@@ -617,9 +617,9 @@
             // ColPrecio
             // 
             this.ColPrecio.DataPropertyName = "Precio";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle3.Format = "C2";
-            this.ColPrecio.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle6.Format = "C2";
+            this.ColPrecio.DefaultCellStyle = dataGridViewCellStyle6;
             this.ColPrecio.FillWeight = 19.25784F;
             this.ColPrecio.HeaderText = "Precio";
             this.ColPrecio.MinimumWidth = 6;

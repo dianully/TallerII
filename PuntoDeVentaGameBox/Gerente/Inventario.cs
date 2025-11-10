@@ -17,6 +17,13 @@ namespace PuntoDeVentaGameBox.Gerente
         // umbral para considerar stock bajo
         private const int UMBRAL_STOCK_BAJO = 25;
 
+        // === IMÁGENES (carpeta del repo) ===
+        private static readonly string REPO_IMG_REL = @"ImagenesProductos";
+        private static readonly string REPO_IMG_DIR =
+        Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..", REPO_IMG_REL));
+
+
+
         // cache de placeholder para imagen faltante
         private static Image _placeholderImagen;
 
@@ -377,45 +384,33 @@ namespace PuntoDeVentaGameBox.Gerente
 
         private void DGVProductos_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.RowIndex >= 0 && DGVProductos.Columns[e.ColumnIndex].Name == "Imagen")
+            if (e.RowIndex < 0) return;
+            if (DGVProductos.Columns[e.ColumnIndex].Name != "Imagen") return;
+
+            try
             {
-                try
-                {
-                    var drv = DGVProductos.Rows[e.RowIndex].DataBoundItem as DataRowView;
-                    var ruta = drv?["url_imagen"]?.ToString();
-                    if (string.IsNullOrWhiteSpace(ruta))
-                    {
-                        e.Value = PlaceholderImagen();
-                        e.FormattingApplied = true;
-                        return;
-                    }
+                var drv = DGVProductos.Rows[e.RowIndex].DataBoundItem as DataRowView;
+                if (drv == null) { e.Value = PlaceholderImagen(); return; }
 
-                    if (ruta.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
-                        ruta.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
-                    {
-                        e.Value = PlaceholderImagen();
-                        e.FormattingApplied = true;
-                        return;
-                    }
+                int idProducto = Convert.ToInt32(drv["id_producto"]);
 
-                    if (File.Exists(ruta))
-                    {
-                        e.Value = CargarImagenSinBloquear(ruta);
-                        e.FormattingApplied = true;
-                    }
-                    else
-                    {
-                        e.Value = PlaceholderImagen();
-                        e.FormattingApplied = true;
-                    }
-                }
-                catch
-                {
+                // Ruta completa esperada dentro del proyecto
+                string rutaImagen = Path.Combine(REPO_IMG_DIR, $"producto{idProducto}.jpg");
+
+                if (File.Exists(rutaImagen))
+                    e.Value = CargarImagenSinBloquear(rutaImagen);
+                else
                     e.Value = PlaceholderImagen();
-                    e.FormattingApplied = true;
-                }
+
+                e.FormattingApplied = true;
+            }
+            catch
+            {
+                e.Value = PlaceholderImagen();
+                e.FormattingApplied = true;
             }
         }
+
 
         private void DGVProductos_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {

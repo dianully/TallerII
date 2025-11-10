@@ -361,15 +361,13 @@ WHERE (f.activo = 1 OR f.activo IS NULL)";
                 return;
             }
 
-            using (var sfd = new SaveFileDialog()
+            try
             {
-                Title = "Guardar reporte como PDF",
-                Filter = "PDF (.pdf)|.pdf",
-                FileName = $"Reporte_Ventas_{DateTime.Now:yyyyMMdd_HHmm}.pdf"
-            })
-            {
-                if (sfd.ShowDialog() != DialogResult.OK) return;
-                string filePath = sfd.FileName;
+                //  Ruta fija para guardar los PDFs
+                string folder = @"C:\Users\diana\source\repos\Taller\PuntoDeVentaGameBox\PDFGameBox";
+
+                Directory.CreateDirectory(folder);
+                string filePath = Path.Combine(folder, $"Reporte_Ventas_{DateTime.Now:yyyyMMdd_HHmm}.pdf");
 
                 string periodoTexto =
                     _usarFiltroFechas
@@ -383,129 +381,138 @@ WHERE (f.activo = 1 OR f.activo IS NULL)";
                 var fontTitulo = FontFactory.GetFont("Helvetica", 16f, iTextSharp.text.Font.BOLD);
                 var fontSub = FontFactory.GetFont("Helvetica", 12f, iTextSharp.text.Font.BOLD);
 
-                Paragraph titulo = new Paragraph("REPORTE DE VENTAS", fontTitulo) { Alignment = Element.ALIGN_CENTER };
+                Paragraph titulo = new Paragraph("REPORTE DE VENTAS", fontTitulo)
+                {
+                    Alignment = Element.ALIGN_CENTER
+                };
                 doc.Add(titulo);
                 doc.Add(new Paragraph($"Generado el: {DateTime.Now:G}"));
                 doc.Add(new Paragraph($"Período: {periodoTexto}\n"));
 
-                // Productos
+                // === Sección Productos ===
                 doc.Add(new Paragraph("\nProductos Más Vendidos\n", fontSub));
-                PdfPTable t1 = new PdfPTable(DGVTopProductos.Columns.Count) { WidthPercentage = 100 };
-                foreach (DataGridViewColumn c in DGVTopProductos.Columns) t1.AddCell(new Phrase(c.HeaderText));
+                PdfPTable t1 = new PdfPTable(DGVTopProductos.Columns.Count)
+                {
+                    WidthPercentage = 100
+                };
+                foreach (DataGridViewColumn c in DGVTopProductos.Columns)
+                    t1.AddCell(new Phrase(c.HeaderText));
                 foreach (DataGridViewRow r in DGVTopProductos.Rows)
                 {
                     if (r.IsNewRow) continue;
-                    foreach (DataGridViewCell cell in r.Cells) t1.AddCell(cell.Value?.ToString() ?? "");
+                    foreach (DataGridViewCell cell in r.Cells)
+                        t1.AddCell(cell.Value?.ToString() ?? "");
                 }
                 doc.Add(t1);
 
-                // Vendedores
+                // === Sección Vendedores ===
                 doc.Add(new Paragraph("\nRendimiento por Vendedor\n", fontSub));
-                PdfPTable t2 = new PdfPTable(DGVVendedores.Columns.Count) { WidthPercentage = 100 };
-                foreach (DataGridViewColumn c in DGVVendedores.Columns) t2.AddCell(new Phrase(c.HeaderText));
+                PdfPTable t2 = new PdfPTable(DGVVendedores.Columns.Count)
+                {
+                    WidthPercentage = 100
+                };
+                foreach (DataGridViewColumn c in DGVVendedores.Columns)
+                    t2.AddCell(new Phrase(c.HeaderText));
                 foreach (DataGridViewRow r in DGVVendedores.Rows)
                 {
                     if (r.IsNewRow) continue;
-                    foreach (DataGridViewCell cell in r.Cells) t2.AddCell(cell.Value?.ToString() ?? "");
+                    foreach (DataGridViewCell cell in r.Cells)
+                        t2.AddCell(cell.Value?.ToString() ?? "");
                 }
                 doc.Add(t2);
 
                 doc.Close();
 
-                MessageBox.Show($"PDF generado en:\n{filePath}", "Exportación completada",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"PDF generado correctamente en:\n{filePath}",
+                    "Exportación completada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al exportar el PDF:\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         // ================== EXPORTAR EXCEL (EPPlus si está, CSV si no) ==================
         private void BExportarExcel_Click(object sender, EventArgs e)
         {
-            using (var sfd = new SaveFileDialog()
+            try
             {
-                Title = "Guardar reporte",
-                Filter = "Excel Workbook (*.xlsx)|*.xlsx|CSV (*.csv)|*.csv",
-                FileName = $"Reporte_Ventas_{DateTime.Now:yyyyMMdd_HHmm}.xlsx"
-            })
-            {
-                if (sfd.ShowDialog() != DialogResult.OK) return;
+                // Ruta fija para guardar los Excels
+                string folder = @"C:\Users\diana\source\repos\Taller\PuntoDeVentaGameBox\ExcelGameBox";
 
-                string filePath = sfd.FileName;
+                Directory.CreateDirectory(folder);
+                string filePath = Path.Combine(folder, $"Reporte_Ventas_{DateTime.Now:yyyyMMdd_HHmm}.xlsx");
+
                 string periodoTexto =
                     $"{(_dtpDesde != null ? _dtpDesde.Value : DateTime.Today):dd/MM/yyyy} - " +
                     $"{(_dtpHasta != null ? _dtpHasta.Value : DateTime.Today):dd/MM/yyyy}";
 
-                // Si el usuario pidió CSV explícitamente → un solo CSV con todo
-                if (Path.GetExtension(filePath).Equals(".csv", StringComparison.OrdinalIgnoreCase))
-                {
-                    ExportWholeReportToSingleCsv(filePath, periodoTexto);
-                    MessageBox.Show($"CSV generado en:\n{filePath}",
-                        "Exportación completada", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-
-                // Intento usar EPPlus (licencia no comercial o API vieja). Si falla → 1 CSV.
+                // Intentar configurar EPPlus
                 bool licenseOk = TryConfigureEpplusLicense();
                 if (!licenseOk)
                 {
                     string csvPath = Path.ChangeExtension(filePath, ".csv");
                     ExportWholeReportToSingleCsv(csvPath, periodoTexto);
-                    MessageBox.Show(
-                        "No se pudo configurar la licencia de EPPlus.\n" +
-                        "Se generó un único CSV con todo el reporte:\n" + csvPath,
-                        "Exportación alternativa (CSV)", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"No se pudo configurar EPPlus.\nSe generó un CSV en:\n{csvPath}",
+                        "Exportación (CSV)", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
-                try
+                // === Generar Excel ===
+                using (var package = new OfficeOpenXml.ExcelPackage())
                 {
-                    using (var package = new OfficeOpenXml.ExcelPackage())
+                    // Hoja 1 - Productos
+                    var ws1 = package.Workbook.Worksheets.Add("Productos Más Vendidos");
+                    ws1.Cells["A1"].Value = "Reporte de Ventas - Productos Más Vendidos";
+                    ws1.Cells["A1"].Style.Font.Bold = true;
+                    ws1.Cells["A2"].Value = $"Generado: {DateTime.Now:G}";
+                    ws1.Cells["A3"].Value = $"Período: {periodoTexto}";
+                    ws1.Cells["A5"].LoadFromDataTable(_ultimoTopProductos, true);
+
+                    // Hoja 2 - Vendedores
+                    var ws2 = package.Workbook.Worksheets.Add("Rendimiento por Vendedor");
+                    ws2.Cells["A1"].Value = "Reporte de Ventas - Rendimiento por Vendedor";
+                    ws2.Cells["A1"].Style.Font.Bold = true;
+                    ws2.Cells["A2"].Value = $"Generado: {DateTime.Now:G}";
+                    ws2.Cells["A3"].Value = $"Período: {periodoTexto}";
+                    ws2.Cells["A5"].LoadFromDataTable(_ultimoVendedores, true);
+
+                    if (ws1.Dimension != null) ws1.Cells[ws1.Dimension.Address].AutoFitColumns();
+                    if (ws2.Dimension != null) ws2.Cells[ws2.Dimension.Address].AutoFitColumns();
+
+                    // Protección simple (solo lectura)
+                    package.Workbook.Protection.LockStructure = true;
+                    foreach (var ws in package.Workbook.Worksheets)
                     {
-                        // Hoja 1 - Productos
-                        var ws1 = package.Workbook.Worksheets.Add("Productos Más Vendidos");
-                        ws1.Cells["A1"].Value = "Reporte de Ventas - Productos Más Vendidos";
-                        ws1.Cells["A1"].Style.Font.Bold = true;
-                        ws1.Cells["A2"].Value = $"Generado: {DateTime.Now:G}";
-                        ws1.Cells["A3"].Value = $"Período: {periodoTexto}";
-                        ws1.Cells["A5"].LoadFromDataTable(_ultimoTopProductos, true);
-
-                        // Hoja 2 - Vendedores
-                        var ws2 = package.Workbook.Worksheets.Add("Rendimiento por Vendedor");
-                        ws2.Cells["A1"].Value = "Reporte de Ventas - Rendimiento por Vendedor";
-                        ws2.Cells["A1"].Style.Font.Bold = true;
-                        ws2.Cells["A2"].Value = $"Generado: {DateTime.Now:G}";
-                        ws2.Cells["A3"].Value = $"Período: {periodoTexto}";
-                        ws2.Cells["A5"].LoadFromDataTable(_ultimoVendedores, true);
-
-                        if (ws1.Dimension != null) ws1.Cells[ws1.Dimension.Address].AutoFitColumns();
-                        if (ws2.Dimension != null) ws2.Cells[ws2.Dimension.Address].AutoFitColumns();
-
-                        // Solo lectura práctica
-                        package.Workbook.Protection.LockStructure = true;
-                        foreach (var ws in package.Workbook.Worksheets)
-                        {
-                            ws.Cells.Style.Locked = true;
-                            ws.Protection.IsProtected = true;
-                            ws.Protection.AllowSelectLockedCells = true;
-                        }
-
-                        package.SaveAs(new FileInfo(filePath));
+                        ws.Cells.Style.Locked = true;
+                        ws.Protection.IsProtected = true;
+                        ws.Protection.AllowSelectLockedCells = true;
                     }
 
-                    MessageBox.Show($"Excel generado en:\n{filePath}",
-                        "Exportación completada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    package.SaveAs(new FileInfo(filePath));
                 }
-                catch (Exception ex)
-                {
-                    // Último recurso: un único CSV
-                    string csvPath = Path.ChangeExtension(filePath, ".csv");
-                    ExportWholeReportToSingleCsv(csvPath, periodoTexto);
-                    MessageBox.Show(
-                        "No se pudo generar el .xlsx. Se generó un único CSV como alternativa.\n\n" +
-                        ex.Message,
-                        "Exportación alternativa (CSV)", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+
+                MessageBox.Show($"Excel generado correctamente en:\n{filePath}",
+                    "Exportación completada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                string folder = @"C:\Users\diana\OneDrive\Desktop\FACULTAD\FACULTAD 2025\Cuatrimestre 2\TPII\ExcelGameBox";
+                Directory.CreateDirectory(folder);
+                string csvPath = Path.Combine(folder, $"Reporte_Ventas_{DateTime.Now:yyyyMMdd_HHmm}.csv");
+
+                ExportWholeReportToSingleCsv(csvPath,
+                    $"{(_dtpDesde != null ? _dtpDesde.Value : DateTime.Today):dd/MM/yyyy} - {(_dtpHasta != null ? _dtpHasta.Value : DateTime.Today):dd/MM/yyyy}");
+
+                MessageBox.Show(
+                    "No se pudo generar el .xlsx. Se creó un archivo CSV como alternativa en:\n" + csvPath +
+                    "\n\nDetalles del error:\n" + ex.Message,
+                    "Exportación alternativa (CSV)", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
 
         private bool TryExportXlsxWithEpplus(string filePath, string periodoTexto)
         {

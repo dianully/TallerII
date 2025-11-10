@@ -14,9 +14,13 @@ namespace PuntoDeVentaGameBox.Gerente
     {
         private readonly string _connString = "Server=localhost;Database=game_box;Trusted_Connection=True;TrustServerCertificate=True";
         private readonly int? _idProducto;
-
         private string _rutaImagen = null;
         private MultiCategoriaHelper _mc;
+
+        // === IMÁGENES (carpeta del repo) ===
+        private static readonly string REPO_IMG_REL = @"ImagenesProductos";
+        private static readonly string REPO_IMG_DIR =
+            Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..", REPO_IMG_REL));
 
         public EditarProducto()
         {
@@ -85,6 +89,22 @@ namespace PuntoDeVentaGameBox.Gerente
             }
         }
 
+        private static Image PlaceholderImagen()
+        {
+            var bmp = new Bitmap(64, 64);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                g.Clear(Color.LightGray);
+                using (var p = new Pen(Color.DarkGray, 3))
+                {
+                    g.DrawRectangle(p, 1, 1, 62, 62);
+                    g.DrawLine(p, 14, 14, 50, 50);
+                    g.DrawLine(p, 50, 14, 14, 50);
+                }
+            }
+            return bmp;
+        }
+
         private void CargarProducto(int id)
         {
             try
@@ -103,13 +123,15 @@ namespace PuntoDeVentaGameBox.Gerente
                     using (var rd = cmd.ExecuteReader())
                     {
                         if (!rd.Read())
-                        { MessageBox.Show("producto no encontrado", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information); return; }
+                        {
+                            MessageBox.Show("producto no encontrado", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
 
                         TBNombreProducto.Text = rd["nombre"]?.ToString();
                         TBDescripcionProducto.Text = rd["descripcion"]?.ToString();
                         TBPrecioVentaProducto.Text = Convert.ToDecimal(rd["precio_venta"]).ToString("0.##");
                         TBCantidadProducto.Text = rd["cantidad_stock"]?.ToString();
-                        _rutaImagen = rd["url_imagen"] as string;
 
                         TBFechaAlta.Text = (rd["fecha_alta"] == DBNull.Value) ? "" : Convert.ToDateTime(rd["fecha_alta"]).ToString("yyyy-MM-dd");
                         if (rd["fecha_edicion"] != DBNull.Value && DTPFechaEdicionProducto != null)
@@ -117,10 +139,16 @@ namespace PuntoDeVentaGameBox.Gerente
                         if (rd["id_proveedor"] != DBNull.Value)
                             CBProveedorProducto.SelectedValue = Convert.ToInt32(rd["id_proveedor"]);
 
-                        PBImagenProducto.ImageLocation = File.Exists(_rutaImagen ?? "") ? _rutaImagen : null;
+                        // === imagen local ===
+                        string rutaImagen = Path.Combine(REPO_IMG_DIR, $"producto{id}.jpg");
+                        if (File.Exists(rutaImagen))
+                            PBImagenProducto.Image = Image.FromFile(rutaImagen);
+                        else
+                            PBImagenProducto.Image = PlaceholderImagen();
                     }
                 }
 
+                // categorías
                 using (var cn = NuevaConexion())
                 using (var da = new SqlDataAdapter(@"select id_categoria from dbo.producto_categoria where id_producto = @id", cn))
                 {
@@ -140,15 +168,27 @@ namespace PuntoDeVentaGameBox.Gerente
         private void BAbrirImagen_Click(object sender, EventArgs e)
         {
             using (var ofd = new OpenFileDialog { Filter = "Imagenes|*.jpg;*.jpeg;*.png;*.gif;*.bmp", Title = "Seleccionar imagen" })
-            { if (ofd.ShowDialog(this) == DialogResult.OK) { _rutaImagen = ofd.FileName; PBImagenProducto.ImageLocation = _rutaImagen; } }
+            {
+                if (ofd.ShowDialog(this) == DialogResult.OK)
+                {
+                    _rutaImagen = ofd.FileName;
+                    PBImagenProducto.Image = Image.FromFile(_rutaImagen);
+                }
+            }
         }
 
         private void BSalir_Click(object sender, EventArgs e) => this.Close();
 
         private void BGuardarCambios_Click(object sender, EventArgs e)
         {
-            if (_idProducto == null) { MessageBox.Show("no se indico producto a editar", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
-            if (!ValidarFormulario(out var precio, out var stock, out var idProv, out var fechaAlta)) return;
+            if (_idProducto == null)
+            {
+                MessageBox.Show("no se indico producto a editar", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!ValidarFormulario(out var precio, out var stock, out var idProv, out var fechaAlta))
+                return;
 
             try
             {
@@ -166,7 +206,6 @@ namespace PuntoDeVentaGameBox.Gerente
                                 descripcion = @descripcion,
                                 precio_venta = @precio,
                                 cantidad_stock = @stock,
-                                url_imagen = @img,
                                 fecha_alta = @falta,
                                 fecha_edicion = GETDATE(),
                                 id_proveedor = @prov
@@ -175,13 +214,11 @@ namespace PuntoDeVentaGameBox.Gerente
                         cmd.Parameters.AddWithValue("@descripcion", (object)(TBDescripcionProducto.Text ?? "").Trim());
                         cmd.Parameters.AddWithValue("@precio", precio);
                         cmd.Parameters.AddWithValue("@stock", stock);
-                        cmd.Parameters.AddWithValue("@img", string.IsNullOrWhiteSpace(_rutaImagen) ? (object)DBNull.Value : _rutaImagen);
                         var pFecha = cmd.Parameters.Add("@falta", SqlDbType.Date); pFecha.Value = fechaAlta.Date;
                         cmd.Parameters.AddWithValue("@prov", (object)idProv ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@id", _idProducto.Value);
                         cmd.ExecuteNonQuery();
 
-                        // reemplaza categorias
                         cmd.Parameters.Clear();
                         cmd.CommandText = "delete from dbo.producto_categoria where id_producto = @p;";
                         cmd.Parameters.Add("@p", SqlDbType.Int).Value = _idProducto.Value;
@@ -192,7 +229,10 @@ namespace PuntoDeVentaGameBox.Gerente
                         cmd.Parameters.Add("@p", SqlDbType.Int).Value = _idProducto.Value;
                         var pCat = cmd.Parameters.Add("@c", SqlDbType.Int);
                         foreach (var idCat in _mc.ObtenerSeleccion())
-                        { pCat.Value = idCat; cmd.ExecuteNonQuery(); }
+                        {
+                            pCat.Value = idCat;
+                            cmd.ExecuteNonQuery();
+                        }
 
                         tx.Commit();
                     }
@@ -249,12 +289,7 @@ namespace PuntoDeVentaGameBox.Gerente
             return true;
         }
 
-        // ===== helper interno (igual al de AgregarProducto) =====
-        // ===== helper interno MULTICATEGORÍA (sin BeginInvoke) =====
-        // ===== Helper multi-categoría (scroll real, sin desbordes, selección inmediata) =====
-        // ===== Helper multi-categoría (scroll real, sin desbordes, selección inmediata) =====
-        // ===== Helper multi-categoría (idéntico al de Inventario, con scroll real y selección inmediata) =====
-        // ===== Helper multi-categoría (idéntico a Inventario, scroll real y selección inmediata) =====
+        // ===== Helper multi-categoría (idéntico al de Inventario, scroll real y selección inmediata) =====
         private sealed class MultiCategoriaHelper
         {
             private sealed class CatItem
@@ -293,7 +328,6 @@ namespace PuntoDeVentaGameBox.Gerente
                 _combo.Text = "Seleccionar géneros…";
                 _combo.Cursor = Cursors.Hand;
 
-                // CheckedListBox con scroll real (no se estira)
                 _clb.CheckOnClick = true;
                 _clb.BorderStyle = BorderStyle.None;
                 _clb.IntegralHeight = false;
@@ -309,6 +343,7 @@ namespace PuntoDeVentaGameBox.Gerente
                     else _seleccion.Remove(it.Id);
                     ActualizarTextoCombo();
                 };
+
                 _clb.PreviewKeyDown += (s, e) => { if (e.KeyCode == Keys.Escape) _drop.Close(); };
 
                 _host = new ToolStripControlHost(_clb)
@@ -316,9 +351,8 @@ namespace PuntoDeVentaGameBox.Gerente
 
                 _drop.Padding = Padding.Empty;
                 _drop.Items.Add(_host);
-                _drop.AutoClose = true; // clic afuera => cerrar
+                _drop.AutoClose = true;
 
-                // Abrir con un tap (y sin cerrar en Leave para no auto-cancelar)
                 _combo.MouseUp += (s, e) => { if (!_drop.Visible) OpenDropFitted(); };
                 _combo.Click += (s, e) => { if (!_drop.Visible) OpenDropFitted(); };
 
@@ -329,6 +363,7 @@ namespace PuntoDeVentaGameBox.Gerente
                     if (_combo.Parent != null)
                         _combo.Parent.VisibleChanged += (s2, e2) => { if (_drop.Visible) _drop.Close(); };
                 };
+
                 var form = _combo.FindForm();
                 if (form != null)
                     form.Deactivate += (s, e) => { if (_drop.Visible) _drop.Close(); };
@@ -397,7 +432,6 @@ namespace PuntoDeVentaGameBox.Gerente
                     _clb.SetItemChecked(i, _seleccion.Contains(it.Id));
                 }
                 _silencio = false;
-
                 ActualizarTextoCombo();
             }
 
@@ -408,7 +442,8 @@ namespace PuntoDeVentaGameBox.Gerente
                 if (_seleccion.Count == 0) { _combo.Text = "Seleccionar géneros…"; return; }
 
                 var nombres = new List<string>();
-                foreach (var it in _items) if (_seleccion.Contains(it.Id)) nombres.Add(it.Nombre);
+                foreach (var it in _items)
+                    if (_seleccion.Contains(it.Id)) nombres.Add(it.Nombre);
                 nombres.Sort(StringComparer.CurrentCultureIgnoreCase);
 
                 _combo.Text = (nombres.Count <= 2)
@@ -416,18 +451,11 @@ namespace PuntoDeVentaGameBox.Gerente
                     : string.Join(", ", nombres.Take(2)) + $" +{nombres.Count - 2}";
             }
         }
-
-
-
-
-
-
-        // stubs
-        private void panel3_Paint(object sender, PaintEventArgs e) { }
+        // ==== Stubs requeridos por el diseñador (sin lógica) ====
         private void panel3_Paint_1(object sender, PaintEventArgs e) { }
-        private void pLimpiarParametros_Paint(object sender, PaintEventArgs e) { }
         private void TBDescripcionProducto_TextChanged(object sender, EventArgs e) { }
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) { }
+        private void pLimpiarParametros_Paint(object sender, PaintEventArgs e) { }
         private void EditarProducto_Load(object sender, EventArgs e) { }
+
     }
 }
