@@ -151,9 +151,6 @@ namespace PuntoDeVentaGameBox.Vendedor
                     nuevaCantidad = 1;
                 }
 
-                // =======================================================
-                // LÓGICA DE VERIFICACIÓN DE STOCK (SIN FUNCIÓN AUXILIAR)
-                // =======================================================
                 int stockActual = -1; // Inicializamos a un valor de error
 
                 if (!string.IsNullOrEmpty(nombreProducto))

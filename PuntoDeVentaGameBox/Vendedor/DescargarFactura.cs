@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,25 +33,88 @@ namespace PuntoDeVentaGameBox.Vendedor
             CargarFacturasDelVendedor(SesionUsuario.IdUsuario);
         }
 
-        private void CargarFacturasDelVendedor(int idUsuario)
+        private void CargarFacturasDelVendedor(int idUsuario, DateTime? fechaFiltro = null, string dniFiltro = null, string metodoPagoFiltro = null, decimal? totalFiltro = null)
         {
+            // Mantengo la definición local de connectionString según tu código original
             string conecctionString = "server=localhost;Database=game_box;Trusted_Connection=True";
-            string query = @"
+
+            // Usaremos un StringBuilder para construir la consulta dinámicamente
+            StringBuilder queryBuilder = new StringBuilder();
+            queryBuilder.Append(@"
         SELECT 
+            f.id_factura AS idFactura,
             f.fecha_compra AS fecha,
             f.metodo_pago AS MetodoDePago,
             f.total AS total,
-            c.nombre AS cliente,
+            RTRIM(c.nombre) + ' ' + RTRIM(c.apellido) AS cliente, 
             f.monto_pagado AS monto_pagado
         FROM factura f
         JOIN cliente c ON f.id_cliente = c.id_cliente
-        WHERE f.id_usuario = @idUsuario
-        ORDER BY f.fecha_compra DESC";
+        WHERE f.id_usuario = @idUsuario"); // Condición base: facturas del vendedor actual
 
-            using (SqlConnection conn = new SqlConnection(conecctionString))
-            using (SqlCommand cmd = new SqlCommand(query, conn))
+            // 1. Filtrar por Fecha (solo DATE)
+            if (fechaFiltro.HasValue)
             {
+                queryBuilder.Append(" AND CAST(f.fecha_compra AS DATE) = @fechaFiltro");
+            }
+
+            // 2. Filtrar por Método de Pago
+            if (!string.IsNullOrEmpty(metodoPagoFiltro))
+            {
+                queryBuilder.Append(" AND f.metodo_pago = @metodoPagoFiltro");
+            }
+
+            if (totalFiltro.HasValue)
+            {
+                queryBuilder.Append(" AND CAST(f.total AS DECIMAL(10,2)) = CAST(@totalFiltro AS DECIMAL(10,2))");
+            }
+
+
+
+            // 3. Filtrar por Monto Pagado (total que se pagó de esa factura)
+            decimal? montoPagado = null;
+            if (decimal.TryParse(tbTotalPagado.Text.Trim(), out decimal monto))
+            {
+                montoPagado = monto;
+            }
+
+            // 4. Filtrar por DNI de Cliente (requiere subconsulta)
+            if (!string.IsNullOrEmpty(dniFiltro))
+            {
+                // Buscamos el id_cliente cuyo dni coincida con el filtro
+                queryBuilder.Append(" AND f.id_cliente IN (SELECT id_cliente FROM cliente WHERE LEFT(dni, 2) = LEFT(@dniFiltro, 2))");
+
+            }
+
+            queryBuilder.Append(" ORDER BY f.fecha_compra DESC");
+    
+            using (SqlConnection conn = new SqlConnection(conecctionString))
+            using (SqlCommand cmd = new SqlCommand(queryBuilder.ToString(), conn))
+            {
+                // 1. Parámetro obligatorio (ID de Vendedor)
                 cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+
+                // 2. Agregar parámetros de filtro si se usaron
+                if (fechaFiltro.HasValue)
+                {
+                    cmd.Parameters.Add("@fechaFiltro", SqlDbType.Date).Value = fechaFiltro.Value;
+                }
+
+                if (!string.IsNullOrEmpty(metodoPagoFiltro))
+                {
+                    cmd.Parameters.AddWithValue("@metodoPagoFiltro", metodoPagoFiltro);
+                }
+
+                if (totalFiltro.HasValue)
+                {
+                    cmd.Parameters.AddWithValue("@totalFiltro", totalFiltro.Value);
+                }
+
+                if (!string.IsNullOrEmpty(dniFiltro))
+                {
+                    cmd.Parameters.AddWithValue("@dniFiltro", dniFiltro);
+                }
+
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
@@ -67,6 +131,7 @@ namespace PuntoDeVentaGameBox.Vendedor
                 dgvFacturasVendedor.Columns.Add(btnDescargar);
             }
 
+            dgvFacturasVendedor.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         private void dgvFacturasVendedor_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -82,6 +147,34 @@ namespace PuntoDeVentaGameBox.Vendedor
                 decimal montoPagado = Convert.ToDecimal(fila.Cells["monto_pagado"].Value);
                 DescargarFacturaComoPDF(fecha, monto, montoPagado);
             }
+        }
+
+        private void txtSoloNumeros_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void bBuscar_Click(object sender, EventArgs e)
+        {
+            // Obtener valores de los filtros
+            DateTime? fecha = dtpFechaCompra.Value.Date;
+            string dni = tbDNI.Text.Trim();
+            string metodoPago = cbMetodoDePago.SelectedItem?.ToString();
+
+            // Intentar parsear el monto pagado (usando un nullable decimal)
+            decimal? totalFiltro = null;
+            if (decimal.TryParse(tbTotalPagado.Text.Trim(), NumberStyles.Number, CultureInfo.InvariantCulture, out decimal monto))
+            {
+                totalFiltro = monto;
+            }
+
+
+            // Llamar al método de carga, pasando todos los filtros
+            CargarFacturasDelVendedor(SesionUsuario.IdUsuario, fecha, dni, metodoPago, totalFiltro);
         }
 
         private void DescargarFacturaComoPDF(DateTime fechaCompra, decimal total, decimal montoPagado)
@@ -343,10 +436,11 @@ namespace PuntoDeVentaGameBox.Vendedor
             }
         }
 
-
         private void bSalir_Click(object sender, EventArgs e)
         {
             this.Close();
         }
+
+        
     }
 }
