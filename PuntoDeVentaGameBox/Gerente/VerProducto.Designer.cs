@@ -317,14 +317,16 @@
             this.TBDescripcionProducto.Size = new System.Drawing.Size(263, 112);
             this.TBDescripcionProducto.TabIndex = 1;
             // 
-            // Form1
+            // VerProducto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(742, 667);
             this.Controls.Add(this.PEditar);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "VerProducto";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "VerProducto";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.PEditar.ResumeLayout(false);
             this.PFormEdicion.ResumeLayout(false);

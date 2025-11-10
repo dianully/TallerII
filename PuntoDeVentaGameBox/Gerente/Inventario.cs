@@ -264,6 +264,9 @@ namespace PuntoDeVentaGameBox.Gerente
                         case "ZA":
                             sql += " ORDER BY p.nombre DESC";
                             break;
+                        case "ID_ASC":                                   // <- NUEVO
+                            sql += " ORDER BY p.id_producto ASC";
+                            break;
                         case "STOCK_LOW":
                             sql += " AND p.cantidad_stock <= @umbral ORDER BY p.cantidad_stock ASC, p.id_producto DESC";
                             break;
@@ -275,16 +278,17 @@ namespace PuntoDeVentaGameBox.Gerente
                             break;
                         default:
                             sql += @"
-                            ORDER BY
-                                CASE
-                                    WHEN p.activo = 0 THEN 3
-                                    WHEN p.cantidad_stock = 0 THEN 2
-                                    WHEN p.cantidad_stock > 0 AND p.cantidad_stock <= @umbral THEN 1
-                                    ELSE 0
-                                END ASC,
-                                p.id_producto DESC";
+                                ORDER BY
+                                    CASE
+                                        WHEN p.activo = 0 THEN 3
+                                        WHEN p.cantidad_stock = 0 THEN 2
+                                        WHEN p.cantidad_stock > 0 AND p.cantidad_stock <= @umbral THEN 1
+                                        ELSE 0
+                                    END ASC,
+                                    p.id_producto DESC";
                             break;
-                    }
+                        }
+
 
                     cmd.CommandText = sql;
 
@@ -322,16 +326,18 @@ namespace PuntoDeVentaGameBox.Gerente
             {
                 new SortOption{ Code = "AZ",         Display = "A - Z" },
                 new SortOption{ Code = "ZA",         Display = "Z - A" },
+                new SortOption{ Code = "ID_ASC",     Display = "ID Creciente" },   // <- NUEVO
                 new SortOption{ Code = "STOCK_LOW",  Display = "menor stock (<= 25)" },
                 new SortOption{ Code = "STOCK_HIGH", Display = "mayor stock (> 25)" },
                 new SortOption{ Code = "INACTIVOS",  Display = "Inactivos" }
-            };
+    };
             CBOrden.DataSource = data;
             CBOrden.DisplayMember = "Display";
             CBOrden.ValueMember = "Code";
             CBOrden.SelectedIndex = -1;
             CBOrden.MaxDropDownItems = data.Length;
         }
+
 
         // ==================== imagenes ====================
 
@@ -774,8 +780,8 @@ namespace PuntoDeVentaGameBox.Gerente
         private void label1_Click(object sender, EventArgs e) { }
         private void BAplicarFiltrosProducto_Click(object sender, EventArgs e) { }
 
-        // ==================== Helper interno multi-categoría (checks a la derecha) ====================
 
+        // ===== Helper multi-categoría (NUNCA se sale, scroll vertical real, letra compacta) =====
         private sealed class MultiCategoriaFiltroHelper
         {
             private sealed class CatItem
@@ -788,11 +794,20 @@ namespace PuntoDeVentaGameBox.Gerente
 
             private readonly string _connString;
             private readonly ComboBox _combo;
-            private readonly HashSet<int> _seleccion = new HashSet<int>();
+
             private readonly List<CatItem> _items = new List<CatItem>();
+            private readonly HashSet<int> _seleccion = new HashSet<int>();
 
             private readonly ToolStripDropDown _drop = new ToolStripDropDown();
             private readonly CheckedListBox _clb = new CheckedListBox();
+            private readonly ToolStripControlHost _host;
+
+            // Config compacta + límites
+            private const float FONT_PT = 11.0f;
+            private const int ITEM_H = 22;
+            private const int MAX_HEIGHT = 180;   // alto máximo del popup (scroll a partir de aquí)
+            private const int MIN_HEIGHT = 120;   // alto mínimo cómodo
+            private const int MARGIN = 8;         // margen de seguridad contra bordes
 
             public MultiCategoriaFiltroHelper(string connString, ComboBox combo)
             {
@@ -802,73 +817,103 @@ namespace PuntoDeVentaGameBox.Gerente
                 _combo.DropDownStyle = ComboBoxStyle.DropDownList;
                 _combo.Items.Clear();
                 _combo.SelectedIndex = -1;
-                _combo.Text = "Desplegar…";
+                _combo.Text = "Seleccionar géneros…";
                 _combo.Cursor = Cursors.Hand;
 
-                // Owner draw para dibujar el check a la DERECHA
-                _clb.DrawMode = DrawMode.OwnerDrawFixed;
-                _clb.BorderStyle = BorderStyle.None;
+                // ===== Lista con SCROLL vertical verdadero =====
                 _clb.CheckOnClick = true;
-                _clb.IntegralHeight = true;
-                _clb.ItemHeight = Math.Max(_clb.ItemHeight, 18);
-                _clb.Width = Math.Max(220, _combo.Width);
-                _clb.Height = 200;
+                _clb.BorderStyle = BorderStyle.None;
+                _clb.IntegralHeight = false; // 🔴 MUY IMPORTANTE: mantiene altura fija -> no “crece” fuera del form
+                _clb.Font = new Font(_combo.Font.FontFamily, FONT_PT, FontStyle.Regular);
+                _clb.ItemHeight = Math.Max(_clb.ItemHeight, ITEM_H);
+                _clb.HorizontalScrollbar = true;  // por si un nombre es muy largo
 
-                // SINCRONIZA la selección cuando el usuario tilda/destilda
                 _clb.ItemCheck += (s, e) =>
                 {
-                    if (e.Index < 0) return;
                     var it = (CatItem)_clb.Items[e.Index];
-
-                    if (e.NewValue == CheckState.Checked)
-                        _seleccion.Add(it.Id);
-                    else
-                        _seleccion.Remove(it.Id);
-
+                    if (e.NewValue == CheckState.Checked) _seleccion.Add(it.Id);
+                    else _seleccion.Remove(it.Id);
                     ActualizarTextoCombo();
                 };
 
-                _clb.DrawItem += (s, e) =>
+                _clb.PreviewKeyDown += (s, e) =>
                 {
-                    e.DrawBackground();
-                    if (e.Index >= 0)
-                    {
-                        var g = e.Graphics;
-                        var it = (CatItem)_clb.Items[e.Index];
-                        bool isChecked = _clb.GetItemChecked(e.Index);
-
-                        // Texto a la izquierda
-                        var textBounds = new Rectangle(e.Bounds.X + 6, e.Bounds.Y + 1, e.Bounds.Width - 28, e.Bounds.Height - 2);
-                        TextRenderer.DrawText(g, it.Nombre, e.Font, textBounds, SystemColors.ControlText,
-                            TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
-
-                        // Checkbox a la DERECHA
-                        var cb = CheckBoxRenderer.GetGlyphSize(g, System.Windows.Forms.VisualStyles.CheckBoxState.UncheckedNormal);
-                        var cbX = e.Bounds.Right - cb.Width - 8;
-                        var cbY = e.Bounds.Y + (e.Bounds.Height - cb.Height) / 2;
-                        var state = isChecked
-                            ? System.Windows.Forms.VisualStyles.CheckBoxState.CheckedNormal
-                            : System.Windows.Forms.VisualStyles.CheckBoxState.UncheckedNormal;
-                        CheckBoxRenderer.DrawCheckBox(g, new Point(cbX, cbY), state);
-                    }
-                    e.DrawFocusRectangle();
+                    if (e.KeyCode == Keys.Escape) _drop.Close();
                 };
 
-                // Dejamos que CheckOnClick haga su trabajo en todo el ítem.
-                // (Handler vacío para no interferir con el toggle por defecto)
-                _clb.MouseDown += (s, e) => { /* intencionalmente vacío */ };
+                _host = new ToolStripControlHost(_clb)
+                {
+                    Padding = Padding.Empty,
+                    Margin = Padding.Empty,
+                    AutoSize = false
+                };
 
-
-                var host = new ToolStripControlHost(_clb)
-                { Padding = Padding.Empty, Margin = Padding.Empty, AutoSize = false, Size = new Size(_clb.Width, _clb.Height) };
                 _drop.Padding = Padding.Empty;
-                _drop.Items.Add(host);
+                _drop.Items.Add(_host);
+                _drop.AutoClose = true;  // clic afuera -> cerrar
 
-                _combo.MouseDown += (s, e) =>
+                // Un tap abre; si ya está abierto, no hace nada (cierre solo afuera)
+                _combo.MouseUp += (s, e) => { if (!_drop.Visible) OpenDropFitted(); };
+
+                // Cerrar en escenarios típicos para que no quede colgado
+                _combo.Leave += (s, e) => { if (_drop.Visible) _drop.Close(); };
+                _combo.SizeChanged += (s, e) => { if (_drop.Visible) _drop.Close(); };
+                _combo.LocationChanged += (s, e) => { if (_drop.Visible) _drop.Close(); };
+                _combo.ParentChanged += (s, e) =>
                 {
-                    host.Size = new Size(Math.Max(_combo.Width, 220), _clb.Height);
-                    _drop.Show(_combo, new Point(0, _combo.Height));
+                    if (_combo.Parent != null)
+                        _combo.Parent.VisibleChanged += (s2, e2) => { if (_drop.Visible) _drop.Close(); };
                 };
+                var form = _combo.FindForm();
+                if (form != null)
+                    form.Deactivate += (s, e) => { if (_drop.Visible) _drop.Close(); };
+            }
+
+            // Apertura SIEMPRE dentro del form, con altura fija + scroll
+            private void OpenDropFitted()
+            {
+                var form = _combo.FindForm();
+                if (form == null) return;
+
+                // --- en coordenadas de pantalla (medición exacta) ---
+                Rectangle formScreen = form.RectangleToScreen(form.ClientRectangle);
+                Point comboScreen = _combo.PointToScreen(new Point(0, 0));
+
+                int spaceBelow = formScreen.Bottom - (comboScreen.Y + _combo.Height) - MARGIN;
+                int spaceAbove = (comboScreen.Y - formScreen.Top) - MARGIN;
+
+                // ancho = ancho del combo
+                int width = Math.Max(_combo.ClientSize.Width, 200);
+
+                // altura base (fija con scroll)
+                int desired = MAX_HEIGHT;
+
+                bool openUp = false;
+                if (spaceBelow >= MIN_HEIGHT)
+                {
+                    desired = Math.Min(MAX_HEIGHT, spaceBelow);      // abre abajo dentro del form
+                    openUp = false;
+                }
+                else if (spaceAbove >= MIN_HEIGHT)
+                {
+                    desired = Math.Min(MAX_HEIGHT, spaceAbove);      // abre arriba si abajo no entra
+                    openUp = true;
+                }
+                else
+                {
+                    // Si ambos son chicos, usa el mayor de los dos (pero nunca negativo)
+                    if (spaceAbove > spaceBelow) { desired = Math.Max(MIN_HEIGHT, Math.Max(0, spaceAbove)); openUp = true; }
+                    else { desired = Math.Max(MIN_HEIGHT, Math.Max(0, spaceBelow)); openUp = false; }
+                }
+
+                // aplicar tamaño fijo (IntegralHeight=false => SIEMPRE hay scroll si no alcanza)
+                _host.Size = new Size(width, desired);
+                _clb.Size = _host.Size;
+
+                // posición final
+                var offset = openUp ? new Point(0, -desired - 2) : new Point(0, _combo.Height - 1);
+                _drop.Show(_combo, offset);
+                _clb.Focus();
             }
 
             public void CargarDesdeBd()
@@ -877,7 +922,7 @@ namespace PuntoDeVentaGameBox.Gerente
                 _clb.Items.Clear();
 
                 using (var cn = new SqlConnection(_connString))
-                using (var da = new SqlDataAdapter("select id_categoria, nombre from dbo.categoria order by nombre", cn))
+                using (var da = new SqlDataAdapter("SELECT id_categoria, nombre FROM dbo.categoria ORDER BY nombre", cn))
                 {
                     var dt = new DataTable();
                     da.Fill(dt);
@@ -895,14 +940,23 @@ namespace PuntoDeVentaGameBox.Gerente
 
             private void ActualizarTextoCombo()
             {
-                if (_seleccion.Count == 0) { _combo.Text = "Desplegar…"; return; }
+                if (_seleccion.Count == 0) { _combo.Text = "Seleccionar géneros…"; return; }
+
                 var nombres = new List<string>();
-                foreach (var it in _items) if (_seleccion.Contains(it.Id)) nombres.Add(it.Nombre);
+                foreach (var it in _items)
+                    if (_seleccion.Contains(it.Id)) nombres.Add(it.Nombre);
+
                 nombres.Sort(StringComparer.CurrentCultureIgnoreCase);
                 _combo.Text = (nombres.Count <= 2)
                     ? string.Join(", ", nombres)
-                    : string.Join(", ", nombres.GetRange(0, 2)) + $" +{nombres.Count - 2}";
+                    : string.Join(", ", nombres.Take(2)) + $" +{nombres.Count - 2}";
             }
         }
+
+
+
+
+
+
     }
 }
