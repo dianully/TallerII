@@ -50,7 +50,6 @@
             this.panel5 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.panelCliente = new System.Windows.Forms.Panel();
-            this.bReestablecer = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tbGenero = new System.Windows.Forms.TextBox();
@@ -63,8 +62,7 @@
             this.tbMontoPagado = new System.Windows.Forms.TextBox();
             this.cbMetodoDePago = new System.Windows.Forms.ComboBox();
             this.tbCambio = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.bReestablecer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListaDeCompra)).BeginInit();
             this.panel4.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -78,7 +76,7 @@
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label11.ForeColor = System.Drawing.SystemColors.Control;
-            this.label11.Location = new System.Drawing.Point(42, 626);
+            this.label11.Location = new System.Drawing.Point(337, 634);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(177, 25);
             this.label11.TabIndex = 39;
@@ -141,7 +139,7 @@
             this.LTitle.AutoSize = true;
             this.LTitle.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LTitle.ForeColor = System.Drawing.SystemColors.Control;
-            this.LTitle.Location = new System.Drawing.Point(39, 667);
+            this.LTitle.Location = new System.Drawing.Point(49, 641);
             this.LTitle.Name = "LTitle";
             this.LTitle.Size = new System.Drawing.Size(105, 45);
             this.LTitle.TabIndex = 20;
@@ -240,7 +238,7 @@
             this.lCantidad.AutoSize = true;
             this.lCantidad.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lCantidad.ForeColor = System.Drawing.SystemColors.Control;
-            this.lCantidad.Location = new System.Drawing.Point(145, 667);
+            this.lCantidad.Location = new System.Drawing.Point(145, 641);
             this.lCantidad.Name = "lCantidad";
             this.lCantidad.Size = new System.Drawing.Size(183, 45);
             this.lCantidad.TabIndex = 26;
@@ -349,21 +347,6 @@
             this.panelCliente.Size = new System.Drawing.Size(527, 175);
             this.panelCliente.TabIndex = 45;
             // 
-            // bReestablecer
-            // 
-            this.bReestablecer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.bReestablecer.FlatAppearance.BorderSize = 0;
-            this.bReestablecer.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bReestablecer.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.bReestablecer.Location = new System.Drawing.Point(359, 53);
-            this.bReestablecer.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
-            this.bReestablecer.Name = "bReestablecer";
-            this.bReestablecer.Size = new System.Drawing.Size(151, 39);
-            this.bReestablecer.TabIndex = 52;
-            this.bReestablecer.Text = "Reestablecer";
-            this.bReestablecer.UseVisualStyleBackColor = false;
-            this.bReestablecer.Click += new System.EventHandler(this.bReestablecer_Click);
-            // 
             // label6
             // 
             this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -468,7 +451,7 @@
             // tbMontoPagado
             // 
             this.tbMontoPagado.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbMontoPagado.Location = new System.Drawing.Point(539, 626);
+            this.tbMontoPagado.Location = new System.Drawing.Point(530, 626);
             this.tbMontoPagado.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbMontoPagado.Multiline = true;
             this.tbMontoPagado.Name = "tbMontoPagado";
@@ -483,7 +466,7 @@
             this.cbMetodoDePago.Items.AddRange(new object[] {
             "Efectivo",
             "Tarjeta"});
-            this.cbMetodoDePago.Location = new System.Drawing.Point(213, 630);
+            this.cbMetodoDePago.Location = new System.Drawing.Point(342, 662);
             this.cbMetodoDePago.Name = "cbMetodoDePago";
             this.cbMetodoDePago.Size = new System.Drawing.Size(161, 24);
             this.cbMetodoDePago.TabIndex = 47;
@@ -492,34 +475,27 @@
             // tbCambio
             // 
             this.tbCambio.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbCambio.Location = new System.Drawing.Point(539, 676);
+            this.tbCambio.Location = new System.Drawing.Point(530, 676);
             this.tbCambio.Multiline = true;
             this.tbCambio.Name = "tbCambio";
             this.tbCambio.Size = new System.Drawing.Size(192, 33);
             this.tbCambio.TabIndex = 48;
             this.tbCambio.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtBloqueado_MouseDown);
             // 
-            // label7
+            // bReestablecer
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label7.Location = new System.Drawing.Point(447, 630);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(76, 25);
-            this.label7.TabIndex = 49;
-            this.label7.Text = "Abono:";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label8.Location = new System.Drawing.Point(447, 676);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(86, 25);
-            this.label8.TabIndex = 50;
-            this.label8.Text = "Cambio:";
+            this.bReestablecer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bReestablecer.FlatAppearance.BorderSize = 0;
+            this.bReestablecer.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bReestablecer.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.bReestablecer.Location = new System.Drawing.Point(359, 53);
+            this.bReestablecer.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.bReestablecer.Name = "bReestablecer";
+            this.bReestablecer.Size = new System.Drawing.Size(151, 39);
+            this.bReestablecer.TabIndex = 52;
+            this.bReestablecer.Text = "Reestablecer";
+            this.bReestablecer.UseVisualStyleBackColor = false;
+            this.bReestablecer.Click += new System.EventHandler(this.bReestablecer_Click);
             // 
             // Vendedor
             // 
@@ -527,8 +503,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.ClientSize = new System.Drawing.Size(1182, 721);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.tbCambio);
             this.Controls.Add(this.cbMetodoDePago);
             this.Controls.Add(this.tbMontoPagado);
@@ -601,7 +575,5 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button bReestablecer;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
     }
 }

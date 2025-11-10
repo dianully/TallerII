@@ -70,14 +70,6 @@ namespace PuntoDeVentaGameBox.Vendedor
             }
 
 
-
-            // 3. Filtrar por Monto Pagado (total que se pagó de esa factura)
-            decimal? montoPagado = null;
-            if (decimal.TryParse(tbTotalPagado.Text.Trim(), out decimal monto))
-            {
-                montoPagado = monto;
-            }
-
             // 4. Filtrar por DNI de Cliente (requiere subconsulta)
             if (!string.IsNullOrEmpty(dniFiltro))
             {

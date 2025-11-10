@@ -83,14 +83,6 @@ FROM
             btnEliminar.FlatStyle = FlatStyle.Popup;
             dgvClientes.Columns.Add(btnEliminar);
 
-            DataGridViewButtonColumn btnEditar = new DataGridViewButtonColumn();
-            btnEditar.Name = "Editar";
-            btnEditar.HeaderText = "";
-            btnEditar.Text = "Editar";
-            btnEditar.UseColumnTextForButtonValue = true;
-            btnEditar.FlatStyle = FlatStyle.Popup;
-            dgvClientes.Columns.Add(btnEditar);
-
             dgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
@@ -164,10 +156,6 @@ FROM
                 }
             }
 
-            if (dgvClientes.Columns[e.ColumnIndex].Name == "Editar")
-            {
-                    
-            }
 
             if (dgvClientes.Columns[e.ColumnIndex].Name == "Reingresar")
             {
