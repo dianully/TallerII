@@ -28,24 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.PGraficos = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.chartDistribucionGenero = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartEvolucionVentas = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartTopProductos = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.LTitulo = new System.Windows.Forms.Label();
             this.BVolverAtras = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.PGraficos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartDistribucionGenero)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartEvolucionVentas)).BeginInit();
@@ -70,50 +70,83 @@
             this.PGraficos.TabIndex = 10;
             this.PGraficos.Paint += new System.Windows.Forms.PaintEventHandler(this.PGraficos_Paint_1);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label3.Location = new System.Drawing.Point(410, 407);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(352, 32);
+            this.label3.TabIndex = 51;
+            this.label3.Text = "Distribución por Géneros";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label2.Location = new System.Drawing.Point(705, 84);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(297, 32);
+            this.label2.TabIndex = 50;
+            this.label2.Text = "Evolución De Ventas";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label1.Location = new System.Drawing.Point(62, 84);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(411, 32);
+            this.label1.TabIndex = 49;
+            this.label1.Text = "Top Productos Mas Vendidos";
+            // 
             // chartDistribucionGenero
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chartDistribucionGenero.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chartDistribucionGenero.Legends.Add(legend4);
+            chartArea1.Name = "ChartArea1";
+            this.chartDistribucionGenero.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chartDistribucionGenero.Legends.Add(legend1);
             this.chartDistribucionGenero.Location = new System.Drawing.Point(330, 442);
             this.chartDistribucionGenero.Name = "chartDistribucionGenero";
-            series4.ChartArea = "ChartArea1";
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.chartDistribucionGenero.Series.Add(series4);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chartDistribucionGenero.Series.Add(series1);
             this.chartDistribucionGenero.Size = new System.Drawing.Size(500, 250);
             this.chartDistribucionGenero.TabIndex = 48;
             this.chartDistribucionGenero.Text = "chart3";
             // 
             // chartEvolucionVentas
             // 
-            chartArea5.Name = "ChartArea1";
-            this.chartEvolucionVentas.ChartAreas.Add(chartArea5);
-            legend5.Name = "Legend1";
-            this.chartEvolucionVentas.Legends.Add(legend5);
+            chartArea2.Name = "ChartArea1";
+            this.chartEvolucionVentas.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chartEvolucionVentas.Legends.Add(legend2);
             this.chartEvolucionVentas.Location = new System.Drawing.Point(600, 132);
             this.chartEvolucionVentas.Name = "chartEvolucionVentas";
-            series5.ChartArea = "ChartArea1";
-            series5.Legend = "Legend1";
-            series5.Name = "Series1";
-            this.chartEvolucionVentas.Series.Add(series5);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chartEvolucionVentas.Series.Add(series2);
             this.chartEvolucionVentas.Size = new System.Drawing.Size(500, 250);
             this.chartEvolucionVentas.TabIndex = 47;
             this.chartEvolucionVentas.Text = "chart2";
             // 
             // chartTopProductos
             // 
-            chartArea6.Name = "ChartArea1";
-            this.chartTopProductos.ChartAreas.Add(chartArea6);
-            legend6.Name = "Legend1";
-            this.chartTopProductos.Legends.Add(legend6);
+            chartArea3.Name = "ChartArea1";
+            this.chartTopProductos.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chartTopProductos.Legends.Add(legend3);
             this.chartTopProductos.Location = new System.Drawing.Point(13, 132);
             this.chartTopProductos.Name = "chartTopProductos";
-            series6.ChartArea = "ChartArea1";
-            series6.Legend = "Legend1";
-            series6.Name = "Series1";
-            this.chartTopProductos.Series.Add(series6);
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.chartTopProductos.Series.Add(series3);
             this.chartTopProductos.Size = new System.Drawing.Size(500, 250);
             this.chartTopProductos.TabIndex = 46;
             this.chartTopProductos.Text = "chart1";
@@ -143,45 +176,13 @@
             this.BVolverAtras.Text = "Volver Atras";
             this.BVolverAtras.UseVisualStyleBackColor = false;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label1.Location = new System.Drawing.Point(62, 84);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(411, 32);
-            this.label1.TabIndex = 49;
-            this.label1.Text = "Top Productos Mas Vendidos";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label2.Location = new System.Drawing.Point(705, 84);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(297, 32);
-            this.label2.TabIndex = 50;
-            this.label2.Text = "Evolución De Ventas";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label3.Location = new System.Drawing.Point(410, 407);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(352, 32);
-            this.label3.TabIndex = 51;
-            this.label3.Text = "Distribución por Géneros";
-            // 
             // GraficosProductos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1138, 710);
             this.Controls.Add(this.PGraficos);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "GraficosProductos";
             this.ShowInTaskbar = false;
             this.Text = "GraficosProductos";

@@ -50,6 +50,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.DGVRendimientosVendedorExtendido);
             this.Name = "RendimientosVendedorExtendido";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "RendimientosVendedorExtendido";
             this.Load += new System.EventHandler(this.RendimientosVendedorExtendido_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DGVRendimientosVendedorExtendido)).EndInit();

@@ -172,6 +172,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.PVistaGerente);
             this.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "PanelGerente";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

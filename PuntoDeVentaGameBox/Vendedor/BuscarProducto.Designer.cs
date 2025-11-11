@@ -122,6 +122,7 @@
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "BuscarProducto";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BuscarProducto";
             this.Load += new System.EventHandler(this.BuscarProducto_Load);
             this.panel1.ResumeLayout(false);

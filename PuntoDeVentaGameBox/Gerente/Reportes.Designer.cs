@@ -68,6 +68,7 @@
             this.BVerGraficosProductos = new System.Windows.Forms.Button();
             this.GBPeriodo = new System.Windows.Forms.GroupBox();
             this.TLPPeriodo = new System.Windows.Forms.TableLayoutPanel();
+            this.BAplicarFiltros = new System.Windows.Forms.Button();
             this.LDesde = new System.Windows.Forms.Label();
             this.LHasta = new System.Windows.Forms.Label();
             this.DTPDesde = new System.Windows.Forms.DateTimePicker();
@@ -78,7 +79,6 @@
             this.BExportarPDF = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.BAplicarFiltros = new System.Windows.Forms.Button();
             this.TPLRoot.SuspendLayout();
             this.PNLScroll.SuspendLayout();
             this.TLPContent.SuspendLayout();
@@ -569,6 +569,17 @@
             this.TLPPeriodo.TabIndex = 0;
             this.TLPPeriodo.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel3_Paint);
             // 
+            // BAplicarFiltros
+            // 
+            this.BAplicarFiltros.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.BAplicarFiltros.Location = new System.Drawing.Point(3, 3);
+            this.BAplicarFiltros.Name = "BAplicarFiltros";
+            this.BAplicarFiltros.Size = new System.Drawing.Size(142, 30);
+            this.BAplicarFiltros.TabIndex = 6;
+            this.BAplicarFiltros.Text = "Aplicar FIltros";
+            this.BAplicarFiltros.UseVisualStyleBackColor = true;
+            this.BAplicarFiltros.Click += new System.EventHandler(this.BAplicarFiltros_Click);
+            // 
             // LDesde
             // 
             this.LDesde.AutoSize = true;
@@ -664,17 +675,6 @@
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
-            // BAplicarFiltros
-            // 
-            this.BAplicarFiltros.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.BAplicarFiltros.Location = new System.Drawing.Point(3, 3);
-            this.BAplicarFiltros.Name = "BAplicarFiltros";
-            this.BAplicarFiltros.Size = new System.Drawing.Size(142, 30);
-            this.BAplicarFiltros.TabIndex = 6;
-            this.BAplicarFiltros.Text = "Aplicar FIltros";
-            this.BAplicarFiltros.UseVisualStyleBackColor = true;
-            this.BAplicarFiltros.Click += new System.EventHandler(this.BAplicarFiltros_Click);
-            // 
             // Reportes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -684,6 +684,7 @@
             this.ClientSize = new System.Drawing.Size(908, 740);
             this.Controls.Add(this.TPLRoot);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Reportes";
             this.Text = "FormReportes";

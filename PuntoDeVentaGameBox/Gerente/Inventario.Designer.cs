@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.TLRoot = new System.Windows.Forms.TableLayoutPanel();
             this.PBanner = new System.Windows.Forms.Panel();
             this.LAvisoStockBajo = new System.Windows.Forms.Label();
@@ -129,6 +129,7 @@
             // 
             this.LAvisoStockBajo.AutoSize = true;
             this.LAvisoStockBajo.Font = new System.Drawing.Font("Segoe UI Semibold", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LAvisoStockBajo.ForeColor = System.Drawing.SystemColors.Control;
             this.LAvisoStockBajo.Location = new System.Drawing.Point(57, 37);
             this.LAvisoStockBajo.Name = "LAvisoStockBajo";
             this.LAvisoStockBajo.Size = new System.Drawing.Size(691, 25);
@@ -187,7 +188,7 @@
             // 
             this.LProductostotales.AutoSize = true;
             this.LProductostotales.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LProductostotales.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.LProductostotales.ForeColor = System.Drawing.SystemColors.Control;
             this.LProductostotales.Location = new System.Drawing.Point(109, 11);
             this.LProductostotales.Name = "LProductostotales";
             this.LProductostotales.Size = new System.Drawing.Size(144, 23);
@@ -198,7 +199,7 @@
             // LCantproductosunicos
             // 
             this.LCantproductosunicos.AutoSize = true;
-            this.LCantproductosunicos.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.LCantproductosunicos.ForeColor = System.Drawing.SystemColors.Control;
             this.LCantproductosunicos.Location = new System.Drawing.Point(89, 73);
             this.LCantproductosunicos.Name = "LCantproductosunicos";
             this.LCantproductosunicos.Size = new System.Drawing.Size(185, 16);
@@ -231,7 +232,7 @@
             // 
             this.LConstockbajo.AutoSize = true;
             this.LConstockbajo.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LConstockbajo.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.LConstockbajo.ForeColor = System.Drawing.SystemColors.Control;
             this.LConstockbajo.Location = new System.Drawing.Point(136, 11);
             this.LConstockbajo.Name = "LConstockbajo";
             this.LConstockbajo.Size = new System.Drawing.Size(126, 23);
@@ -241,7 +242,7 @@
             // LStockmenora
             // 
             this.LStockmenora.AutoSize = true;
-            this.LStockmenora.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.LStockmenora.ForeColor = System.Drawing.SystemColors.Control;
             this.LStockmenora.Location = new System.Drawing.Point(83, 73);
             this.LStockmenora.Name = "LStockmenora";
             this.LStockmenora.Size = new System.Drawing.Size(239, 16);
@@ -274,7 +275,7 @@
             // 
             this.LStocktotal.AutoSize = true;
             this.LStocktotal.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LStocktotal.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.LStocktotal.ForeColor = System.Drawing.SystemColors.Control;
             this.LStocktotal.Location = new System.Drawing.Point(145, 11);
             this.LStocktotal.Name = "LStocktotal";
             this.LStocktotal.Size = new System.Drawing.Size(93, 23);
@@ -284,7 +285,7 @@
             // LUnidadeseninventario
             // 
             this.LUnidadeseninventario.AutoSize = true;
-            this.LUnidadeseninventario.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.LUnidadeseninventario.ForeColor = System.Drawing.SystemColors.Control;
             this.LUnidadeseninventario.Location = new System.Drawing.Point(120, 73);
             this.LUnidadeseninventario.Name = "LUnidadeseninventario";
             this.LUnidadeseninventario.Size = new System.Drawing.Size(145, 16);
@@ -548,8 +549,8 @@
             // 
             this.DGVProductos.AllowUserToAddRows = false;
             this.DGVProductos.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.DGVProductos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.DGVProductos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
             this.DGVProductos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.DGVProductos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVProductos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -578,8 +579,8 @@
             // ColId
             // 
             this.ColId.DataPropertyName = "Id";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.ColId.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.ColId.DefaultCellStyle = dataGridViewCellStyle8;
             this.ColId.FillWeight = 3.788457F;
             this.ColId.HeaderText = "ID";
             this.ColId.MinimumWidth = 6;
@@ -617,9 +618,9 @@
             // ColPrecio
             // 
             this.ColPrecio.DataPropertyName = "Precio";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.Format = "C2";
-            this.ColPrecio.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle9.Format = "C2";
+            this.ColPrecio.DefaultCellStyle = dataGridViewCellStyle9;
             this.ColPrecio.FillWeight = 19.25784F;
             this.ColPrecio.HeaderText = "Precio";
             this.ColPrecio.MinimumWidth = 6;

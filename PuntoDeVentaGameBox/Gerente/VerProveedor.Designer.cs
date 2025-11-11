@@ -33,6 +33,11 @@
             this.BSalir = new System.Windows.Forms.Button();
             this.BEditar = new System.Windows.Forms.Button();
             this.PDatosProveedores = new System.Windows.Forms.Panel();
+            this.TBUltimaActualizacion = new System.Windows.Forms.TextBox();
+            this.TBFechaCreacion = new System.Windows.Forms.TextBox();
+            this.LFecraCreacionProveedor = new System.Windows.Forms.Label();
+            this.LUltimaActualizacion = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.LTelefono = new System.Windows.Forms.Label();
             this.LCorreo = new System.Windows.Forms.Label();
             this.LDireccion = new System.Windows.Forms.Label();
@@ -41,11 +46,6 @@
             this.TBTelefono = new System.Windows.Forms.TextBox();
             this.TBCorreo = new System.Windows.Forms.TextBox();
             this.TBDireccion = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.LUltimaActualizacion = new System.Windows.Forms.Label();
-            this.LFecraCreacionProveedor = new System.Windows.Forms.Label();
-            this.TBFechaCreacion = new System.Windows.Forms.TextBox();
-            this.TBUltimaActualizacion = new System.Windows.Forms.TextBox();
             this.PBaseAzul.SuspendLayout();
             this.PanelAcciones.SuspendLayout();
             this.PDatosProveedores.SuspendLayout();
@@ -124,6 +124,52 @@
             this.PDatosProveedores.Size = new System.Drawing.Size(477, 458);
             this.PDatosProveedores.TabIndex = 0;
             // 
+            // TBUltimaActualizacion
+            // 
+            this.TBUltimaActualizacion.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TBUltimaActualizacion.Location = new System.Drawing.Point(266, 398);
+            this.TBUltimaActualizacion.Name = "TBUltimaActualizacion";
+            this.TBUltimaActualizacion.Size = new System.Drawing.Size(184, 30);
+            this.TBUltimaActualizacion.TabIndex = 45;
+            // 
+            // TBFechaCreacion
+            // 
+            this.TBFechaCreacion.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TBFechaCreacion.Location = new System.Drawing.Point(26, 398);
+            this.TBFechaCreacion.Name = "TBFechaCreacion";
+            this.TBFechaCreacion.Size = new System.Drawing.Size(178, 30);
+            this.TBFechaCreacion.TabIndex = 44;
+            // 
+            // LFecraCreacionProveedor
+            // 
+            this.LFecraCreacionProveedor.AutoSize = true;
+            this.LFecraCreacionProveedor.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LFecraCreacionProveedor.Location = new System.Drawing.Point(39, 360);
+            this.LFecraCreacionProveedor.Name = "LFecraCreacionProveedor";
+            this.LFecraCreacionProveedor.Size = new System.Drawing.Size(151, 23);
+            this.LFecraCreacionProveedor.TabIndex = 43;
+            this.LFecraCreacionProveedor.Text = "Fecha de Creación";
+            // 
+            // LUltimaActualizacion
+            // 
+            this.LUltimaActualizacion.AutoSize = true;
+            this.LUltimaActualizacion.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LUltimaActualizacion.Location = new System.Drawing.Point(278, 360);
+            this.LUltimaActualizacion.Name = "LUltimaActualizacion";
+            this.LUltimaActualizacion.Size = new System.Drawing.Size(166, 23);
+            this.LUltimaActualizacion.TabIndex = 42;
+            this.LUltimaActualizacion.Text = "Última Actualización";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(21, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(209, 28);
+            this.label1.TabIndex = 41;
+            this.label1.Text = "Detalle del Proveedor";
+            // 
             // LTelefono
             // 
             this.LTelefono.AutoSize = true;
@@ -200,52 +246,6 @@
             this.TBDireccion.Size = new System.Drawing.Size(424, 30);
             this.TBDireccion.TabIndex = 2;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(21, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(209, 28);
-            this.label1.TabIndex = 41;
-            this.label1.Text = "Detalle del Proveedor";
-            // 
-            // LUltimaActualizacion
-            // 
-            this.LUltimaActualizacion.AutoSize = true;
-            this.LUltimaActualizacion.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LUltimaActualizacion.Location = new System.Drawing.Point(278, 360);
-            this.LUltimaActualizacion.Name = "LUltimaActualizacion";
-            this.LUltimaActualizacion.Size = new System.Drawing.Size(166, 23);
-            this.LUltimaActualizacion.TabIndex = 42;
-            this.LUltimaActualizacion.Text = "Última Actualización";
-            // 
-            // LFecraCreacionProveedor
-            // 
-            this.LFecraCreacionProveedor.AutoSize = true;
-            this.LFecraCreacionProveedor.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LFecraCreacionProveedor.Location = new System.Drawing.Point(39, 360);
-            this.LFecraCreacionProveedor.Name = "LFecraCreacionProveedor";
-            this.LFecraCreacionProveedor.Size = new System.Drawing.Size(151, 23);
-            this.LFecraCreacionProveedor.TabIndex = 43;
-            this.LFecraCreacionProveedor.Text = "Fecha de Creación";
-            // 
-            // TBFechaCreacion
-            // 
-            this.TBFechaCreacion.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TBFechaCreacion.Location = new System.Drawing.Point(26, 398);
-            this.TBFechaCreacion.Name = "TBFechaCreacion";
-            this.TBFechaCreacion.Size = new System.Drawing.Size(178, 30);
-            this.TBFechaCreacion.TabIndex = 44;
-            // 
-            // TBUltimaActualizacion
-            // 
-            this.TBUltimaActualizacion.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TBUltimaActualizacion.Location = new System.Drawing.Point(266, 398);
-            this.TBUltimaActualizacion.Name = "TBUltimaActualizacion";
-            this.TBUltimaActualizacion.Size = new System.Drawing.Size(184, 30);
-            this.TBUltimaActualizacion.TabIndex = 45;
-            // 
             // VerProveedor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -254,7 +254,7 @@
             this.Controls.Add(this.PBaseAzul);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "VerProveedor";
             this.Text = "Ver Proveedor";
             this.Load += new System.EventHandler(this.VerProveedor_Load);

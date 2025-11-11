@@ -50,6 +50,7 @@
             this.panel5 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.panelCliente = new System.Windows.Forms.Panel();
+            this.bReestablecer = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tbGenero = new System.Windows.Forms.TextBox();
@@ -62,7 +63,10 @@
             this.tbMontoPagado = new System.Windows.Forms.TextBox();
             this.cbMetodoDePago = new System.Windows.Forms.ComboBox();
             this.tbCambio = new System.Windows.Forms.TextBox();
-            this.bReestablecer = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListaDeCompra)).BeginInit();
             this.panel4.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -179,12 +183,12 @@
             // 
             this.dgvListaDeCompra.AllowUserToAddRows = false;
             this.dgvListaDeCompra.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvListaDeCompra.Location = new System.Drawing.Point(47, 251);
+            this.dgvListaDeCompra.Location = new System.Drawing.Point(47, 261);
             this.dgvListaDeCompra.Margin = new System.Windows.Forms.Padding(4);
             this.dgvListaDeCompra.Name = "dgvListaDeCompra";
             this.dgvListaDeCompra.RowHeadersVisible = false;
             this.dgvListaDeCompra.RowHeadersWidth = 51;
-            this.dgvListaDeCompra.Size = new System.Drawing.Size(1048, 359);
+            this.dgvListaDeCompra.Size = new System.Drawing.Size(1048, 300);
             this.dgvListaDeCompra.TabIndex = 23;
             // 
             // label1
@@ -312,6 +316,8 @@
             // 
             // panel5
             // 
+            this.panel5.Controls.Add(this.label8);
+            this.panel5.Controls.Add(this.label7);
             this.panel5.Controls.Add(this.label12);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel5.Location = new System.Drawing.Point(0, 0);
@@ -346,6 +352,21 @@
             this.panelCliente.Name = "panelCliente";
             this.panelCliente.Size = new System.Drawing.Size(527, 175);
             this.panelCliente.TabIndex = 45;
+            // 
+            // bReestablecer
+            // 
+            this.bReestablecer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
+            this.bReestablecer.FlatAppearance.BorderSize = 0;
+            this.bReestablecer.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bReestablecer.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.bReestablecer.Location = new System.Drawing.Point(359, 53);
+            this.bReestablecer.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
+            this.bReestablecer.Name = "bReestablecer";
+            this.bReestablecer.Size = new System.Drawing.Size(151, 39);
+            this.bReestablecer.TabIndex = 52;
+            this.bReestablecer.Text = "Reestablecer";
+            this.bReestablecer.UseVisualStyleBackColor = false;
+            this.bReestablecer.Click += new System.EventHandler(this.bReestablecer_Click);
             // 
             // label6
             // 
@@ -451,7 +472,7 @@
             // tbMontoPagado
             // 
             this.tbMontoPagado.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbMontoPagado.Location = new System.Drawing.Point(530, 626);
+            this.tbMontoPagado.Location = new System.Drawing.Point(530, 608);
             this.tbMontoPagado.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbMontoPagado.Multiline = true;
             this.tbMontoPagado.Name = "tbMontoPagado";
@@ -482,20 +503,49 @@
             this.tbCambio.TabIndex = 48;
             this.tbCambio.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtBloqueado_MouseDown);
             // 
-            // bReestablecer
+            // label7
             // 
-            this.bReestablecer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
-            this.bReestablecer.FlatAppearance.BorderSize = 0;
-            this.bReestablecer.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bReestablecer.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.bReestablecer.Location = new System.Drawing.Point(359, 53);
-            this.bReestablecer.Margin = new System.Windows.Forms.Padding(15, 2, 3, 2);
-            this.bReestablecer.Name = "bReestablecer";
-            this.bReestablecer.Size = new System.Drawing.Size(151, 39);
-            this.bReestablecer.TabIndex = 52;
-            this.bReestablecer.Text = "Reestablecer";
-            this.bReestablecer.UseVisualStyleBackColor = false;
-            this.bReestablecer.Click += new System.EventHandler(this.bReestablecer_Click);
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label7.Location = new System.Drawing.Point(80, 5);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(354, 38);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "Informacion del Producto";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label8.Location = new System.Drawing.Point(88, 13);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(354, 38);
+            this.label8.TabIndex = 6;
+            this.label8.Text = "Informacion del Producto";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.SystemColors.Control;
+            this.label9.Location = new System.Drawing.Point(536, 581);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(159, 25);
+            this.label9.TabIndex = 49;
+            this.label9.Text = "Monto Pagado:";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.SystemColors.Control;
+            this.label10.Location = new System.Drawing.Point(525, 647);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(93, 25);
+            this.label10.TabIndex = 50;
+            this.label10.Text = "Cambio:";
             // 
             // Vendedor
             // 
@@ -503,6 +553,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(62)))), ((int)(((byte)(77)))));
             this.ClientSize = new System.Drawing.Size(1182, 721);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.tbCambio);
             this.Controls.Add(this.cbMetodoDePago);
             this.Controls.Add(this.tbMontoPagado);
@@ -575,5 +627,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button bReestablecer;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
     }
 }
